@@ -1,0 +1,614 @@
+<style>
+/* ── Spinner component tokens ─────────────────────────────────────────── */
+:root {
+  --sp-brand:  #1852FE;
+  --sp-white:  #FFFFFF;
+  --sp-muted:  #94A3B8;
+  --sp-navy:   #001E4C;
+}
+
+/*
+ * ── Spinner architecture ────────────────────────────────────────────────
+ *  Two CSS layers via pseudo-elements — zero extra DOM required:
+ *
+ *  ::before  →  TRACK  — static full-circle ring at low opacity (does NOT rotate)
+ *  ::after   →  ARC    — ~270° handle that spins (only this element rotates)
+ *
+ *  By keeping the track on a separate, non-animated layer, the background
+ *  ring remains perfectly still while only the bright arc sweeps around it.
+ * ─────────────────────────────────────────────────────────────────────── */
+
+/* ── Base container ────────────────────────────────────────────────────── */
+.gs-spinner {
+  display: inline-block;
+  position: relative;        /* stacking context for ::before / ::after     */
+  border-radius: 50%;
+  flex-shrink: 0;
+  /* No border or animation on the container itself                         */
+}
+
+/* ── Track (::before) — STATIC ─────────────────────────────────────────── */
+.gs-spinner::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border-style: solid;
+  pointer-events: none;
+  /* border-width set per size; border-color set per variant                */
+}
+
+/* ── Arc (::after) — ROTATES ──────────────────────────────────────────── */
+/* ~270° arc: top + right at full opacity, bottom faded, left transparent  */
+.gs-spinner::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border-style: solid;
+  border-color: transparent;          /* overridden per colour variant       */
+  pointer-events: none;
+  animation: gs-spin 0.72s linear infinite;
+}
+
+@keyframes gs-spin { to { transform: rotate(360deg); } }
+
+/* ── Size variants ─────────────────────────────────────────────────────── */
+.gs-spinner--sm  { width: 16px; height: 16px; }
+.gs-spinner--sm::before,
+.gs-spinner--sm::after  { border-width: 2px; }
+
+.gs-spinner--md  { width: 24px; height: 24px; }
+.gs-spinner--md::before,
+.gs-spinner--md::after  { border-width: 2.5px; }
+
+.gs-spinner--lg  { width: 40px; height: 40px; }
+.gs-spinner--lg::before,
+.gs-spinner--lg::after  { border-width: 3px; }
+
+.gs-spinner--xl  { width: 56px; height: 56px; }
+.gs-spinner--xl::before,
+.gs-spinner--xl::after  { border-width: 4px; }
+
+/* ── Colour variants ───────────────────────────────────────────────────── */
+/*  ::before → full-circle GREY track (Figma spec — #E2E8F0, never blue)   */
+/*  ::after  → solid arc ~270°: top+right+bottom=brand, left=transparent   */
+
+/* Brand — grey track, solid blue arc */
+.gs-spinner--brand::before {
+  border-color: #E2E8F0;    /* --prim-grey-100: the standard border grey     */
+}
+.gs-spinner--brand::after {
+  border-top-color:    var(--sp-brand);   /* solid blue — no fade            */
+  border-right-color:  var(--sp-brand);
+  border-bottom-color: var(--sp-brand);
+  /* border-left-color: transparent — 90° gap creates rotation cue          */
+}
+
+/* Muted — lighter grey track, solid muted arc */
+.gs-spinner--muted::before {
+  border-color: #F1F5F9;    /* --prim-grey-50: subtle track                  */
+}
+.gs-spinner--muted::after {
+  border-top-color:    var(--sp-muted);
+  border-right-color:  var(--sp-muted);
+  border-bottom-color: var(--sp-muted);
+}
+
+/* White — semi-white track for dark surfaces */
+.gs-spinner--white::before {
+  border-color: rgba(255, 255, 255, 0.25);
+}
+.gs-spinner--white::after {
+  border-top-color:    var(--sp-white);
+  border-right-color:  var(--sp-white);
+  border-bottom-color: var(--sp-white);
+}
+
+/* ── Reduced motion ─────────────────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  .gs-spinner::after {
+    animation-duration: 2s;
+    animation-timing-function: steps(8, end);
+  }
+}
+
+/* ── Inline wrapper (spinner + label) ──────────────────────────────────── */
+.gs-spinner-row {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--color-text-secondary, #64748B);
+}
+
+/* ── Full-page overlay ─────────────────────────────────────────────────── */
+.gs-spinner-overlay {
+  position: absolute; inset: 0;
+  display: flex; align-items: center; justify-content: center;
+  background: rgba(255,255,255,.72);
+  backdrop-filter: blur(2px);
+  border-radius: inherit;
+  z-index: 10;
+}
+
+/* ── Demo helpers ──────────────────────────────────────────────────────── */
+.sp-demo-cell {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+.sp-demo-label {
+  font-size: 11px;
+  color: #9CA3AF;
+  font-weight: 500;
+  text-align: center;
+}
+.sp-dark-bg {
+  background: var(--sp-navy);
+  border-radius: 10px;
+  padding: 20px 28px;
+  display: flex; align-items: center; justify-content: center; gap: 10px;
+}
+</style>
+
+<!-- BANNER -->
+<div class="page-header">
+  <h1 class="ds-hero-title">Spinner</h1>
+</div>
+
+<!-- TAB BAR -->
+<div class="btn-tab-bar">
+  <button class="btn-tab-btn spinner-tab-btn active" data-tab="design" onclick="switchSpinnerTab('design')">Design</button>
+  <button class="btn-tab-btn spinner-tab-btn" data-tab="code"   onclick="switchSpinnerTab('code')">Code</button>
+  <button class="btn-tab-btn spinner-tab-btn" data-tab="usage"  onclick="switchSpinnerTab('usage')">Usage</button>
+</div>
+
+<!-- ═══ DESIGN TAB ═══════════════════════════════════════════════ -->
+<div id="spinner-tab-design" class="btn-tab-pane spinner-tab-pane active">
+  <div class="code-tab-layout">
+    <div class="code-tab-main">
+
+      <!-- OVERVIEW -->
+      <div id="sp-s-overview" class="btn-family-card">
+        <div class="btn-family-title">Overview</div>
+        <p class="btn-family-desc">The Spinner is a circular indeterminate progress indicator. Use it whenever a system action is in progress and the duration is unknown — data loading, form submission, route transitions. It is always animated and never used as a static icon.</p>
+
+        <div style="margin-top:20px;display:flex;flex-wrap:wrap;align-items:center;gap:32px;">
+          <div class="sp-demo-cell">
+            <div class="gs-spinner gs-spinner--md gs-spinner--brand"></div>
+            <span class="sp-demo-label">Brand (default)</span>
+          </div>
+          <div class="sp-demo-cell">
+            <div class="gs-spinner gs-spinner--md gs-spinner--muted"></div>
+            <span class="sp-demo-label">Muted</span>
+          </div>
+          <div class="sp-demo-cell">
+            <div class="sp-dark-bg">
+              <div class="gs-spinner gs-spinner--md gs-spinner--white"></div>
+            </div>
+            <span class="sp-demo-label">White (dark bg)</span>
+          </div>
+          <div class="sp-demo-cell">
+            <div class="gs-spinner-row">
+              <div class="gs-spinner gs-spinner--sm gs-spinner--brand"></div>
+              Loading records…
+            </div>
+            <span class="sp-demo-label">Inline + label</span>
+          </div>
+        </div>
+
+        <div class="btn-when-examples" style="margin-top:16px;">
+          <span class="btn-when-example-tag">Indeterminate</span>
+          <span class="btn-when-example-tag">4 sizes</span>
+          <span class="btn-when-example-tag">3 colour variants</span>
+          <span class="btn-when-example-tag">Inline or overlay</span>
+          <span class="btn-when-example-tag">0.72s linear</span>
+        </div>
+      </div>
+
+      <!-- SIZE VARIANTS -->
+      <div id="sp-s-sizes" class="btn-family-card">
+        <div class="btn-family-title">Size Variants</div>
+        <p class="btn-family-desc">Four sizes keyed to context — <strong>sm</strong> for inline hints and button states, <strong>md</strong> for cards and panels, <strong>lg</strong> for section-level loading, <strong>xl</strong> for full-page overlays.</p>
+
+        <div style="margin-top:20px;display:flex;flex-wrap:wrap;align-items:flex-end;gap:32px;">
+          <div class="sp-demo-cell">
+            <div class="gs-spinner gs-spinner--sm gs-spinner--brand"></div>
+            <span class="sp-demo-label"><strong>sm</strong><br>16 × 16px<br>border 2px</span>
+          </div>
+          <div class="sp-demo-cell">
+            <div class="gs-spinner gs-spinner--md gs-spinner--brand"></div>
+            <span class="sp-demo-label"><strong>md</strong> (default)<br>24 × 24px<br>border 2.5px</span>
+          </div>
+          <div class="sp-demo-cell">
+            <div class="gs-spinner gs-spinner--lg gs-spinner--brand"></div>
+            <span class="sp-demo-label"><strong>lg</strong><br>40 × 40px<br>border 3px</span>
+          </div>
+          <div class="sp-demo-cell">
+            <div class="gs-spinner gs-spinner--xl gs-spinner--brand"></div>
+            <span class="sp-demo-label"><strong>xl</strong><br>56 × 56px<br>border 4px</span>
+          </div>
+        </div>
+
+        <div class="btn-sub-label" style="margin-top:20px;margin-bottom:8px;">Size token reference</div>
+        <table>
+          <thead><tr><th>Modifier</th><th>Size</th><th>Border</th><th>Typical use</th></tr></thead>
+          <tbody>
+            <tr class="ds-tr-border"><td class="ds-td-code-primary">gs-spinner--sm</td><td>16 × 16px</td><td>2px</td><td>Button loading state, inline form hint</td></tr>
+            <tr class="ds-tr-border"><td class="ds-td-code-primary">gs-spinner--md</td><td>24 × 24px</td><td>2.5px</td><td>Card, panel, table fetch (default)</td></tr>
+            <tr class="ds-tr-border"><td class="ds-td-code-primary">gs-spinner--lg</td><td>40 × 40px</td><td>3px</td><td>Section or drawer loading</td></tr>
+            <tr class="ds-tr-border"><td class="ds-td-code-primary">gs-spinner--xl</td><td>56 × 56px</td><td>4px</td><td>Full-page / modal overlay</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- COLOUR VARIANTS -->
+      <div id="sp-s-colours" class="btn-family-card">
+        <div class="btn-family-title">Colour Variants</div>
+        <p class="btn-family-desc">Three colour options. The <strong>track</strong> (<code>::before</code>, static) is always <strong>grey</strong> — <code>#E2E8F0</code> for brand/muted, semi-white for dark surfaces. The <strong>arc</strong> (<code>::after</code>) is a solid 270° sweep at full opacity — no fade, matching the Figma spec.</p>
+
+        <div style="margin-top:16px;display:flex;flex-wrap:wrap;gap:24px;align-items:stretch;">
+          <!-- Brand -->
+          <div style="flex:1;min-width:180px;border:1px solid #E2E8F0;border-radius:10px;overflow:hidden;">
+            <div style="padding:28px;display:flex;align-items:center;justify-content:center;background:#F7FAFC;">
+              <div class="gs-spinner gs-spinner--lg gs-spinner--brand"></div>
+            </div>
+            <div style="padding:12px 14px;border-top:1px solid #E2E8F0;">
+              <div style="font-size:12.5px;font-weight:600;color:#0F1B35;">Brand</div>
+              <div style="font-size:11.5px;color:#9CA3AF;margin-top:2px;"><code>.gs-spinner--brand</code></div>
+              <div style="font-size:11.5px;color:#64748B;margin-top:4px;">Default. Use on white or light-grey surfaces.</div>
+            </div>
+          </div>
+          <!-- Muted -->
+          <div style="flex:1;min-width:180px;border:1px solid #E2E8F0;border-radius:10px;overflow:hidden;">
+            <div style="padding:28px;display:flex;align-items:center;justify-content:center;background:#F7FAFC;">
+              <div class="gs-spinner gs-spinner--lg gs-spinner--muted"></div>
+            </div>
+            <div style="padding:12px 14px;border-top:1px solid #E2E8F0;">
+              <div style="font-size:12.5px;font-weight:600;color:#0F1B35;">Muted</div>
+              <div style="font-size:11.5px;color:#9CA3AF;margin-top:2px;"><code>.gs-spinner--muted</code></div>
+              <div style="font-size:11.5px;color:#64748B;margin-top:4px;">Deemphasised loading; secondary panels.</div>
+            </div>
+          </div>
+          <!-- White -->
+          <div style="flex:1;min-width:180px;border:1px solid #E2E8F0;border-radius:10px;overflow:hidden;">
+            <div style="padding:28px;display:flex;align-items:center;justify-content:center;background:#001E4C;">
+              <div class="gs-spinner gs-spinner--lg gs-spinner--white"></div>
+            </div>
+            <div style="padding:12px 14px;border-top:1px solid #E2E8F0;">
+              <div style="font-size:12.5px;font-weight:600;color:#0F1B35;">White</div>
+              <div style="font-size:11.5px;color:#9CA3AF;margin-top:2px;"><code>.gs-spinner--white</code></div>
+              <div style="font-size:11.5px;color:#64748B;margin-top:4px;">Use on navy, blue, or any dark surface.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- USAGE CONTEXTS -->
+      <div id="sp-s-contexts" class="btn-family-card">
+        <div class="btn-family-title">Usage Contexts</div>
+        <p class="btn-family-desc">The spinner adapts to three common loading patterns in GeoServe UI — inline (with text), overlaid over a card, and inside a button during async actions.</p>
+
+        <!-- Inline -->
+        <div class="btn-sub-label" style="margin-top:16px;margin-bottom:10px;">Inline + label</div>
+        <div style="background:#F7FAFC;border:1px solid #E2E8F0;border-radius:10px;padding:20px 24px;display:flex;align-items:center;gap:16px;flex-wrap:wrap;">
+          <div class="gs-spinner-row">
+            <div class="gs-spinner gs-spinner--sm gs-spinner--brand"></div>
+            Loading records…
+          </div>
+          <div class="gs-spinner-row">
+            <div class="gs-spinner gs-spinner--sm gs-spinner--muted"></div>
+            Syncing with IMOS…
+          </div>
+          <div style="background:#001E4C;border-radius:8px;padding:10px 16px;">
+            <div class="gs-spinner-row" style="color:#fff;">
+              <div class="gs-spinner gs-spinner--sm gs-spinner--white"></div>
+              Saving changes…
+            </div>
+          </div>
+        </div>
+
+        <!-- Card overlay -->
+        <div class="btn-sub-label" style="margin-top:20px;margin-bottom:10px;">Card / panel overlay</div>
+        <div style="position:relative;background:#fff;border:1px solid #E2E8F0;border-radius:12px;padding:24px;min-height:120px;overflow:hidden;">
+          <div style="opacity:.3;">
+            <div style="height:14px;background:#E2E8F0;border-radius:4px;width:40%;margin-bottom:10px;"></div>
+            <div style="height:10px;background:#E2E8F0;border-radius:4px;width:70%;margin-bottom:8px;"></div>
+            <div style="height:10px;background:#E2E8F0;border-radius:4px;width:55%;"></div>
+          </div>
+          <div class="gs-spinner-overlay">
+            <div style="display:flex;flex-direction:column;align-items:center;gap:10px;">
+              <div class="gs-spinner gs-spinner--lg gs-spinner--brand"></div>
+              <span style="font-size:12.5px;font-weight:500;color:#64748B;">Loading data…</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Button loading state -->
+        <div class="btn-sub-label" style="margin-top:20px;margin-bottom:10px;">Button loading state</div>
+        <p class="btn-family-desc" style="margin-bottom:14px;">Add <code>.gs-btn--loading</code> to any button. The spinner colour is automatically matched to the button family — no extra modifier needed. See <button class="btn-inline-link" onclick="navigate('prim-buttons')">Button → Loading State</button> for the full spec.</p>
+
+        <div style="background:#F7FAFC;border:1px solid #E2E8F0;border-radius:10px;padding:20px 24px;">
+          <!-- Primary -->
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:14px;">
+            <span style="width:110px;font-size:11px;color:#9CA3AF;font-weight:600;flex-shrink:0;">Primary</span>
+            <div style="pointer-events:none;display:flex;gap:10px;flex-wrap:wrap;align-items:center;">
+              <button class="gs-btn gs-btn-primary gs-btn-sm gs-btn--loading" disabled>Saving…</button>
+              <button class="gs-btn gs-btn-primary gs-btn-md gs-btn--loading" disabled>Saving…</button>
+              <button class="gs-btn gs-btn-primary gs-btn-lg gs-btn--loading" disabled>Saving…</button>
+            </div>
+          </div>
+          <!-- Secondary -->
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:14px;">
+            <span style="width:110px;font-size:11px;color:#9CA3AF;font-weight:600;flex-shrink:0;">Secondary</span>
+            <div style="pointer-events:none;display:flex;gap:10px;flex-wrap:wrap;align-items:center;">
+              <button class="gs-btn gs-btn-secondary gs-btn-sm gs-btn--loading" disabled>Loading…</button>
+              <button class="gs-btn gs-btn-secondary gs-btn-md gs-btn--loading" disabled>Loading…</button>
+              <button class="gs-btn gs-btn-secondary gs-btn-lg gs-btn--loading" disabled>Loading…</button>
+            </div>
+          </div>
+          <!-- Danger -->
+          <div style="display:flex;align-items:center;gap:8px;">
+            <span style="width:110px;font-size:11px;color:#9CA3AF;font-weight:600;flex-shrink:0;">Danger</span>
+            <div style="pointer-events:none;display:flex;gap:10px;flex-wrap:wrap;align-items:center;">
+              <button class="gs-btn gs-btn-danger-primary gs-btn-sm gs-btn--loading" disabled>Deleting…</button>
+              <button class="gs-btn gs-btn-danger-primary gs-btn-md gs-btn--loading" disabled>Deleting…</button>
+              <button class="gs-btn gs-btn-danger-primary gs-btn-lg gs-btn--loading" disabled>Deleting…</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- MOTION SPEC -->
+      <div id="sp-s-motion" class="btn-family-card">
+        <div class="btn-family-title">Motion Spec</div>
+        <p class="btn-family-desc">Two-layer CSS animation: the <strong>track</strong> (<code>::before</code>) is always static. Only the <strong>arc</strong> (<code>::after</code>) rotates at constant speed — no easing — signalling ongoing work with no definite end point.</p>
+        <table style="margin-top:14px;">
+          <thead><tr><th>Property</th><th>Value</th><th>Rationale</th></tr></thead>
+          <tbody>
+            <tr class="ds-tr-border"><td>Track layer</td><td><code>::before</code> — no animation</td><td>Full-circle static ring; serves as the path indicator</td></tr>
+            <tr class="ds-tr-border"><td>Arc layer</td><td><code>::after</code> — rotates</td><td>Only the handle moves; track stays fixed</td></tr>
+            <tr class="ds-tr-border"><td>Duration</td><td><code>0.72s</code></td><td>Fast enough to feel responsive; slow enough to read the arc</td></tr>
+            <tr class="ds-tr-border"><td>Easing</td><td><code>linear</code></td><td>Uniform rotation — no perceived start/stop</td></tr>
+            <tr class="ds-tr-border"><td>Iteration</td><td><code>infinite</code></td><td>Runs until the loading state is cleared</td></tr>
+            <tr class="ds-tr-border"><td>Arc coverage</td><td>~270° solid (top + right + bottom borders)</td><td>90° gap gives clear rotation cue; arc is solid per Figma spec — no fade</td></tr>
+            <tr class="ds-tr-border"><td>Reduced motion</td><td>Slow to 2s, stepped (8 frames)</td><td>Respects <code>prefers-reduced-motion</code> without removing feedback</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+    </div><!-- /code-tab-main -->
+    <div class="code-tab-qnav">
+      <div class="code-qnav-inner">
+        <p class="code-qnav-title">On This Page</p>
+        <ul class="code-qnav-list">
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('sp-s-overview')">Overview</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('sp-s-sizes')">Size Variants</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('sp-s-colours')">Colour Variants</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('sp-s-contexts')">Usage Contexts</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('sp-s-motion')">Motion Spec</button></li>
+        </ul>
+      </div>
+    </div>
+  </div><!-- /code-tab-layout -->
+</div><!-- /spinner-tab-design -->
+
+<!-- ═══ CODE TAB ═══════════════════════════════════════════════ -->
+<div id="spinner-tab-code" class="btn-tab-pane spinner-tab-pane">
+
+  <!-- Framework toggle -->
+  <div class="fw-toggle-bar">
+    <button class="fw-toggle-bar-btn active" data-fw="react" onclick="switchFw('spinner-tab-code','react')">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="2.05" fill="#61DAFB"/><ellipse cx="12" cy="12" rx="10" ry="3.8" stroke="#61DAFB" stroke-width="1.3" fill="none"/><ellipse cx="12" cy="12" rx="10" ry="3.8" stroke="#61DAFB" stroke-width="1.3" fill="none" transform="rotate(60 12 12)"/><ellipse cx="12" cy="12" rx="10" ry="3.8" stroke="#61DAFB" stroke-width="1.3" fill="none" transform="rotate(120 12 12)"/></svg>
+      React
+    </button>
+    <button class="fw-toggle-bar-btn" data-fw="angular" onclick="switchFw('spinner-tab-code','angular')">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none"><polygon points="12,2 22,5.5 20,18 12,22 4,18 2,5.5" fill="#DD0031"/><polygon points="12,2 12,22 4,18 2,5.5" fill="#C3002F"/><polygon points="12,5.5 8,15.5 9.5,15.5 10.5,13 13.5,13 14.5,15.5 16,15.5 12,5.5" fill="white"/></svg>
+      Angular
+    </button>
+  </div>
+
+  <div class="code-tab-layout">
+    <div class="code-tab-main">
+
+      <!-- 1 Overview -->
+      <div id="sp-c-overview" class="btn-family-card">
+        <div class="ds-step-row"><span class="ds-step-num">1</span><div class="btn-family-title" style="margin:0;">Overview</div></div>
+        <div class="fw-react"><p class="btn-family-desc">Import <code>Spinner</code> from the GeoServe component library. Combine <code>size</code> and <code>variant</code> props to cover all use cases. No extra dependencies needed — the animation is pure CSS.</p></div>
+        <div class="fw-angular" style="display:none;"><p class="btn-family-desc">Add the <code>gs-spinner</code> CSS classes directly to any element or use the <code>SpinnerComponent</code> for Angular template integration. The CSS lives in <code>styles.css</code>.</p></div>
+      </div>
+
+      <!-- 2 Import -->
+      <div id="sp-c-import" class="btn-family-card">
+        <div class="ds-step-row"><span class="ds-step-num">2</span><div class="btn-family-title" style="margin:0;">Import</div></div>
+        <div class="fw-react">
+          <div class="btn-code-block"><div class="btn-code-head"><span class="btn-code-lang">JSX</span><button class="btn-copy-btn" onclick="copyBtnCode('sp-imp-r',this)">Copy</button></div>
+          <div class="btn-code-body"><pre id="sp-imp-r"><code><span class="c-kw">import</span> { <span class="c-type">Spinner</span> } <span class="c-kw">from</span> <span class="c-val">'@pelagos/components/loading/spinner'</span>;</code></pre></div></div>
+        </div>
+        <div class="fw-angular" style="display:none;">
+          <p class="btn-family-desc">Include <code>styles.css</code> — <code>.gs-spinner</code>, <code>.gs-spinner--{size}</code>, and <code>.gs-spinner--{variant}</code> are globally available.</p>
+        </div>
+      </div>
+
+      <!-- 3 API -->
+      <div id="sp-c-api" class="btn-family-card">
+        <div class="ds-step-row"><span class="ds-step-num">3</span><div class="btn-family-title" style="margin:0;">API / Props</div></div>
+        <div class="fw-react">
+          <table>
+            <thead><tr><th>Prop</th><th>Type</th><th>Default</th><th>Description</th></tr></thead>
+            <tbody>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">size</td><td class="ds-td-code-muted">'sm' | 'md' | 'lg' | 'xl'</td><td class="ds-td-code-muted">'md'</td><td>Spinner diameter</td></tr>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">variant</td><td class="ds-td-code-muted">'brand' | 'white' | 'muted'</td><td class="ds-td-code-muted">'brand'</td><td>Colour theme</td></tr>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">label</td><td class="ds-td-code-muted">string</td><td class="ds-td-code-muted">—</td><td>Accessible text (used as aria-label and optional visible label)</td></tr>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">showLabel</td><td class="ds-td-code-muted">boolean</td><td class="ds-td-code-muted">false</td><td>Render label text next to spinner</td></tr>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">className</td><td class="ds-td-code-muted">string</td><td class="ds-td-code-muted">—</td><td>Extra class names on the root element</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="fw-angular" style="display:none;">
+          <table>
+            <thead><tr><th>CSS Class</th><th>Description</th></tr></thead>
+            <tbody>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">gs-spinner</td><td>Base class — always required</td></tr>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">gs-spinner--sm / --md / --lg / --xl</td><td>Size modifier</td></tr>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">gs-spinner--brand / --white / --muted</td><td>Colour modifier</td></tr>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">gs-spinner-row</td><td>Flex wrapper for spinner + inline label text</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- 4 Basic usage -->
+      <div id="sp-c-basic" class="btn-family-card">
+        <div class="ds-step-row"><span class="ds-step-num">4</span><div class="btn-family-title" style="margin:0;">Basic Usage</div></div>
+        <div class="fw-react">
+          <div class="btn-code-block"><div class="btn-code-head"><span class="btn-code-lang">JSX</span><button class="btn-copy-btn" onclick="copyBtnCode('sp-basic-r',this)">Copy</button></div>
+          <div class="btn-code-body"><pre id="sp-basic-r"><code><span class="c-cmt">// Default (md, brand)</span>
+<span class="c-tag">&lt;Spinner</span> <span class="c-attr">label</span>=<span class="c-val">"Loading"</span> <span class="c-tag">/&gt;</span>
+
+<span class="c-cmt">// Large + white (for dark backgrounds)</span>
+<span class="c-tag">&lt;Spinner</span> <span class="c-attr">size</span>=<span class="c-val">"lg"</span> <span class="c-attr">variant</span>=<span class="c-val">"white"</span> <span class="c-attr">label</span>=<span class="c-val">"Loading"</span> <span class="c-tag">/&gt;</span>
+
+<span class="c-cmt">// Inline with visible label</span>
+<span class="c-tag">&lt;Spinner</span>
+  <span class="c-attr">size</span>=<span class="c-val">"sm"</span>
+  <span class="c-attr">label</span>=<span class="c-val">"Saving changes…"</span>
+  <span class="c-attr">showLabel</span>
+<span class="c-tag">/&gt;</span>
+
+<span class="c-cmt">// Button loading state — preferred: use .gs-btn--loading class (no extra DOM)</span>
+<span class="c-tag">&lt;button</span> <span class="c-attr">className</span>=<span class="c-val">"gs-btn gs-btn-primary gs-btn-md gs-btn--loading"</span> <span class="c-attr">disabled</span><span class="c-tag">&gt;</span>
+  Saving…
+<span class="c-tag">&lt;/button&gt;</span>
+
+<span class="c-cmt">// Alternative: explicit Spinner component inside button</span>
+<span class="c-tag">&lt;button</span> <span class="c-attr">className</span>=<span class="c-val">"gs-btn gs-btn-primary gs-btn-md"</span> <span class="c-attr">disabled</span><span class="c-tag">&gt;</span>
+  <span class="c-tag">&lt;Spinner</span> <span class="c-attr">size</span>=<span class="c-val">"sm"</span> <span class="c-attr">variant</span>=<span class="c-val">"white"</span> <span class="c-attr">label</span>=<span class="c-val">"Saving"</span> <span class="c-tag">/&gt;</span>
+  Saving…
+<span class="c-tag">&lt;/button&gt;</span></code></pre></div></div>
+        </div>
+        <div class="fw-angular" style="display:none;">
+          <div class="btn-code-block"><div class="btn-code-head"><span class="btn-code-lang">HTML</span><button class="btn-copy-btn" onclick="copyBtnCode('sp-basic-ng',this)">Copy</button></div>
+          <div class="btn-code-body"><pre id="sp-basic-ng"><code><span class="c-cmt">&lt;!-- Default (md, brand) --&gt;</span>
+<span class="c-tag">&lt;div</span> <span class="c-attr">class</span>=<span class="c-val">"gs-spinner gs-spinner--md gs-spinner--brand"</span>
+     <span class="c-attr">role</span>=<span class="c-val">"status"</span>
+     <span class="c-attr">aria-label</span>=<span class="c-val">"Loading"</span><span class="c-tag">&gt;&lt;/div&gt;</span>
+
+<span class="c-cmt">&lt;!-- Inline with label text --&gt;</span>
+<span class="c-tag">&lt;div</span> <span class="c-attr">class</span>=<span class="c-val">"gs-spinner-row"</span><span class="c-tag">&gt;</span>
+  <span class="c-tag">&lt;div</span> <span class="c-attr">class</span>=<span class="c-val">"gs-spinner gs-spinner--sm gs-spinner--brand"</span>
+       <span class="c-attr">role</span>=<span class="c-val">"status"</span> <span class="c-attr">aria-hidden</span>=<span class="c-val">"true"</span><span class="c-tag">&gt;&lt;/div&gt;</span>
+  <span class="c-tag">&lt;span&gt;</span>Loading records…<span class="c-tag">&lt;/span&gt;</span>
+<span class="c-tag">&lt;/div&gt;</span>
+
+<span class="c-cmt">&lt;!-- Button loading state --&gt;</span>
+<span class="c-tag">&lt;button</span> <span class="c-attr">class</span>=<span class="c-val">"gs-btn gs-btn-primary"</span> <span class="c-attr">disabled</span><span class="c-tag">&gt;</span>
+  <span class="c-tag">&lt;div</span> <span class="c-attr">class</span>=<span class="c-val">"gs-spinner gs-spinner--sm gs-spinner--white"</span>
+       <span class="c-attr">role</span>=<span class="c-val">"status"</span> <span class="c-attr">aria-hidden</span>=<span class="c-val">"true"</span><span class="c-tag">&gt;&lt;/div&gt;</span>
+  Saving…
+<span class="c-tag">&lt;/button&gt;</span></code></pre></div></div>
+        </div>
+      </div>
+
+      <!-- 5 Reduced motion -->
+      <div id="sp-c-motion" class="btn-family-card">
+        <div class="ds-step-row"><span class="ds-step-num">5</span><div class="btn-family-title" style="margin:0;">Reduced Motion</div></div>
+        <div class="fw-react">
+          <div class="btn-code-block"><div class="btn-code-head"><span class="btn-code-lang">CSS</span><button class="btn-copy-btn" onclick="copyBtnCode('sp-motion-r',this)">Copy</button></div>
+          <div class="btn-code-body"><pre id="sp-motion-r"><code><span class="c-cmt">/*
+ * Architecture: ::before = static track, ::after = rotating arc.
+ * Only ::after has animation-play-state — track never moves.
+ */</span>
+<span class="c-attr">@media</span> (prefers-reduced-motion: reduce) {
+  .gs-spinner::after {
+    animation-duration: 2s;              <span class="c-cmt">/* slow rotation only    */</span>
+    animation-timing-function: steps(8, end); <span class="c-cmt">/* stepped, less dizzying */</span>
+  }
+}</code></pre></div></div>
+        </div>
+        <div class="fw-angular" style="display:none;">
+          <div class="btn-code-block"><div class="btn-code-head"><span class="btn-code-lang">CSS</span><button class="btn-copy-btn" onclick="copyBtnCode('sp-motion-ng',this)">Copy</button></div>
+          <div class="btn-code-body"><pre id="sp-motion-ng"><code><span class="c-cmt">/* styles.css — architecture: ::before = static track, ::after = rotating arc */</span>
+<span class="c-attr">@media</span> (prefers-reduced-motion: reduce) {
+  .gs-spinner::after {
+    animation-duration: 2s;
+    animation-timing-function: steps(8, end);
+  }
+}</code></pre></div></div>
+        </div>
+      </div>
+
+    </div><!-- /code-tab-main -->
+    <div class="code-tab-qnav">
+      <div class="code-qnav-inner">
+        <p class="code-qnav-title">On This Page</p>
+        <ul class="code-qnav-list">
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('sp-c-overview')">1 · Overview</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('sp-c-import')">2 · Import</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('sp-c-api')">3 · API / Props</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('sp-c-basic')">4 · Basic Usage</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('sp-c-motion')">5 · Reduced Motion</button></li>
+        </ul>
+      </div>
+    </div>
+  </div><!-- /code-tab-layout -->
+</div><!-- /spinner-tab-code -->
+
+<!-- ═══ USAGE TAB ════════════════════════════════════════════════ -->
+<div id="spinner-tab-usage" class="btn-tab-pane spinner-tab-pane">
+  <div class="code-tab-layout">
+    <div class="code-tab-main">
+
+      <div class="btn-family-card">
+        <div class="btn-family-title">When to Use</div>
+        <ul class="btn-usage-list">
+          <li><strong>Unknown duration</strong> — whenever a process has no predictable end time (API call, file upload, route transition), use a Spinner. Use a Progress Bar when percentage completion is available.</li>
+          <li><strong>Background actions</strong> — form auto-save, live search, row-level operations like approvals or status changes that don't block the full page.</li>
+          <li><strong>Initial data load</strong> — place a centred md or lg spinner in a card or panel while the first data fetch resolves. Replace with a Skeleton for heavier layout previews.</li>
+        </ul>
+      </div>
+
+      <div class="btn-family-card">
+        <div class="btn-family-title">When Not to Use</div>
+        <ul class="btn-usage-list">
+          <li><strong>Deterministic progress</strong> — if you can report percentage (file upload, multi-step wizard) use a Progress Bar instead.</li>
+          <li><strong>Initial page paint</strong> — for first meaningful paint, prefer a Skeleton Loader so users see layout structure before data arrives.</li>
+          <li><strong>Long-running operations (&gt;10s)</strong> — combine a spinner with status text; users need feedback that the system hasn't frozen.</li>
+        </ul>
+      </div>
+
+      <div class="btn-family-card">
+        <div class="btn-family-title">Accessibility</div>
+        <ul class="btn-usage-list">
+          <li>Always add <code>role="status"</code> on the spinner element so screen readers announce state changes.</li>
+          <li>Include a visible or visually-hidden <code>aria-label</code> (e.g. <code>aria-label="Loading vessel data"</code>) describing <em>what</em> is loading.</li>
+          <li>When the spinner is inside a button, set <code>aria-hidden="true"</code> on the spinner itself — the button's accessible label (e.g. "Saving…") already conveys the state.</li>
+          <li>Honour <code>prefers-reduced-motion</code> — slow the animation to avoid triggering vestibular disorders.</li>
+        </ul>
+      </div>
+
+      <div class="btn-family-card">
+        <div class="btn-family-title">Anti-patterns</div>
+        <ul class="btn-usage-list">
+          <li><strong>❌ Multiple spinners on the same screen</strong> — confusing and looks broken. Show one spinner per loading region. Use Skeletons for page-level parallel fetches.<br><strong>✅ Fix:</strong> one spinner per card or one full-page overlay — never both simultaneously.</li>
+          <li><strong>❌ Spinner without feedback for &gt;3s</strong> — users lose confidence.<br><strong>✅ Fix:</strong> after 3 seconds add a status message ("Still loading…"); after 10s offer a retry action.</li>
+          <li><strong>❌ Using xl spinner inline</strong> — xl is for full-page overlays only.<br><strong>✅ Fix:</strong> use sm inside buttons and table rows; md/lg for panels and cards.</li>
+        </ul>
+      </div>
+
+    </div><!-- /code-tab-main -->
+    <div class="code-tab-qnav">
+      <div class="code-qnav-inner">
+        <p class="code-qnav-title">Quick Access</p>
+        <ul class="code-qnav-list">
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('sp-u-when')">When to Use</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('sp-u-not')">When Not to Use</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('sp-u-a11y')">Accessibility</button></li>
+        </ul>
+      </div>
+    </div>
+  </div><!-- /code-tab-layout -->
+</div><!-- /spinner-tab-usage -->

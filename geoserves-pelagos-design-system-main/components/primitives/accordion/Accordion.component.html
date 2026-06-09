@@ -1,0 +1,37 @@
+<!--
+  Pelagos Accordion — Angular template
+  primitives/accordion/Accordion.component.html
+
+  Delegates all rendering and behaviour to ng-zorro's nz-collapse directive.
+  Expand/collapse animation, keyboard handling, accordion mode, disabled
+  state, and aria attributes are all handled by ng-zorro. Pelagos tokens are
+  injected at bootstrap via NZ_CONFIG.
+
+  Usage examples:
+    Basic        :  <gs-accordion [items]="panels" />
+    Accordion    :  <gs-accordion [items]="panels" [accordion]="true" />
+    Large size   :  <gs-accordion [items]="panels" size="lg" />
+    Panel change :  <gs-accordion [items]="panels" (panelChange)="onPanelChange($event)" />
+-->
+
+<nz-collapse
+  [nzAccordion]="accordion"
+  [nzBordered]="bordered"
+  [nzExpandIconPosition]="'end'"
+  [attr.data-size]="size"
+>
+  <nz-collapse-panel
+    *ngFor="let item of items; trackBy: trackByKey"
+    [nzHeader]="item.label"
+    [nzDisabled]="!!item.disabled"
+    [nzShowArrow]="item.showArrow !== false"
+    [nzExtra]="item.extra ?? null"
+    (nzActiveChange)="handlePanelChange(item, $event)"
+  >
+    <!-- Rich content via TemplateRef takes priority over plain string -->
+    <ng-container *ngIf="item.contentTemplate; else stringContent">
+      <ng-container *ngTemplateOutlet="item.contentTemplate"></ng-container>
+    </ng-container>
+    <ng-template #stringContent>{{ item.content }}</ng-template>
+  </nz-collapse-panel>
+</nz-collapse>

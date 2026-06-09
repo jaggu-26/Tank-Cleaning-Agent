@@ -1,0 +1,1161 @@
+<!-- ═══════════════════════════════════════════════════════════════
+     SKELETON — Pelagos Design System
+     Ref: Ant Design Skeleton · https://ant.design/components/skeleton
+     Prefix: skel
+     ═══════════════════════════════════════════════════════════════ -->
+<style>
+/* ── Skeleton component tokens ────────────────────────────────────────────
+   Ant Design Token         → GeoServe mapping
+   blockRadius:4            → 4px  (text/block shapes)
+   gradientFromColor        → var(--prim-grey-50,  #F1F5F9)
+   gradientToColor          → var(--prim-grey-100, #E2E8F0)
+   paragraphLiHeight:16     → 16px line height
+   paragraphMarginTop:28    → 28px gap between title and paragraph
+   titleHeight:16           → 16px
+────────────────────────────────────────────────────────────────────────── */
+:root {
+  --skel-from:    var(--prim-grey-50,  #F1F5F9);
+  --skel-to:      var(--prim-grey-100, #E2E8F0);
+  --skel-radius:  4px;       /* blockRadius token  */
+  --skel-circle:  50%;
+  --skel-title-h: 16px;      /* titleHeight token  */
+  --skel-para-lh: 16px;      /* paragraphLiHeight  */
+  --skel-para-mt: 28px;      /* paragraphMarginTop */
+}
+
+/* ── Base shimmer block ────────────────────────────────────────────────── */
+.skel-block {
+  display: block;
+  background: linear-gradient(
+    90deg,
+    var(--skel-from) 25%,
+    var(--skel-to)   50%,
+    var(--skel-from) 75%
+  );
+  background-size: 600px 100%;
+  border-radius: var(--skel-radius);
+  animation: none; /* static by default; active adds shimmer */
+}
+
+/* ── Active (animated) state ──────────────────────────────────────────── */
+.skel-active .skel-block {
+  animation: skel-shimmer 1.5s ease-in-out infinite;
+}
+@keyframes skel-shimmer {
+  0%   { background-position: -600px 0; }   /* starts off-screen left  */
+  100% { background-position:  600px 0; }   /* sweeps to off-screen right */
+}
+
+/* ── Shape modifiers ──────────────────────────────────────────────────── */
+.skel-block--circle  { border-radius: var(--skel-circle); }
+.skel-block--round   { border-radius: 100px; }
+.skel-block--square  { border-radius: 0; }
+
+/* ── Composite: paragraph preset ─────────────────────────────────────── */
+.skel-paragraph { display: flex; flex-direction: column; gap: 8px; }
+.skel-paragraph .skel-block { height: var(--skel-para-lh); }
+.skel-paragraph .skel-block:last-child { width: 61%; } /* Ant Design default last-row width */
+
+/* ── Composite: title preset ──────────────────────────────────────────── */
+.skel-title { margin-bottom: var(--skel-para-mt); }
+.skel-title .skel-block { height: var(--skel-title-h); width: 38%; }
+
+/* ── Composite: avatar preset ─────────────────────────────────────────── */
+.skel-avatar-wrap { display: flex; gap: 16px; align-items: flex-start; }
+.skel-avatar      { flex-shrink: 0; }
+
+/* ── Size helpers ─────────────────────────────────────────────────────── */
+.skel-block--sm  { height: 24px; }
+.skel-block--md  { height: 32px; }
+.skel-block--lg  { height: 40px; }
+
+/* ── Demo helpers ─────────────────────────────────────────────────────── */
+.skel-demo-surface {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 28px 24px;
+}
+.skel-demo-label {
+  font-size: 11px;
+  font-weight: 600;
+  color: #94a3b8;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  margin-bottom: 12px;
+}
+
+/* Reduced-motion: pause */
+@media (prefers-reduced-motion: reduce) {
+  .skel-active .skel-block { animation: none; }
+}
+</style>
+
+<!-- BANNER -->
+<div class="page-header">
+  <h1 class="ds-hero-title">Skeleton</h1>
+</div>
+
+<!-- TAB BAR -->
+<div class="btn-tab-bar">
+  <button class="btn-tab-btn skel-tab-btn active" data-tab="design" onclick="switchSkeletonTab('design')">Design</button>
+  <button class="btn-tab-btn skel-tab-btn"        data-tab="code"   onclick="switchSkeletonTab('code')">Code</button>
+  <button class="btn-tab-btn skel-tab-btn"        data-tab="usage"  onclick="switchSkeletonTab('usage')">Usage</button>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     DESIGN TAB
+     ═══════════════════════════════════════════════════════════════ -->
+<div id="skel-tab-design" class="btn-tab-pane skel-tab-pane active">
+  <div class="code-tab-layout">
+    <div class="code-tab-main">
+
+      <!-- 1 · OVERVIEW ──────────────────────────────────────────── -->
+      <div id="skel-s-overview" class="btn-family-card">
+        <div class="btn-family-title">Overview</div>
+        <p class="btn-family-desc">Skeleton provides animated placeholder shapes that mirror the structure of incoming content — reducing perceived load time and preventing layout shift. It is built over the Ant Design Skeleton spec with GeoServe tokens applied to colour, radius, and timing. Use it for first-load states where the layout is known but the data is not yet available.</p>
+
+        <div class="btn-preview-strip" style="display:flex;gap:40px;align-items:flex-start;flex-wrap:wrap;padding:28px 24px;background:#f8fafc;border:1px solid #e2e8f0;border-radius:12px;margin-top:16px;" >
+          <div style="pointer-events:none;flex:1;min-width:220px;max-width:320px;">
+            <!-- Skeleton with avatar — static default -->
+            <div class="skel-avatar-wrap">
+              <div class="skel-avatar">
+                <div class="skel-block skel-block--circle" style="width:40px;height:40px;"></div>
+              </div>
+              <div style="flex:1;">
+                <div class="skel-title"><div class="skel-block" style="width:38%;"></div></div>
+                <div class="skel-paragraph">
+                  <div class="skel-block" style="width:100%;"></div>
+                  <div class="skel-block" style="width:94%;"></div>
+                  <div class="skel-block" style="width:61%;"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div style="pointer-events:none;flex:1;min-width:220px;max-width:320px;">
+            <!-- Skeleton active (animated) -->
+            <div class="skel-active">
+              <div class="skel-avatar-wrap">
+                <div class="skel-avatar">
+                  <div class="skel-block skel-block--circle" style="width:40px;height:40px;"></div>
+                </div>
+                <div style="flex:1;">
+                  <div class="skel-title"><div class="skel-block" style="width:38%;"></div></div>
+                  <div class="skel-paragraph">
+                    <div class="skel-block" style="width:100%;"></div>
+                    <div class="skel-block" style="width:94%;"></div>
+                    <div class="skel-block" style="width:61%;"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap;">
+          <span style="font-size:11px;color:#64748b;background:#f1f5f9;border-radius:4px;padding:2px 8px;">← Static (default)</span>
+          <span style="font-size:11px;color:#1852FE;background:#dbeafe;border-radius:4px;padding:2px 8px;">← Active / animated</span>
+        </div>
+
+        <div class="btn-when-examples" style="margin-top:16px;">
+          <span class="btn-when-example-tag">5 element types</span>
+          <span class="btn-when-example-tag">Static + Active states</span>
+          <span class="btn-when-example-tag">3 sub-components</span>
+          <span class="btn-when-example-tag">GeoServe tokens</span>
+          <span class="btn-when-example-tag">WCAG AA</span>
+        </div>
+      </div>
+
+      <!-- 2 · ANATOMY ───────────────────────────────────────────── -->
+      <div id="skel-s-anatomy" class="btn-family-card">
+        <div class="btn-family-title">Anatomy</div>
+        <p class="btn-family-desc">A full Skeleton is composed of up to four parts: avatar circle, title bar, paragraph rows, and the optional active shimmer overlay. Each part maps directly to an Ant Design sub-prop.</p>
+
+        <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:12px;padding:32px;display:flex;justify-content:center;margin-top:8px;overflow:auto;">
+          <svg width="560" height="180" viewBox="0 0 560 180" fill="none" xmlns="http://www.w3.org/2000/svg" style="min-width:400px;">
+            <!-- Avatar circle -->
+            <rect x="40" y="56" width="48" height="48" rx="24" fill="#E2E8F0"/>
+            <!-- Title bar -->
+            <rect x="108" y="56" width="130" height="16" rx="4" fill="#E2E8F0"/>
+            <!-- Paragraph rows -->
+            <rect x="108" y="100" width="380" height="16" rx="4" fill="#E2E8F0"/>
+            <rect x="108" y="124" width="350" height="16" rx="4" fill="#E2E8F0"/>
+            <rect x="108" y="148" width="240" height="16" rx="4" fill="#E2E8F0"/>
+
+            <!-- ① Avatar label -->
+            <circle cx="22" cy="80" r="10" fill="#1852FE"/>
+            <text x="22" y="84" text-anchor="middle" fill="white" font-size="11" font-weight="700" font-family="Helvetica,Arial,sans-serif">1</text>
+            <line x1="32" y1="80" x2="40" y2="80" stroke="#CBD5E1" stroke-width="1"/>
+
+            <!-- ② Title label -->
+            <circle cx="173" cy="36" r="10" fill="#1852FE"/>
+            <text x="173" y="40" text-anchor="middle" fill="white" font-size="11" font-weight="700" font-family="Helvetica,Arial,sans-serif">2</text>
+            <line x1="173" y1="46" x2="173" y2="56" stroke="#CBD5E1" stroke-width="1"/>
+            <text x="156" y="28" text-anchor="middle" fill="#475569" font-size="11" font-family="Helvetica,Arial,sans-serif">Title</text>
+
+            <!-- ③ Paragraph rows label -->
+            <circle cx="510" cy="124" r="10" fill="#1852FE"/>
+            <text x="510" y="128" text-anchor="middle" fill="white" font-size="11" font-weight="700" font-family="Helvetica,Arial,sans-serif">3</text>
+            <line x1="500" y1="124" x2="488" y2="124" stroke="#CBD5E1" stroke-width="1"/>
+            <text x="530" y="128" text-anchor="middle" fill="#475569" font-size="11" font-family="Helvetica,Arial,sans-serif"></text>
+
+            <!-- ④ Last row (61% width) label -->
+            <circle cx="360" cy="170" r="10" fill="#1852FE"/>
+            <text x="360" y="174" text-anchor="middle" fill="white" font-size="11" font-weight="700" font-family="Helvetica,Arial,sans-serif">4</text>
+            <line x1="350" y1="162" x2="350" y2="156" stroke="#CBD5E1" stroke-width="1"/>
+
+            <!-- dimension: title height -->
+            <line x1="510" y1="56" x2="510" y2="72" stroke="#94A3B8" stroke-width="1" stroke-dasharray="3 2"/>
+            <text x="520" y="66" fill="#94A3B8" font-size="10" font-family="Helvetica,Arial,sans-serif">16px</text>
+
+            <!-- Labels beside diagram -->
+            <text x="22" y="95" text-anchor="middle" fill="#475569" font-size="10" font-family="Helvetica,Arial,sans-serif">Avatar</text>
+            <text x="510" y="118" text-anchor="start" fill="#475569" font-size="10" font-family="Helvetica,Arial,sans-serif">Rows</text>
+            <text x="340" y="168" text-anchor="start" fill="#475569" font-size="10" font-family="Helvetica,Arial,sans-serif">Last</text>
+          </svg>
+        </div>
+
+        <ol style="margin-top:20px;display:flex;flex-direction:column;gap:8px;padding-left:20px;">
+          <li><strong>Avatar</strong> — Optional circle (or square) placeholder. Enabled via <code>avatar</code> prop. Sizes: <code>small</code> (24px), <code>default</code> (32px), <code>large</code> (40px).</li>
+          <li><strong>Title</strong> — Single bar representing a heading. Height: <code>16px</code> (<code>titleHeight</code> token). Width defaults to <code>38%</code>; overridable.</li>
+          <li><strong>Paragraph rows</strong> — Stack of bars representing body text. Row height: <code>16px</code> (<code>paragraphLiHeight</code>). Default: 3 rows. Gap above paragraph: <code>28px</code> (<code>paragraphMarginTop</code>).</li>
+          <li><strong>Last paragraph row</strong> — Always rendered at <code>61%</code> width by default to mimic natural text wrap. Override with <code>paragraph.width</code> array.</li>
+        </ol>
+      </div>
+
+      <!-- 3 · VARIANTS ──────────────────────────────────────────── -->
+      <div id="skel-s-variants" class="btn-family-card">
+        <div class="btn-family-title">Variants</div>
+        <p class="btn-family-desc">Five element variants mirror common content shapes. Combine <code>Skeleton</code> (paragraph), <code>Skeleton.Avatar</code>, <code>Skeleton.Button</code>, <code>Skeleton.Input</code>, and <code>Skeleton.Image</code> to replicate any layout.</p>
+
+        <!-- Paragraph (default) -->
+        <div class="btn-variant-row">
+          <span class="btn-variant-label">Paragraph</span>
+          <div class="btn-variant-sizes" style="pointer-events:none;">
+            <div class="skel-active" style="max-width:360px;">
+              <div class="skel-title"><div class="skel-block" style="width:38%;"></div></div>
+              <div class="skel-paragraph">
+                <div class="skel-block" style="width:100%;"></div>
+                <div class="skel-block" style="width:94%;"></div>
+                <div class="skel-block" style="width:61%;"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Avatar + Paragraph -->
+        <div class="btn-variant-row">
+          <span class="btn-variant-label">With Avatar</span>
+          <div class="btn-variant-sizes" style="pointer-events:none;">
+            <div class="skel-active" style="max-width:360px;">
+              <div class="skel-avatar-wrap">
+                <div class="skel-block skel-block--circle" style="width:40px;height:40px;flex-shrink:0;"></div>
+                <div style="flex:1;">
+                  <div class="skel-title"><div class="skel-block" style="width:38%;"></div></div>
+                  <div class="skel-paragraph">
+                    <div class="skel-block" style="width:100%;"></div>
+                    <div class="skel-block" style="width:61%;"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Button variants -->
+        <div class="btn-variant-row">
+          <span class="btn-variant-label">Button</span>
+          <div class="btn-variant-sizes" style="pointer-events:none;display:flex;gap:10px;flex-wrap:wrap;align-items:center;">
+            <div class="skel-active"><div class="skel-block" style="width:88px;height:32px;border-radius:8px;"></div></div>
+            <div class="skel-active"><div class="skel-block skel-block--round" style="width:88px;height:32px;"></div></div>
+            <div class="skel-active"><div class="skel-block skel-block--circle" style="width:32px;height:32px;"></div></div>
+            <span style="font-size:11px;color:#9CA3AF;">Default · Round · Circle</span>
+          </div>
+        </div>
+
+        <!-- Input -->
+        <div class="btn-variant-row">
+          <span class="btn-variant-label">Input</span>
+          <div class="btn-variant-sizes" style="pointer-events:none;display:flex;gap:10px;flex-wrap:wrap;align-items:center;">
+            <div class="skel-active"><div class="skel-block" style="width:64px;height:24px;border-radius:4px;"></div></div>
+            <div class="skel-active"><div class="skel-block" style="width:120px;height:32px;border-radius:4px;"></div></div>
+            <div class="skel-active"><div class="skel-block" style="width:160px;height:40px;border-radius:4px;"></div></div>
+            <span style="font-size:11px;color:#9CA3AF;">Small · Medium · Large</span>
+          </div>
+        </div>
+
+        <!-- Image -->
+        <div class="btn-variant-row">
+          <span class="btn-variant-label">Image</span>
+          <div class="btn-variant-sizes" style="pointer-events:none;">
+            <div class="skel-active">
+              <div class="skel-block" style="width:96px;height:96px;border-radius:8px;display:flex;align-items:center;justify-content:center;">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#CBD5E1" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 4 · STATES ─────────────────────────────────────────────── -->
+      <div id="skel-s-states" class="btn-family-card">
+        <div class="btn-family-title">States</div>
+        <p class="btn-family-desc">Skeleton has two visual states — <strong>static</strong> (default, no animation) and <strong>active</strong> (shimmer wave). A third state is the post-load reveal, when real content fades in to replace the skeleton.</p>
+
+        <div class="btn-sub-label" style="margin-bottom:12px;">State matrix</div>
+        <div class="btn-states-grid" style="grid-template-columns:repeat(3,1fr);">
+          <!-- Static -->
+          <div class="btn-state-cell">
+            <div style="pointer-events:none;padding:16px;border:1px solid #E2E8F0;border-radius:8px;background:#fff;">
+              <div class="skel-title"><div class="skel-block" style="width:40%;"></div></div>
+              <div class="skel-paragraph">
+                <div class="skel-block" style="width:100%;"></div>
+                <div class="skel-block" style="width:80%;"></div>
+                <div class="skel-block" style="width:61%;"></div>
+              </div>
+            </div>
+            <span class="btn-state-label">Static (default)</span>
+          </div>
+          <!-- Active -->
+          <div class="btn-state-cell">
+            <div style="pointer-events:none;padding:16px;border:1px solid #E2E8F0;border-radius:8px;background:#fff;">
+              <div class="skel-active">
+                <div class="skel-title"><div class="skel-block" style="width:40%;"></div></div>
+                <div class="skel-paragraph">
+                  <div class="skel-block" style="width:100%;"></div>
+                  <div class="skel-block" style="width:80%;"></div>
+                  <div class="skel-block" style="width:61%;"></div>
+                </div>
+              </div>
+            </div>
+            <span class="btn-state-label">Active (animated)</span>
+          </div>
+          <!-- Loaded -->
+          <div class="btn-state-cell">
+            <div style="pointer-events:none;padding:16px;border:1px solid #E2E8F0;border-radius:8px;background:#fff;">
+              <div style="font-size:14px;font-weight:600;color:#0F1B35;margin-bottom:8px;">STI Garnet</div>
+              <div style="font-size:12px;color:#64748B;line-height:1.6;">Singapore, SGP · VLSFO 0.5% · Booked</div>
+            </div>
+            <span class="btn-state-label">Loaded (content revealed)</span>
+          </div>
+        </div>
+
+        <div class="btn-sub-label" style="margin-top:20px;margin-bottom:8px;">Token reference</div>
+        <table>
+          <thead><tr><th>Token</th><th>Ant Design name</th><th>GeoServe value</th><th>Purpose</th></tr></thead>
+          <tbody>
+            <tr class="ds-tr-border"><td class="ds-td-code-primary">--skel-from</td><td>gradientFromColor</td><td><code>#F1F5F9</code> (grey/50)</td><td>Shimmer background base</td></tr>
+            <tr class="ds-tr-border"><td class="ds-td-code-primary">--skel-to</td><td>gradientToColor</td><td><code>#E2E8F0</code> (grey/100)</td><td>Shimmer highlight peak</td></tr>
+            <tr class="ds-tr-border"><td class="ds-td-code-primary">--skel-radius</td><td>blockRadius</td><td><code>4px</code></td><td>Corner radius for all blocks</td></tr>
+            <tr class="ds-tr-border"><td class="ds-td-code-primary">--skel-title-h</td><td>titleHeight</td><td><code>16px</code></td><td>Title bar height</td></tr>
+            <tr class="ds-tr-border"><td class="ds-td-code-primary">--skel-para-lh</td><td>paragraphLiHeight</td><td><code>16px</code></td><td>Each paragraph row height</td></tr>
+            <tr class="ds-tr-border"><td class="ds-td-code-primary">--skel-para-mt</td><td>paragraphMarginTop</td><td><code>28px</code></td><td>Gap between title and paragraph</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- 5 · INTERACTIONS ──────────────────────────────────────── -->
+      <div id="skel-s-interaction" class="btn-family-card">
+        <div class="btn-family-title">Interactions</div>
+        <table>
+          <thead><tr><th>Trigger</th><th>Behaviour</th><th>Timing</th></tr></thead>
+          <tbody>
+            <tr class="ds-tr-border"><td>Data resolves (<code>loading: false</code>)</td><td>Skeleton unmounts; real content renders in-place with no layout shift</td><td>Immediate</td></tr>
+            <tr class="ds-tr-border"><td>300ms threshold</td><td>If data resolves in &lt;300ms, skeleton is never shown (prevents flicker)</td><td>300ms delay gate</td></tr>
+            <tr class="ds-tr-border"><td>Active prop applied</td><td>Shimmer gradient sweeps right-to-left at 1.5s ease-in-out, looping infinitely</td><td>1.5s ease-in-out ∞</td></tr>
+            <tr class="ds-tr-border"><td><code>prefers-reduced-motion</code></td><td>Animation paused; skeleton remains visible as static placeholder</td><td>Instant</td></tr>
+            <tr class="ds-tr-border"><td>10s timeout (fallback)</td><td>Replace skeleton with an error empty state and retry action</td><td>10 000ms</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- 6 · ACCESSIBILITY ─────────────────────────────────────── -->
+      <div id="skel-s-a11y" class="btn-family-card">
+        <div class="btn-family-title">Accessibility</div>
+
+        <div class="btn-sub-label">Semantic element</div>
+        <p class="btn-family-desc">The skeleton container is a standard <code>&lt;div&gt;</code>. It is not interactive and receives no focus. Screen readers must be informed of the loading state via the parent region.</p>
+
+        <div class="btn-sub-label" style="margin-top:16px;">ARIA attributes</div>
+        <table>
+          <thead><tr><th>Attribute</th><th>Value</th><th>Where to apply</th></tr></thead>
+          <tbody>
+            <tr class="ds-tr-border"><td><code>aria-busy</code></td><td><code>"true"</code> while loading, <code>"false"</code> after</td><td>Outermost content region, not the skeleton block itself</td></tr>
+            <tr class="ds-tr-border"><td><code>aria-label</code></td><td>e.g. <code>"Loading vessel list"</code></td><td>The region element, describing what is loading</td></tr>
+            <tr class="ds-tr-border"><td><code>aria-hidden</code></td><td><code>"true"</code></td><td>On the skeleton blocks — purely decorative, screen readers should skip them</td></tr>
+            <tr class="ds-tr-border"><td><code>role="status"</code></td><td>—</td><td>On a visually-hidden live region that announces "Loading" and then "Loaded"</td></tr>
+          </tbody>
+        </table>
+
+        <div class="btn-sub-label" style="margin-top:16px;">Keyboard navigation</div>
+        <table>
+          <thead><tr><th>Key</th><th>Action</th></tr></thead>
+          <tbody>
+            <tr class="ds-tr-border"><td><kbd>Tab</kbd></td><td>Focus skips the skeleton entirely — no interactive elements inside</td></tr>
+          </tbody>
+        </table>
+
+        <div class="btn-sub-label" style="margin-top:16px;">Contrast ratios</div>
+        <table>
+          <thead><tr><th>Element</th><th>From</th><th>To</th><th>Against page bg</th><th>WCAG</th></tr></thead>
+          <tbody>
+            <tr class="ds-tr-border"><td>Skeleton block</td><td><code>#F1F5F9</code></td><td><code>#E2E8F0</code></td><td>White <code>#FFFFFF</code></td><td>Decorative — exempt (1.4.11)</td></tr>
+          </tbody>
+        </table>
+        <p class="btn-family-desc" style="margin-top:8px;">Skeleton blocks are purely decorative and are therefore exempt from WCAG 1.4.3 contrast requirements. Ensure the actual revealed content meets contrast requirements.</p>
+      </div>
+
+      <!-- 7 · RESPONSIVE ────────────────────────────────────────── -->
+      <div id="skel-s-responsive" class="btn-family-card">
+        <div class="btn-family-title">Responsive Behaviour</div>
+        <table>
+          <thead><tr><th>Breakpoint</th><th>Behaviour</th></tr></thead>
+          <tbody>
+            <tr class="ds-tr-border"><td>&gt; 1024px</td><td>Full width within its container. Avatar + paragraph side-by-side at full row width.</td></tr>
+            <tr class="ds-tr-border"><td>768px – 1024px</td><td>Skeleton scales with its parent grid columns. No structural changes.</td></tr>
+            <tr class="ds-tr-border"><td>&lt; 768px</td><td>Avatar stacks above the paragraph group (flex-direction: column). Paragraph rows reduce to container width.</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- 8 · DO / DON'T (optional) ──────────────────────────────── -->
+      <div id="skel-s-dosdonts" class="btn-family-card">
+        <div class="btn-family-title">Do / Don't</div>
+        <div class="btn-dos-donts">
+          <div class="btn-do-card">
+            <div class="btn-do-header">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
+              Do
+            </div>
+            <ul>
+              <li>
+                <div class="btn-do-example" style="pointer-events:none;">
+                  <div class="skel-active" style="max-width:260px;">
+                    <div class="skel-avatar-wrap">
+                      <div class="skel-block skel-block--circle" style="width:36px;height:36px;flex-shrink:0;"></div>
+                      <div style="flex:1;">
+                        <div class="skel-title"><div class="skel-block" style="width:50%;"></div></div>
+                        <div class="skel-paragraph">
+                          <div class="skel-block" style="width:100%;"></div>
+                          <div class="skel-block" style="width:61%;"></div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <p>Mirror the real content layout exactly — skeleton shape, size, and count should match the content it replaces.</p>
+              </li>
+              <li>
+                <div class="btn-do-example" style="pointer-events:none;font-size:12px;color:#64748b;">
+                  <code style="font-size:11px;">aria-busy="true"</code> on the parent region while loading
+                </div>
+                <p>Always set <code>aria-busy</code> on the surrounding content region so screen readers announce the loading state.</p>
+              </li>
+            </ul>
+          </div>
+          <div class="btn-dont-card">
+            <div class="btn-dont-header">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+              Don't
+            </div>
+            <ul>
+              <li>
+                <div class="btn-dont-example" style="pointer-events:none;">
+                  <div style="display:flex;flex-direction:column;gap:4px;max-width:260px;">
+                    <div class="skel-active"><div class="skel-block" style="width:100%;height:12px;"></div></div>
+                    <div class="skel-active"><div class="skel-block" style="width:100%;height:12px;"></div></div>
+                    <div class="skel-active"><div class="skel-block" style="width:100%;height:12px;"></div></div>
+                    <div class="skel-active"><div class="skel-block" style="width:100%;height:12px;"></div></div>
+                    <div class="skel-active"><div class="skel-block" style="width:100%;height:12px;"></div></div>
+                    <span style="font-size:10px;color:#9CA3AF;">All rows equal width ✗</span>
+                  </div>
+                </div>
+                <p>Don't use equal widths on all paragraph rows — it looks mechanical. Vary widths (100%, 94%, 61%) for a natural feel.</p>
+              </li>
+              <li>
+                <div class="btn-dont-example" style="pointer-events:none;font-size:12px;color:#64748b;">
+                  Show skeleton + spinner simultaneously in the same region
+                </div>
+                <p>Don't mix Skeleton and Spinner in the same content area — choose one loading pattern per region.</p>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- 9 · RELATED ────────────────────────────────────────────── -->
+      <div id="skel-s-related" class="btn-family-card">
+        <div class="btn-family-title">Related Components</div>
+        <ul class="btn-related-list">
+          <li>
+            <button class="btn-inline-link" onclick="navigate('loading-spinner')">Spinner</button>
+            — Use instead of Skeleton when the content layout is unknown or when a background mutation (save, approve) is in progress.
+          </li>
+          <li>
+            <button class="btn-inline-link" onclick="navigate('view-table')">Table</button>
+            — The Table component ships with a built-in <code>.tbl-skeleton-row</code> pattern that uses these same tokens.
+          </li>
+          <li>
+            <button class="btn-inline-link" onclick="navigate('nav-progress')">Progress Bar</button>
+            — Use when percentage completion is known (file upload, multi-step wizard).
+          </li>
+        </ul>
+      </div>
+
+    </div><!-- /code-tab-main -->
+
+    <div class="code-tab-qnav">
+      <div class="code-qnav-inner">
+        <p class="code-qnav-title">On This Page</p>
+        <ul class="code-qnav-list">
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('skel-s-overview')">Overview</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('skel-s-anatomy')">Anatomy</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('skel-s-variants')">Variants</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('skel-s-states')">States</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('skel-s-interaction')">Interactions</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('skel-s-a11y')">Accessibility</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('skel-s-responsive')">Responsive</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('skel-s-dosdonts')">Do / Don't</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('skel-s-related')">Related</button></li>
+        </ul>
+      </div>
+    </div>
+  </div><!-- /code-tab-layout -->
+</div><!-- /skel-tab-design -->
+
+
+<!-- ═══════════════════════════════════════════════════════════════
+     CODE TAB
+     ═══════════════════════════════════════════════════════════════ -->
+<div id="skel-tab-code" class="btn-tab-pane skel-tab-pane">
+
+  <div class="fw-toggle-bar">
+    <button class="fw-toggle-bar-btn active" data-fw="react"
+            onclick="switchFw('skel-tab-code','react')">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
+        <circle cx="12" cy="12" r="2.5" fill="#61dafb"/>
+        <ellipse cx="12" cy="12" rx="10" ry="4.5" stroke="#61dafb" stroke-width="1.5" fill="none"/>
+        <ellipse cx="12" cy="12" rx="10" ry="4.5" stroke="#61dafb" stroke-width="1.5" fill="none" transform="rotate(60 12 12)"/>
+        <ellipse cx="12" cy="12" rx="10" ry="4.5" stroke="#61dafb" stroke-width="1.5" fill="none" transform="rotate(120 12 12)"/>
+      </svg>
+      React
+    </button>
+    <button class="fw-toggle-bar-btn" data-fw="angular"
+            onclick="switchFw('skel-tab-code','angular')">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
+        <path d="M12 2L2 6.5l1.5 12.5L12 22l8.5-3L22 6.5 12 2z" fill="#dd0031"/>
+        <path d="M12 2v20M12 2L6 17h12L12 2z" fill="none" stroke="#fff" stroke-width="1.2"/>
+      </svg>
+      Angular
+    </button>
+  </div>
+
+  <div class="code-tab-layout">
+    <div class="code-tab-main">
+
+      <!-- 1 · Overview ───────────────────────────────────────────── -->
+      <div id="skel-c-overview" class="btn-family-card">
+        <div class="ds-step-row"><span class="ds-step-num">1</span><div class="btn-family-title" style="margin:0;">Overview</div></div>
+        <div class="fw-react">
+          <p class="btn-family-desc">The <code>Skeleton</code> component wraps Ant Design's <code>Skeleton</code> with GeoServe CSS tokens applied to colours, border radius, and animation timing. Sub-components — <code>Skeleton.Avatar</code>, <code>Skeleton.Button</code>, <code>Skeleton.Input</code>, and <code>Skeleton.Image</code> — are re-exported unchanged.</p>
+        </div>
+        <div class="fw-angular" style="display:none;">
+          <p class="btn-family-desc">Apply the <code>.skel-block</code> utility class to any element, then wrap in <code>.skel-active</code> to enable animation. The CSS is available globally in <code>styles.css</code> — no module imports needed.</p>
+        </div>
+      </div>
+
+      <!-- 2 · Install ────────────────────────────────────────────── -->
+      <div id="skel-c-install" class="btn-family-card">
+        <div class="ds-step-row"><span class="ds-step-num">2</span><div class="btn-family-title" style="margin:0;">Install / Setup</div></div>
+        <div class="fw-react">
+          <div class="btn-code-block">
+            <div class="btn-code-head"><span class="btn-code-lang">bash</span><button class="btn-copy-btn" onclick="copyBtnCode('skel-c-install-r',this)">Copy</button></div>
+            <div class="btn-code-body"><pre id="skel-c-install-r"><code><span class="c-cmt"># antd is already a peer dependency of @pelagos/components</span>
+npm install antd @pelagos/components</code></pre></div>
+          </div>
+        </div>
+        <div class="fw-angular" style="display:none;">
+          <p class="btn-family-desc">Include <code>styles.css</code> in your project — the <code>.skel-block</code> and <code>.skel-active</code> classes are globally available. No additional packages required.</p>
+        </div>
+      </div>
+
+      <!-- 3 · Import ─────────────────────────────────────────────── -->
+      <div id="skel-c-imports" class="btn-family-card">
+        <div class="ds-step-row"><span class="ds-step-num">3</span><div class="btn-family-title" style="margin:0;">Import</div></div>
+        <div class="fw-react">
+          <div class="btn-code-block">
+            <div class="btn-code-head"><span class="btn-code-lang">JSX</span><button class="btn-copy-btn" onclick="copyBtnCode('skel-c-import-r',this)">Copy</button></div>
+            <div class="btn-code-body"><pre id="skel-c-import-r"><code><span class="c-kw">import</span> { <span class="c-type">Skeleton</span> } <span class="c-kw">from</span> <span class="c-val">'@pelagos/components/loading/skeleton'</span>;
+<span class="c-cmt">// Sub-components are attached: Skeleton.Avatar, Skeleton.Button, etc.</span></code></pre></div>
+          </div>
+        </div>
+        <div class="fw-angular" style="display:none;">
+          <p class="btn-family-desc">No import needed. Add <code>class="skel-block"</code> to any HTML element and wrap in <code>class="skel-active"</code> to animate. Both classes are in the global <code>styles.css</code>.</p>
+        </div>
+      </div>
+
+      <!-- 4 · API / Props ─────────────────────────────────────────── -->
+      <div id="skel-c-api" class="btn-family-card">
+        <div class="ds-step-row"><span class="ds-step-num">4</span><div class="btn-family-title" style="margin:0;">API / Props</div></div>
+
+        <!-- Skeleton (main) -->
+        <div class="btn-sub-label" style="margin-bottom:8px;">Skeleton</div>
+        <div class="fw-react">
+          <table>
+            <thead><tr><th>Prop</th><th>Type</th><th>Default</th><th>Required</th><th>Description</th></tr></thead>
+            <tbody>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">active</td><td class="ds-td-code-muted">boolean</td><td class="ds-td-code-muted">false</td><td>No</td><td class="ds-td-value">Show shimmer animation</td></tr>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">loading</td><td class="ds-td-code-muted">boolean</td><td class="ds-td-code-muted">—</td><td>No</td><td class="ds-td-value">Display skeleton when <code>true</code>; render <code>children</code> when <code>false</code></td></tr>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">avatar</td><td class="ds-td-code-muted">boolean | SkeletonAvatarProps</td><td class="ds-td-code-muted">false</td><td>No</td><td class="ds-td-value">Show avatar placeholder. Pass object for size/shape control.</td></tr>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">title</td><td class="ds-td-code-muted">boolean | SkeletonTitleProps</td><td class="ds-td-code-muted">true</td><td>No</td><td class="ds-td-value">Show title bar. Pass <code>&#123; width: '50%' &#125;</code> to override width.</td></tr>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">paragraph</td><td class="ds-td-code-muted">boolean | SkeletonParagraphProps</td><td class="ds-td-code-muted">true</td><td>No</td><td class="ds-td-value">Show paragraph rows. Pass <code>&#123; rows: 4 &#125;</code> or <code>&#123; width: ['100%','80%','61%'] &#125;</code>.</td></tr>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">round</td><td class="ds-td-code-muted">boolean</td><td class="ds-td-code-muted">false</td><td>No</td><td class="ds-td-value">Apply <code>border-radius: 100px</code> to title and paragraph rows</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="fw-angular" style="display:none;">
+          <table>
+            <thead><tr><th>CSS Class</th><th>Description</th></tr></thead>
+            <tbody>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">skel-block</td><td>Base shimmer block — apply to any element</td></tr>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">skel-active</td><td>Wrapper that enables shimmer animation on all <code>.skel-block</code> children</td></tr>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">skel-block--circle</td><td>50% border-radius — use for avatar placeholders</td></tr>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">skel-block--round</td><td>100px border-radius — pill / button shapes</td></tr>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">skel-block--square</td><td>No border-radius — sharp corners</td></tr>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">skel-block--sm / --md / --lg</td><td>Height presets: 24px / 32px / 40px</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Skeleton.Avatar -->
+        <div class="btn-sub-label" style="margin-top:20px;margin-bottom:8px;">Skeleton.Avatar</div>
+        <div class="fw-react">
+          <table>
+            <thead><tr><th>Prop</th><th>Type</th><th>Default</th><th>Description</th></tr></thead>
+            <tbody>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">shape</td><td class="ds-td-code-muted">'circle' | 'square'</td><td class="ds-td-code-muted">'circle'</td><td class="ds-td-value">Avatar shape</td></tr>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">size</td><td class="ds-td-code-muted">number | 'large' | 'medium' | 'small'</td><td class="ds-td-code-muted">'medium'</td><td class="ds-td-value">Avatar diameter. <code>small</code>=24, <code>medium</code>=32, <code>large</code>=40</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="fw-angular" style="display:none;"><p class="btn-family-desc">Use <code>.skel-block.skel-block--circle</code> with explicit <code>width</code> and <code>height</code> inline styles.</p></div>
+
+        <!-- Skeleton.Button -->
+        <div class="btn-sub-label" style="margin-top:20px;margin-bottom:8px;">Skeleton.Button</div>
+        <div class="fw-react">
+          <table>
+            <thead><tr><th>Prop</th><th>Type</th><th>Default</th><th>Description</th></tr></thead>
+            <tbody>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">shape</td><td class="ds-td-code-muted">'default' | 'round' | 'circle' | 'square'</td><td class="ds-td-code-muted">'default'</td><td class="ds-td-value">Button shape</td></tr>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">size</td><td class="ds-td-code-muted">'large' | 'medium' | 'small'</td><td class="ds-td-code-muted">'medium'</td><td class="ds-td-value">Button height preset</td></tr>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">block</td><td class="ds-td-code-muted">boolean</td><td class="ds-td-code-muted">false</td><td class="ds-td-value">Stretch to full parent width</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="fw-angular" style="display:none;"><p class="btn-family-desc">Use <code>.skel-block.skel-block--md</code> with the appropriate <code>border-radius</code> override for the desired button shape.</p></div>
+
+        <!-- Skeleton.Input -->
+        <div class="btn-sub-label" style="margin-top:20px;margin-bottom:8px;">Skeleton.Input</div>
+        <div class="fw-react">
+          <table>
+            <thead><tr><th>Prop</th><th>Type</th><th>Default</th><th>Description</th></tr></thead>
+            <tbody>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">size</td><td class="ds-td-code-muted">'large' | 'medium' | 'small'</td><td class="ds-td-code-muted">'medium'</td><td class="ds-td-value">Input height: small=24px, medium=32px, large=40px</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="fw-angular" style="display:none;"><p class="btn-family-desc">Use <code>.skel-block.skel-block--sm / --md / --lg</code> at full width for input placeholders.</p></div>
+      </div>
+
+      <!-- 5 · Variants ───────────────────────────────────────────── -->
+      <div id="skel-c-variants" class="btn-family-card">
+        <div class="ds-step-row"><span class="ds-step-num">5</span><div class="btn-family-title" style="margin:0;">Variants</div></div>
+        <div class="fw-react">
+          <div class="btn-code-block">
+            <div class="btn-code-head"><span class="btn-code-lang">JSX</span><button class="btn-copy-btn" onclick="copyBtnCode('skel-c-variants-r',this)">Copy</button></div>
+            <div class="btn-code-body"><pre id="skel-c-variants-r"><code><span class="c-cmt">// 1. Paragraph only (default)</span>
+<span class="c-tag">&lt;Skeleton</span> <span class="c-attr">active</span> <span class="c-tag">/&gt;</span>
+
+<span class="c-cmt">// 2. Avatar + paragraph</span>
+<span class="c-tag">&lt;Skeleton</span> <span class="c-attr">active</span> <span class="c-attr">avatar</span> <span class="c-tag">/&gt;</span>
+
+<span class="c-cmt">// 3. Custom paragraph rows and widths</span>
+<span class="c-tag">&lt;Skeleton</span>
+  <span class="c-attr">active</span>
+  <span class="c-attr">paragraph</span>={{ rows: 4, width: [<span class="c-val">'100%'</span>, <span class="c-val">'92%'</span>, <span class="c-val">'85%'</span>, <span class="c-val">'61%'</span>] }}
+<span class="c-tag">/&gt;</span>
+
+<span class="c-cmt">// 4. Button skeleton (round shape)</span>
+<span class="c-tag">&lt;Skeleton.Button</span> <span class="c-attr">active</span> <span class="c-attr">shape</span>=<span class="c-val">"round"</span> <span class="c-tag">/&gt;</span>
+
+<span class="c-cmt">// 5. Input skeleton (large)</span>
+<span class="c-tag">&lt;Skeleton.Input</span> <span class="c-attr">active</span> <span class="c-attr">size</span>=<span class="c-val">"large"</span> <span class="c-tag">/&gt;</span>
+
+<span class="c-cmt">// 6. Image skeleton</span>
+<span class="c-tag">&lt;Skeleton.Image</span> <span class="c-attr">active</span> <span class="c-tag">/&gt;</span>
+
+<span class="c-cmt">// 7. Avatar shape variants</span>
+<span class="c-tag">&lt;Skeleton.Avatar</span> <span class="c-attr">active</span> <span class="c-attr">shape</span>=<span class="c-val">"circle"</span> <span class="c-attr">size</span>=<span class="c-val">"large"</span> <span class="c-tag">/&gt;</span>
+<span class="c-tag">&lt;Skeleton.Avatar</span> <span class="c-attr">active</span> <span class="c-attr">shape</span>=<span class="c-val">"square"</span> <span class="c-attr">size</span>=<span class="c-val">"large"</span> <span class="c-tag">/&gt;</span></code></pre></div>
+          </div>
+        </div>
+        <div class="fw-angular" style="display:none;">
+          <div class="btn-code-block">
+            <div class="btn-code-head"><span class="btn-code-lang">HTML</span><button class="btn-copy-btn" onclick="copyBtnCode('skel-c-variants-ng',this)">Copy</button></div>
+            <div class="btn-code-body"><pre id="skel-c-variants-ng"><code><span class="c-cmt">&lt;!-- Paragraph (active) --&gt;</span>
+<span class="c-tag">&lt;div</span> <span class="c-attr">class</span>=<span class="c-val">"skel-active"</span><span class="c-tag">&gt;</span>
+  <span class="c-tag">&lt;div</span> <span class="c-attr">class</span>=<span class="c-val">"skel-block"</span> <span class="c-attr">style</span>=<span class="c-val">"height:16px;width:38%;margin-bottom:28px;"</span><span class="c-tag">&gt;&lt;/div&gt;</span>
+  <span class="c-tag">&lt;div</span> <span class="c-attr">class</span>=<span class="c-val">"skel-block"</span> <span class="c-attr">style</span>=<span class="c-val">"height:16px;width:100%;margin-bottom:8px;"</span><span class="c-tag">&gt;&lt;/div&gt;</span>
+  <span class="c-tag">&lt;div</span> <span class="c-attr">class</span>=<span class="c-val">"skel-block"</span> <span class="c-attr">style</span>=<span class="c-val">"height:16px;width:94%;margin-bottom:8px;"</span><span class="c-tag">&gt;&lt;/div&gt;</span>
+  <span class="c-tag">&lt;div</span> <span class="c-attr">class</span>=<span class="c-val">"skel-block"</span> <span class="c-attr">style</span>=<span class="c-val">"height:16px;width:61%;"</span><span class="c-tag">&gt;&lt;/div&gt;</span>
+<span class="c-tag">&lt;/div&gt;</span>
+
+<span class="c-cmt">&lt;!-- Avatar + paragraph --&gt;</span>
+<span class="c-tag">&lt;div</span> <span class="c-attr">class</span>=<span class="c-val">"skel-active"</span> <span class="c-attr">style</span>=<span class="c-val">"display:flex;gap:16px;"</span><span class="c-tag">&gt;</span>
+  <span class="c-tag">&lt;div</span> <span class="c-attr">class</span>=<span class="c-val">"skel-block skel-block--circle"</span> <span class="c-attr">style</span>=<span class="c-val">"width:40px;height:40px;flex-shrink:0;"</span><span class="c-tag">&gt;&lt;/div&gt;</span>
+  <span class="c-tag">&lt;div</span> <span class="c-attr">style</span>=<span class="c-val">"flex:1;"</span><span class="c-tag">&gt;</span>
+    <span class="c-tag">&lt;div</span> <span class="c-attr">class</span>=<span class="c-val">"skel-block"</span> <span class="c-attr">style</span>=<span class="c-val">"height:16px;width:38%;margin-bottom:28px;"</span><span class="c-tag">&gt;&lt;/div&gt;</span>
+    <span class="c-tag">&lt;div</span> <span class="c-attr">class</span>=<span class="c-val">"skel-block"</span> <span class="c-attr">style</span>=<span class="c-val">"height:16px;width:100%;margin-bottom:8px;"</span><span class="c-tag">&gt;&lt;/div&gt;</span>
+    <span class="c-tag">&lt;div</span> <span class="c-attr">class</span>=<span class="c-val">"skel-block"</span> <span class="c-attr">style</span>=<span class="c-val">"height:16px;width:61%;"</span><span class="c-tag">&gt;&lt;/div&gt;</span>
+  <span class="c-tag">&lt;/div&gt;</span>
+<span class="c-tag">&lt;/div&gt;</span>
+
+<span class="c-cmt">&lt;!-- Button skeleton --&gt;</span>
+<span class="c-tag">&lt;div</span> <span class="c-attr">class</span>=<span class="c-val">"skel-active"</span><span class="c-tag">&gt;</span>
+  <span class="c-tag">&lt;div</span> <span class="c-attr">class</span>=<span class="c-val">"skel-block skel-block--round"</span> <span class="c-attr">style</span>=<span class="c-val">"width:88px;height:32px;"</span><span class="c-tag">&gt;&lt;/div&gt;</span>
+<span class="c-tag">&lt;/div&gt;</span></code></pre></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 6 · States ─────────────────────────────────────────────── -->
+      <div id="skel-c-states" class="btn-family-card">
+        <div class="ds-step-row"><span class="ds-step-num">6</span><div class="btn-family-title" style="margin:0;">States</div></div>
+        <div class="fw-react">
+          <div class="btn-code-block">
+            <div class="btn-code-head"><span class="btn-code-lang">JSX</span><button class="btn-copy-btn" onclick="copyBtnCode('skel-c-states-r',this)">Copy</button></div>
+            <div class="btn-code-body"><pre id="skel-c-states-r"><code><span class="c-cmt">// Static (default) — no animation</span>
+<span class="c-tag">&lt;Skeleton</span> <span class="c-tag">/&gt;</span>
+
+<span class="c-cmt">// Active — shimmer wave</span>
+<span class="c-tag">&lt;Skeleton</span> <span class="c-attr">active</span> <span class="c-tag">/&gt;</span>
+
+<span class="c-cmt">// Conditional — loading prop gates between skeleton and children</span>
+<span class="c-tag">&lt;Skeleton</span> <span class="c-attr">active</span> <span class="c-attr">loading</span>={isLoading}<span class="c-tag">&gt;</span>
+  <span class="c-tag">&lt;ArticleCard</span> <span class="c-attr">data</span>={article} <span class="c-tag">/&gt;</span>
+<span class="c-tag">&lt;/Skeleton&gt;</span>
+
+<span class="c-cmt">// 300ms show-delay (prevents flicker for fast connections)</span>
+<span class="c-kw">const</span> [showSkel, setShowSkel] = <span class="c-type">useState</span>(<span class="c-kw">false</span>);
+<span class="c-type">useEffect</span>(() =&gt; {
+  <span class="c-kw">const</span> t = setTimeout(() =&gt; setShowSkel(isLoading), 300);
+  <span class="c-kw">return</span> () =&gt; clearTimeout(t);
+}, [isLoading]);
+
+<span class="c-tag">&lt;Skeleton</span> <span class="c-attr">active</span> <span class="c-attr">loading</span>={showSkel}<span class="c-tag">&gt;</span>
+  {children}
+<span class="c-tag">&lt;/Skeleton&gt;</span></code></pre></div>
+          </div>
+        </div>
+        <div class="fw-angular" style="display:none;">
+          <div class="btn-code-block">
+            <div class="btn-code-head"><span class="btn-code-lang">HTML</span><button class="btn-copy-btn" onclick="copyBtnCode('skel-c-states-ng',this)">Copy</button></div>
+            <div class="btn-code-body"><pre id="skel-c-states-ng"><code><span class="c-cmt">&lt;!-- Toggle active class via JS --&gt;</span>
+<span class="c-tag">&lt;div</span> <span class="c-attr">id</span>=<span class="c-val">"vessel-skeleton"</span>
+     <span class="c-attr">class</span>=<span class="c-val">"skel-active"</span>
+     <span class="c-attr">aria-busy</span>=<span class="c-val">"true"</span>
+     <span class="c-attr">aria-label</span>=<span class="c-val">"Loading vessel data"</span><span class="c-tag">&gt;</span>
+  <span class="c-cmt">&lt;!-- skeleton blocks --&gt;</span>
+<span class="c-tag">&lt;/div&gt;</span>
+
+<span class="c-cmt">&lt;!-- After data resolves: remove skeleton, add content --&gt;</span>
+<span class="c-cmt">// In your component:</span>
+<span class="c-kw">const</span> skel = document.getElementById(<span class="c-val">'vessel-skeleton'</span>);
+skel.remove();
+<span class="c-kw">const</span> region = document.getElementById(<span class="c-val">'vessel-region'</span>);
+region.setAttribute(<span class="c-val">'aria-busy'</span>, <span class="c-val">'false'</span>);
+region.innerHTML = renderedContent;</code></pre></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 7 · Accessibility ──────────────────────────────────────── -->
+      <div id="skel-c-a11y" class="btn-family-card">
+        <div class="ds-step-row"><span class="ds-step-num">7</span><div class="btn-family-title" style="margin:0;">Accessibility</div></div>
+        <div class="fw-react">
+          <div class="btn-code-block">
+            <div class="btn-code-head"><span class="btn-code-lang">JSX</span><button class="btn-copy-btn" onclick="copyBtnCode('skel-c-a11y-r',this)">Copy</button></div>
+            <div class="btn-code-body"><pre id="skel-c-a11y-r"><code><span class="c-cmt">// Wrap the loading region in an aria-busy container</span>
+<span class="c-tag">&lt;section</span>
+  <span class="c-attr">aria-busy</span>={isLoading}
+  <span class="c-attr">aria-label</span>=<span class="c-val">"Vessel inquiry list"</span>
+<span class="c-tag">&gt;</span>
+  <span class="c-cmt">// Visually-hidden live region announces state changes</span>
+  <span class="c-tag">&lt;span</span> <span class="c-attr">className</span>=<span class="c-val">"sr-only"</span> <span class="c-attr">role</span>=<span class="c-val">"status"</span> <span class="c-attr">aria-live</span>=<span class="c-val">"polite"</span><span class="c-tag">&gt;</span>
+    {isLoading ? <span class="c-val">'Loading vessel list'</span> : <span class="c-val">'Vessel list loaded'</span>}
+  <span class="c-tag">&lt;/span&gt;</span>
+
+  <span class="c-tag">&lt;Skeleton</span> <span class="c-attr">active</span> <span class="c-attr">loading</span>={isLoading} <span class="c-attr">avatar</span><span class="c-tag">&gt;</span>
+    <span class="c-tag">&lt;VesselList</span> <span class="c-attr">data</span>={vessels} <span class="c-tag">/&gt;</span>
+  <span class="c-tag">&lt;/Skeleton&gt;</span>
+<span class="c-tag">&lt;/section&gt;</span></code></pre></div>
+          </div>
+        </div>
+        <div class="fw-angular" style="display:none;">
+          <div class="btn-code-block">
+            <div class="btn-code-head"><span class="btn-code-lang">HTML</span><button class="btn-copy-btn" onclick="copyBtnCode('skel-c-a11y-ng',this)">Copy</button></div>
+            <div class="btn-code-body"><pre id="skel-c-a11y-ng"><code><span class="c-tag">&lt;section</span> <span class="c-attr">aria-busy</span>=<span class="c-val">"true"</span> <span class="c-attr">aria-label</span>=<span class="c-val">"Vessel list"</span><span class="c-tag">&gt;</span>
+
+  <span class="c-cmt">&lt;!-- Screen-reader live region --&gt;</span>
+  <span class="c-tag">&lt;span</span> <span class="c-attr">class</span>=<span class="c-val">"sr-only"</span> <span class="c-attr">role</span>=<span class="c-val">"status"</span> <span class="c-attr">aria-live</span>=<span class="c-val">"polite"</span><span class="c-tag">&gt;</span>Loading vessel list<span class="c-tag">&lt;/span&gt;</span>
+
+  <span class="c-tag">&lt;div</span> <span class="c-attr">class</span>=<span class="c-val">"skel-active"</span> <span class="c-attr">aria-hidden</span>=<span class="c-val">"true"</span><span class="c-tag">&gt;</span>
+    <span class="c-cmt">&lt;!-- skeleton blocks --&gt;</span>
+  <span class="c-tag">&lt;/div&gt;</span>
+
+<span class="c-tag">&lt;/section&gt;</span></code></pre></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 8 · File Structure ─────────────────────────────────────── -->
+      <div id="skel-c-files" class="btn-family-card">
+        <div class="ds-step-row"><span class="ds-step-num">8</span><div class="btn-family-title" style="margin:0;">File Structure</div></div>
+        <div class="fw-react">
+          <div class="btn-code-block">
+            <div class="btn-code-head"><span class="btn-code-lang">tree</span><button class="btn-copy-btn" onclick="copyBtnCode('skel-c-files-r',this)">Copy</button></div>
+            <div class="btn-code-body"><pre id="skel-c-files-r"><code>@pelagos/components/
+└── loading/
+    └── skeleton/
+        ├── index.tsx         <span class="c-cmt">// re-exports Skeleton + sub-components</span>
+        ├── skeleton.css      <span class="c-cmt">// token overrides (--skel-* vars)</span>
+        └── skeleton.test.tsx <span class="c-cmt">// unit + a11y tests</span></code></pre></div>
+          </div>
+        </div>
+        <div class="fw-angular" style="display:none;">
+          <div class="btn-code-block">
+            <div class="btn-code-head"><span class="btn-code-lang">tree</span><button class="btn-copy-btn" onclick="copyBtnCode('skel-c-files-ng',this)">Copy</button></div>
+            <div class="btn-code-body"><pre id="skel-c-files-ng"><code>styles/
+└── components/
+    └── _skeleton.scss   <span class="c-cmt">// .skel-block, .skel-active, shape + size modifiers</span>
+
+<span class="c-cmt">// Import in styles.css:</span>
+@use <span class="c-val">'styles/components/skeleton'</span>;</code></pre></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 9 · Usage Patterns ─────────────────────────────────────── -->
+      <div id="skel-c-patterns" class="btn-family-card">
+        <div class="ds-step-row"><span class="ds-step-num">9</span><div class="btn-family-title" style="margin:0;">Usage Patterns</div></div>
+        <div class="fw-react">
+          <div class="btn-code-block">
+            <div class="btn-code-head"><span class="btn-code-lang">JSX</span><button class="btn-copy-btn" onclick="copyBtnCode('skel-c-patterns-r',this)">Copy</button></div>
+            <div class="btn-code-body"><pre id="skel-c-patterns-r"><code><span class="c-cmt">// Pattern A — table row skeleton (always 3 rows)</span>
+{isLoading ? (
+  [1,2,3].map(i =&gt; (
+    <span class="c-tag">&lt;tr</span> <span class="c-attr">key</span>={i} <span class="c-attr">className</span>=<span class="c-val">"tbl-skeleton-row"</span><span class="c-tag">&gt;</span>
+      <span class="c-tag">&lt;td&gt;&lt;div</span> <span class="c-attr">className</span>=<span class="c-val">"tbl-skeleton-cell"</span> <span class="c-attr">style</span>={{width:<span class="c-val">'46px'</span>}} <span class="c-tag">/&gt;&lt;/td&gt;</span>
+      <span class="c-tag">&lt;td&gt;&lt;div</span> <span class="c-attr">className</span>=<span class="c-val">"tbl-skeleton-cell"</span> <span class="c-attr">style</span>={{width:<span class="c-val">'110px'</span>}} <span class="c-tag">/&gt;&lt;/td&gt;</span>
+      <span class="c-tag">&lt;td&gt;&lt;div</span> <span class="c-attr">className</span>=<span class="c-val">"tbl-skeleton-cell"</span>
+              <span class="c-attr">style</span>={{width:<span class="c-val">'80px'</span>, borderRadius:<span class="c-val">'20px'</span>}} <span class="c-tag">/&gt;&lt;/td&gt;</span>
+    <span class="c-tag">&lt;/tr&gt;</span>
+  ))
+) : rows.map(row =&gt; <span class="c-tag">&lt;TableRow</span> <span class="c-attr">key</span>={row.id} <span class="c-attr">row</span>={row} <span class="c-tag">/&gt;</span>)}
+
+<span class="c-cmt">// Pattern B — card grid skeleton</span>
+{isLoading ? (
+  <span class="c-tag">&lt;div</span> <span class="c-attr">className</span>=<span class="c-val">"card-grid"</span><span class="c-tag">&gt;</span>
+    {[1,2,3].map(i =&gt; (
+      <span class="c-tag">&lt;Skeleton</span> <span class="c-attr">key</span>={i} <span class="c-attr">active</span> <span class="c-attr">avatar</span>={{ shape:<span class="c-val">'square'</span>, size:<span class="c-val">'large'</span> }}
+               <span class="c-attr">paragraph</span>={{ rows: 2 }} <span class="c-tag">/&gt;</span>
+    ))}
+  <span class="c-tag">&lt;/div&gt;</span>
+) : <span class="c-tag">&lt;CardGrid</span> <span class="c-attr">items</span>={items} <span class="c-tag">/&gt;</span>}
+
+<span class="c-cmt">// Pattern C — form pre-fill skeleton</span>
+{isLoading ? (
+  <span class="c-tag">&lt;div</span> <span class="c-attr">className</span>=<span class="c-val">"form-grid"</span><span class="c-tag">&gt;</span>
+    {[1,2,3,4].map(i =&gt; (
+      <span class="c-tag">&lt;div</span> <span class="c-attr">key</span>={i}<span class="c-tag">&gt;</span>
+        <span class="c-tag">&lt;Skeleton.Input</span> <span class="c-attr">active</span> <span class="c-attr">size</span>=<span class="c-val">"large"</span> <span class="c-attr">block</span> <span class="c-tag">/&gt;</span>
+      <span class="c-tag">&lt;/div&gt;</span>
+    ))}
+  <span class="c-tag">&lt;/div&gt;</span>
+) : <span class="c-tag">&lt;InquiryForm</span> <span class="c-attr">data</span>={formData} <span class="c-tag">/&gt;</span>}</code></pre></div>
+          </div>
+        </div>
+        <div class="fw-angular" style="display:none;">
+          <p class="btn-family-desc">Follow the same three patterns in Angular — replace JSX with Angular structural directives (<code>*ngIf</code>) and map component references to <code>.skel-block</code> HTML equivalents. See the Variants section for the HTML patterns.</p>
+        </div>
+      </div>
+
+      <!-- 10 · Theming ───────────────────────────────────────────── -->
+      <div id="skel-c-tokens" class="btn-family-card">
+        <div class="ds-step-row"><span class="ds-step-num">10</span><div class="btn-family-title" style="margin:0;">Theming / Tokens</div></div>
+        <div class="fw-react">
+          <div class="btn-code-block">
+            <div class="btn-code-head"><span class="btn-code-lang">JS</span><button class="btn-copy-btn" onclick="copyBtnCode('skel-c-tokens-r',this)">Copy</button></div>
+            <div class="btn-code-body"><pre id="skel-c-tokens-r"><code><span class="c-cmt">// In ConfigProvider — override Ant Design Skeleton design tokens</span>
+<span class="c-tag">&lt;ConfigProvider</span>
+  <span class="c-attr">theme</span>={{
+    components: {
+      Skeleton: {
+        blockRadius:        4,            <span class="c-cmt">// --skel-radius</span>
+        gradientFromColor:  <span class="c-val">'#F1F5F9'</span>,   <span class="c-cmt">// --prim-grey-50</span>
+        gradientToColor:    <span class="c-val">'#E2E8F0'</span>,   <span class="c-cmt">// --prim-grey-100</span>
+        paragraphLiHeight:  16,           <span class="c-cmt">// --skel-para-lh</span>
+        paragraphMarginTop: 28,           <span class="c-cmt">// --skel-para-mt</span>
+        titleHeight:        16,           <span class="c-cmt">// --skel-title-h</span>
+      }
+    }
+  }}
+<span class="c-tag">&gt;</span>
+  <span class="c-tag">&lt;App</span> <span class="c-tag">/&gt;</span>
+<span class="c-tag">&lt;/ConfigProvider&gt;</span></code></pre></div>
+          </div>
+        </div>
+        <div class="fw-angular" style="display:none;">
+          <div class="btn-code-block">
+            <div class="btn-code-head"><span class="btn-code-lang">SCSS</span><button class="btn-copy-btn" onclick="copyBtnCode('skel-c-tokens-ng',this)">Copy</button></div>
+            <div class="btn-code-body"><pre id="skel-c-tokens-ng"><code><span class="c-cmt">// Override in :root or a component scope</span>
+:root {
+  --skel-from:    #F1F5F9;   <span class="c-cmt">/* grey/50  — base */</span>
+  --skel-to:      #E2E8F0;   <span class="c-cmt">/* grey/100 — highlight */</span>
+  --skel-radius:  4px;
+  --skel-title-h: 16px;
+  --skel-para-lh: 16px;
+  --skel-para-mt: 28px;
+}</code></pre></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 11 · Full Example ──────────────────────────────────────── -->
+      <div id="skel-c-example" class="btn-family-card">
+        <div class="ds-step-row"><span class="ds-step-num">11</span><div class="btn-family-title" style="margin:0;">Full Example</div></div>
+        <div class="fw-react">
+          <div class="btn-code-block">
+            <div class="btn-code-head"><span class="btn-code-lang">JSX</span><button class="btn-copy-btn" onclick="copyBtnCode('skel-c-example-r',this)">Copy</button></div>
+            <div class="btn-code-body"><pre id="skel-c-example-r"><code><span class="c-kw">import</span> { useState, useEffect } <span class="c-kw">from</span> <span class="c-val">'react'</span>;
+<span class="c-kw">import</span> { <span class="c-type">Skeleton</span> } <span class="c-kw">from</span> <span class="c-val">'@pelagos/components/loading/skeleton'</span>;
+
+<span class="c-kw">export function</span> <span class="c-type">VesselCard</span>({ vesselId }) {
+  <span class="c-kw">const</span> [vessel, setVessel] = useState(<span class="c-kw">null</span>);
+  <span class="c-kw">const</span> [loading, setLoading] = useState(<span class="c-kw">true</span>);
+  <span class="c-kw">const</span> [showSkel, setShowSkel] = useState(<span class="c-kw">false</span>);
+
+  <span class="c-cmt">// 300ms delay prevents flicker for fast connections</span>
+  <span class="c-type">useEffect</span>(() =&gt; {
+    <span class="c-kw">const</span> t = setTimeout(() =&gt; setShowSkel(loading), 300);
+    <span class="c-kw">return</span> () =&gt; clearTimeout(t);
+  }, [loading]);
+
+  <span class="c-type">useEffect</span>(() =&gt; {
+    fetchVessel(vesselId).then(data =&gt; {
+      setVessel(data);
+      setLoading(<span class="c-kw">false</span>);
+      setShowSkel(<span class="c-kw">false</span>);
+    });
+  }, [vesselId]);
+
+  <span class="c-kw">return</span> (
+    <span class="c-tag">&lt;section</span>
+      <span class="c-attr">aria-busy</span>={showSkel}
+      <span class="c-attr">aria-label</span>=<span class="c-val">"Vessel details"</span>
+    <span class="c-tag">&gt;</span>
+      <span class="c-tag">&lt;span</span> <span class="c-attr">className</span>=<span class="c-val">"sr-only"</span> <span class="c-attr">role</span>=<span class="c-val">"status"</span> <span class="c-attr">aria-live</span>=<span class="c-val">"polite"</span><span class="c-tag">&gt;</span>
+        {showSkel ? <span class="c-val">'Loading vessel details'</span> : <span class="c-val">'Vessel details loaded'</span>}
+      <span class="c-tag">&lt;/span&gt;</span>
+
+      <span class="c-tag">&lt;Skeleton</span>
+        <span class="c-attr">active</span>
+        <span class="c-attr">loading</span>={showSkel}
+        <span class="c-attr">avatar</span>={{ shape: <span class="c-val">'circle'</span>, size: <span class="c-val">'large'</span> }}
+        <span class="c-attr">paragraph</span>={{ rows: 3, width: [<span class="c-val">'100%'</span>, <span class="c-val">'85%'</span>, <span class="c-val">'61%'</span>] }}
+      <span class="c-tag">&gt;</span>
+        <span class="c-cmt">/* real content — shown when loading=false */</span>
+        <span class="c-tag">&lt;VesselDetail</span> <span class="c-attr">vessel</span>={vessel} <span class="c-tag">/&gt;</span>
+      <span class="c-tag">&lt;/Skeleton&gt;</span>
+    <span class="c-tag">&lt;/section&gt;</span>
+  );
+}</code></pre></div>
+          </div>
+        </div>
+        <div class="fw-angular" style="display:none;">
+          <div class="btn-code-block">
+            <div class="btn-code-head"><span class="btn-code-lang">HTML</span><button class="btn-copy-btn" onclick="copyBtnCode('skel-c-example-ng',this)">Copy</button></div>
+            <div class="btn-code-body"><pre id="skel-c-example-ng"><code><span class="c-tag">&lt;section</span> [<span class="c-attr">attr.aria-busy</span>]=<span class="c-val">"isLoading"</span> <span class="c-attr">aria-label</span>=<span class="c-val">"Vessel details"</span><span class="c-tag">&gt;</span>
+
+  <span class="c-tag">&lt;span</span> <span class="c-attr">class</span>=<span class="c-val">"sr-only"</span> <span class="c-attr">role</span>=<span class="c-val">"status"</span> <span class="c-attr">aria-live</span>=<span class="c-val">"polite"</span><span class="c-tag">&gt;</span>
+    {{ isLoading ? 'Loading vessel details' : 'Vessel details loaded' }}
+  <span class="c-tag">&lt;/span&gt;</span>
+
+  <span class="c-tag">&lt;div</span> *<span class="c-attr">ngIf</span>=<span class="c-val">"showSkeleton"</span>
+       <span class="c-attr">class</span>=<span class="c-val">"skel-active"</span>
+       <span class="c-attr">aria-hidden</span>=<span class="c-val">"true"</span><span class="c-tag">&gt;</span>
+    <span class="c-tag">&lt;div</span> <span class="c-attr">style</span>=<span class="c-val">"display:flex;gap:16px;"</span><span class="c-tag">&gt;</span>
+      <span class="c-tag">&lt;div</span> <span class="c-attr">class</span>=<span class="c-val">"skel-block skel-block--circle"</span>
+           <span class="c-attr">style</span>=<span class="c-val">"width:40px;height:40px;flex-shrink:0;"</span><span class="c-tag">&gt;&lt;/div&gt;</span>
+      <span class="c-tag">&lt;div</span> <span class="c-attr">style</span>=<span class="c-val">"flex:1;display:flex;flex-direction:column;gap:8px;"</span><span class="c-tag">&gt;</span>
+        <span class="c-tag">&lt;div</span> <span class="c-attr">class</span>=<span class="c-val">"skel-block"</span> <span class="c-attr">style</span>=<span class="c-val">"height:16px;width:38%;margin-bottom:28px;"</span><span class="c-tag">&gt;&lt;/div&gt;</span>
+        <span class="c-tag">&lt;div</span> <span class="c-attr">class</span>=<span class="c-val">"skel-block"</span> <span class="c-attr">style</span>=<span class="c-val">"height:16px;width:100%;"</span><span class="c-tag">&gt;&lt;/div&gt;</span>
+        <span class="c-tag">&lt;div</span> <span class="c-attr">class</span>=<span class="c-val">"skel-block"</span> <span class="c-attr">style</span>=<span class="c-val">"height:16px;width:85%;"</span><span class="c-tag">&gt;&lt;/div&gt;</span>
+        <span class="c-tag">&lt;div</span> <span class="c-attr">class</span>=<span class="c-val">"skel-block"</span> <span class="c-attr">style</span>=<span class="c-val">"height:16px;width:61%;"</span><span class="c-tag">&gt;&lt;/div&gt;</span>
+      <span class="c-tag">&lt;/div&gt;</span>
+    <span class="c-tag">&lt;/div&gt;</span>
+  <span class="c-tag">&lt;/div&gt;</span>
+
+  <span class="c-tag">&lt;app-vessel-detail</span> *<span class="c-attr">ngIf</span>=<span class="c-val">"!isLoading"</span> [<span class="c-attr">vessel</span>]=<span class="c-val">"vessel"</span><span class="c-tag">&gt;&lt;/app-vessel-detail&gt;</span>
+
+<span class="c-tag">&lt;/section&gt;</span></code></pre></div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /code-tab-main -->
+
+    <div class="code-tab-qnav">
+      <div class="code-qnav-inner">
+        <p class="code-qnav-title">On This Page</p>
+        <ul class="code-qnav-list">
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('skel-c-overview')">1 · Overview</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('skel-c-install')">2 · Install</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('skel-c-imports')">3 · Import</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('skel-c-api')">4 · API / Props</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('skel-c-variants')">5 · Variants</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('skel-c-states')">6 · States</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('skel-c-a11y')">7 · Accessibility</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('skel-c-files')">8 · File Structure</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('skel-c-patterns')">9 · Usage Patterns</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('skel-c-tokens')">10 · Theming</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('skel-c-example')">11 · Full Example</button></li>
+        </ul>
+      </div>
+    </div>
+  </div><!-- /code-tab-layout -->
+</div><!-- /skel-tab-code -->
+
+
+<!-- ═══════════════════════════════════════════════════════════════
+     USAGE TAB
+     ═══════════════════════════════════════════════════════════════ -->
+<div id="skel-tab-usage" class="btn-tab-pane skel-tab-pane">
+  <div class="code-tab-layout">
+    <div class="code-tab-main">
+
+      <!-- When to Use -->
+      <div id="skel-u-when" class="btn-family-card">
+        <div class="btn-family-title">When to Use</div>
+        <ul class="btn-usage-list">
+          <li><strong>First data load with a known layout</strong> — whenever the page structure is predictable (list of cards, table rows, form fields) and data is loading for the first time. The skeleton prevents layout shift by holding the exact space the content will occupy.</li>
+          <li><strong>Parallel data fetching</strong> — when multiple sections fetch independently, show a skeleton per section. Each resolves into content at its own pace without blocking other parts of the UI.</li>
+          <li><strong>Rich content areas</strong> — components that contain lots of information (Table, List, Card grid) benefit most from skeletons since they have a high surface area to fill.</li>
+          <li><strong>Content that doesn't exist yet</strong> — use Skeleton to visualise placeholder layouts in empty states or "coming soon" panels.</li>
+        </ul>
+      </div>
+
+      <!-- When Not to Use -->
+      <div id="skel-u-when-not" class="btn-family-card">
+        <div class="btn-family-title">When Not to Use</div>
+        <ul class="btn-usage-list">
+          <li>
+            <strong>Background mutations</strong> — use
+            <button onclick="navigate('loading-spinner')" class="btn-inline-link">Spinner</button>
+            inside buttons for save/approve/submit actions. A skeleton would imply full-section re-load which is misleading.
+          </li>
+          <li>
+            <strong>Unknown layout</strong> — if you can't predict the content shape (e.g. a rich-text article of variable length), use
+            <button onclick="navigate('loading-spinner')" class="btn-inline-link">Spinner</button>
+            instead. A badly-proportioned skeleton is worse than no skeleton.
+          </li>
+          <li>
+            <strong>Very fast loads (&lt;300ms)</strong> — showing a skeleton for 200ms then immediately replacing it with real content causes jarring visual flicker. Apply a 300ms delay before rendering the skeleton; if data arrives within that window, skip it entirely.
+          </li>
+          <li>
+            <strong>Deterministic progress</strong> — use
+            <button onclick="navigate('nav-progress')" class="btn-inline-link">Progress Bar</button>
+            when you can report a percentage (file upload, multi-step wizard).
+          </li>
+        </ul>
+      </div>
+
+      <!-- Best Practices -->
+      <div id="skel-u-best" class="btn-family-card">
+        <div class="btn-family-title">Best Practices</div>
+        <ul class="btn-usage-list">
+          <li><strong>Mirror real content dimensions exactly</strong> — the skeleton and the actual content must occupy the same space to prevent layout jump on reveal. Check that avatar size, row heights, and column widths match 1:1.</li>
+          <li><strong>Vary paragraph row widths</strong> — use decreasing widths (100%, 94%, 61%) per Ant Design's default. Equal-width rows look mechanical; varying widths mimic natural prose.</li>
+          <li><strong>Always 3 rows for Table skeletons</strong> — consistent with the Table component specification. Never vary the count based on expected result set size.</li>
+          <li><strong>Apply a 300ms show-delay</strong> — render real content immediately; only show the skeleton if data hasn't resolved after 300ms. This eliminates flicker for fast connections without removing the feedback for slow ones.</li>
+          <li><strong>Provide a 10s timeout fallback</strong> — if data hasn't arrived after 10 seconds, replace the skeleton with an error empty state that includes a retry action.</li>
+          <li><strong>Set <code>aria-busy</code> on the region</strong> — not on the skeleton blocks themselves. The skeleton blocks should be <code>aria-hidden="true"</code>.</li>
+        </ul>
+      </div>
+
+      <!-- Patterns -->
+      <div id="skel-u-patterns" class="btn-family-card">
+        <div class="btn-family-title">Patterns</div>
+        <ul class="btn-usage-list">
+          <li><strong>Table row pattern</strong> — use <code>.tbl-skeleton-row</code> and <code>.tbl-skeleton-cell</code> (pre-configured in the Table component). Always show 3 rows. Badge cells get <code>border-radius: 20px</code>, chip cells get <code>border-radius: 6px</code>.</li>
+          <li><strong>Card grid pattern</strong> — render N skeleton cards (matching your actual grid column count) each with an avatar-shaped image placeholder and 2–3 paragraph lines. Use <code>Skeleton.Avatar</code> with <code>shape="square"</code> for rectangular image thumbnails.</li>
+          <li><strong>Form pre-fill pattern</strong> — show label-height (10px) skeleton lines above full-width input-height (40px) blocks for each field. Match the exact grid layout of the form so no reflow occurs on load.</li>
+          <li><strong>Detail page pattern</strong> — for a detail/header section: large avatar circle + title skeleton at 38% width + 3-line paragraph. Below the fold, use smaller skeletons for KPI tiles and secondary sections.</li>
+        </ul>
+      </div>
+
+      <!-- Anti-patterns -->
+      <div id="skel-u-mistakes" class="btn-family-card">
+        <div class="btn-family-title">Anti-patterns</div>
+        <ul class="btn-usage-list">
+          <li>
+            <strong>❌ Equal-width paragraph rows</strong> — all rows at 100% looks like a bar chart, not text.<br>
+            <strong>✅ Fix:</strong> use <code>['100%', '92%', '61%']</code> (or the Ant Design default <code>paragraph.width</code>).
+          </li>
+          <li>
+            <strong>❌ Skeleton + Spinner in the same region simultaneously</strong> — creates competing loading signals.<br>
+            <strong>✅ Fix:</strong> choose one per region. Skeleton for layout-preserving loads; Spinner for overlay/button states.
+          </li>
+          <li>
+            <strong>❌ Skeleton that never resolves</strong> — if data fails silently, users stare at a permanently loading UI.<br>
+            <strong>✅ Fix:</strong> implement a 10s timeout that replaces the skeleton with an error empty state and retry button.
+          </li>
+          <li>
+            <strong>❌ Too many skeleton rows</strong> — showing 20 skeleton rows for a table implies a huge result set even when it may be empty.<br>
+            <strong>✅ Fix:</strong> always show exactly 3 rows — this is a convention, not a preview of expected row count.
+          </li>
+          <li>
+            <strong>❌ Skeleton without <code>aria-busy</code></strong> — screen reader users get no feedback that the page is loading.<br>
+            <strong>✅ Fix:</strong> always set <code>aria-busy="true"</code> on the content region and use a live region to announce completion.
+          </li>
+        </ul>
+      </div>
+
+      <!-- References -->
+      <div id="skel-u-refs" class="btn-family-card">
+        <div class="btn-family-title">References</div>
+        <ul class="btn-related-list">
+          <li><a href="https://ant.design/components/skeleton" target="_blank" rel="noopener">Ant Design — Skeleton component specification</a></li>
+          <li><a href="https://www.figma.com/design/TOLfBpRePgynqwvDVp6fg3/Design-System" target="_blank" rel="noopener">Figma — Pelagos Design System</a></li>
+          <li><a href="https://www.nngroup.com/articles/skeleton-screens/" target="_blank" rel="noopener">Nielsen Norman Group — Skeleton Screens</a></li>
+          <li><a href="https://www.w3.org/WAI/ARIA/apg/patterns/" target="_blank" rel="noopener">ARIA Authoring Practices — Loading patterns</a></li>
+          <li><a href="https://www.w3.org/WAI/WCAG21/Understanding/pause-stop-hide.html" target="_blank" rel="noopener">WCAG 2.1 — 2.2.2 Pause, Stop, Hide (animations)</a></li>
+        </ul>
+      </div>
+
+    </div><!-- /code-tab-main -->
+
+    <div class="code-tab-qnav">
+      <div class="code-qnav-inner">
+        <p class="code-qnav-title">Quick Access</p>
+        <ul class="code-qnav-list">
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('skel-u-when')">When to Use</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('skel-u-when-not')">When Not to Use</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('skel-u-best')">Best Practices</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('skel-u-patterns')">Patterns</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('skel-u-mistakes')">Anti-patterns</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('skel-u-refs')">References</button></li>
+        </ul>
+      </div>
+    </div>
+  </div><!-- /code-tab-layout -->
+</div><!-- /skel-tab-usage -->

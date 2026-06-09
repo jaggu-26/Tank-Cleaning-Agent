@@ -1,0 +1,234 @@
+// ─────────────────────────────────────────────────────────────────────────────
+// Pelagos Modal — panels/modal/Modal.scss
+// ─────────────────────────────────────────────────────────────────────────────
+
+.modal-overlay {
+  position: fixed; inset: 0; z-index: 1000;
+  background: rgba(3, 7, 18, 0.5); backdrop-filter: blur(2px);
+  display: flex; align-items: center; justify-content: center; padding: var(--prim-space-4);
+  animation: modal-fade 150ms ease;
+}
+
+// ── General-purpose modal ─────────────────────────────────────────────────────
+.modal {
+  background: var(--color-surface-default); border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-modal); width: 100%; outline: none;
+  display: flex; flex-direction: column; max-height: calc(100vh - 64px);
+  animation: modal-up 200ms ease;
+
+  &--sm   { max-width: 400px; }
+  &--md   { max-width: 560px; }
+  &--lg   { max-width: 720px; }
+  &--xl   { max-width: 960px; }
+  &--full { max-width: calc(100vw - 64px); max-height: calc(100vh - 64px); }
+
+  &__header {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: var(--prim-space-5) var(--prim-space-6);
+    border-bottom: 1px solid var(--color-border-default); flex-shrink: 0;
+  }
+  &__title {
+    font-family: var(--prim-font-primary);
+    font-size: var(--prim-font-size-lg);
+    font-weight: var(--prim-font-weight-semibold);
+    color: var(--color-text-default);
+  }
+  &__close {
+    background: none; border: none; cursor: pointer;
+    color: var(--color-text-secondary); display: inline-flex; padding: 4px; border-radius: var(--radius-sm);
+    &:hover { background: var(--color-surface-subtle); color: var(--color-text-default); }
+    &:focus-visible { outline: 2px solid var(--color-brand); outline-offset: 2px; }
+  }
+  &__body   { padding: var(--prim-space-6); overflow-y: auto; flex: 1; }
+  &__footer {
+    padding: var(--prim-space-4) var(--prim-space-6);
+    border-top: 1px solid var(--color-border-default);
+    display: flex; justify-content: flex-end; gap: var(--prim-space-3); flex-shrink: 0;
+    background: var(--color-surface-subtle); border-radius: 0 0 var(--radius-xl) var(--radius-xl);
+  }
+
+  // ── Confirmation modal modifier ───────────────────────────────────────────
+  // Figma: white · 10 px radius · no title bar · centred illustration + text
+  &--confirm {
+    border-radius: 10px;       // Figma uses 10 px (not the design-system radius-xl)
+    overflow: hidden;
+  }
+}
+
+// ── Confirmation modal inner layout ──────────────────────────────────────────
+
+// Header: only the × close button, right-aligned
+.modal__confirm-header {
+  display: flex;
+  justify-content: flex-end;
+  padding: 16px 16px 0;
+  flex-shrink: 0;
+}
+
+// Scrollable content area: illustration → title → desc → remarks (if any)
+.modal__confirm-body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  padding: 0 24px 24px;
+  overflow-y: auto;
+  flex: 1;
+}
+
+// Illustration — 150 × 150 px, image fills the box
+.modal__illustration {
+  width:  150px;
+  height: 150px;
+  flex-shrink: 0;
+  overflow: hidden;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: block;
+  }
+}
+
+// Centred text block: title + description
+.modal__confirm-text {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+  text-align: center;
+}
+
+// Title — Gilroy-Bold 20 px / 24 lh / #001e4c navy
+.modal__confirm-title {
+  font-family:   var(--prim-font-primary);
+  font-size:     20px;
+  font-weight:   var(--prim-font-weight-bold);       // 700
+  line-height:   24px;
+  color:         var(--prim-blue-900);               // #001e4c
+  text-align:    center;
+  margin:        0;
+}
+
+// Body description — Gilroy-Regular 14 px / 20 lh / #475569
+.modal__confirm-desc {
+  font-family:   var(--prim-font-primary);
+  font-size:     var(--prim-font-size-md);           // 14 px
+  font-weight:   var(--prim-font-weight-regular);
+  line-height:   20px;
+  color:         var(--prim-grey-500);               // #475569
+  text-align:    center;
+  margin:        0;
+}
+
+// ── Remarks textarea (cancellation variant) ───────────────────────────────────
+.modal__remarks {
+  display:    flex;
+  flex-direction: column;
+  gap:        8px;
+  width:      100%;
+  text-align: left;
+}
+
+.modal__remarks-label {
+  font-family:  var(--prim-font-primary);
+  font-size:    12px;
+  font-weight:  var(--prim-font-weight-semibold);    // 600
+  line-height:  16px;
+  color:        var(--prim-grey-600);                // #334154
+  display:      flex;
+  gap:          4px;
+}
+
+.modal__remarks-required {
+  color: var(--color-danger);                        // #dc2625
+}
+
+.modal__remarks-textarea {
+  width:         100%;
+  min-height:    98px;
+  border:        1px solid #cccccc;
+  border-radius: 10px;
+  padding:       10px;
+  font-family:   var(--prim-font-primary);
+  font-size:     var(--prim-font-size-md);
+  line-height:   20px;
+  color:         var(--color-text-default);
+  resize:        vertical;
+  box-sizing:    border-box;
+  outline:       none;
+  transition:    border-color 120ms ease;
+
+  &::placeholder { color: var(--color-text-placeholder); }
+  &:focus        { border-color: var(--color-brand); }
+}
+
+.modal__remarks-count {
+  font-family: var(--prim-font-primary);
+  font-size:   12px;
+  line-height: 16px;
+  color:       var(--prim-grey-400);                 // #64748b
+  text-align:  right;
+}
+
+// ── Confirmation footer — horizontal equal-width buttons ──────────────────────
+// Figma: flex-row · gap 16 px · padding 16 px · buttons height 40 px · radius 4 px
+.modal__confirm-footer {
+  display:        flex;
+  flex-direction: row;
+  gap:            16px;
+  padding:        16px;
+  flex-shrink:    0;
+  border-top:     none;
+}
+
+.modal__confirm-btn {
+  flex:            1 1 0;                // equal width — fills available space
+  height:          40px;
+  border-radius:   var(--radius-sm);     // 4 px
+  border:          none;
+  cursor:          pointer;
+  font-family:     var(--prim-font-primary);
+  font-size:       var(--prim-font-size-md);         // 14 px
+  font-weight:     var(--prim-font-weight-semibold); // 600
+  line-height:     20px;
+  text-align:      center;
+  white-space:     nowrap;
+  transition:      background 120ms ease, color 120ms ease;
+
+  // Cancel / secondary — light blue bg, marine text + border
+  &--cancel {
+    background:  #edf5ff;
+    border:      1px solid var(--color-brand);
+    color:       var(--color-brand);
+
+    &:hover  { background: var(--prim-blue-50); }
+    &:active { background: var(--prim-blue-100); }
+    &:focus-visible { outline: 2px solid var(--color-brand); outline-offset: 2px; }
+  }
+
+  // Primary confirm — marine fill, white text
+  &--primary {
+    background: var(--color-brand);                  // #1852fe
+    color:      var(--prim-white);
+
+    &:hover  { background: var(--color-brand-hover); }
+    &:active { background: var(--color-brand-active); }
+    &:focus-visible { outline: 2px solid var(--color-brand); outline-offset: 2px; }
+  }
+
+  // Danger confirm — red fill, white text
+  &--danger {
+    background: var(--color-danger);                 // #dc2625
+    color:      var(--prim-white);
+
+    &:hover  { background: var(--color-danger-hover); }
+    &:active { background: var(--color-danger-active); }
+    &:focus-visible { outline: 2px solid var(--color-danger); outline-offset: 2px; }
+  }
+}
+
+// ── Animations ────────────────────────────────────────────────────────────────
+@keyframes modal-fade { from { opacity: 0; } to { opacity: 1; } }
+@keyframes modal-up   { from { opacity: 0; transform: translateY(12px) scale(0.98); } to { opacity: 1; transform: none; } }

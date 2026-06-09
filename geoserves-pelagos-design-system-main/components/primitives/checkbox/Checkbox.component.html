@@ -1,0 +1,26 @@
+<!--
+  Pelagos Checkbox — Angular template
+  primitives/checkbox/Checkbox.component.html
+
+  Delegates all rendering and behaviour to ng-zorro's nz-checkbox directive.
+  Checked state, disabled styling, indeterminate marker, and focus ring are all
+  handled by ng-zorro. Pelagos tokens are injected at bootstrap via NZ_CONFIG.
+
+  Usage examples:
+    Basic         :  <gs-checkbox label="Accept terms" [(ngModel)]="agreed" />
+    Disabled      :  <gs-checkbox label="Read-only"   [disabled]="true" />
+    Indeterminate :  <gs-checkbox label="Select all"  [indeterminate]="partial" [checked]="allChecked" (checkedChange)="onToggleAll($event)" />
+    Rich label    :  <gs-checkbox><strong>Bold label</strong> with extra text</gs-checkbox>
+-->
+
+<label
+  nz-checkbox
+  [nzChecked]="checked"
+  [nzDisabled]="disabled"
+  [nzIndeterminate]="indeterminate"
+  [attr.data-state]="disabled ? 'disabled' : 'default'"
+  (nzCheckedChange)="handleChange($event)"
+>
+  <!-- Projected rich content takes priority over the label @Input -->
+  <ng-content>{{ label }}</ng-content>
+</label>

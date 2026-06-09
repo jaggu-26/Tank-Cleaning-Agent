@@ -1,0 +1,1278 @@
+<!-- Banner -->
+<div class="page-header"><h1 class="ds-hero-title">Radio Button</h1></div>
+
+<!-- Tab bar -->
+<div class="btn-tab-bar">
+  <button class="btn-tab-btn rb-tab-btn active" data-tab="design" onclick="switchRadioTab('design')">Design</button>
+  <button class="btn-tab-btn rb-tab-btn" data-tab="code"   onclick="switchRadioTab('code')">Code</button>
+  <button class="btn-tab-btn rb-tab-btn" data-tab="usage"  onclick="switchRadioTab('usage')">Usage</button>
+</div>
+
+<!-- ═══════════════════════════════ DESIGN TAB ═══════════════════════════════ -->
+<div id="rb-tab-design" class="btn-tab-pane rb-tab-pane active">
+  <div class="code-tab-layout">
+    <div class="code-tab-main">
+
+      <!-- Overview -->
+      <div id="rb-s-overview" class="btn-family-card">
+        <div class="btn-family-title">Overview</div>
+        <p class="btn-family-desc">Radio buttons let users select exactly one option from a group. Unlike checkboxes, selecting one radio automatically deselects any previously selected option in the same group. Use them in forms and settings panels where mutual exclusivity is a hard requirement.</p>
+
+        <div class="btn-preview-strip" style="display:flex;gap:24px;align-items:center;flex-wrap:wrap;padding:28px 24px;background:#f8fafc;border:1px solid #e2e8f0;border-radius:12px;margin-top:16px;">
+          <label class="gs-rb-wrap">
+            <input class="gs-rb-input" type="radio" name="rb-overview-demo" checked>
+            <span class="gs-rb-circle"></span>
+            <span class="gs-rb-label">Option A</span>
+          </label>
+          <label class="gs-rb-wrap">
+            <input class="gs-rb-input" type="radio" name="rb-overview-demo">
+            <span class="gs-rb-circle"></span>
+            <span class="gs-rb-label">Option B</span>
+          </label>
+          <label class="gs-rb-wrap">
+            <input class="gs-rb-input" type="radio" name="rb-overview-demo">
+            <span class="gs-rb-circle"></span>
+            <span class="gs-rb-label">Option C</span>
+          </label>
+        </div>
+
+        <div class="btn-when-examples" style="margin-top:16px;">
+          <span class="btn-when-example-tag">1 Size</span>
+          <span class="btn-when-example-tag">1 Variant</span>
+          <span class="btn-when-example-tag">8 States</span>
+          <span class="btn-when-example-tag">WCAG AA</span>
+          <span class="btn-when-example-tag">24×24px touch target</span>
+        </div>
+      </div>
+
+      <!-- Variants -->
+      <div id="rb-s-variants" class="btn-family-card">
+        <div class="btn-family-title">Variants</div>
+        <p class="btn-family-desc">Radio Button has one visual form factor. Differentiation comes from state (unselected / selected) and label presence, not structural variants.</p>
+
+        <div class="btn-variant-row">
+          <span class="btn-variant-label">Unselected</span>
+          <div class="btn-variant-sizes">
+            <label class="gs-rb-wrap" style="pointer-events:none;">
+              <input class="gs-rb-input" type="radio" name="rb-var-1">
+              <span class="gs-rb-circle"></span>
+              <span class="gs-rb-label">Label</span>
+            </label>
+          </div>
+        </div>
+        <div class="btn-variant-row" style="margin-top:12px;">
+          <span class="btn-variant-label">Selected</span>
+          <div class="btn-variant-sizes">
+            <label class="gs-rb-wrap" style="pointer-events:none;">
+              <input class="gs-rb-input" type="radio" name="rb-var-2" checked>
+              <span class="gs-rb-circle"></span>
+              <span class="gs-rb-label">Label</span>
+            </label>
+          </div>
+        </div>
+        <div class="btn-variant-row" style="margin-top:12px;">
+          <span class="btn-variant-label">Without label</span>
+          <div class="btn-variant-sizes">
+            <label class="gs-rb-wrap" style="pointer-events:none;" aria-label="Select option">
+              <input class="gs-rb-input" type="radio" name="rb-var-3" aria-label="Select option">
+              <span class="gs-rb-circle"></span>
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Anatomy -->
+      <div id="rb-s-anatomy" class="btn-family-card">
+        <div class="btn-family-title">Anatomy</div>
+        <p class="btn-family-desc">The radio button is a 24×24px touch container holding a 16×16px outer ring and an 8×8px inner dot. A 2px gap separates the control from the label.</p>
+
+        <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:12px;padding:32px;display:flex;justify-content:center;margin-top:8px;overflow:auto;">
+          <svg width="520" height="180" viewBox="0 0 520 180" fill="none" xmlns="http://www.w3.org/2000/svg" style="min-width:380px;">
+
+            <!-- Touch target dashed outline 24×24 centred at x=240, y=90 -->
+            <rect x="228" y="78" width="24" height="24" rx="5" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="4 2.5"/>
+            <!-- Outer ring 16×16 -->
+            <circle cx="240" cy="90" r="8" fill="none" stroke="#1852fe" stroke-width="1.5"/>
+            <!-- Inner dot 8×8 -->
+            <circle cx="240" cy="90" r="4" fill="#1852fe"/>
+            <!-- Gap indicator 2px -->
+            <rect x="252" y="84" width="2" height="12" rx="1" fill="#a5b4fc"/>
+            <!-- Label text -->
+            <text x="258" y="90" font-size="14" font-family="Helvetica,Arial,sans-serif" fill="#10172a" dominant-baseline="middle">Label</text>
+
+            <!-- Annotation lines -->
+            <line x1="230" y1="79" x2="92" y2="32" stroke="#cbd5e1" stroke-width="1"/>
+            <line x1="248" y1="82" x2="390" y2="32" stroke="#cbd5e1" stroke-width="1"/>
+            <line x1="253" y1="96" x2="390" y2="148" stroke="#cbd5e1" stroke-width="1"/>
+            <line x1="258" y1="100" x2="92" y2="148" stroke="#cbd5e1" stroke-width="1"/>
+
+            <!-- Badge circles -->
+            <circle cx="83" cy="32" r="10" fill="#1852fe"/>
+            <text x="83" y="32" text-anchor="middle" dominant-baseline="middle" fill="white" font-size="11" font-weight="700" font-family="Helvetica,Arial,sans-serif">1</text>
+            <circle cx="399" cy="32" r="10" fill="#1852fe"/>
+            <text x="399" y="32" text-anchor="middle" dominant-baseline="middle" fill="white" font-size="11" font-weight="700" font-family="Helvetica,Arial,sans-serif">2</text>
+            <circle cx="399" cy="148" r="10" fill="#1852fe"/>
+            <text x="399" y="148" text-anchor="middle" dominant-baseline="middle" fill="white" font-size="11" font-weight="700" font-family="Helvetica,Arial,sans-serif">3</text>
+            <circle cx="83" cy="148" r="10" fill="#1852fe"/>
+            <text x="83" y="148" text-anchor="middle" dominant-baseline="middle" fill="white" font-size="11" font-weight="700" font-family="Helvetica,Arial,sans-serif">4</text>
+
+            <!-- Annotation labels -->
+            <text x="70" y="21" text-anchor="end" font-size="11" font-family="Helvetica,Arial,sans-serif" fill="#475569" dominant-baseline="middle">Touch target</text>
+            <text x="70" y="33" text-anchor="end" font-size="10" font-family="Helvetica,Arial,sans-serif" fill="#94a3b8" dominant-baseline="middle">24×24px</text>
+            <text x="412" y="21" font-size="11" font-family="Helvetica,Arial,sans-serif" fill="#475569" dominant-baseline="middle">Outer ring</text>
+            <text x="412" y="33" font-size="10" font-family="Helvetica,Arial,sans-serif" fill="#94a3b8" dominant-baseline="middle">16×16px · border-radius 50%</text>
+            <text x="412" y="140" font-size="11" font-family="Helvetica,Arial,sans-serif" fill="#475569" dominant-baseline="middle">Gap</text>
+            <text x="412" y="152" font-size="10" font-family="Helvetica,Arial,sans-serif" fill="#94a3b8" dominant-baseline="middle">2px · spacing-2</text>
+            <text x="70" y="140" text-anchor="end" font-size="11" font-family="Helvetica,Arial,sans-serif" fill="#475569" dominant-baseline="middle">Label</text>
+            <text x="70" y="152" text-anchor="end" font-size="10" font-family="Helvetica,Arial,sans-serif" fill="#94a3b8" dominant-baseline="middle">14px / #10172a</text>
+
+          </svg>
+        </div>
+
+        <ol class="btn-anatomy-list" style="margin-top:20px;">
+          <li><strong>Touch target</strong> — 24×24px invisible hit area wrapping the visual control. Meets accessibility minimum with outer padding.</li>
+          <li><strong>Outer ring</strong> — 16×16px circle, <code>border-radius: 50%</code>, 1.5px border. Gray (<code>#cbd5e1</code>) when unselected; brand blue (<code>#1852fe</code>) when selected.</li>
+          <li><strong>Gap</strong> — 2px spacing between ring and label. From <code>--spacing/spacing-2</code>.</li>
+          <li><strong>Label</strong> — 14px / Regular / 20px line-height in <code>#10172a</code>. Required for accessible usage; icon-only radios must carry <code>aria-label</code>.</li>
+        </ol>
+
+        <div style="margin-top:20px;background:#eff6ff;border:1px solid #bfdbfe;border-radius:8px;padding:14px 16px;font-size:13px;color:#1e40af;line-height:1.6;">
+          <strong>Inner dot:</strong> 8×8px solid circle sits centered inside the outer ring. Hidden (<code>scale(0)</code>) when unselected; full size (<code>scale(1)</code>) when selected. Transitions with 120ms ease for a smooth snap-in feel.
+        </div>
+      </div>
+
+      <!-- States -->
+      <div id="rb-s-states" class="btn-family-card">
+        <div class="btn-family-title">States</div>
+        <p class="btn-family-desc">Eight states: two selection values (unselected / selected) × four interaction states (Default, Hover, Focus, Disabled).</p>
+
+        <!-- Unselected row -->
+        <div class="btn-sub-label" style="margin-bottom:12px;">Unselected</div>
+        <div class="btn-states-grid" style="grid-template-columns:repeat(4,1fr);">
+          <div class="btn-state-cell">
+            <label class="gs-rb-wrap" style="pointer-events:none;">
+              <input class="gs-rb-input" type="radio" name="rb-st-un">
+              <span class="gs-rb-circle"></span>
+              <span class="gs-rb-label">Label</span>
+            </label>
+            <span class="btn-state-label">Default</span>
+          </div>
+          <div class="btn-state-cell">
+            <label class="gs-rb-wrap gs-rb-wrap--hover" style="pointer-events:none;">
+              <input class="gs-rb-input" type="radio" name="rb-st-un-hv">
+              <span class="gs-rb-circle"></span>
+              <span class="gs-rb-label">Label</span>
+            </label>
+            <span class="btn-state-label">Hover</span>
+            <span class="btn-sub-label-note">demo state</span>
+          </div>
+          <div class="btn-state-cell">
+            <label class="gs-rb-wrap gs-rb-wrap--focus" style="pointer-events:none;">
+              <input class="gs-rb-input" type="radio" name="rb-st-un-fc">
+              <span class="gs-rb-circle"></span>
+              <span class="gs-rb-label">Label</span>
+            </label>
+            <span class="btn-state-label">Focus</span>
+            <span class="btn-sub-label-note">demo state</span>
+          </div>
+          <div class="btn-state-cell">
+            <label class="gs-rb-wrap is-disabled" style="pointer-events:none;">
+              <input class="gs-rb-input" type="radio" name="rb-st-un-ds" disabled>
+              <span class="gs-rb-circle"></span>
+              <span class="gs-rb-label">Label</span>
+            </label>
+            <span class="btn-state-label">Disabled</span>
+          </div>
+        </div>
+
+        <!-- Selected row -->
+        <div class="btn-sub-label" style="margin-top:20px;margin-bottom:12px;">Selected</div>
+        <div class="btn-states-grid" style="grid-template-columns:repeat(4,1fr);">
+          <div class="btn-state-cell">
+            <label class="gs-rb-wrap" style="pointer-events:none;">
+              <input class="gs-rb-input" type="radio" name="rb-st-sel" checked>
+              <span class="gs-rb-circle"></span>
+              <span class="gs-rb-label">Label</span>
+            </label>
+            <span class="btn-state-label">Default</span>
+          </div>
+          <div class="btn-state-cell">
+            <label class="gs-rb-wrap gs-rb-wrap--hover" style="pointer-events:none;">
+              <input class="gs-rb-input" type="radio" name="rb-st-sel-hv" checked>
+              <span class="gs-rb-circle"></span>
+              <span class="gs-rb-label">Label</span>
+            </label>
+            <span class="btn-state-label">Hover</span>
+            <span class="btn-sub-label-note">demo state</span>
+          </div>
+          <div class="btn-state-cell">
+            <label class="gs-rb-wrap gs-rb-wrap--focus" style="pointer-events:none;">
+              <input class="gs-rb-input" type="radio" name="rb-st-sel-fc" checked>
+              <span class="gs-rb-circle"></span>
+              <span class="gs-rb-label">Label</span>
+            </label>
+            <span class="btn-state-label">Focus</span>
+            <span class="btn-sub-label-note">demo state</span>
+          </div>
+          <div class="btn-state-cell">
+            <label class="gs-rb-wrap is-disabled" style="pointer-events:none;">
+              <input class="gs-rb-input" type="radio" name="rb-st-sel-ds" checked disabled>
+              <span class="gs-rb-circle"></span>
+              <span class="gs-rb-label">Label</span>
+            </label>
+            <span class="btn-state-label">Disabled</span>
+          </div>
+        </div>
+
+        <!-- Interactive demo -->
+        <div style="margin-top:32px;border-top:1px solid #e2e8f0;padding-top:24px;">
+          <div class="btn-sub-label" style="margin-bottom:16px;">Interactive Demo — try selecting an option</div>
+          <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:12px;padding:24px;display:flex;flex-direction:column;gap:6px;max-width:320px;">
+            <label class="gs-rb-wrap">
+              <input class="gs-rb-input" type="radio" name="rb-demo" checked>
+              <span class="gs-rb-circle"></span>
+              <span class="gs-rb-label">Option A</span>
+            </label>
+            <label class="gs-rb-wrap">
+              <input class="gs-rb-input" type="radio" name="rb-demo">
+              <span class="gs-rb-circle"></span>
+              <span class="gs-rb-label">Option B</span>
+            </label>
+            <label class="gs-rb-wrap">
+              <input class="gs-rb-input" type="radio" name="rb-demo">
+              <span class="gs-rb-circle"></span>
+              <span class="gs-rb-label">Option C</span>
+            </label>
+            <label class="gs-rb-wrap is-disabled">
+              <input class="gs-rb-input" type="radio" name="rb-demo" disabled>
+              <span class="gs-rb-circle"></span>
+              <span class="gs-rb-label">Option D (unavailable)</span>
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Interaction Behaviour -->
+      <div id="rb-s-interaction" class="btn-family-card">
+        <div class="btn-family-title">Interaction Behaviour</div>
+        <p class="btn-family-desc">Clicking anywhere on the label or ring selects that radio and deselects the previously selected one in the group. Only the selected state can be set via click — once a radio group has a selection, it cannot be deselected by clicking again.</p>
+
+        <table>
+          <thead>
+            <tr><th>Trigger</th><th>Behaviour</th><th>Timing</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Click / Tap label or ring</td><td>Selects this option; deselects previous in same <code>name</code> group. Fires native <code>change</code> event.</td><td>Immediate</td></tr>
+            <tr><td>Hover (cursor enters)</td><td>Outer ring border changes to <code>#1852fe</code>. Cursor becomes <code>pointer</code>. Selected hover adds a soft halo (<code>box-shadow: 0 0 0 5px rgba(24,82,254,0.08)</code>).</td><td>120ms ease</td></tr>
+            <tr><td><kbd>Tab</kbd></td><td>Moves focus into the radio group. Focus ring appears on the currently selected (or first) radio.</td><td>OS-controlled</td></tr>
+            <tr><td><kbd>→</kbd> / <kbd>↓</kbd></td><td>Moves selection to next radio in group and focuses it.</td><td>Immediate</td></tr>
+            <tr><td><kbd>←</kbd> / <kbd>↑</kbd></td><td>Moves selection to previous radio in group and focuses it.</td><td>Immediate</td></tr>
+            <tr><td><kbd>Space</kbd></td><td>Selects focused radio (no effect if already selected).</td><td>Immediate</td></tr>
+            <tr><td>Disabled state</td><td>All pointer and keyboard events ignored. <code>pointer-events: none</code>. Ring color fades to <code>#e2e8f0</code> (unselected) or <code>#cbd5e1</code> (selected).</td><td>—</td></tr>
+          </tbody>
+        </table>
+
+        <div style="margin-top:20px;display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+          <div style="background:#f0fdf4;border:1px solid #86efac;border-radius:10px;padding:20px;">
+            <div style="font-size:12px;font-weight:700;color:#16a34a;margin-bottom:10px;display:flex;align-items:center;gap:6px;">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+              Correct — mutual exclusion
+            </div>
+            <div style="display:flex;flex-direction:column;gap:4px;">
+              <label class="gs-rb-wrap">
+                <input class="gs-rb-input" type="radio" name="rb-good" checked>
+                <span class="gs-rb-circle"></span>
+                <span class="gs-rb-label">Option A</span>
+              </label>
+              <label class="gs-rb-wrap">
+                <input class="gs-rb-input" type="radio" name="rb-good">
+                <span class="gs-rb-circle"></span>
+                <span class="gs-rb-label">Option B</span>
+              </label>
+            </div>
+            <p style="font-size:12px;color:#15803d;margin:10px 0 0;">Selecting B automatically deselects A.</p>
+          </div>
+          <div style="background:#fff7ed;border:1px solid #fed7aa;border-radius:10px;padding:20px;">
+            <div style="font-size:12px;font-weight:700;color:#c2410c;margin-bottom:10px;display:flex;align-items:center;gap:6px;">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+              Avoid — separate name groups
+            </div>
+            <div style="display:flex;flex-direction:column;gap:4px;">
+              <label class="gs-rb-wrap" style="pointer-events:none;opacity:.5;">
+                <input class="gs-rb-input" type="radio" name="rb-bad-1" checked>
+                <span class="gs-rb-circle"></span>
+                <span class="gs-rb-label">Option A</span>
+              </label>
+              <label class="gs-rb-wrap" style="pointer-events:none;opacity:.5;">
+                <input class="gs-rb-input" type="radio" name="rb-bad-2" checked>
+                <span class="gs-rb-circle"></span>
+                <span class="gs-rb-label">Option B</span>
+              </label>
+            </div>
+            <p style="font-size:12px;color:#c2410c;margin:10px 0 0;">Different <code>name</code> attrs = both can appear selected.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Motion -->
+      <div id="rb-s-motion" class="btn-family-card">
+        <div class="btn-family-title">Motion / Animation</div>
+        <p class="btn-family-desc">Transitions are minimal and purposeful — state changes confirm selection without distracting from the surrounding form.</p>
+
+        <table>
+          <thead>
+            <tr><th>Property</th><th>Duration</th><th>Easing</th><th>Purpose</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Ring <code>border-color</code></td><td>120ms</td><td>ease</td><td>Signals hover / selected state</td></tr>
+            <tr><td>Ring <code>box-shadow</code></td><td>120ms</td><td>ease</td><td>Hover halo on selected state</td></tr>
+            <tr><td>Inner dot <code>transform: scale</code></td><td>120ms</td><td>ease</td><td>Dot snaps in on selection</td></tr>
+            <tr><td>Inner dot <code>background</code></td><td>120ms</td><td>ease</td><td>Color fade on disabled</td></tr>
+          </tbody>
+        </table>
+
+        <div style="margin-top:16px;background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;padding:16px 20px;font-size:13px;color:#475569;line-height:1.65;">
+          All transitions use <code>prefers-reduced-motion</code> — if the user has enabled reduced motion at the OS level, transitions are suppressed. The <code>transform: scale(0 → 1)</code> on the inner dot is the key motion; it should feel like a crisp snap, not a slow grow.
+        </div>
+      </div>
+
+      <!-- Responsive -->
+      <div id="rb-s-responsive" class="btn-family-card">
+        <div class="btn-family-title">Responsive Behaviour</div>
+        <p class="btn-family-desc">Radio buttons maintain identical dimensions across breakpoints. Layout of radio groups adapts to viewport width.</p>
+
+        <table>
+          <thead>
+            <tr><th>Breakpoint</th><th>Group layout</th><th>Notes</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Mobile (< 640px)</td><td>Vertical stack, full width</td><td>Each option on its own line; touch targets comfortably spaced.</td></tr>
+            <tr><td>Tablet (640–1024px)</td><td>Vertical or 2-column grid</td><td>Short labels can sit in a 2-col grid; long labels stay vertical.</td></tr>
+            <tr><td>Desktop (> 1024px)</td><td>Horizontal row or vertical stack</td><td>Horizontal groups work when options are ≤4 and labels are short (≤3 words).</td></tr>
+          </tbody>
+        </table>
+
+        <div style="margin-top:20px;display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+          <div>
+            <div style="font-size:12px;font-weight:600;color:#94a3b8;text-transform:uppercase;letter-spacing:.06em;margin-bottom:12px;">Vertical (default)</div>
+            <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:6px;">
+              <label class="gs-rb-wrap">
+                <input class="gs-rb-input" type="radio" name="rb-resp-v" checked>
+                <span class="gs-rb-circle"></span>
+                <span class="gs-rb-label">Option A</span>
+              </label>
+              <label class="gs-rb-wrap">
+                <input class="gs-rb-input" type="radio" name="rb-resp-v">
+                <span class="gs-rb-circle"></span>
+                <span class="gs-rb-label">Option B</span>
+              </label>
+              <label class="gs-rb-wrap">
+                <input class="gs-rb-input" type="radio" name="rb-resp-v">
+                <span class="gs-rb-circle"></span>
+                <span class="gs-rb-label">Option C</span>
+              </label>
+            </div>
+          </div>
+          <div>
+            <div style="font-size:12px;font-weight:600;color:#94a3b8;text-transform:uppercase;letter-spacing:.06em;margin-bottom:12px;">Horizontal (short labels)</div>
+            <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;padding:16px;display:flex;flex-wrap:wrap;gap:8px 16px;">
+              <label class="gs-rb-wrap">
+                <input class="gs-rb-input" type="radio" name="rb-resp-h" checked>
+                <span class="gs-rb-circle"></span>
+                <span class="gs-rb-label">Option A</span>
+              </label>
+              <label class="gs-rb-wrap">
+                <input class="gs-rb-input" type="radio" name="rb-resp-h">
+                <span class="gs-rb-circle"></span>
+                <span class="gs-rb-label">Option B</span>
+              </label>
+              <label class="gs-rb-wrap">
+                <input class="gs-rb-input" type="radio" name="rb-resp-h">
+                <span class="gs-rb-circle"></span>
+                <span class="gs-rb-label">Option C</span>
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Accessibility -->
+      <div id="rb-s-a11y" class="btn-family-card">
+        <div class="btn-family-title">Accessibility</div>
+        <p class="btn-family-desc">Radio buttons have strong native semantics. Always use the native <code>&lt;input type="radio"&gt;</code> — avoid ARIA role overrides unless absolutely necessary.</p>
+
+        <table>
+          <thead>
+            <tr><th>Requirement</th><th>Implementation</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Group labelling</td><td>Wrap all options in a <code>&lt;fieldset&gt;</code> with a <code>&lt;legend&gt;</code>. Screen readers announce the legend before each option.</td></tr>
+            <tr><td>Option labelling</td><td>Each <code>&lt;input&gt;</code> is wrapped in a <code>&lt;label&gt;</code> or linked via <code>for</code>/<code>id</code>. No icon-only radios without <code>aria-label</code>.</td></tr>
+            <tr><td>Keyboard navigation</td><td>Arrow keys move within a group. <kbd>Tab</kbd> moves between groups. Do not trap focus.</td></tr>
+            <tr><td>Disabled state</td><td>Use native <code>disabled</code> attribute. Do not rely on CSS <code>pointer-events: none</code> alone — assistive technologies bypass CSS.</td></tr>
+            <tr><td>Error states</td><td>Use <code>aria-describedby</code> to link error messages. Mark the fieldset with <code>aria-invalid="true"</code>.</td></tr>
+            <tr><td>Color contrast</td><td>Ring border (<code>#1852fe</code>) on white: 4.6:1. Dot on ring background: visually large enough (> 3:1). Label text: 14.8:1.</td></tr>
+          </tbody>
+        </table>
+
+        <div style="margin-top:20px;background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;padding:16px 20px;">
+          <div style="font-size:12px;font-weight:600;color:#64748b;text-transform:uppercase;letter-spacing:.06em;margin-bottom:12px;">Correct HTML structure</div>
+          <pre style="margin:0;font-size:12px;color:#1e293b;line-height:1.7;overflow:auto;"><code>&lt;fieldset&gt;
+  &lt;legend&gt;Preferred contact method&lt;/legend&gt;
+  &lt;label&gt;
+    &lt;input type="radio" name="contact" value="email" /&gt; Email
+  &lt;/label&gt;
+  &lt;label&gt;
+    &lt;input type="radio" name="contact" value="phone" /&gt; Phone
+  &lt;/label&gt;
+&lt;/fieldset&gt;</code></pre>
+        </div>
+      </div>
+
+    </div><!-- /code-tab-main -->
+
+    <!-- Design Quick-nav -->
+    <div class="code-tab-qnav">
+      <div class="code-qnav-inner">
+        <p class="code-qnav-title">On This Page</p>
+        <ul class="code-qnav-list">
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('rb-s-overview')">Overview</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('rb-s-variants')">Variants</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('rb-s-anatomy')">Anatomy</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('rb-s-states')">States</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('rb-s-interaction')">Interaction</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('rb-s-motion')">Motion</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('rb-s-responsive')">Responsive</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('rb-s-a11y')">Accessibility</button></li>
+        </ul>
+      </div>
+    </div>
+
+  </div><!-- /code-tab-layout -->
+</div><!-- /design tab -->
+
+
+<!-- ═══════════════════════════════ CODE TAB ═══════════════════════════════ -->
+<div id="rb-tab-code" class="btn-tab-pane rb-tab-pane">
+  <div class="code-tab-layout">
+    <div class="code-tab-main">
+
+      <!-- Framework switcher -->
+      <div class="fw-toggle-bar">
+        <button class="fw-toggle-bar-btn active" data-fw="react" onclick="switchFw('rb-tab-code','react')">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="2.5" fill="#61dafb"/><ellipse cx="12" cy="12" rx="10" ry="4.5" stroke="#61dafb" stroke-width="1.5" fill="none"/><ellipse cx="12" cy="12" rx="10" ry="4.5" stroke="#61dafb" stroke-width="1.5" fill="none" transform="rotate(60 12 12)"/><ellipse cx="12" cy="12" rx="10" ry="4.5" stroke="#61dafb" stroke-width="1.5" fill="none" transform="rotate(120 12 12)"/></svg>
+          React
+        </button>
+        <button class="fw-toggle-bar-btn" data-fw="angular" onclick="switchFw('rb-tab-code','angular')">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M12 2L2 6.5l1.5 12.5L12 22l8.5-3L22 6.5 12 2z" fill="#dd0031"/><path d="M12 2v20M12 2L6 17h12L12 2z" fill="none" stroke="#fff" stroke-width="1.2"/></svg>
+          Angular
+        </button>
+      </div>
+
+      <!-- 1 · Overview -->
+      <div id="rb-c-overview" class="btn-family-card">
+        <div class="ds-step-row">
+          <span class="ds-step-num">1</span>
+          <div class="btn-family-title" style="margin:0;">Overview</div>
+        </div>
+        <p class="btn-family-desc">The <code>RadioButton</code> component renders a native <code>&lt;input type="radio"&gt;</code> styled via CSS class tokens. Group multiple instances with a shared <code>name</code> prop to enforce mutual exclusivity. The component is uncontrolled by default and supports a controlled value API.</p>
+
+        <div class="fw-react">
+          <div class="btn-code-block">
+            <div class="btn-code-head"><span class="btn-code-lang">JSX</span><button class="btn-copy-btn" onclick="copyBtnCode('rb-ov-react',this)">Copy</button></div>
+            <div class="btn-code-body"><pre id="rb-ov-react"><code>{/* Uncontrolled */}
+&lt;RadioButton name="plan" value="starter" label="Starter" defaultChecked /&gt;
+&lt;RadioButton name="plan" value="pro"     label="Pro" /&gt;
+&lt;RadioButton name="plan" value="enterprise" label="Enterprise" /&gt;
+
+{/* Controlled */}
+const [plan, setPlan] = useState('starter');
+&lt;RadioButton name="plan-ctrl" value="starter"    label="Starter"    checked={plan==='starter'}    onChange={()=&gt;setPlan('starter')} /&gt;
+&lt;RadioButton name="plan-ctrl" value="pro"        label="Pro"        checked={plan==='pro'}        onChange={()=&gt;setPlan('pro')} /&gt;
+&lt;RadioButton name="plan-ctrl" value="enterprise" label="Enterprise" checked={plan==='enterprise'} onChange={()=&gt;setPlan('enterprise')} /&gt;</code></pre></div>
+          </div>
+        </div>
+
+        <div class="fw-angular" style="display:none;">
+          <div class="btn-code-block">
+            <div class="btn-code-head"><span class="btn-code-lang">HTML</span><button class="btn-copy-btn" onclick="copyBtnCode('rb-ov-ng',this)">Copy</button></div>
+            <div class="btn-code-body"><pre id="rb-ov-ng"><code>&lt;!-- Template-driven --&gt;
+&lt;gs-radio-group name="plan" [(ngModel)]="selectedPlan"&gt;
+  &lt;gs-radio value="starter"&gt;Starter&lt;/gs-radio&gt;
+  &lt;gs-radio value="pro"&gt;Pro&lt;/gs-radio&gt;
+  &lt;gs-radio value="enterprise"&gt;Enterprise&lt;/gs-radio&gt;
+&lt;/gs-radio-group&gt;</code></pre></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2 · Install -->
+      <div id="rb-c-install" class="btn-family-card">
+        <div class="ds-step-row">
+          <span class="ds-step-num">2</span>
+          <div class="btn-family-title" style="margin:0;">Install / Setup</div>
+        </div>
+
+        <div class="fw-react">
+          <div class="btn-code-block">
+            <div class="btn-code-head"><span class="btn-code-lang">bash</span><button class="btn-copy-btn" onclick="copyBtnCode('rb-install-react',this)">Copy</button></div>
+            <div class="btn-code-body"><pre id="rb-install-react"><code># The component ships inside the Pelagos design-system package
+npm install @pelagos/design-system</code></pre></div>
+          </div>
+        </div>
+
+        <div class="fw-angular" style="display:none;">
+          <div class="btn-code-block">
+            <div class="btn-code-head"><span class="btn-code-lang">bash</span><button class="btn-copy-btn" onclick="copyBtnCode('rb-install-ng',this)">Copy</button></div>
+            <div class="btn-code-body"><pre id="rb-install-ng"><code>npm install @pelagos/design-system-angular</code></pre></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3 · Imports -->
+      <div id="rb-c-imports" class="btn-family-card">
+        <div class="ds-step-row">
+          <span class="ds-step-num">3</span>
+          <div class="btn-family-title" style="margin:0;">Import</div>
+        </div>
+
+        <div class="fw-react">
+          <div class="btn-code-block">
+            <div class="btn-code-head"><span class="btn-code-lang">JS</span><button class="btn-copy-btn" onclick="copyBtnCode('rb-import-react',this)">Copy</button></div>
+            <div class="btn-code-body"><pre id="rb-import-react"><code>import { RadioButton, RadioGroup } from '@pelagos/design-system';</code></pre></div>
+          </div>
+        </div>
+
+        <div class="fw-angular" style="display:none;">
+          <div class="btn-code-block">
+            <div class="btn-code-head"><span class="btn-code-lang">TS</span><button class="btn-copy-btn" onclick="copyBtnCode('rb-import-ng',this)">Copy</button></div>
+            <div class="btn-code-body"><pre id="rb-import-ng"><code>import { GsRadioModule } from '@pelagos/design-system-angular';
+
+@NgModule({
+  imports: [GsRadioModule],
+})
+export class FeatureModule {}</code></pre></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 4 · API / Props -->
+      <div id="rb-c-api" class="btn-family-card">
+        <div class="ds-step-row">
+          <span class="ds-step-num">4</span>
+          <div class="btn-family-title" style="margin:0;">API / Props</div>
+        </div>
+
+        <div class="fw-react">
+          <div class="btn-sub-label" style="margin-bottom:12px;">RadioButton</div>
+          <table>
+            <thead><tr><th>Prop</th><th>Type</th><th>Default</th><th>Description</th></tr></thead>
+            <tbody>
+              <tr><td><code>name</code></td><td><code>string</code></td><td>—</td><td>Groups radios for mutual exclusivity. Required.</td></tr>
+              <tr><td><code>value</code></td><td><code>string</code></td><td>—</td><td>Submitted form value. Required.</td></tr>
+              <tr><td><code>label</code></td><td><code>ReactNode</code></td><td>—</td><td>Visible label text. Omit only when <code>aria-label</code> is set.</td></tr>
+              <tr><td><code>checked</code></td><td><code>boolean</code></td><td>—</td><td>Controlled selected state.</td></tr>
+              <tr><td><code>defaultChecked</code></td><td><code>boolean</code></td><td><code>false</code></td><td>Uncontrolled initial selected state.</td></tr>
+              <tr><td><code>disabled</code></td><td><code>boolean</code></td><td><code>false</code></td><td>Prevents interaction; applies disabled styling.</td></tr>
+              <tr><td><code>onChange</code></td><td><code>(e: ChangeEvent) =&gt; void</code></td><td>—</td><td>Fires when this radio is selected.</td></tr>
+              <tr><td><code>aria-label</code></td><td><code>string</code></td><td>—</td><td>Required when no visible label is provided.</td></tr>
+              <tr><td><code>className</code></td><td><code>string</code></td><td>—</td><td>Additional class names on the wrapper element.</td></tr>
+            </tbody>
+          </table>
+
+          <div class="btn-sub-label" style="margin-top:24px;margin-bottom:12px;">RadioGroup</div>
+          <table>
+            <thead><tr><th>Prop</th><th>Type</th><th>Default</th><th>Description</th></tr></thead>
+            <tbody>
+              <tr><td><code>name</code></td><td><code>string</code></td><td>—</td><td>Propagated to all child <code>RadioButton</code> instances.</td></tr>
+              <tr><td><code>value</code></td><td><code>string</code></td><td>—</td><td>Controlled selected value.</td></tr>
+              <tr><td><code>defaultValue</code></td><td><code>string</code></td><td>—</td><td>Uncontrolled initial value.</td></tr>
+              <tr><td><code>onChange</code></td><td><code>(value: string) =&gt; void</code></td><td>—</td><td>Fires when selected option changes.</td></tr>
+              <tr><td><code>legend</code></td><td><code>string</code></td><td>—</td><td>Group label rendered as <code>&lt;legend&gt;</code> for screen readers.</td></tr>
+              <tr><td><code>orientation</code></td><td><code>'vertical' | 'horizontal'</code></td><td><code>'vertical'</code></td><td>Layout direction of the group.</td></tr>
+              <tr><td><code>disabled</code></td><td><code>boolean</code></td><td><code>false</code></td><td>Disables all radios in the group.</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="fw-angular" style="display:none;">
+          <div class="btn-sub-label" style="margin-bottom:12px;">gs-radio</div>
+          <table>
+            <thead><tr><th>Input</th><th>Type</th><th>Default</th><th>Description</th></tr></thead>
+            <tbody>
+              <tr><td><code>[value]</code></td><td><code>string</code></td><td>—</td><td>Option value. Required.</td></tr>
+              <tr><td><code>[disabled]</code></td><td><code>boolean</code></td><td><code>false</code></td><td>Disables this option.</td></tr>
+            </tbody>
+          </table>
+
+          <div class="btn-sub-label" style="margin-top:24px;margin-bottom:12px;">gs-radio-group</div>
+          <table>
+            <thead><tr><th>Input / Output</th><th>Type</th><th>Default</th><th>Description</th></tr></thead>
+            <tbody>
+              <tr><td><code>[name]</code></td><td><code>string</code></td><td>—</td><td>HTML name for the group.</td></tr>
+              <tr><td><code>[(ngModel)]</code></td><td><code>string</code></td><td>—</td><td>Two-way binding for selected value.</td></tr>
+              <tr><td><code>[formControlName]</code></td><td><code>string</code></td><td>—</td><td>Reactive Forms binding.</td></tr>
+              <tr><td><code>[orientation]</code></td><td><code>'vertical' | 'horizontal'</code></td><td><code>'vertical'</code></td><td>Layout direction.</td></tr>
+              <tr><td><code>[disabled]</code></td><td><code>boolean</code></td><td><code>false</code></td><td>Disables all options.</td></tr>
+              <tr><td><code>(change)</code></td><td><code>EventEmitter&lt;string&gt;</code></td><td>—</td><td>Emits the new value on selection change.</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- 5 · Variants -->
+      <div id="rb-c-variants" class="btn-family-card">
+        <div class="ds-step-row">
+          <span class="ds-step-num">5</span>
+          <div class="btn-family-title" style="margin:0;">Variants</div>
+        </div>
+        <p class="btn-family-desc">Code examples for all visual states — with label, without label, disabled.</p>
+
+        <div class="fw-react">
+          <div class="btn-code-block">
+            <div class="btn-code-head"><span class="btn-code-lang">JSX</span><button class="btn-copy-btn" onclick="copyBtnCode('rb-variants-react',this)">Copy</button></div>
+            <div class="btn-code-body"><pre id="rb-variants-react"><code>{/* With label — unselected */}
+&lt;RadioButton name="group" value="a" label="Label" /&gt;
+
+{/* With label — selected */}
+&lt;RadioButton name="group" value="b" label="Label" defaultChecked /&gt;
+
+{/* Without label — aria-label required */}
+&lt;RadioButton name="group" value="c" aria-label="Select option C" /&gt;
+
+{/* Disabled — unselected */}
+&lt;RadioButton name="group" value="d" label="Label" disabled /&gt;
+
+{/* Disabled — selected */}
+&lt;RadioButton name="group" value="e" label="Label" defaultChecked disabled /&gt;</code></pre></div>
+          </div>
+        </div>
+
+        <div class="fw-angular" style="display:none;">
+          <div class="btn-code-block">
+            <div class="btn-code-head"><span class="btn-code-lang">HTML</span><button class="btn-copy-btn" onclick="copyBtnCode('rb-variants-ng',this)">Copy</button></div>
+            <div class="btn-code-body"><pre id="rb-variants-ng"><code>&lt;!-- With label — unselected --&gt;
+&lt;gs-radio value="a"&gt;Label&lt;/gs-radio&gt;
+
+&lt;!-- With label — selected (defaultValue on parent group) --&gt;
+&lt;gs-radio-group [defaultValue]="'b'"&gt;
+  &lt;gs-radio value="b"&gt;Label&lt;/gs-radio&gt;
+&lt;/gs-radio-group&gt;
+
+&lt;!-- Without label — aria-label required --&gt;
+&lt;gs-radio value="c" aria-label="Select option C"&gt;&lt;/gs-radio&gt;
+
+&lt;!-- Disabled —  unselected --&gt;
+&lt;gs-radio value="d" [disabled]="true"&gt;Label&lt;/gs-radio&gt;
+
+&lt;!-- Disabled — selected --&gt;
+&lt;gs-radio-group [defaultValue]="'e'" [disabled]="true"&gt;
+  &lt;gs-radio value="e"&gt;Label&lt;/gs-radio&gt;
+&lt;/gs-radio-group&gt;</code></pre></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 6 · States -->
+      <div id="rb-c-states" class="btn-family-card">
+        <div class="ds-step-row">
+          <span class="ds-step-num">6</span>
+          <div class="btn-family-title" style="margin:0;">States</div>
+        </div>
+
+        <div class="fw-react">
+          <div class="btn-code-block">
+            <div class="btn-code-head"><span class="btn-code-lang">JSX</span><button class="btn-copy-btn" onclick="copyBtnCode('rb-states-react',this)">Copy</button></div>
+            <div class="btn-code-body"><pre id="rb-states-react"><code>import { useState } from 'react';
+import { RadioGroup, RadioButton } from '@pelagos/design-system';
+
+function PlanSelector() {
+  const [plan, setPlan] = useState('starter');
+
+  return (
+    &lt;RadioGroup
+      name="plan"
+      legend="Choose your plan"
+      value={plan}
+      onChange={setPlan}
+    &gt;
+      &lt;RadioButton value="starter"    label="Starter" /&gt;
+      &lt;RadioButton value="pro"        label="Pro" /&gt;
+      &lt;RadioButton value="enterprise" label="Enterprise" /&gt;
+      &lt;RadioButton value="custom"     label="Custom (contact sales)" disabled /&gt;
+    &lt;/RadioGroup&gt;
+  );
+}</code></pre></div>
+          </div>
+        </div>
+
+        <div class="fw-angular" style="display:none;">
+          <div class="btn-code-block">
+            <div class="btn-code-head"><span class="btn-code-lang">TS</span><button class="btn-copy-btn" onclick="copyBtnCode('rb-states-ng-ts',this)">Copy</button></div>
+            <div class="btn-code-body"><pre id="rb-states-ng-ts"><code>import { Component } from '@angular/core';
+
+@Component({ selector: 'app-plan-selector', templateUrl: './plan-selector.component.html' })
+export class PlanSelectorComponent {
+  selectedPlan = 'starter';
+}</code></pre></div>
+          </div>
+          <div class="btn-code-block" style="margin-top:8px;">
+            <div class="btn-code-head"><span class="btn-code-lang">HTML</span><button class="btn-copy-btn" onclick="copyBtnCode('rb-states-ng-html',this)">Copy</button></div>
+            <div class="btn-code-body"><pre id="rb-states-ng-html"><code>&lt;gs-radio-group name="plan" legend="Choose your plan" [(ngModel)]="selectedPlan"&gt;
+  &lt;gs-radio value="starter"&gt;Starter&lt;/gs-radio&gt;
+  &lt;gs-radio value="pro"&gt;Pro&lt;/gs-radio&gt;
+  &lt;gs-radio value="enterprise"&gt;Enterprise&lt;/gs-radio&gt;
+  &lt;gs-radio value="custom" [disabled]="true"&gt;Custom (contact sales)&lt;/gs-radio&gt;
+&lt;/gs-radio-group&gt;</code></pre></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 7 · Accessibility -->
+      <div id="rb-c-a11y" class="btn-family-card">
+        <div class="ds-step-row">
+          <span class="ds-step-num">7</span>
+          <div class="btn-family-title" style="margin:0;">Accessibility</div>
+        </div>
+
+        <div class="fw-react">
+          <div class="btn-code-block">
+            <div class="btn-code-head"><span class="btn-code-lang">JSX</span><button class="btn-copy-btn" onclick="copyBtnCode('rb-a11y-react',this)">Copy</button></div>
+            <div class="btn-code-body"><pre id="rb-a11y-react"><code>{/* ✅ Always wrap in RadioGroup for fieldset + legend */}
+&lt;RadioGroup name="size" legend="Select a size"&gt;
+  &lt;RadioButton value="sm" label="Small" /&gt;
+  &lt;RadioButton value="md" label="Medium" defaultChecked /&gt;
+  &lt;RadioButton value="lg" label="Large" /&gt;
+&lt;/RadioGroup&gt;
+
+{/* ✅ No visible label — provide aria-label */}
+&lt;RadioButton
+  name="color"
+  value="blue"
+  aria-label="Blue"
+  style={{ background: 'blue' }}
+/&gt;
+
+{/* ✅ Error state */}
+&lt;RadioGroup
+  name="contact"
+  legend="Preferred contact"
+  aria-invalid={hasError}
+  aria-describedby={hasError ? 'contact-error' : undefined}
+&gt;
+  &lt;RadioButton value="email" label="Email" /&gt;
+  &lt;RadioButton value="phone" label="Phone" /&gt;
+&lt;/RadioGroup&gt;
+{hasError &amp;&amp; (
+  &lt;span id="contact-error" role="alert" style={{ color: 'red' }}&gt;
+    Please select a contact method.
+  &lt;/span&gt;
+)}</code></pre></div>
+          </div>
+        </div>
+
+        <div class="fw-angular" style="display:none;">
+          <div class="btn-code-block">
+            <div class="btn-code-head"><span class="btn-code-lang">HTML</span><button class="btn-copy-btn" onclick="copyBtnCode('rb-a11y-ng',this)">Copy</button></div>
+            <div class="btn-code-body"><pre id="rb-a11y-ng"><code>&lt;!-- ✅ Always provide legend --&gt;
+&lt;gs-radio-group name="size" legend="Select a size" [(ngModel)]="size"&gt;
+  &lt;gs-radio value="sm"&gt;Small&lt;/gs-radio&gt;
+  &lt;gs-radio value="md"&gt;Medium&lt;/gs-radio&gt;
+  &lt;gs-radio value="lg"&gt;Large&lt;/gs-radio&gt;
+&lt;/gs-radio-group&gt;
+
+&lt;!-- ✅ Error state with reactive forms --&gt;
+&lt;gs-radio-group
+  name="contact"
+  legend="Preferred contact"
+  formControlName="contact"
+  [aria-invalid]="form.get('contact')?.invalid &amp;&amp; form.get('contact')?.touched"
+  [aria-describedby]="form.get('contact')?.invalid ? 'contact-error' : null"
+&gt;
+  &lt;gs-radio value="email"&gt;Email&lt;/gs-radio&gt;
+  &lt;gs-radio value="phone"&gt;Phone&lt;/gs-radio&gt;
+&lt;/gs-radio-group&gt;
+&lt;span id="contact-error" role="alert"
+  *ngIf="form.get('contact')?.invalid &amp;&amp; form.get('contact')?.touched"&gt;
+  Please select a contact method.
+&lt;/span&gt;</code></pre></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 8 · File Structure -->
+      <div id="rb-c-files" class="btn-family-card">
+        <div class="ds-step-row">
+          <span class="ds-step-num">8</span>
+          <div class="btn-family-title" style="margin:0;">File Structure</div>
+        </div>
+
+        <div class="fw-react">
+          <div class="btn-code-block">
+            <div class="btn-code-head"><span class="btn-code-lang">tree</span><button class="btn-copy-btn" onclick="copyBtnCode('rb-files-react',this)">Copy</button></div>
+            <div class="btn-code-body"><pre id="rb-files-react"><code>src/
+└── components/
+    └── RadioButton/
+        ├── RadioButton.tsx        # Single option
+        ├── RadioButton.module.scss
+        ├── RadioGroup.tsx         # Wrapper with fieldset/legend
+        ├── RadioGroup.module.scss
+        ├── RadioButton.types.ts   # Prop interfaces
+        └── index.ts               # Re-exports</code></pre></div>
+          </div>
+        </div>
+
+        <div class="fw-angular" style="display:none;">
+          <div class="btn-code-block">
+            <div class="btn-code-head"><span class="btn-code-lang">tree</span><button class="btn-copy-btn" onclick="copyBtnCode('rb-files-ng',this)">Copy</button></div>
+            <div class="btn-code-body"><pre id="rb-files-ng"><code>src/
+└── lib/
+    └── radio/
+        ├── radio.component.ts
+        ├── radio.component.html
+        ├── radio.component.scss
+        ├── radio-group.component.ts
+        ├── radio-group.component.html
+        ├── radio-group.component.scss
+        ├── radio.module.ts
+        └── radio.types.ts</code></pre></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 9 · Usage Patterns -->
+      <div id="rb-c-patterns" class="btn-family-card">
+        <div class="ds-step-row">
+          <span class="ds-step-num">9</span>
+          <div class="btn-family-title" style="margin:0;">Usage Patterns</div>
+        </div>
+
+        <div class="btn-sub-label" style="margin-bottom:12px;">Horizontal group</div>
+        <div class="fw-react">
+          <div class="btn-code-block">
+            <div class="btn-code-head"><span class="btn-code-lang">JSX</span><button class="btn-copy-btn" onclick="copyBtnCode('rb-pat-h-react',this)">Copy</button></div>
+            <div class="btn-code-body"><pre id="rb-pat-h-react"><code>&lt;RadioGroup name="view" legend="View mode" orientation="horizontal"&gt;
+  &lt;RadioButton value="list"  label="List" defaultChecked /&gt;
+  &lt;RadioButton value="grid"  label="Grid" /&gt;
+  &lt;RadioButton value="table" label="Table" /&gt;
+&lt;/RadioGroup&gt;</code></pre></div>
+          </div>
+        </div>
+        <div class="fw-angular" style="display:none;">
+          <div class="btn-code-block">
+            <div class="btn-code-head"><span class="btn-code-lang">HTML</span><button class="btn-copy-btn" onclick="copyBtnCode('rb-pat-h-ng',this)">Copy</button></div>
+            <div class="btn-code-body"><pre id="rb-pat-h-ng"><code>&lt;gs-radio-group name="view" legend="View mode" orientation="horizontal" [(ngModel)]="viewMode"&gt;
+  &lt;gs-radio value="list"&gt;List&lt;/gs-radio&gt;
+  &lt;gs-radio value="grid"&gt;Grid&lt;/gs-radio&gt;
+  &lt;gs-radio value="table"&gt;Table&lt;/gs-radio&gt;
+&lt;/gs-radio-group&gt;</code></pre></div>
+          </div>
+        </div>
+
+        <div class="btn-sub-label" style="margin-top:20px;margin-bottom:12px;">Reactive Forms integration</div>
+        <div class="fw-react">
+          <div class="btn-code-block">
+            <div class="btn-code-head"><span class="btn-code-lang">JSX</span><button class="btn-copy-btn" onclick="copyBtnCode('rb-pat-form-react',this)">Copy</button></div>
+            <div class="btn-code-body"><pre id="rb-pat-form-react"><code>import { useForm, Controller } from 'react-hook-form';
+import { RadioGroup, RadioButton } from '@pelagos/design-system';
+
+function SettingsForm() {
+  const { control, handleSubmit } = useForm({ defaultValues: { priority: 'medium' } });
+
+  return (
+    &lt;form onSubmit={handleSubmit(console.log)}&gt;
+      &lt;Controller
+        name="priority"
+        control={control}
+        rules={{ required: 'Please select a priority.' }}
+        render={({ field, fieldState }) =&gt; (
+          &lt;RadioGroup
+            name="priority"
+            legend="Priority"
+            value={field.value}
+            onChange={field.onChange}
+            aria-invalid={!!fieldState.error}
+          &gt;
+            &lt;RadioButton value="low"    label="Low" /&gt;
+            &lt;RadioButton value="medium" label="Medium" /&gt;
+            &lt;RadioButton value="high"   label="High" /&gt;
+          &lt;/RadioGroup&gt;
+        )}
+      /&gt;
+      &lt;button type="submit"&gt;Save&lt;/button&gt;
+    &lt;/form&gt;
+  );
+}</code></pre></div>
+          </div>
+        </div>
+        <div class="fw-angular" style="display:none;">
+          <div class="btn-code-block">
+            <div class="btn-code-head"><span class="btn-code-lang">TS</span><button class="btn-copy-btn" onclick="copyBtnCode('rb-pat-form-ng-ts',this)">Copy</button></div>
+            <div class="btn-code-body"><pre id="rb-pat-form-ng-ts"><code>import { Component } from '@angular/core';
+import { FormBuilder, Validators } from '@angular/forms';
+
+@Component({ selector: 'app-settings-form', templateUrl: './settings-form.component.html' })
+export class SettingsFormComponent {
+  form = this.fb.group({
+    priority: ['medium', Validators.required],
+  });
+  constructor(private fb: FormBuilder) {}
+}</code></pre></div>
+          </div>
+          <div class="btn-code-block" style="margin-top:8px;">
+            <div class="btn-code-head"><span class="btn-code-lang">HTML</span><button class="btn-copy-btn" onclick="copyBtnCode('rb-pat-form-ng-html',this)">Copy</button></div>
+            <div class="btn-code-body"><pre id="rb-pat-form-ng-html"><code>&lt;form [formGroup]="form" (ngSubmit)="onSubmit()"&gt;
+  &lt;gs-radio-group
+    name="priority"
+    legend="Priority"
+    formControlName="priority"
+    [aria-invalid]="form.get('priority')?.invalid &amp;&amp; form.get('priority')?.touched"
+  &gt;
+    &lt;gs-radio value="low"&gt;Low&lt;/gs-radio&gt;
+    &lt;gs-radio value="medium"&gt;Medium&lt;/gs-radio&gt;
+    &lt;gs-radio value="high"&gt;High&lt;/gs-radio&gt;
+  &lt;/gs-radio-group&gt;
+  &lt;button type="submit"&gt;Save&lt;/button&gt;
+&lt;/form&gt;</code></pre></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 10 · Theming / Tokens -->
+      <div id="rb-c-tokens" class="btn-family-card">
+        <div class="ds-step-row">
+          <span class="ds-step-num">10</span>
+          <div class="btn-family-title" style="margin:0;">Theming / Tokens</div>
+        </div>
+        <p class="btn-family-desc">Radio button colors map to design tokens. Override at the theme level to reskin the component without modifying component code.</p>
+
+        <div class="fw-react">
+          <div class="btn-code-block">
+            <div class="btn-code-head"><span class="btn-code-lang">SCSS</span><button class="btn-copy-btn" onclick="copyBtnCode('rb-tokens-scss',this)">Copy</button></div>
+            <div class="btn-code-body"><pre id="rb-tokens-scss"><code>// tokens/_radio.scss
+:root {
+  --gs-rb-ring-default:     #cbd5e1;  // Unselected border
+  --gs-rb-ring-selected:    #1852fe;  // Selected border + dot
+  --gs-rb-ring-hover:       #1852fe;  // Hover border
+  --gs-rb-ring-disabled:    #e2e8f0;  // Disabled unselected
+  --gs-rb-ring-dis-checked: #cbd5e1;  // Disabled selected
+  --gs-rb-dot-color:        #1852fe;  // Inner dot
+  --gs-rb-dot-dis:          #cbd5e1;  // Disabled inner dot
+  --gs-rb-label-color:      #10172a;  // Label text
+  --gs-rb-label-disabled:   #cbd5e1;  // Disabled label
+  --gs-rb-halo:             rgba(24, 82, 254, 0.08); // Hover halo
+  --gs-rb-focus-ring:       #5fa5f9;  // Focus indicator
+}</code></pre></div>
+          </div>
+        </div>
+
+        <div class="fw-angular" style="display:none;">
+          <div class="btn-code-block">
+            <div class="btn-code-head"><span class="btn-code-lang">SCSS</span><button class="btn-copy-btn" onclick="copyBtnCode('rb-tokens-scss-ng',this)">Copy</button></div>
+            <div class="btn-code-body"><pre id="rb-tokens-scss-ng"><code>// styles/themes/_radio.scss
+:root {
+  --gs-rb-ring-default:     #cbd5e1;
+  --gs-rb-ring-selected:    #1852fe;
+  --gs-rb-ring-hover:       #1852fe;
+  --gs-rb-ring-disabled:    #e2e8f0;
+  --gs-rb-ring-dis-checked: #cbd5e1;
+  --gs-rb-dot-color:        #1852fe;
+  --gs-rb-dot-dis:          #cbd5e1;
+  --gs-rb-label-color:      #10172a;
+  --gs-rb-label-disabled:   #cbd5e1;
+  --gs-rb-halo:             rgba(24, 82, 254, 0.08);
+  --gs-rb-focus-ring:       #5fa5f9;
+}</code></pre></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 11 · Full Working Example -->
+      <div id="rb-c-example" class="btn-family-card">
+        <div class="ds-step-row">
+          <span class="ds-step-num">11</span>
+          <div class="btn-family-title" style="margin:0;">Full Working Example</div>
+        </div>
+        <p class="btn-family-desc">Complete, production-ready component with validation, accessibility, and all states.</p>
+
+        <div class="fw-react">
+          <div class="btn-code-block">
+            <div class="btn-code-head"><span class="btn-code-lang">JSX</span><button class="btn-copy-btn" onclick="copyBtnCode('rb-full-react',this)">Copy</button></div>
+            <div class="btn-code-body"><pre id="rb-full-react"><code>import { useState } from 'react';
+import { RadioGroup, RadioButton } from '@pelagos/design-system';
+
+const PLANS = [
+  { value: 'starter',    label: 'Starter',    description: 'Up to 5 users' },
+  { value: 'pro',        label: 'Pro',         description: 'Up to 50 users' },
+  { value: 'enterprise', label: 'Enterprise',  description: 'Unlimited users' },
+  { value: 'custom',     label: 'Custom',      description: 'Contact sales', disabled: true },
+];
+
+export function PlanPickerForm() {
+  const [plan, setPlan]   = useState('pro');
+  const [error, setError] = useState('');
+
+  function handleSubmit(e) {
+    e.preventDefault();
+    if (!plan) { setError('Please select a plan.'); return; }
+    setError('');
+    console.log('Selected plan:', plan);
+  }
+
+  return (
+    &lt;form onSubmit={handleSubmit} noValidate&gt;
+      &lt;RadioGroup
+        name="plan"
+        legend="Select a plan"
+        value={plan}
+        onChange={(v) =&gt; { setPlan(v); setError(''); }}
+        aria-invalid={!!error}
+        aria-describedby={error ? 'plan-error' : undefined}
+      &gt;
+        {PLANS.map((p) =&gt; (
+          &lt;RadioButton
+            key={p.value}
+            value={p.value}
+            label={p.label}
+            disabled={p.disabled}
+          /&gt;
+        ))}
+      &lt;/RadioGroup&gt;
+
+      {error &amp;&amp; (
+        &lt;span id="plan-error" role="alert" style={{ color: '#dc2626', fontSize: 13 }}&gt;
+          {error}
+        &lt;/span&gt;
+      )}
+
+      &lt;button type="submit" style={{ marginTop: 16 }}&gt;Confirm plan&lt;/button&gt;
+    &lt;/form&gt;
+  );
+}</code></pre></div>
+          </div>
+        </div>
+
+        <div class="fw-angular" style="display:none;">
+          <div class="btn-code-block">
+            <div class="btn-code-head"><span class="btn-code-lang">TS</span><button class="btn-copy-btn" onclick="copyBtnCode('rb-full-ng-ts',this)">Copy</button></div>
+            <div class="btn-code-body"><pre id="rb-full-ng-ts"><code>import { Component } from '@angular/core';
+import { FormBuilder, Validators, ReactiveFormsModule } from '@angular/forms';
+import { GsRadioModule } from '@pelagos/design-system-angular';
+
+@Component({
+  selector: 'app-plan-picker',
+  templateUrl: './plan-picker.component.html',
+  standalone: true,
+  imports: [ReactiveFormsModule, GsRadioModule],
+})
+export class PlanPickerComponent {
+  plans = [
+    { value: 'starter',    label: 'Starter',   disabled: false },
+    { value: 'pro',        label: 'Pro',        disabled: false },
+    { value: 'enterprise', label: 'Enterprise', disabled: false },
+    { value: 'custom',     label: 'Custom',     disabled: true },
+  ];
+
+  form = this.fb.group({
+    plan: ['pro', Validators.required],
+  });
+
+  constructor(private fb: FormBuilder) {}
+
+  get planError(): boolean {
+    const ctrl = this.form.get('plan');
+    return !!ctrl?.invalid &amp;&amp; !!ctrl?.touched;
+  }
+
+  onSubmit() {
+    this.form.markAllAsTouched();
+    if (this.form.invalid) return;
+    console.log('Selected plan:', this.form.value.plan);
+  }
+}</code></pre></div>
+          </div>
+          <div class="btn-code-block" style="margin-top:8px;">
+            <div class="btn-code-head"><span class="btn-code-lang">HTML</span><button class="btn-copy-btn" onclick="copyBtnCode('rb-full-ng-html',this)">Copy</button></div>
+            <div class="btn-code-body"><pre id="rb-full-ng-html"><code>&lt;form [formGroup]="form" (ngSubmit)="onSubmit()" novalidate&gt;
+  &lt;gs-radio-group
+    name="plan"
+    legend="Select a plan"
+    formControlName="plan"
+    [aria-invalid]="planError"
+    [aria-describedby]="planError ? 'plan-error' : null"
+  &gt;
+    &lt;gs-radio
+      *ngFor="let p of plans"
+      [value]="p.value"
+      [disabled]="p.disabled"
+    &gt;{{ p.label }}&lt;/gs-radio&gt;
+  &lt;/gs-radio-group&gt;
+
+  &lt;span id="plan-error" role="alert" *ngIf="planError"
+    style="color:#dc2626;font-size:13px;"&gt;
+    Please select a plan.
+  &lt;/span&gt;
+
+  &lt;button type="submit"&gt;Confirm plan&lt;/button&gt;
+&lt;/form&gt;</code></pre></div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /code-tab-main -->
+
+    <!-- Code Quick-nav -->
+    <div class="code-tab-qnav">
+      <div class="code-qnav-inner">
+        <p class="code-qnav-title">On This Page</p>
+        <ul class="code-qnav-list">
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('rb-c-overview')">1 · Overview</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('rb-c-install')">2 · Install</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('rb-c-imports')">3 · Import</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('rb-c-api')">4 · API / Props</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('rb-c-variants')">5 · Variants</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('rb-c-states')">6 · States</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('rb-c-a11y')">7 · Accessibility</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('rb-c-files')">8 · File Structure</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('rb-c-patterns')">9 · Usage Patterns</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('rb-c-tokens')">10 · Theming</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('rb-c-example')">11 · Full Example</button></li>
+        </ul>
+      </div>
+    </div>
+
+  </div><!-- /code-tab-layout -->
+</div><!-- /code tab -->
+
+
+<!-- ═══════════════════════════════ USAGE TAB ═══════════════════════════════ -->
+<div id="rb-tab-usage" class="btn-tab-pane rb-tab-pane">
+  <div class="code-tab-layout">
+    <div class="code-tab-main">
+
+      <!-- When to Use -->
+      <div id="rb-u-when" class="btn-family-card">
+        <div class="btn-family-title">When to Use</div>
+        <ul class="btn-usage-list">
+          <li><strong>Single selection from a group</strong> — When the user must pick exactly one option (billing period, shipping method, account type). The mutual exclusivity of radios communicates that only one value is valid.</li>
+          <li><strong>2–7 visible options</strong> — When the full set fits on screen without scrolling. Fewer than 2 options is trivial (use a toggle); more than 7 should become a Select/Dropdown for scannability.</li>
+          <li><strong>Comparing options side-by-side</strong> — Settings panels where all choices must be visible simultaneously so the user can compare before deciding.</li>
+          <li><strong>Form fields requiring explicit commitment</strong> — Role selection, plan selection, gender/title fields, scheduling recurrence. Radio buttons make it clear that the form cannot be submitted until one is chosen.</li>
+          <li><strong>Filters with mutually exclusive values</strong> — "Show: All / Active / Archived" — only one filter state applies at a time.</li>
+        </ul>
+      </div>
+
+      <!-- When Not to Use -->
+      <div id="rb-u-when-not" class="btn-family-card">
+        <div class="btn-family-title">When Not to Use</div>
+        <ul class="btn-usage-list">
+          <li><strong>Multi-select scenarios</strong> — Use <button onclick="navigate('prim-checkbox')" class="btn-inline-link">Checkbox</button> instead. If the user can pick more than one option simultaneously, checkboxes communicate that independence.</li>
+          <li><strong>On/Off toggle</strong> — Use <button onclick="navigate('prim-toggles')" class="btn-inline-link">Toggle</button> instead. Two radios labeled "On" and "Off" is an anti-pattern; a toggle communicates binary switching and immediate effect more directly.</li>
+          <li><strong>Long option lists (8+)</strong> — Use a Select / Dropdown instead. Vertical lists of many radios push content down the page and make scanning difficult.</li>
+          <li><strong>Already-known default with rare change</strong> — If one option is correct 95% of the time and users rarely override it, consider a default setting with an explicit override control rather than presenting all options as equal.</li>
+          <li><strong>Inline in dense table cells</strong> — Use Checkbox for row selection in tables. Radios in a table column suggest only one row can be selected at a time, which may not be the intent.</li>
+        </ul>
+      </div>
+
+      <!-- Content Hierarchy -->
+      <div id="rb-u-hierarchy" class="btn-family-card">
+        <div class="btn-family-title">Content Hierarchy</div>
+
+        <div class="btn-sub-label">Label Writing Rules</div>
+        <ul class="btn-usage-list">
+          <li><strong>Use a noun or noun phrase</strong> — "Monthly", "Annual", "Enterprise". Avoid verb forms since selecting a radio is a choice, not an action.</li>
+          <li><strong>Sentence case</strong> — "Pay annually" not "Pay Annually". Exception: proper nouns and acronyms.</li>
+          <li><strong>Keep labels parallel</strong> — All options in a group should follow the same grammatical form. Mix of "Monthly billing" and "Annual" is inconsistent.</li>
+          <li><strong>Short and scannable</strong> — 1–4 words ideal. Use a description line below the label (helper text) for additional context, not the label itself.</li>
+          <li><strong>No trailing punctuation</strong> — Labels don't end with periods or colons.</li>
+        </ul>
+
+        <div class="btn-sub-label" style="margin-top:16px;">Number of Options</div>
+        <table>
+          <thead><tr><th>Count</th><th>Recommendation</th><th>Rationale</th></tr></thead>
+          <tbody>
+            <tr><td>1</td><td>Don't use a radio</td><td>A single option is a checkbox or a pre-filled form value.</td></tr>
+            <tr><td>2</td><td>Radio or Toggle</td><td>Two options are fine; use Toggle if the action is binary and immediate.</td></tr>
+            <tr><td>3–5</td><td>Radio (vertical)</td><td>Optimal for scanning; all options visible without effort.</td></tr>
+            <tr><td>6–7</td><td>Radio (vertical)</td><td>Acceptable; consider grouping related options.</td></tr>
+            <tr><td>8+</td><td>Select / Dropdown</td><td>Long lists are hard to scan; use a searchable dropdown.</td></tr>
+          </tbody>
+        </table>
+
+        <div class="btn-sub-label" style="margin-top:16px;">When Option Text Is Long</div>
+        <p class="btn-family-desc">For options that include a description line (e.g. pricing tiers), align the ring to the top of the first text line with <code>align-items: flex-start</code> and add <code>margin-top: 2px</code> to the ring for optical alignment with the cap-height.</p>
+      </div>
+
+      <!-- Common Mistakes -->
+      <div id="rb-u-mistakes" class="btn-family-card">
+        <div class="btn-family-title">Common Mistakes</div>
+
+        <div class="btn-mistake-list">
+
+          <div class="btn-mistake-item">
+            <div class="btn-mistake-label">❌ Mistake</div>
+            <p>Using different <code>name</code> attributes across radios that are logically a group — making multiple radios appear selected simultaneously.</p>
+            <div class="btn-mistake-fix-label">✅ Fix</div>
+            <p>All options in a group must share the same <code>name</code> attribute. Use <code>RadioGroup</code> to enforce this automatically.</p>
+          </div>
+
+          <div class="btn-mistake-item">
+            <div class="btn-mistake-label">❌ Mistake</div>
+            <p>Using two radios for a binary Yes/No or On/Off choice.</p>
+            <div class="btn-mistake-fix-label">✅ Fix</div>
+            <p>Use a Toggle for On/Off (immediate effect) or a Checkbox for Yes/No consent declarations. Radios imply the existence of more than two alternatives.</p>
+          </div>
+
+          <div class="btn-mistake-item">
+            <div class="btn-mistake-label">❌ Mistake</div>
+            <p>Omitting a <code>&lt;fieldset&gt;</code> / <code>&lt;legend&gt;</code> around the group — screen readers announce each option without knowing what it belongs to.</p>
+            <div class="btn-mistake-fix-label">✅ Fix</div>
+            <p>Always wrap groups in a <code>RadioGroup</code> (which renders <code>&lt;fieldset&gt;</code> + <code>&lt;legend&gt;</code>). The legend provides the group label announced before each option.</p>
+          </div>
+
+          <div class="btn-mistake-item">
+            <div class="btn-mistake-label">❌ Mistake</div>
+            <p>Showing no pre-selected option when one default is clearly correct, forcing users to always make an explicit choice before proceeding.</p>
+            <div class="btn-mistake-fix-label">✅ Fix</div>
+            <p>Set a sensible <code>defaultChecked</code> / <code>defaultValue</code> for the most common choice. Users who agree with the default skip it; others change it consciously.</p>
+          </div>
+
+          <div class="btn-mistake-item">
+            <div class="btn-mistake-label">❌ Mistake</div>
+            <p>Using a horizontal layout for long labels — options wrap unpredictably and become hard to associate with their radio.</p>
+            <div class="btn-mistake-fix-label">✅ Fix</div>
+            <p>Use horizontal layout only when all labels are ≤3 words and there are ≤4 options. Otherwise, default to vertical stacking.</p>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- References -->
+      <div id="rb-u-refs" class="btn-family-card">
+        <div class="btn-family-title">References</div>
+        <ul class="btn-related-list">
+          <li><a href="https://www.figma.com/design/TOLfBpRePgynqwvDVp6fg3/Design-System?node-id=6163-663" target="_blank" rel="noopener">Figma — Radio Button component frame</a></li>
+          <li><a href="https://www.nngroup.com/articles/checkboxes-vs-radio-buttons/" target="_blank" rel="noopener">Nielsen Norman Group — Checkboxes vs. Radio Buttons</a></li>
+          <li><a href="https://www.w3.org/WAI/ARIA/apg/patterns/radio/" target="_blank" rel="noopener">ARIA Authoring Practices — Radio Group Pattern</a></li>
+          <li><a href="https://www.w3.org/WAI/WCAG21/Understanding/labels-or-instructions.html" target="_blank" rel="noopener">WCAG 2.1 — 3.3.2 Labels or Instructions</a></li>
+        </ul>
+      </div>
+
+    </div><!-- /code-tab-main -->
+
+    <!-- Usage Quick-nav -->
+    <div class="code-tab-qnav">
+      <div class="code-qnav-inner">
+        <p class="code-qnav-title">Quick Access</p>
+        <ul class="code-qnav-list">
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('rb-u-when')">When to Use</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('rb-u-when-not')">When Not to Use</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('rb-u-hierarchy')">Content Hierarchy</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('rb-u-mistakes')">Common Mistakes</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('rb-u-refs')">References</button></li>
+        </ul>
+      </div>
+    </div>
+
+  </div><!-- /code-tab-layout -->
+</div><!-- /usage tab -->

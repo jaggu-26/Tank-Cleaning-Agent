@@ -1,0 +1,533 @@
+<!-- GET STARTED — Pelagos Design System -->
+<style>
+  /* btn-tab-btn handles all tab styling — gap:6px added globally to styles.css */
+
+  /* Steps */
+  .gs-step { display: flex; gap: 20px; margin-bottom: 32px; }
+  .gs-step-num {
+    width: 32px; height: 32px; border-radius: 50%;
+    background: var(--color-brand); color: #fff;
+    font-family: var(--prim-font-primary); font-size: 14px;
+    font-weight: 700; display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0; margin-top: 2px;
+  }
+  .gs-step-body { flex: 1; }
+  .gs-step-body h3 { font-family: var(--prim-font-primary); font-size: var(--prim-font-size-lg); font-weight: var(--prim-font-weight-semibold); color: var(--color-text-default); margin: 0 0 6px; }
+  .gs-step-body p { font-family: var(--prim-font-primary); font-size: var(--prim-font-size-md); color: var(--color-text-secondary); line-height: 1.65; margin: 0 0 12px; }
+  .gs-step-body code { font-family: var(--prim-font-mono, monospace); font-size: 13px; background: var(--prim-grey-50); padding: 1px 5px; border-radius: 4px; color: var(--color-brand); }
+
+  /* Code blocks */
+  .gs-code {
+    background: var(--prim-grey-900, #030712); border-radius: var(--radius-md);
+    padding: 16px 20px; margin: 12px 0; overflow-x: auto;
+    font-family: var(--prim-font-mono, 'SF Mono', monospace); font-size: 13px; line-height: 1.7;
+    color: #e2e8f0; position: relative;
+  }
+  .gs-code .c { color: #64748b; } /* comment */
+  .gs-code .k { color: #93c5fd; } /* keyword */
+  .gs-code .s { color: #86efac; } /* string */
+  .gs-code .v { color: #fde68a; } /* value */
+
+  /* Tip / callout boxes */
+  .gs-tip {
+    display: flex; gap: 12px; padding: 14px 16px;
+    border-radius: var(--radius-md); margin: 16px 0;
+    font-family: var(--prim-font-primary); font-size: 13px; line-height: 1.6;
+  }
+  .gs-tip--blue { background: var(--prim-blue-10, #eef6ff); color: var(--prim-blue-800, #1f3a8a); }
+  .gs-tip--green { background: var(--prim-green-10, #e9f9ef); color: var(--prim-green-800, #0e4f26); }
+  .gs-tip--yellow { background: var(--prim-yellow-10, #fefce8); color: var(--prim-yellow-800, #713e11); }
+  .gs-tip svg { flex-shrink: 0; margin-top: 1px; }
+
+  /* Prompt example cards */
+  .gs-prompt-card {
+    border: 1px solid var(--color-border-default); border-radius: var(--radius-md);
+    padding: 14px 16px; margin-bottom: 10px; background: var(--color-surface-default);
+  }
+  .gs-prompt-label {
+    font-size: 11px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 0.06em; color: var(--color-text-placeholder); margin-bottom: 6px;
+  }
+  .gs-prompt-text {
+    font-family: var(--prim-font-primary); font-size: 14px;
+    color: var(--color-text-default); line-height: 1.55;
+  }
+  .gs-prompt-text em { color: var(--color-brand); font-style: normal; font-weight: 600; }
+
+  /* Divider */
+  .gs-divider { height: 1px; background: var(--color-border-default); margin: 36px 0; }
+
+  /* Feature grid */
+  .gs-feat-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 14px; margin-top: 16px; }
+  .gs-feat-card {
+    border: 1px solid var(--color-border-default); border-radius: var(--radius-md);
+    padding: 18px 16px; background: var(--color-surface-default);
+  }
+  .gs-feat-icon { font-size: 22px; margin-bottom: 10px; }
+  .gs-feat-title { font-family: var(--prim-font-primary); font-size: 14px; font-weight: 700; color: var(--color-text-default); margin-bottom: 4px; }
+  .gs-feat-desc { font-family: var(--prim-font-primary); font-size: 13px; color: var(--color-text-secondary); line-height: 1.55; }
+</style>
+
+<!-- BANNER -->
+<div class="page-header">
+  <h1 class="ds-hero-title">Get Started</h1>
+</div>
+
+<!-- ROLE TABS -->
+<div class="btn-tab-bar" style="padding:0 48px;">
+  <button class="btn-tab-btn gs-start-tab-btn active" data-tab="designer" onclick="switchGetStartedTab('designer')">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.554C21.965 6.012 17.461 2 12 2z"/><circle cx="6.5" cy="11.5" r=".5" fill="currentColor"/><circle cx="9.5" cy="7.5" r=".5" fill="currentColor"/><circle cx="14.5" cy="7.5" r=".5" fill="currentColor"/><circle cx="17.5" cy="11.5" r=".5" fill="currentColor"/></svg>
+    Designers
+  </button>
+  <button class="btn-tab-btn gs-start-tab-btn" data-tab="developer" onclick="switchGetStartedTab('developer')">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+    Developers
+  </button>
+</div>
+
+<!-- ═══ DESIGNER TAB ═══════════════════════════════════════════════ -->
+<div id="gs-start-tab-designer" class="btn-tab-pane gs-start-tab-pane active">
+  <div class="code-tab-layout">
+    <div class="code-tab-main">
+
+      <div class="gs-tip gs-tip--blue" style="margin-bottom:28px;">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        <div>Designers use <strong>Claude desktop (Cowork mode)</strong> — no terminal required. Claude reads and edits component files directly, previews in the browser, then commits and pushes to GitHub for you.</div>
+      </div>
+
+      <!-- ── SECTION: Setup ── -->
+      <div id="gs-d-setup" class="btn-family-card">
+        <div class="btn-family-title">1 · Setup Claude with the design system</div>
+        <p class="btn-family-desc">Connect Claude to the repository once. After that, every design task — updating components, adding Figma designs, rebuilding the preview — is a single conversation.</p>
+
+        <div class="gs-step">
+          <div class="gs-step-num">1</div>
+          <div class="gs-step-body">
+            <h3>Install Claude desktop</h3>
+            <p>Download the Claude desktop app from <strong>claude.ai/download</strong>. Sign in with your Anthropic account. Cowork mode is enabled by default.</p>
+          </div>
+        </div>
+
+        <div class="gs-step">
+          <div class="gs-step-num">2</div>
+          <div class="gs-step-body">
+            <h3>Open the design system folder</h3>
+            <p>In Claude, click the folder icon or type <code>+</code> and select <strong>Choose workspace folder</strong>. Navigate to the cloned <code>pelagos-design-system</code> folder and confirm. Claude now has read/write access to all component files.</p>
+            <div class="gs-tip gs-tip--yellow">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+              <div>If you haven't cloned the repo yet, ask Claude: <em>"Clone the Pelagos design system from GitHub: [repo-url]"</em> — it will handle Git setup for you.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="gs-step">
+          <div class="gs-step-num">3</div>
+          <div class="gs-step-body">
+            <h3>Start the preview server</h3>
+            <p>Tell Claude to start the local server. It runs automatically, but if you need to restart:</p>
+            <div class="gs-code"><span class="c"># Claude will run this for you — just ask it to "start the server"</span>
+node .claude/serve.js</div>
+            <p>Then open <code>http://localhost:3456</code> in your browser to preview all changes live.</p>
+          </div>
+        </div>
+
+        <div class="gs-step">
+          <div class="gs-step-num">4</div>
+          <div class="gs-step-body">
+            <h3>Configure Git identity (one-time)</h3>
+            <p>Ask Claude to configure your Git identity so commits show your name:</p>
+            <div class="gs-code"><span class="c"># Tell Claude: "Set up my Git identity"</span>
+git config --global user.name  <span class="s">"Your Name"</span>
+git config --global user.email <span class="s">"you@geoserves.com"</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── SECTION: Daily workflow ── -->
+      <div id="gs-d-workflow" class="btn-family-card">
+        <div class="btn-family-title">2 · Daily workflow</div>
+        <p class="btn-family-desc">Every change follows the same loop — pull latest → describe what you want → review in browser → push. Claude handles everything in between.</p>
+
+        <div class="gs-step">
+          <div class="gs-step-num">1</div>
+          <div class="gs-step-body">
+            <h3>Always pull before starting work</h3>
+            <p>Ask Claude to pull the latest changes so you're never working on stale files.</p>
+            <div class="gs-prompt-card">
+              <div class="gs-prompt-label">Say to Claude</div>
+              <div class="gs-prompt-text">"Pull the latest changes from the main branch before we start."</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="gs-step">
+          <div class="gs-step-num">2</div>
+          <div class="gs-step-body">
+            <h3>Describe your task</h3>
+            <p>Tell Claude exactly what you want to change. The more specific you are, the better the result. You can reference Figma URLs, paste screenshots, or point to existing components.</p>
+
+            <div class="gs-prompt-card">
+              <div class="gs-prompt-label">Update from Figma</div>
+              <div class="gs-prompt-text">"Implement this design from Figma: <em>@https://figma.com/design/TOLfBpRePgynqwvDVp6fg3/...?node-id=…</em> — update the Accordion component to match the hover and expanded states."</div>
+            </div>
+            <div class="gs-prompt-card">
+              <div class="gs-prompt-label">Fix a specific state</div>
+              <div class="gs-prompt-text">"The hover state on the Popover is not working when the panel is open. Fix it — hover should show <em>blue/10 (#eef6ff)</em> in both collapsed and expanded states."</div>
+            </div>
+            <div class="gs-prompt-card">
+              <div class="gs-prompt-label">Add a new component</div>
+              <div class="gs-prompt-text">"Use the HOW_TO_ADD_COMPONENT.md guidelines to add a new <em>Tooltip</em> component page with Design, Code, and Usage tabs. Use our existing gs-btn and gs-popover classes in previews."</div>
+            </div>
+            <div class="gs-prompt-card">
+              <div class="gs-prompt-label">Bulk update</div>
+              <div class="gs-prompt-text">"Add an 'On This Page' quick-nav sidebar to the <em>Buttons, Text Fields, and Toasts</em> pages — all tabs."</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="gs-step">
+          <div class="gs-step-num">3</div>
+          <div class="gs-step-body">
+            <h3>Review in the browser</h3>
+            <p>Claude rebuilds the bundle automatically after each change. Refresh <code>localhost:3456</code> and navigate to the component you updated. If something looks wrong, describe the issue and Claude will fix it.</p>
+            <div class="gs-tip gs-tip--green">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
+              <div>If the browser shows old content, ask Claude: <em>"Rebuild the bundle"</em>. It runs <code>python3 rebuild-bundle.py</code> which repacks all page HTML into <code>bundle.js</code>.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="gs-step">
+          <div class="gs-step-num">4</div>
+          <div class="gs-step-body">
+            <h3>Commit and push</h3>
+            <p>When you're happy with the changes, ask Claude to commit and push.</p>
+            <div class="gs-prompt-card">
+              <div class="gs-prompt-label">Say to Claude</div>
+              <div class="gs-prompt-text">"Looks good. Commit these changes with the message: <em>feat(accordion): add Carbon animation + fix hover/expanded states</em> and push to main."</div>
+            </div>
+            <div class="gs-code"><span class="c"># Claude runs this sequence for you</span>
+git add .
+git commit -m <span class="s">"feat(accordion): add Carbon animation + fix hover/expanded states"</span>
+git push origin main</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── SECTION: Figma workflow ── -->
+      <div id="gs-d-figma" class="btn-family-card">
+        <div class="btn-family-title">3 · Working with Figma</div>
+        <p class="btn-family-desc">Claude can read Figma designs directly from a URL. Paste the dev-mode link and Claude extracts colours, spacing, fonts, and component structure automatically.</p>
+
+        <div class="gs-step">
+          <div class="gs-step-num">1</div>
+          <div class="gs-step-body">
+            <h3>Get the Figma dev-mode URL</h3>
+            <p>In Figma, right-click a frame → <strong>Copy link</strong>. The URL should contain a <code>node-id</code> parameter. Share this URL directly in your Claude message.</p>
+            <div class="gs-code"><span class="c"># Example Figma URL format</span>
+https://figma.com/design/<span class="v">TOLfBpRePgynqwvDVp6fg3</span>/Design-System<span class="k">?node-id=</span><span class="s">12983-50855</span></div>
+          </div>
+        </div>
+
+        <div class="gs-step">
+          <div class="gs-step-num">2</div>
+          <div class="gs-step-body">
+            <h3>Reference it in your prompt</h3>
+            <p>Use the <code>@url</code> syntax or just paste the URL inline. Claude fetches the design context, screenshots, and token values.</p>
+            <div class="gs-prompt-card">
+              <div class="gs-prompt-label">Example prompt</div>
+              <div class="gs-prompt-text">"Implement this design from Figma — use the illustrations from <em>Assets/illustrations/</em> for the confirmation modal variants: <em>@https://figma.com/design/TOLfBpRePgynqwvDVp6fg3/Design-System?node-id=11463-3626</em>"</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="gs-step">
+          <div class="gs-step-num">3</div>
+          <div class="gs-step-body">
+            <h3>Specify context for better results</h3>
+            <p>Tell Claude which framework, which file to update, and any constraints.</p>
+            <div class="gs-prompt-card">
+              <div class="gs-prompt-label">Effective Figma prompt</div>
+              <div class="gs-prompt-text">"Implement this from Figma <em>[URL]</em>. Update <em>panel-popover.html</em>. Use <em>gs-btn gs-btn-secondary gs-btn-sm</em> for triggers, <em>gs-pop-item</em> for menu rows. Min-width 200px. Show both on-click and on-hover scenarios."</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── SECTION: Tips ── -->
+      <div id="gs-d-tips" class="btn-family-card">
+        <div class="btn-family-title">4 · Prompting tips for best results</div>
+        <p class="btn-family-desc">Claude works best when you give it specific constraints and reference the existing system. These patterns get consistent, high-quality output.</p>
+
+        <div class="gs-feat-grid">
+          <div class="gs-feat-card">
+            <div class="gs-feat-icon">📎</div>
+            <div class="gs-feat-title">Reference the MD files</div>
+            <div class="gs-feat-desc">The system has HOW_TO_ADD_COMPONENT.md, DS_STRUCTURE_CODE.md, and others. Tell Claude to follow them: <em>"Use the HOW_TO_ADD_COMPONENT.md spec."</em></div>
+          </div>
+          <div class="gs-feat-card">
+            <div class="gs-feat-icon">🎯</div>
+            <div class="gs-feat-title">Be specific about scope</div>
+            <div class="gs-feat-desc">Instead of "fix the modal", say "fix the expanded state hover on the accordion header — should be blue/10 not brand-subtle." Narrow scope = fewer mistakes.</div>
+          </div>
+          <div class="gs-feat-card">
+            <div class="gs-feat-icon">🔁</div>
+            <div class="gs-feat-title">Iterate in the browser</div>
+            <div class="gs-feat-desc">After each change, check the browser and describe what's still off. Claude sees the code — describe the visual problem and it traces back the CSS cause.</div>
+          </div>
+          <div class="gs-feat-card">
+            <div class="gs-feat-icon">📸</div>
+            <div class="gs-feat-title">Paste screenshots</div>
+            <div class="gs-feat-desc">Claude can see images. Paste a screenshot of the Figma design or a browser screenshot of what's wrong. Combined with "Fix this" it's very accurate.</div>
+          </div>
+          <div class="gs-feat-card">
+            <div class="gs-feat-icon">🧩</div>
+            <div class="gs-feat-title">Use existing classes</div>
+            <div class="gs-feat-desc">Say <em>"use gs-btn gs-btn-primary for the trigger"</em> instead of custom markup. Consistency keeps the system coherent across all component demos.</div>
+          </div>
+          <div class="gs-feat-card">
+            <div class="gs-feat-icon">🔒</div>
+            <div class="gs-feat-title">Always rebuild + commit</div>
+            <div class="gs-feat-desc">Changes to HTML pages don't show until the bundle is rebuilt. Ask Claude: <em>"Rebuild the bundle and commit."</em> It does both in one step.</div>
+          </div>
+        </div>
+
+        <div class="gs-divider"></div>
+        <div class="btn-sub-label">Git commit message conventions</div>
+        <div class="gs-code"><span class="c"># Use conventional commits — Claude follows this format if you ask</span>
+<span class="k">feat</span>(<span class="v">component</span>):  add new feature
+<span class="k">fix</span>(<span class="v">component</span>):   fix a bug or visual issue
+<span class="k">chore</span>:            rebuild bundle, update docs
+<span class="k">style</span>(<span class="v">component</span>):  CSS-only change, no logic
+<span class="k">refactor</span>:         restructure without changing behaviour
+
+<span class="c"># Example</span>
+git commit -m <span class="s">"feat(popover): add Carbon animation + sliding pill for segmented button"</span></div>
+      </div>
+
+      <!-- ── SECTION: Git reference ── -->
+      <div id="gs-d-git" class="btn-family-card">
+        <div class="btn-family-title">5 · Git quick reference</div>
+        <p class="btn-family-desc">Ask Claude to run any of these. You never need to open a terminal.</p>
+        <div class="gs-code"><span class="c"># Pull latest before starting work</span>
+git pull origin main
+
+<span class="c"># Check what changed</span>
+git status
+git diff
+
+<span class="c"># Stage, commit, and push in one go</span>
+git add .
+git commit -m <span class="s">"your message"</span>
+git push origin main
+
+<span class="c"># Create a branch for experimental work</span>
+git checkout -b <span class="s">feat/new-component</span>
+
+<span class="c"># Rebuild the bundle after any HTML page edit</span>
+python3 rebuild-bundle.py</div>
+      </div>
+
+    </div><!-- /code-tab-main -->
+
+    <div class="code-tab-qnav">
+      <div class="code-qnav-inner">
+        <p class="code-qnav-title">On This Page</p>
+        <ul class="code-qnav-list">
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('gs-d-setup')">1 · Setup Claude</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('gs-d-workflow')">2 · Daily workflow</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('gs-d-figma')">3 · Working with Figma</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('gs-d-tips')">4 · Prompting tips</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('gs-d-git')">5 · Git reference</button></li>
+        </ul>
+      </div>
+    </div>
+
+  </div><!-- /code-tab-layout -->
+</div><!-- /designer tab -->
+
+<!-- ═══ DEVELOPER TAB ══════════════════════════════════════════════ -->
+<div id="gs-start-tab-developer" class="btn-tab-pane gs-start-tab-pane">
+  <div class="code-tab-layout">
+    <div class="code-tab-main">
+
+      <div class="gs-tip gs-tip--blue" style="margin-bottom:28px;">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        <div>After each design system update the changes are pushed to GitHub. Pull the latest changes and re-import the stylesheet to pick up new tokens or component patterns.</div>
+      </div>
+
+      <!-- ── SECTION: Install ── -->
+      <div id="gs-v-install" class="btn-family-card">
+        <div class="btn-family-title">1 · Get the source</div>
+        <p class="btn-family-desc">Clone the repository or add it as a git dependency. GitHub links will be provided once the repository is published.</p>
+        <div class="gs-code"><span class="c"># Clone the repository</span>
+git clone <span class="s">https://github.com/your-org/pelagos-design-system.git</span>
+
+<span class="c"># Or add as a git dependency in package.json</span>
+<span class="s">"@geoserve/pelagos"</span>: <span class="s">"github:your-org/pelagos-design-system"</span>
+
+<span class="c"># Install</span>
+npm install</div>
+      </div>
+
+      <!-- ── SECTION: Tokens ── -->
+      <div id="gs-v-tokens" class="btn-family-card">
+        <div class="btn-family-title">2 · Import the token stylesheet</div>
+        <p class="btn-family-desc">Include <code>tokens.css</code> once at your application root. This registers all CSS custom properties globally — colours, spacing, radius, shadows, and typography. See <strong>Design Tokens</strong> for the full reference.</p>
+        <div class="gs-code"><span class="c">/* In your global CSS entry (e.g. index.css or App.css) */</span>
+<span class="k">@import</span> <span class="s">'./pelagos-design-system/dist/tokens.css'</span>;
+
+<span class="c">/* Or in your JS entry point (React, Vue, Angular…) */</span>
+<span class="k">import</span> <span class="s">'@geoserve/pelagos/dist/tokens.css'</span>;</div>
+      </div>
+
+      <!-- ── SECTION: Use tokens ── -->
+      <div id="gs-v-use" class="btn-family-card">
+        <div class="btn-family-title">3 · Use tokens in your styles</div>
+        <p class="btn-family-desc">Reference CSS custom properties in stylesheets, inline styles, or CSS-in-JS. Token names follow a three-tier hierarchy: <code>--prim-*</code> → <code>--color-*</code> → <code>--btn-*</code>. Always reference the highest applicable tier.</p>
+        <div class="gs-code">.vessel-card {
+  background:    <span class="k">var</span>(<span class="s">--color-surface-default</span>);
+  border:        1px solid <span class="k">var</span>(<span class="s">--color-border-default</span>);
+  border-radius: <span class="k">var</span>(<span class="s">--radius-lg</span>);       <span class="c">/* 16px */</span>
+  padding:       <span class="k">var</span>(<span class="s">--prim-space-5</span>) <span class="k">var</span>(<span class="s">--prim-space-6</span>);  <span class="c">/* 20px 24px */</span>
+  box-shadow:    <span class="k">var</span>(<span class="s">--shadow-md</span>);
+}
+
+.status-active {
+  color:      <span class="k">var</span>(<span class="s">--color-success</span>);
+  background: <span class="k">var</span>(<span class="s">--color-success-subtle</span>);
+}</div>
+      </div>
+
+      <!-- ── SECTION: Components ── -->
+      <div id="gs-v-components" class="btn-family-card">
+        <div class="btn-family-title">4 · Copy component patterns</div>
+        <p class="btn-family-desc">Every component ships with production-ready HTML. Browse the <strong>Components</strong> section, pick a pattern, and paste it into your project. All class names are prefixed <code>gs-</code>.</p>
+        <div class="gs-code"><span class="c">&lt;!-- Primary button --&gt;</span>
+&lt;<span class="k">button</span> class=<span class="s">"gs-btn gs-btn-primary gs-btn-md"</span>&gt;Save changes&lt;/<span class="k">button</span>&gt;
+
+<span class="c">&lt;!-- Text field --&gt;</span>
+&lt;<span class="k">div</span> class=<span class="s">"gs-tf-box"</span>&gt;
+  &lt;<span class="k">label</span> class=<span class="s">"gs-tf-label"</span>&gt;Voyage ID&lt;/<span class="k">label</span>&gt;
+  &lt;<span class="k">input</span> class=<span class="s">"gs-tf-input"</span> placeholder=<span class="s">"VOY-2025-001"</span> /&gt;
+&lt;/<span class="k">div</span>&gt;
+
+<span class="c">&lt;!-- Popover action menu --&gt;</span>
+&lt;<span class="k">div</span> class=<span class="s">"gs-pop-wrap"</span>&gt;
+  &lt;<span class="k">button</span> class=<span class="s">"gs-btn gs-btn-secondary gs-btn-sm"</span>
+    id=<span class="s">"my-t"</span> aria-haspopup=<span class="s">"menu"</span> aria-expanded=<span class="s">"false"</span>
+    onclick=<span class="s">"gsPopoverToggle('my-t','my-p')"</span>&gt;Actions&lt;/<span class="k">button</span>&gt;
+  &lt;<span class="k">div</span> class=<span class="s">"gs-popover gs-popover--bottom-start"</span> id=<span class="s">"my-p"</span> role=<span class="s">"menu"</span>&gt;
+    &lt;<span class="k">button</span> class=<span class="s">"gs-pop-item"</span> role=<span class="s">"menuitem"</span>&gt;Edit&lt;/<span class="k">button</span>&gt;
+    &lt;<span class="k">button</span> class=<span class="s">"gs-pop-item gs-pop-item--danger"</span> role=<span class="s">"menuitem"</span>&gt;Delete&lt;/<span class="k">button</span>&gt;
+  &lt;/<span class="k">div</span>&gt;
+&lt;/<span class="k">div</span>&gt;</div>
+      </div>
+
+      <!-- ── SECTION: React ── -->
+      <div id="gs-v-react" class="btn-family-card">
+        <div class="btn-family-title">5 · React components</div>
+        <p class="btn-family-desc">All components have a React counterpart in <code>components/</code>. Import and use them directly — they accept the same design token system.</p>
+        <div class="gs-code"><span class="k">import</span> { <span class="v">Modal</span>, <span class="v">ConfirmModal</span> }    <span class="k">from</span> <span class="s">'@pelagos/components/panels/modal'</span>;
+<span class="k">import</span> { <span class="v">Popover</span>, <span class="v">PopoverItem</span>, <span class="v">PopoverDivider</span>, <span class="v">PopoverToggleRow</span> }
+                                      <span class="k">from</span> <span class="s">'@pelagos/components/panels/popover'</span>;
+<span class="k">import</span> { <span class="v">Accordion</span> }               <span class="k">from</span> <span class="s">'@pelagos/components/primitives/accordion'</span>;
+<span class="k">import</span> { <span class="v">Toggle</span> }                   <span class="k">from</span> <span class="s">'@pelagos/components/primitives/toggle'</span>;
+
+<span class="c">// Delete confirmation modal</span>
+&lt;<span class="v">ConfirmModal</span>
+  open={showDelete}
+  onClose={() =&gt; setShowDelete(false)}
+  onConfirm={handleDelete}
+  variant=<span class="s">"delete"</span>
+  title=<span class="s">"Delete Port call"</span>
+  message=<span class="s">"Are you sure you want to delete (HHTX-202411)?"</span>
+/&gt;
+
+<span class="c">// Action popover</span>
+&lt;<span class="v">Popover</span> placement=<span class="s">"bottom"</span> trigger=<span class="s">"click"</span> content={
+  &lt;&gt;
+    &lt;<span class="v">PopoverItem</span> icon={&lt;EditIcon /&gt;} label=<span class="s">"Edit Details"</span> onClick={onEdit} /&gt;
+    &lt;<span class="v">PopoverDivider</span> /&gt;
+    &lt;<span class="v">PopoverItem</span> icon={&lt;TrashIcon /&gt;} label=<span class="s">"Delete"</span> danger onClick={onDelete} /&gt;
+  &lt;/&gt;
+}&gt;
+  &lt;<span class="k">button</span> className=<span class="s">"gs-btn gs-btn-secondary gs-btn-sm"</span>&gt;Actions&lt;/button&gt;
+&lt;/<span class="v">Popover</span>&gt;</div>
+      </div>
+
+      <!-- ── SECTION: Updates ── -->
+      <div id="gs-v-update" class="btn-family-card">
+        <div class="btn-family-title">6 · Stay up to date</div>
+        <p class="btn-family-desc">Pull the latest changes and re-import. Your existing components automatically inherit updated token values — no code changes needed if you're using the CSS custom properties.</p>
+        <div class="gs-code"><span class="c"># Pull latest from main</span>
+git pull origin main
+
+<span class="c"># If installed as an npm git dependency</span>
+npm update @geoserve/pelagos
+
+<span class="c"># Check the changelog for breaking changes</span>
+cat CHANGELOG.md | head -50</div>
+        <div class="gs-tip gs-tip--yellow" style="margin-top:12px;">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+          <div>If you override component CSS, check the <strong>Design Tokens</strong> page after each update — token names occasionally change between minor versions during the pre-1.0 phase.</div>
+        </div>
+      </div>
+
+      <!-- ── What's included ── -->
+      <div id="gs-v-included" class="btn-family-card">
+        <div class="btn-family-title">What's included</div>
+        <p class="btn-family-desc">Everything shipped with the Pelagos Design System.</p>
+        <div class="gs-feat-grid">
+          <div class="gs-feat-card">
+            <div class="gs-feat-icon">🎨</div>
+            <div class="gs-feat-title">Design Tokens</div>
+            <div class="gs-feat-desc">All visual decisions as CSS custom properties — colour, spacing, radius, shadow, and type scales. 3-tier hierarchy.</div>
+          </div>
+          <div class="gs-feat-card">
+            <div class="gs-feat-icon">⬜</div>
+            <div class="gs-feat-title">Component Patterns</div>
+            <div class="gs-feat-desc">Production-ready HTML/CSS patterns with all states, sizes, and variants. Live previews and copy-paste code.</div>
+          </div>
+          <div class="gs-feat-card">
+            <div class="gs-feat-icon">⚛️</div>
+            <div class="gs-feat-title">React Components</div>
+            <div class="gs-feat-desc">JSX components with prop APIs for all panels and primitives. Angular community support in progress.</div>
+          </div>
+          <div class="gs-feat-card">
+            <div class="gs-feat-icon">📐</div>
+            <div class="gs-feat-title">Foundations</div>
+            <div class="gs-feat-desc">Colour, typography, spacing, accessibility guidelines. The spec every component follows.</div>
+          </div>
+          <div class="gs-feat-card">
+            <div class="gs-feat-icon">🔷</div>
+            <div class="gs-feat-title">Figma Libraries</div>
+            <div class="gs-feat-desc">Design files with component specs and token values kept in sync with the code implementation.</div>
+          </div>
+          <div class="gs-feat-card">
+            <div class="gs-feat-icon">📖</div>
+            <div class="gs-feat-title">Documentation</div>
+            <div class="gs-feat-desc">Design, Code, and Usage tabs for every component — anatomy diagrams, API reference, do/don't guidelines.</div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /code-tab-main -->
+
+    <div class="code-tab-qnav">
+      <div class="code-qnav-inner">
+        <p class="code-qnav-title">On This Page</p>
+        <ul class="code-qnav-list">
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('gs-v-install')">1 · Get the source</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('gs-v-tokens')">2 · Import tokens</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('gs-v-use')">3 · Use tokens</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('gs-v-components')">4 · Components</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('gs-v-react')">5 · React</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('gs-v-update')">6 · Stay updated</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('gs-v-included')">What's included</button></li>
+        </ul>
+      </div>
+    </div>
+
+  </div><!-- /code-tab-layout -->
+</div><!-- /developer tab -->

@@ -1,0 +1,64 @@
+/**
+ * Pelagos Menu — Supplemental Styles
+ * components/primitives/menu/Menu.scss
+ *
+ * Ant Design handles ALL core styling (colours, heights, padding, border
+ * radius, hover/active/focus/selected states, submenu open/close animation,
+ * inline collapse, keyboard focus ring, overflow ellipsis) via the
+ * ConfigProvider token overrides in menuTheme.js.
+ *
+ * This file covers structural layout needs that the AntD token system
+ * cannot express on its own:
+ *
+ *   · Host wrapper for inline-collapsed width management
+ *   · Overflow clipping for horizontally scrollable menu rails
+ *   · Custom expand icon alignment
+ *
+ * ── Rules ────────────────────────────────────────────────────────────────────
+ * NO hardcoded colour values.
+ * NO background, border-color, color, box-shadow, or outline-color properties.
+ * Spacing references must trace to a Pelagos CSS custom property.
+ */
+
+/* ── Host element ──────────────────────────────────────────────────────────── */
+
+.menu__host {
+  display: block;
+  width: 100%;
+}
+
+/* ── Horizontal rail ───────────────────────────────────────────────────────── */
+/*
+ * When mode="horizontal" inside a flex container the AntD Menu needs
+ * `min-width: 0` and `flex: auto` so it can calculate overflow correctly.
+ * Applied via a BEM modifier class on the host wrapper.
+ */
+.menu__host--horizontal {
+  min-width: 0;
+  flex: auto;
+  overflow: hidden;
+}
+
+/* ── Inline-collapsed host ─────────────────────────────────────────────────── */
+/*
+ * When inlineCollapsed=true AntD animates width to collapsedWidth (80px by
+ * default, overrideable via token). The host should not clip this transition.
+ */
+.menu__host--collapsible {
+  overflow: visible;
+  transition: width var(--prim-duration-200, 0.2s) ease;  /* matches AntD internal */
+}
+
+/* ── Custom expand icon centering ─────────────────────────────────────────── */
+/*
+ * AntD's expand arrow sits inside `.ant-menu-submenu-arrow`. No colour
+ * is applied here — only alignment, which the token system can't address.
+ */
+.menu__expand-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+
+  svg { display: block; }
+}

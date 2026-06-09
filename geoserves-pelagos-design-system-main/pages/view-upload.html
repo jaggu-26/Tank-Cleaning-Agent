@@ -1,0 +1,674 @@
+<style>
+/* ── Upload component tokens ─────────────────────────────────────────── */
+:root {
+  --upl-border-default:   var(--prim-grey-400, #64748B);   /* Grey/400 — Figma spec */
+  --upl-border-hover:     var(--prim-marine,   #1852FE);
+  --upl-bg-default:       var(--color-surface-default, #FFFFFF);
+  --upl-bg-hover:         var(--prim-blue-10,  #EEF6FF);
+  --upl-radius:           var(--radius-md,     8px);
+  --upl-text-primary:     var(--prim-blue-900, #001E4C);   /* Primary/Navy */
+  --upl-text-secondary:   var(--prim-grey-400, #64748B);   /* Grey/400 */
+  --upl-link-color:       var(--prim-marine,   #1852FE);   /* Primary/Marine */
+  --upl-font-headline-sz: 16px;
+  --upl-font-hint-sz:     12px;
+}
+
+/* ── Base drop zone ───────────────────────────────────────────────────── */
+.gs-upload {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px dashed var(--upl-border-default);   /* Grey/400 dashed */
+  border-radius: var(--upl-radius);
+  background: var(--upl-bg-default);
+  cursor: pointer;
+  transition: border-color .18s, background .18s;
+  position: relative;
+  outline: none;
+  font-family: var(--font-sans,'Gilroy',sans-serif);
+}
+.gs-upload:hover,
+.gs-upload:focus-visible,
+.gs-upload.is-dragover {
+  border-color: var(--upl-border-hover);
+  background: var(--upl-bg-hover);
+}
+
+/* ── Large variant — vertical, min-height 160px ──────────────────────── */
+.gs-upload--large {
+  flex-direction: column;
+  gap: 8px;
+  min-height: 160px;
+  padding: 32px;
+  width: 100%;
+}
+
+/* ── Small variant — horizontal, 16px v-padding ─────────────────────── */
+.gs-upload--small {
+  flex-direction: row;
+  gap: 8px;
+  padding: 16px 32px;
+  width: 100%;
+}
+
+/* ── Folder illustration ──────────────────────────────────────────────── */
+/* Uses Assets/illustrations/img-folder-closed.svg + img-folder-opened.svg */
+.gs-upload__icon { flex-shrink: 0; display: flex; align-items: center; justify-content: center; }
+.gs-upload--large .gs-upload__icon { width: 48px; height: 48px; }
+.gs-upload--small .gs-upload__icon { width: 32px; height: 32px; }
+.gs-upload__icon img { width: 100%; height: 100%; object-fit: contain; }
+
+/* ── Content area ────────────────────────────────────────────────────── */
+.gs-upload__content {
+  display: flex; flex-direction: column;
+  gap: 4px;
+}
+.gs-upload--large .gs-upload__content { align-items: center; text-align: center; }
+.gs-upload--small .gs-upload__content { align-items: flex-start; }
+
+.gs-upload__headline {
+  display: flex; align-items: baseline; gap: 4px; flex-wrap: wrap;
+}
+.gs-upload--large .gs-upload__headline { justify-content: center; }
+
+/* "Browse" — rendered as a link-btn (not a regular button) */
+.gs-upload__link-btn {
+  font-size: var(--upl-font-headline-sz);
+  font-weight: 600;
+  color: var(--upl-link-color);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  font-family: inherit;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  white-space: nowrap;
+  line-height: inherit;
+  transition: color .13s;
+}
+.gs-upload__link-btn:hover { color: var(--color-brand-hover, #1242d4); }
+
+.gs-upload__headline-text {
+  font-size: var(--upl-font-headline-sz);
+  font-weight: 600;
+  color: var(--upl-text-primary);
+  font-family: inherit;
+  white-space: nowrap;
+}
+
+.gs-upload__hint {
+  font-size: var(--upl-font-hint-sz);
+  font-weight: 600;
+  color: var(--upl-text-secondary);
+  font-family: inherit;
+  line-height: 16px;
+}
+
+/* ── Hover/drag-over drop label ──────────────────────────────────────── */
+.gs-upload__drop-label {
+  font-size: var(--upl-font-hint-sz);
+  font-weight: 600;
+  color: var(--upl-text-secondary);
+  font-family: inherit;
+}
+
+/* ── Drag chip ───────────────────────────────────────────────────────── */
+.gs-upload__chip {
+  background: var(--color-surface-default,#fff);
+  border-radius: 4px;
+  box-shadow: 0 2px 8px rgba(0,0,0,.14);
+  padding: 8px 12px;
+  font-size: 12px; font-weight: 600; color: var(--upl-text-primary);
+  font-family: inherit; white-space: nowrap;
+  display: inline-flex; align-items: center; gap: 6px;
+  position: absolute;
+}
+.gs-upload--large .gs-upload__chip  { top: 42px; right: 60px; }
+.gs-upload--small .gs-upload__chip  { top: 12px; right: 48px; }
+
+/* ── Hidden file input ───────────────────────────────────────────────── */
+.gs-upload__input {
+  position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%;
+}
+
+/* ── File list ───────────────────────────────────────────────────────── */
+.gs-file-list { display: flex; flex-direction: column; gap: 8px; margin-top: 12px; }
+.gs-file-item {
+  display: flex; align-items: center; gap: 12px;
+  background: var(--color-surface-default,#fff);
+  border: 1px solid var(--prim-grey-100,#E2E8F0);
+  border-radius: var(--radius-md,8px); padding: 10px 14px;
+}
+.gs-file-item__icon {
+  width: 32px; height: 32px; border-radius: 6px;
+  background: var(--prim-blue-10,#EEF6FF);
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  color: var(--prim-marine,#1852FE);
+}
+.gs-file-item__info {
+  flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 4px;
+}
+.gs-file-item__name {
+  font-size: 13px; font-weight: 600; color: var(--prim-blue-900,#001E4C);
+  font-family: inherit; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.gs-file-item__meta {
+  font-size: 11.5px; color: var(--prim-grey-400,#64748B); font-family: inherit;
+}
+.gs-file-item__remove {
+  width: 26px; height: 26px; border-radius: 6px; border: none; background: none;
+  display: flex; align-items: center; justify-content: center; cursor: pointer;
+  color: var(--prim-grey-300,#94A3B8); flex-shrink: 0; padding: 0;
+  transition: background .12s, color .12s;
+}
+.gs-file-item__remove:hover { background: var(--prim-grey-50,#F1F5F9); color: var(--prim-red-500,#DC2625); }
+
+/* ── Demo labels ─────────────────────────────────────────────────────── */
+.upl-state-label {
+  font-size: 11px; font-weight: 700; color: var(--prim-grey-300,#94A3B8);
+  text-transform: uppercase; letter-spacing: .06em; margin-bottom: 8px;
+  font-family: inherit;
+}
+</style>
+
+<!-- BANNER -->
+<div class="page-header"><h1 class="ds-hero-title">Upload</h1></div>
+
+<!-- TAB BAR -->
+<div class="btn-tab-bar">
+  <button class="btn-tab-btn upl-tab-btn active" data-tab="design" onclick="switchUplTab('design')">Design</button>
+  <button class="btn-tab-btn upl-tab-btn" data-tab="code"   onclick="switchUplTab('code')">Code</button>
+  <button class="btn-tab-btn upl-tab-btn" data-tab="usage"  onclick="switchUplTab('usage')">Usage</button>
+</div>
+
+
+<!-- ═══ DESIGN TAB ══════════════════════════════════════════════════ -->
+<div id="upl-tab-design" class="btn-tab-pane upl-tab-pane active">
+<div class="code-tab-layout">
+<div class="code-tab-main">
+
+  <p style="font-size:15px;line-height:1.75;color:var(--prim-grey-500,#475569);margin:0 0 32px;">The Upload component provides a dashed drop zone for file input via drag-and-drop or click-to-browse. The border uses <code>Grey/400</code> in default state transitioning to <code>Primary/Marine</code> on hover/drag. Folder illustrations from the design system asset library (<code>img-folder-closed</code> / <code>img-folder-opened</code>) signal the state change.</p>
+
+  <!-- VARIANTS -->
+  <div class="btn-family-card" id="upl-d-variants">
+    <div class="btn-family-title">Variants</div>
+    <p class="btn-family-desc">Two size variants for different layout contexts. <strong>Large</strong> is the primary drop zone. <strong>Small</strong> fits toolbar, sidebar, or inline form rows. Both use <code>Grey/400</code> dashed border and the design system folder illustrations.</p>
+
+    <!-- Large Default -->
+    <div style="margin-top:20px;">
+      <div class="upl-state-label">Large — Default state</div>
+      <div class="gs-upload gs-upload--large"
+           role="button" tabindex="0" aria-label="Upload files"
+           onclick="triggerFileInput('upl-input-large')"
+           ondragover="handleUplDragOver(event,'upl-large-default')"
+           ondragleave="handleUplDragLeave('upl-large-default')"
+           ondrop="handleUplDrop(event,'upl-large-default','upl-file-list')"
+           id="upl-large-default">
+        <input type="file" class="gs-upload__input" id="upl-input-large" multiple
+               onchange="handleUplFiles(this.files,'upl-file-list')" tabindex="-1"/>
+        <div class="gs-upload__icon">
+          <!-- Uses design-system illustration: img-folder-closed -->
+          <img src="Assets/illustrations/img-folder-closed.svg" alt="folder" data-ill="img-folder-closed"/>
+        </div>
+        <div class="gs-upload__content">
+          <div class="gs-upload__headline">
+            <button class="gs-upload__link-btn" type="button"
+                    onclick="event.stopPropagation();triggerFileInput('upl-input-large')">Browse</button>
+            <span class="gs-upload__headline-text">or drag file to this area to upload</span>
+          </div>
+          <div class="gs-upload__hint">Supported files are JPEG, PNG, PDF, DOC, XLS</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Large Hover -->
+    <div style="margin-top:20px;">
+      <div class="upl-state-label">Large — Hover / drag-over state</div>
+      <div class="gs-upload gs-upload--large is-dragover" style="pointer-events:none;">
+        <div class="gs-upload__icon">
+          <!-- Uses design-system illustration: img-folder-opened -->
+          <img src="Assets/illustrations/img-folder-opened.svg" alt="folder open" data-ill="img-folder-opened"/>
+        </div>
+        <div class="gs-upload__chip">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--prim-marine,#1852FE)" stroke-width="2" stroke-linecap="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          SoF_DXb_13 jun12.pdf
+        </div>
+        <div class="gs-upload__drop-label">Drop file(s) here..</div>
+      </div>
+    </div>
+
+    <!-- Small Default -->
+    <div style="margin-top:20px;">
+      <div class="upl-state-label">Small — Default state</div>
+      <div class="gs-upload gs-upload--small"
+           role="button" tabindex="0" aria-label="Upload files"
+           onclick="triggerFileInput('upl-input-small')"
+           ondragover="handleUplDragOver(event,'upl-small-default')"
+           ondragleave="handleUplDragLeave('upl-small-default')"
+           ondrop="handleUplDrop(event,'upl-small-default','upl-file-list')"
+           id="upl-small-default">
+        <input type="file" class="gs-upload__input" id="upl-input-small" multiple
+               onchange="handleUplFiles(this.files,'upl-file-list')" tabindex="-1"/>
+        <div class="gs-upload__icon">
+          <img src="Assets/illustrations/img-folder-closed.svg" alt="folder" data-ill="img-folder-closed"/>
+        </div>
+        <div class="gs-upload__content">
+          <div class="gs-upload__headline">
+            <button class="gs-upload__link-btn" type="button"
+                    onclick="event.stopPropagation();triggerFileInput('upl-input-small')">Browse</button>
+            <span class="gs-upload__headline-text">or drag file to this area to upload</span>
+          </div>
+          <div class="gs-upload__hint">Supported files are JPEG, PNG, PDF, DOC, XLS</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Small Hover -->
+    <div style="margin-top:16px;">
+      <div class="upl-state-label">Small — Hover / drag-over state</div>
+      <div class="gs-upload gs-upload--small is-dragover" style="pointer-events:none;position:relative;">
+        <div class="gs-upload__icon">
+          <img src="Assets/illustrations/img-folder-opened.svg" alt="folder open" data-ill="img-folder-opened"/>
+        </div>
+        <div class="gs-upload__chip" style="top:10px;right:36px;">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="var(--prim-marine,#1852FE)" stroke-width="2" stroke-linecap="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          SoF_DXb_13 jun12.pdf
+        </div>
+        <div class="gs-upload__drop-label">Drop file(s) here..</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- INTERACTIVE DEMO -->
+  <div class="btn-family-card" id="upl-d-demo">
+    <div class="btn-family-title">Interactive Demo</div>
+    <p class="btn-family-desc">Click <strong>Browse</strong> (link button) or drag files onto the zone. Each file is added to the list below with a progress bar animating to completion. The folder illustration switches to <code>img-folder-opened</code> during drag.</p>
+
+    <div style="margin-top:16px;">
+      <div class="gs-upload gs-upload--large" id="upl-demo-zone"
+           role="button" tabindex="0" aria-label="Upload files"
+           onclick="triggerFileInput('upl-demo-input')"
+           ondragover="handleUplDragOver(event,'upl-demo-zone')"
+           ondragleave="handleUplDragLeave('upl-demo-zone')"
+           ondrop="handleUplDrop(event,'upl-demo-zone',null,'upl-demo-list')">
+        <input type="file" class="gs-upload__input" id="upl-demo-input" multiple
+               onchange="handleUplFiles(this.files,'upl-demo-list')" tabindex="-1"/>
+        <div class="gs-upload__icon" id="upl-demo-icon">
+          <img src="Assets/illustrations/img-folder-closed.svg" alt="folder"
+               id="upl-demo-folder-img" data-ill="img-folder-closed"/>
+        </div>
+        <div class="gs-upload__content">
+          <div class="gs-upload__headline">
+            <button class="gs-upload__link-btn" type="button"
+                    onclick="event.stopPropagation();triggerFileInput('upl-demo-input')">Browse</button>
+            <span class="gs-upload__headline-text">or drag file to this area to upload</span>
+          </div>
+          <div class="gs-upload__hint">Supported files are JPEG, PNG, PDF, DOC, XLS</div>
+        </div>
+      </div>
+      <div class="gs-file-list" id="upl-demo-list"></div>
+    </div>
+  </div>
+
+  <!-- TOKEN TABLE -->
+  <div class="btn-family-card" id="upl-d-tokens">
+    <div class="btn-family-title">Design Tokens</div>
+    <div style="border:1px solid var(--prim-grey-100,#E2E8F0);border-radius:10px;overflow:hidden;margin-top:8px;">
+      <table style="width:100%;border-collapse:collapse;">
+        <thead><tr style="background:var(--prim-grey-10,#F8FAFC);">
+          <th style="padding:8px 14px;font-size:11px;font-weight:700;color:var(--prim-grey-300,#94A3B8);text-transform:uppercase;letter-spacing:.05em;text-align:left;border-bottom:1px solid var(--prim-grey-100,#E2E8F0);">Token</th>
+          <th style="padding:8px 14px;font-size:11px;font-weight:700;color:var(--prim-grey-300,#94A3B8);text-transform:uppercase;letter-spacing:.05em;text-align:left;border-bottom:1px solid var(--prim-grey-100,#E2E8F0);">Value (default)</th>
+          <th style="padding:8px 14px;font-size:11px;font-weight:700;color:var(--prim-grey-300,#94A3B8);text-transform:uppercase;letter-spacing:.05em;text-align:left;border-bottom:1px solid var(--prim-grey-100,#E2E8F0);">Foundation token</th>
+          <th style="padding:8px 14px;font-size:11px;font-weight:700;color:var(--prim-grey-300,#94A3B8);text-transform:uppercase;letter-spacing:.05em;text-align:left;border-bottom:1px solid var(--prim-grey-100,#E2E8F0);">Hover / drag-over</th>
+        </tr></thead>
+        <tbody>
+          <tr style="border-bottom:1px solid var(--prim-grey-50,#F1F5F9);">
+            <td style="padding:9px 14px;"><code style="background:var(--prim-grey-50,#F1F5F9);padding:1px 6px;border-radius:4px;font-size:11.5px;">--upl-border-default</code></td>
+            <td style="padding:9px 14px;font-size:12.5px;"><span style="display:inline-block;width:10px;height:10px;background:#64748B;border-radius:3px;vertical-align:middle;margin-right:5px;"></span>#64748B</td>
+            <td style="padding:9px 14px;font-size:12px;color:var(--prim-grey-400,#64748B);"><code style="font-size:11px;">--prim-grey-400</code> <em style="font-size:10.5px;">(Grey/400)</em></td>
+            <td style="padding:9px 14px;font-size:12px;color:var(--prim-grey-400,#64748B);">→ <code style="font-size:11px;">--prim-marine</code></td>
+          </tr>
+          <tr style="border-bottom:1px solid var(--prim-grey-50,#F1F5F9);">
+            <td style="padding:9px 14px;"><code style="background:var(--prim-grey-50,#F1F5F9);padding:1px 6px;border-radius:4px;font-size:11.5px;">--upl-bg-default</code></td>
+            <td style="padding:9px 14px;font-size:12.5px;"><span style="display:inline-block;width:10px;height:10px;background:#fff;border:1px solid #e2e8f0;border-radius:3px;vertical-align:middle;margin-right:5px;"></span>#FFFFFF</td>
+            <td style="padding:9px 14px;font-size:12px;color:var(--prim-grey-400,#64748B);"><code style="font-size:11px;">--color-surface-default</code></td>
+            <td style="padding:9px 14px;font-size:12px;color:var(--prim-grey-400,#64748B);">→ <code style="font-size:11px;">--prim-blue-10</code> #EEF6FF</td>
+          </tr>
+          <tr style="border-bottom:1px solid var(--prim-grey-50,#F1F5F9);">
+            <td style="padding:9px 14px;"><code style="background:var(--prim-grey-50,#F1F5F9);padding:1px 6px;border-radius:4px;font-size:11.5px;">--upl-link-color</code></td>
+            <td style="padding:9px 14px;font-size:12.5px;"><span style="display:inline-block;width:10px;height:10px;background:#1852FE;border-radius:3px;vertical-align:middle;margin-right:5px;"></span>#1852FE</td>
+            <td style="padding:9px 14px;font-size:12px;color:var(--prim-grey-400,#64748B);"><code style="font-size:11px;">--prim-marine</code> <em style="font-size:10.5px;">(Primary/Marine)</em></td>
+            <td style="padding:9px 14px;font-size:12px;color:var(--prim-grey-400,#64748B);">—</td>
+          </tr>
+          <tr style="border-bottom:1px solid var(--prim-grey-50,#F1F5F9);">
+            <td style="padding:9px 14px;"><code style="background:var(--prim-grey-50,#F1F5F9);padding:1px 6px;border-radius:4px;font-size:11.5px;">--upl-text-primary</code></td>
+            <td style="padding:9px 14px;font-size:12.5px;"><span style="display:inline-block;width:10px;height:10px;background:#001E4C;border-radius:3px;vertical-align:middle;margin-right:5px;"></span>#001E4C</td>
+            <td style="padding:9px 14px;font-size:12px;color:var(--prim-grey-400,#64748B);"><code style="font-size:11px;">--prim-blue-900</code> <em style="font-size:10.5px;">(Primary/Navy)</em></td>
+            <td style="padding:9px 14px;font-size:12px;color:var(--prim-grey-400,#64748B);">—</td>
+          </tr>
+          <tr style="border-bottom:1px solid var(--prim-grey-50,#F1F5F9);">
+            <td style="padding:9px 14px;"><code style="background:var(--prim-grey-50,#F1F5F9);padding:1px 6px;border-radius:4px;font-size:11.5px;">--upl-text-secondary</code></td>
+            <td style="padding:9px 14px;font-size:12.5px;"><span style="display:inline-block;width:10px;height:10px;background:#64748B;border-radius:3px;vertical-align:middle;margin-right:5px;"></span>#64748B</td>
+            <td style="padding:9px 14px;font-size:12px;color:var(--prim-grey-400,#64748B);"><code style="font-size:11px;">--prim-grey-400</code> <em style="font-size:10.5px;">(Grey/400)</em></td>
+            <td style="padding:9px 14px;font-size:12px;color:var(--prim-grey-400,#64748B);">—</td>
+          </tr>
+          <tr>
+            <td style="padding:9px 14px;"><code style="background:var(--prim-grey-50,#F1F5F9);padding:1px 6px;border-radius:4px;font-size:11.5px;">--upl-radius</code></td>
+            <td style="padding:9px 14px;font-size:12.5px;color:var(--prim-grey-600,#374151);">8px</td>
+            <td style="padding:9px 14px;font-size:12px;color:var(--prim-grey-400,#64748B);"><code style="font-size:11px;">--radius-md</code></td>
+            <td style="padding:9px 14px;font-size:12px;color:var(--prim-grey-400,#64748B);">—</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Illustration reference -->
+    <div style="margin-top:16px;padding:16px;background:var(--prim-grey-10,#F8FAFC);border:1px solid var(--prim-grey-100,#E2E8F0);border-radius:8px;">
+      <div style="font-size:11px;font-weight:700;color:var(--prim-grey-300,#94A3B8);text-transform:uppercase;letter-spacing:.06em;margin-bottom:12px;">Illustration assets</div>
+      <div style="display:flex;gap:24px;align-items:flex-start;flex-wrap:wrap;">
+        <div style="display:flex;flex-direction:column;align-items:center;gap:8px;">
+          <div style="width:64px;height:64px;background:#fff;border:1px solid var(--prim-grey-100,#E2E8F0);border-radius:8px;display:flex;align-items:center;justify-content:center;padding:10px;">
+            <img src="Assets/illustrations/img-folder-closed.svg" alt="img-folder-closed" style="width:100%;height:100%;object-fit:contain;"/>
+          </div>
+          <code style="font-size:11px;color:var(--prim-grey-400,#64748B);">img-folder-closed</code>
+          <span style="font-size:11px;color:var(--prim-grey-300,#94A3B8);">Default state</span>
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:8px;">
+          <div style="width:64px;height:64px;background:#EEF6FF;border:1px solid var(--prim-blue-100,#BFDBFE);border-radius:8px;display:flex;align-items:center;justify-content:center;padding:10px;">
+            <img src="Assets/illustrations/img-folder-opened.svg" alt="img-folder-opened" style="width:100%;height:100%;object-fit:contain;"/>
+          </div>
+          <code style="font-size:11px;color:var(--prim-grey-400,#64748B);">img-folder-opened</code>
+          <span style="font-size:11px;color:var(--prim-grey-300,#94A3B8);">Hover / drag state</span>
+        </div>
+        <div style="flex:1;min-width:200px;font-size:12.5px;color:var(--prim-grey-500,#475569);line-height:1.6;">
+          Both illustrations live at <code>Assets/illustrations/</code> and are part of the design system illustration library. View the full set on the <button onclick="navigate('found-illustrations')" style="background:none;border:none;color:var(--prim-marine,#1852FE);cursor:pointer;text-decoration:underline;font-size:12.5px;padding:0;">Illustrations</button> page.
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /code-tab-main -->
+<div class="code-tab-qnav">
+  <div class="code-qnav-inner">
+    <p class="code-qnav-title">On this page</p>
+    <ul class="code-qnav-list">
+      <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('upl-d-variants')">Variants</button></li>
+      <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('upl-d-demo')">Interactive Demo</button></li>
+      <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('upl-d-tokens')">Tokens &amp; Assets</button></li>
+    </ul>
+  </div>
+</div>
+</div>
+</div><!-- /design tab -->
+
+
+<!-- ═══ CODE TAB ════════════════════════════════════════════════════ -->
+<div id="upl-tab-code" class="btn-tab-pane upl-tab-pane">
+<div class="code-tab-layout">
+<div class="code-tab-main">
+
+  <div class="btn-family-card">
+    <div class="ds-step-row"><span class="ds-step-num">1</span><div class="btn-family-title" style="margin:0;">Import</div></div>
+    <div class="btn-code-block"><div class="btn-code-head"><span class="btn-code-lang">JSX</span><button class="btn-copy-btn" onclick="copyBtnCode('upl-import',this)">Copy</button></div>
+    <div class="btn-code-body"><pre id="upl-import"><code><span class="c-kw">import</span> { <span class="c-type">Upload</span> } <span class="c-kw">from</span> <span class="c-val">'@pelagos/components/views/upload'</span>;</code></pre></div></div>
+  </div>
+
+  <div class="btn-family-card">
+    <div class="ds-step-row"><span class="ds-step-num">2</span><div class="btn-family-title" style="margin:0;">Props</div></div>
+    <table>
+      <thead><tr><th>Prop</th><th>Type</th><th>Default</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr class="ds-tr-border"><td class="ds-td-code-primary">size</td><td class="ds-td-code-muted">'large'|'small'</td><td class="ds-td-code-muted">'large'</td><td>Layout variant — vertical (large) or horizontal (small)</td></tr>
+        <tr class="ds-tr-border"><td class="ds-td-code-primary">accept</td><td class="ds-td-code-muted">string</td><td class="ds-td-code-muted">—</td><td>MIME types or extensions e.g. <code>".pdf,.png"</code></td></tr>
+        <tr class="ds-tr-border"><td class="ds-td-code-primary">multiple</td><td class="ds-td-code-muted">boolean</td><td class="ds-td-code-muted">true</td><td>Allow multiple file selection</td></tr>
+        <tr class="ds-tr-border"><td class="ds-td-code-primary">hint</td><td class="ds-td-code-muted">string</td><td class="ds-td-code-muted">"Supported files are JPEG, PNG, PDF, DOC, XLS"</td><td>Helper caption below Browse link</td></tr>
+        <tr class="ds-tr-border"><td class="ds-td-code-primary">onFilesChange</td><td class="ds-td-code-muted">(files: File[]) =&gt; void</td><td class="ds-td-code-muted">—</td><td>Callback when files are selected or dropped</td></tr>
+        <tr class="ds-tr-border"><td class="ds-td-code-primary">disabled</td><td class="ds-td-code-muted">boolean</td><td class="ds-td-code-muted">false</td><td>Prevents interaction; border turns grey-200</td></tr>
+        <tr class="ds-tr-border"><td class="ds-td-code-primary">className</td><td class="ds-td-code-muted">string</td><td class="ds-td-code-muted">—</td><td>Extra CSS class on root</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="btn-family-card">
+    <div class="ds-step-row"><span class="ds-step-num">3</span><div class="btn-family-title" style="margin:0;">JSX Examples</div></div>
+    <div class="btn-code-block"><div class="btn-code-head"><span class="btn-code-lang">JSX</span><button class="btn-copy-btn" onclick="copyBtnCode('upl-examples',this)">Copy</button></div>
+    <div class="btn-code-body"><pre id="upl-examples"><code><span class="c-cmt">// Large (default)</span>
+<span class="c-tag">&lt;Upload</span> <span class="c-attr">onFilesChange</span>={(files) =&gt; console.log(files)} <span class="c-tag">/&gt;</span>
+
+<span class="c-cmt">// Small — compact horizontal layout</span>
+<span class="c-tag">&lt;Upload</span> <span class="c-attr">size</span>=<span class="c-val">"small"</span> <span class="c-attr">onFilesChange</span>={handleFiles} <span class="c-tag">/&gt;</span>
+
+<span class="c-cmt">// PDF only, single file, custom hint</span>
+<span class="c-tag">&lt;Upload</span>
+  <span class="c-attr">accept</span>=<span class="c-val">".pdf"</span>
+  <span class="c-attr">multiple</span>={false}
+  <span class="c-attr">hint</span>=<span class="c-val">"PDF only · max 10 MB"</span>
+  <span class="c-attr">onFilesChange</span>={handleFile}
+<span class="c-tag">/&gt;</span></code></pre></div></div>
+  </div>
+
+  <div class="btn-family-card">
+    <div class="ds-step-row"><span class="ds-step-num">4</span><div class="btn-family-title" style="margin:0;">HTML / CSS — Drop Zone</div></div>
+    <div class="btn-code-block"><div class="btn-code-head"><span class="btn-code-lang">HTML</span><button class="btn-copy-btn" onclick="copyBtnCode('upl-html',this)">Copy</button></div>
+    <div class="btn-code-body"><pre id="upl-html"><code><span class="c-cmt">&lt;!-- Large drop zone --&gt;</span>
+<span class="c-tag">&lt;div</span> <span class="c-attr">class</span>=<span class="c-val">"gs-upload gs-upload--large"</span>
+     <span class="c-attr">role</span>=<span class="c-val">"button"</span> <span class="c-attr">tabindex</span>=<span class="c-val">"0"</span>
+     <span class="c-attr">aria-label</span>=<span class="c-val">"Upload files"</span><span class="c-tag">&gt;</span>
+  <span class="c-tag">&lt;input</span> <span class="c-attr">type</span>=<span class="c-val">"file"</span> <span class="c-attr">class</span>=<span class="c-val">"gs-upload__input"</span> <span class="c-attr">multiple</span><span class="c-tag">/&gt;</span>
+
+  <span class="c-cmt">&lt;!-- Illustration: img-folder-closed (default), img-folder-opened (hover) --&gt;</span>
+  <span class="c-tag">&lt;div</span> <span class="c-attr">class</span>=<span class="c-val">"gs-upload__icon"</span><span class="c-tag">&gt;</span>
+    <span class="c-tag">&lt;img</span> <span class="c-attr">src</span>=<span class="c-val">"Assets/illustrations/img-folder-closed.svg"</span> <span class="c-attr">alt</span>=<span class="c-val">"folder"</span><span class="c-tag">/&gt;</span>
+  <span class="c-tag">&lt;/div&gt;</span>
+
+  <span class="c-tag">&lt;div</span> <span class="c-attr">class</span>=<span class="c-val">"gs-upload__content"</span><span class="c-tag">&gt;</span>
+    <span class="c-tag">&lt;div</span> <span class="c-attr">class</span>=<span class="c-val">"gs-upload__headline"</span><span class="c-tag">&gt;</span>
+      <span class="c-cmt">&lt;!-- Browse is a link-button, NOT a styled span --&gt;</span>
+      <span class="c-tag">&lt;button</span> <span class="c-attr">class</span>=<span class="c-val">"gs-upload__link-btn"</span> <span class="c-attr">type</span>=<span class="c-val">"button"</span><span class="c-tag">&gt;</span>Browse<span class="c-tag">&lt;/button&gt;</span>
+      <span class="c-tag">&lt;span</span> <span class="c-attr">class</span>=<span class="c-val">"gs-upload__headline-text"</span><span class="c-tag">&gt;</span>or drag file to this area to upload<span class="c-tag">&lt;/span&gt;</span>
+    <span class="c-tag">&lt;/div&gt;</span>
+    <span class="c-tag">&lt;div</span> <span class="c-attr">class</span>=<span class="c-val">"gs-upload__hint"</span><span class="c-tag">&gt;</span>Supported files are JPEG, PNG, PDF, DOC, XLS<span class="c-tag">&lt;/div&gt;</span>
+  <span class="c-tag">&lt;/div&gt;</span>
+<span class="c-tag">&lt;/div&gt;</span>
+
+<span class="c-cmt">&lt;!-- Drag-over state: add .is-dragover to .gs-upload --&gt;
+&lt;!-- Swap img src to img-folder-opened.svg on dragover --&gt;
+&lt;!-- Small: gs-upload gs-upload--small --&gt;</span></code></pre></div></div>
+  </div>
+
+  <div class="btn-family-card">
+    <div class="ds-step-row"><span class="ds-step-num">5</span><div class="btn-family-title" style="margin:0;">CSS Custom Properties</div></div>
+    <div class="btn-code-block"><div class="btn-code-head"><span class="btn-code-lang">CSS</span><button class="btn-copy-btn" onclick="copyBtnCode('upl-css',this)">Copy</button></div>
+    <div class="btn-code-body"><pre id="upl-css"><code><span class="c-cmt">/* Override any token per-instance */</span>
+.gs-upload {
+  --upl-border-default:   var(--prim-grey-400, #64748B); <span class="c-cmt">/* Grey/400 — Figma spec */</span>
+  --upl-border-hover:     var(--prim-marine,   #1852FE); <span class="c-cmt">/* Primary/Marine */</span>
+  --upl-bg-default:       var(--color-surface-default);
+  --upl-bg-hover:         var(--prim-blue-10,  #EEF6FF);
+  --upl-link-color:       var(--prim-marine,   #1852FE); <span class="c-cmt">/* Browse link */</span>
+  --upl-text-primary:     var(--prim-blue-900, #001E4C); <span class="c-cmt">/* Primary/Navy */</span>
+  --upl-text-secondary:   var(--prim-grey-400, #64748B); <span class="c-cmt">/* Grey/400 */</span>
+  --upl-radius:           var(--radius-md,     8px);
+}</code></pre></div></div>
+  </div>
+
+</div>
+<div class="code-tab-qnav">
+  <div class="code-qnav-inner">
+    <p class="code-qnav-title">On this page</p>
+    <ul class="code-qnav-list">
+      <li class="code-qnav-item"><a class="code-qnav-link" href="#">1 · Import</a></li>
+      <li class="code-qnav-item"><a class="code-qnav-link" href="#">2 · Props</a></li>
+      <li class="code-qnav-item"><a class="code-qnav-link" href="#">3 · JSX Examples</a></li>
+      <li class="code-qnav-item"><a class="code-qnav-link" href="#">4 · HTML / CSS</a></li>
+      <li class="code-qnav-item"><a class="code-qnav-link" href="#">5 · CSS Properties</a></li>
+    </ul>
+  </div>
+</div>
+</div>
+</div><!-- /code tab -->
+
+
+<!-- ═══ USAGE TAB ════════════════════════════════════════════════════ -->
+<div id="upl-tab-usage" class="btn-tab-pane upl-tab-pane">
+<div class="code-tab-layout">
+<div class="code-tab-main">
+  <div class="btn-family-card">
+    <div class="btn-family-title">When to Use</div>
+    <ul class="btn-usage-list">
+      <li><strong>File attachment flows</strong> — document uploads, SoF attachments, charter party drafts. Pair with a file list below the zone to show progress and allow removal.</li>
+      <li><strong>Drag-and-drop context</strong> — when users are expected to have files open in their OS. The folder illustration (<code>img-folder-opened</code>) reinforces the drop affordance on hover.</li>
+      <li><strong>Small for inline contexts</strong> — the small variant fits form rows, sidebars, or table cells where vertical space is limited.</li>
+    </ul>
+  </div>
+  <div class="btn-family-card">
+    <div class="btn-family-title">Visual Behaviour</div>
+    <ul class="btn-usage-list">
+      <li><strong>Default border</strong> — 1px dashed <code>Grey/400</code> (<code>--prim-grey-400</code>, #64748B). This is specified in Figma as the "Inside stroke, Weight 1, Grey/400" rule.</li>
+      <li><strong>Hover / drag-over</strong> — border transitions to <code>Primary/Marine</code>, background to <code>Blue/10</code> (#EEF6FF). The folder illustration swaps from <code>img-folder-closed</code> to <code>img-folder-opened</code>.</li>
+      <li><strong>"Browse" is a link-button</strong> — it uses <code>class="gs-upload__link-btn"</code> which applies underline, marine color, and a hover state, while being a proper <code>&lt;button type="button"&gt;</code> for keyboard and accessibility.</li>
+      <li><strong>File list</strong> — after selection/drop, render <code>gs-file-list</code> rows below the zone. Each row has the file icon, name, size, and a progress bar animating to 100%.</li>
+    </ul>
+  </div>
+  <div class="btn-family-card">
+    <div class="btn-family-title">Accessibility</div>
+    <ul class="btn-usage-list">
+      <li>The drop zone has <code>role="button"</code> and <code>tabindex="0"</code> so keyboard users can focus it and activate with Enter/Space.</li>
+      <li>The hidden <code>&lt;input type="file"&gt;</code> is the actual browser mechanism. It fills the zone via <code>position:absolute; inset:0; opacity:0</code>.</li>
+      <li>"Browse" is a <code>&lt;button type="button"&gt;</code> (not a <code>&lt;span&gt;</code> or <code>&lt;a&gt;</code>) so it's natively keyboard-focusable and reads as a button to screen readers.</li>
+      <li>Upload progress should be announced via a live region or by updating <code>aria-valuenow</code> on each file's progress bar.</li>
+    </ul>
+  </div>
+</div>
+<div class="code-tab-qnav">
+  <div class="code-qnav-inner">
+    <p class="code-qnav-title">On this page</p>
+    <ul class="code-qnav-list">
+      <li class="code-qnav-item"><a class="code-qnav-link" href="#">When to Use</a></li>
+      <li class="code-qnav-item"><a class="code-qnav-link" href="#">Visual Behaviour</a></li>
+      <li class="code-qnav-item"><a class="code-qnav-link" href="#">Accessibility</a></li>
+    </ul>
+  </div>
+</div>
+</div>
+</div><!-- /usage tab -->
+
+
+<script>
+/* ── Tab switching ─────────────────────────────────────────────────── */
+function switchUplTab(tab) {
+  document.querySelectorAll('.upl-tab-btn').forEach(b => b.classList.toggle('active', b.dataset.tab === tab));
+  document.querySelectorAll('.upl-tab-pane').forEach(p => p.classList.toggle('active', p.id === 'upl-tab-' + tab));
+}
+
+/* ── File input trigger ────────────────────────────────────────────── */
+function triggerFileInput(id) {
+  const inp = document.getElementById(id);
+  if (inp) inp.click();
+}
+
+/* ── Drag events — swap folder illustration ────────────────────────── */
+function handleUplDragOver(e, zoneId) {
+  e.preventDefault(); e.stopPropagation();
+  const zone = document.getElementById(zoneId);
+  if (!zone) return;
+  zone.classList.add('is-dragover');
+  /* swap to opened illustration */
+  const img = zone.querySelector('[data-ill]');
+  if (img) img.src = 'Assets/illustrations/img-folder-opened.svg';
+}
+function handleUplDragLeave(zoneId) {
+  const zone = document.getElementById(zoneId);
+  if (!zone) return;
+  zone.classList.remove('is-dragover');
+  /* swap back to closed illustration */
+  const img = zone.querySelector('[data-ill]');
+  if (img) img.src = 'Assets/illustrations/img-folder-closed.svg';
+}
+function handleUplDrop(e, zoneId, _, listId) {
+  e.preventDefault(); e.stopPropagation();
+  handleUplDragLeave(zoneId);
+  const files = e.dataTransfer?.files;
+  if (files && files.length) handleUplFiles(files, listId);
+}
+
+/* ── Format file size ──────────────────────────────────────────────── */
+function fmtSize(bytes) {
+  if (bytes < 1024) return bytes + ' B';
+  if (bytes < 1024*1024) return (bytes/1024).toFixed(1) + ' KB';
+  return (bytes/(1024*1024)).toFixed(1) + ' MB';
+}
+
+/* ── Add files to file list ────────────────────────────────────────── */
+function handleUplFiles(files, listId) {
+  const list = document.getElementById(listId);
+  if (!list || !files) return;
+  Array.from(files).forEach(file => {
+    const id  = 'fi-' + Math.random().toString(36).slice(2, 8);
+    const ext = file.name.split('.').pop().toUpperCase();
+    const item = document.createElement('div');
+    item.className = 'gs-file-item';
+    item.id = id;
+    item.innerHTML = `
+      <div class="gs-file-item__icon">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+          <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/>
+          <polyline points="14 2 14 8 20 8"/>
+        </svg>
+      </div>
+      <div class="gs-file-item__info">
+        <div class="gs-file-item__name">${file.name}</div>
+        <div class="gs-file-item__meta">${fmtSize(file.size)} · ${ext}</div>
+        <!-- Progress bar using gs-progress component tokens -->
+        <div class="gs-progress gs-progress--sm" role="progressbar"
+             aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" id="pb-${id}"
+             style="margin-top:4px;">
+          <div class="gs-progress__bar">
+            <div class="gs-progress__fill" id="fill-${id}" style="width:0%"></div>
+          </div>
+          <span class="gs-progress__label" id="lbl-${id}">0%</span>
+        </div>
+      </div>
+      <button class="gs-file-item__remove" onclick="removeUplFile('${id}')" aria-label="Remove ${file.name}">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+          <path d="M18 6L6 18M6 6l12 12"/>
+        </svg>
+      </button>`;
+    list.appendChild(item);
+    simulateUplProgress(id);
+  });
+}
+
+/* ── Simulate upload progress ──────────────────────────────────────── */
+function simulateUplProgress(id) {
+  let pct = 0;
+  const fill  = document.getElementById('fill-' + id);
+  const lbl   = document.getElementById('lbl-' + id);
+  const bar   = document.getElementById('pb-' + id);
+  const speed = Math.random() * 18 + 8;
+  const tick  = () => {
+    pct = Math.min(pct + speed * (Math.random() * .6 + .7), 100);
+    const n = Math.round(pct);
+    if (fill) fill.style.width = n + '%';
+    if (lbl)  lbl.textContent  = n + '%';
+    if (bar)  bar.setAttribute('aria-valuenow', n);
+    if (n < 100) { setTimeout(tick, 160 + Math.random() * 100); }
+    else if (bar) {
+      bar.classList.add('gs-progress--success');
+      if (lbl) lbl.textContent = '✓';
+    }
+  };
+  setTimeout(tick, 180);
+}
+
+/* ── Remove file item ──────────────────────────────────────────────── */
+function removeUplFile(id) {
+  const el = document.getElementById(id);
+  if (el) {
+    el.style.transition = 'opacity .18s, transform .18s';
+    el.style.opacity = '0'; el.style.transform = 'translateX(6px)';
+    setTimeout(() => el.remove(), 200);
+  }
+}
+</script>

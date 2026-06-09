@@ -1,0 +1,915 @@
+<!-- ═══════════════════════════════════════════════════════════════
+     TABS — Pelagos Design System
+     ═══════════════════════════════════════════════════════════════ -->
+<style>
+/* ═══════════════════════════════════════════════════════════════
+   TAB DEMO — Pelagos Design System
+   Pattern: IDENTICAL to the page's own Design/Code/Usage tabs.
+   Container: border-bottom 1px grey.
+   Tab: border-bottom 2px transparent + margin-bottom -1px.
+   Active: border-bottom-color → brand blue (2px overrides the 1px grey).
+   Mapped to foundation tokens for developer override.
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ── Foundation-token aliases (override these to retheme) ── */
+:root {
+  --gs-tab-border:         var(--prim-grey-100);          /* #e2e8f0 — container baseline */
+  --gs-tab-color:          var(--prim-grey-400, #64748b); /* inactive label */
+  --gs-tab-color-active:   var(--color-brand);            /* #1852fe */
+  --gs-tab-color-disabled: var(--color-text-disabled);
+  --gs-tab-height:         44px;                          /* page tabs use 48px; demo uses 44px */
+  --gs-tab-font:           var(--prim-font-primary);
+  --gs-tab-font-size:      var(--prim-font-size-md);      /* 14px */
+  --gs-tab-font-weight:    var(--prim-font-weight-semibold, 600);
+  --gs-tab-panel-border:   var(--prim-grey-100);
+}
+
+/* ── Wrapper ── */
+.gs-tabs           { display:flex; flex-direction:column; }
+.gs-tabs--vertical { flex-direction:row; }
+
+/* ══════════════════════════════════════════════════════════════
+   TAB LIST
+   - border-bottom is the grey baseline shared by all tabs
+   - No overflow scroll — tabs stay visible
+   ══════════════════════════════════════════════════════════════ */
+.gs-tablist {
+  display:flex;
+  align-items:center;
+  gap:4px;
+  border-bottom:1px solid var(--gs-tab-border);
+  overflow:visible;
+  background:transparent;   /* inherits container bg */
+  position:relative;        /* ink bar anchor */
+}
+
+/* ── Sliding ink bar (created by JS) ── */
+.gs-tab-ink {
+  position:absolute;
+  bottom:-1px;              /* sits on top of the 1px border-bottom */
+  height:2px;
+  background:var(--gs-tab-color-active);
+  border-radius:1px;
+  pointer-events:none;
+  transition:left 0.25s cubic-bezier(0.4,0,0.2,1),
+             width 0.25s cubic-bezier(0.4,0,0.2,1);
+}
+
+/* ══════════════════════════════════════════════════════════════
+   TAB BUTTON — mirrors .btn-tab-btn exactly
+   Key mechanics:
+     border-bottom: 2px solid transparent  →  space for indicator
+     margin-bottom: -1px                   →  button overlaps container border
+   Active: border-bottom-color turns blue, 2px covers the 1px grey  
+   ══════════════════════════════════════════════════════════════ */
+.gs-demo-tab {
+  height:var(--gs-tab-height);
+  padding:0 16px;
+  background:none;
+  border:none;
+  border-bottom:none;          /* ink bar replaces per-tab indicator */
+  margin-bottom:0;
+  font-family:var(--gs-tab-font);
+  font-size:var(--gs-tab-font-size);
+  font-weight:var(--gs-tab-font-weight);
+  color:var(--gs-tab-color);
+  cursor:pointer;
+  display:flex;
+  align-items:center;
+  gap:6px;
+  white-space:nowrap;
+  flex-shrink:0;
+  transition:color 0.18s ease, border-color 0.18s ease;
+  position:relative;
+}
+
+.gs-demo-tab:hover { color:var(--gs-tab-color-active); }
+
+.gs-demo-tab--active {
+  color:var(--gs-tab-color-active) !important;
+  /* indicator handled by .gs-tab-ink JS-animated bar */
+}
+
+.gs-demo-tab:disabled,
+.gs-demo-tab[aria-disabled="true"] {
+  color:var(--gs-tab-color-disabled) !important;
+  cursor:not-allowed;
+}
+
+.gs-demo-tab:focus-visible {
+  outline:none;
+  box-shadow:0 0 0 3px rgba(24,82,254,0.25);   /* matches btn-focus-ring */
+  border-radius:var(--radius-sm);
+}
+
+/* ── Size variants ── */
+.gs-tabs--sm .gs-demo-tab { height:36px; padding:0 12px; font-size:var(--prim-font-size-sm); }
+.gs-tabs--lg .gs-demo-tab { height:52px; padding:0 20px; font-size:var(--prim-font-size-lg); }
+
+/* ── Panel — fade in on activate ── */
+.gs-demo-panel-wrap { }
+.gs-demo-panel         { display:none;  padding:20px 16px; }
+.gs-demo-panel--active {
+  display:block;
+  animation:gs-tab-panel-in 0.18s ease forwards;
+}
+@keyframes gs-tab-panel-in {
+  from { opacity:0; transform:translateY(3px); }
+  to   { opacity:1; transform:translateY(0);   }
+}
+
+/* ══════════════════════════════════════════════════════════════
+   VERTICAL — LEFT indicator (2px left border on active tab)
+   Container has right border as the separator instead of bottom
+   ══════════════════════════════════════════════════════════════ */
+.gs-tabs--vertical .gs-tablist {
+  flex-direction:column;
+  align-items:stretch;
+  border-bottom:none;
+  border-right:1px solid var(--gs-tab-border);
+  min-width:140px;
+}
+.gs-tabs--vertical .gs-demo-tab {
+  height:auto;
+  padding:10px 16px 10px 14px;
+  border-bottom:none;
+  border-left:2px solid transparent;
+  margin-bottom:0;
+  margin-right:-1px;            /* overlap container right border */
+  justify-content:flex-start;
+  text-align:left;
+}
+.gs-tabs--vertical .gs-demo-tab--active {
+  border-left-color:var(--gs-tab-color-active) !important;
+  border-bottom-color:transparent !important;
+}
+.gs-tabs--vertical .gs-demo-tab:hover {
+  border-left-color:var(--color-brand-border, #c7d2fe);
+  border-bottom-color:transparent;
+}
+.gs-tabs--vertical .gs-demo-panel-wrap { flex:1; }
+.gs-tabs--vertical .gs-demo-panel { padding:16px 20px; }
+
+/* ══════════════════════════════════════════════════════════════
+   CARD — boxed tabs that merge seamlessly with the panel below
+   All tabs: 3-sided border, NO bottom border (avoids double line)
+   Active: pulled down 1px to cover panel top border → zero seam
+   ══════════════════════════════════════════════════════════════ */
+.gs-tabs--card .gs-tablist {
+  border-bottom:none;
+  align-items:flex-end;
+  gap:4px;
+}
+.gs-tabs--card .gs-demo-tab {
+  height:auto;
+  padding:8px 16px;
+  border:1px solid var(--gs-tab-panel-border);
+  border-bottom:none;           /* no bottom on any card tab */
+  border-radius:var(--radius-sm) var(--radius-sm) 0 0;
+  background:var(--prim-grey-50);
+  margin-bottom:0;
+  position:relative; z-index:0;
+}
+.gs-tabs--card .gs-demo-tab--active {
+  background:var(--color-surface-default) !important;
+  color:var(--gs-tab-color-active) !important;
+  border-bottom-color:transparent !important;
+  z-index:2;
+  margin-bottom:-1px;           /* cover panel top border → seamless */
+}
+.gs-tabs--card .gs-demo-panel-wrap {
+  border:1px solid var(--gs-tab-panel-border);
+  border-radius:0 var(--radius-sm) var(--radius-sm) var(--radius-sm);
+  background:var(--color-surface-default);
+  position:relative; z-index:1;
+}
+
+/* ── Badge — inline to the right of the label ── */
+.gs-tab-badge {
+  display:inline-flex; align-items:center; justify-content:center;
+  min-width:18px; height:18px;
+  border-radius:9px; padding:0 5px;
+  font-size:11px; font-weight:700;
+  background:var(--prim-grey-100); color:#475569;
+  flex-shrink:0;
+  transition:background 0.18s, color 0.18s;
+}
+.gs-demo-tab--active .gs-tab-badge {
+  background:var(--color-brand-subtle);
+  color:var(--color-brand);
+}
+
+/* ── Icon ── */
+.gs-tab-icon {
+  width:16px; height:16px;
+  display:inline-flex; align-items:center; justify-content:center;
+  flex-shrink:0;
+}
+
+/* ── Close ── */
+.gs-tab-close {
+  display:inline-flex; align-items:center; justify-content:center;
+  width:16px; height:16px; border-radius:50%;
+  border:none; background:none;
+  cursor:pointer; color:var(--prim-grey-400); padding:0;
+  transition:background 0.12s, color 0.12s;
+}
+.gs-tab-close:hover { background:var(--prim-grey-100); color:var(--prim-grey-700); }
+</style>
+
+<!-- BANNER -->
+<div class="page-header">
+  <h1 class="ds-hero-title">Tabs</h1>
+</div>
+
+<!-- TAB BAR -->
+<div class="btn-tab-bar">
+  <button class="btn-tab-btn tabs-tab-btn active" data-tab="design" onclick="switchTabsTab('design')">Design</button>
+  <button class="btn-tab-btn tabs-tab-btn" data-tab="code"   onclick="switchTabsTab('code')">Code</button>
+  <button class="btn-tab-btn tabs-tab-btn" data-tab="usage"  onclick="switchTabsTab('usage')">Usage</button>
+</div>
+
+<!-- ═══ DESIGN TAB ═══════════════════════════════════════════════ -->
+<div id="tabs-tab-design" class="btn-tab-pane tabs-tab-pane active">
+  <div class="code-tab-layout">
+    <div class="code-tab-main">
+
+      <!-- OVERVIEW -->
+      <div id="tabs-s-overview" class="btn-family-card">
+        <div class="btn-family-title">Overview</div>
+        <p class="btn-family-desc">Tabs organise related content into sections that share the same space. Only one section is visible at a time. Pelagos tabs follow the Ant Design pattern with two visual styles (Line and Card), three sizes, and placement on all four sides. Click any tab below to switch content.</p>
+
+        <!-- Line tab demo — label outside, clean white card, matches badge section style -->
+        <div class="btn-sub-label" style="margin-bottom:10px;">Line tabs — click to switch · active tab shows 2px blue underline</div>
+        <div style="background:var(--color-surface-default);border:1px solid var(--color-border-default);border-radius:var(--radius-lg);overflow:hidden;">
+          <div class="gs-tabs" id="ov-tabs">
+            <div class="gs-tablist" role="tablist" aria-label="Document sections">
+              <button class="gs-demo-tab gs-demo-tab--active" role="tab" aria-selected="true"
+                id="ov-tab-0" aria-controls="ov-panel-0" onclick="gsDemoTabSelect('ov-tabs',0)">
+                Overview
+              </button>
+              <button class="gs-demo-tab" role="tab" aria-selected="false"
+                id="ov-tab-1" aria-controls="ov-panel-1" onclick="gsDemoTabSelect('ov-tabs',1)">
+                Architecture
+              </button>
+              <button class="gs-demo-tab" role="tab" aria-selected="false"
+                id="ov-tab-2" aria-controls="ov-panel-2" onclick="gsDemoTabSelect('ov-tabs',2)">
+                API Reference
+              </button>
+              <button class="gs-demo-tab" role="tab" aria-selected="false" aria-disabled="true" disabled>
+                Changelog
+              </button>
+            </div>
+          </div>
+          <div class="gs-demo-panel-wrap" style="padding:0;">
+            <div class="gs-demo-panel gs-demo-panel--active" id="ov-panel-0" role="tabpanel" aria-labelledby="ov-tab-0" style="padding:16px 20px;">
+              <p style="margin:0;color:var(--color-text-secondary);font-size:var(--prim-font-size-sm);line-height:1.7;">The <strong>Overview</strong> panel is active. The active tab shows a <strong>2px bottom border</strong> in <code>--color-brand</code>.</p>
+            </div>
+            <div class="gs-demo-panel" id="ov-panel-1" role="tabpanel" aria-labelledby="ov-tab-1" style="padding:16px 20px;">
+              <p style="margin:0;color:var(--color-text-secondary);font-size:var(--prim-font-size-sm);line-height:1.7;"><strong>Architecture</strong> panel. Each panel is <code>role="tabpanel"</code> linked via <code>aria-controls</code> / <code>aria-labelledby</code>.</p>
+            </div>
+            <div class="gs-demo-panel" id="ov-panel-2" role="tabpanel" aria-labelledby="ov-tab-2" style="padding:16px 20px;">
+              <p style="margin:0;color:var(--color-text-secondary);font-size:var(--prim-font-size-sm);line-height:1.7;"><strong>API Reference</strong> panel. "Changelog" is disabled — uses <code>aria-disabled="true"</code> + <code>disabled</code> to block activation while keeping focus order.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Badge demo — separate card -->
+        <div style="margin-top:20px;">
+          <div class="btn-sub-label" style="margin-bottom:10px;">With count badges — badges shift to brand-subtle tint on the active tab</div>
+          <div style="background:var(--color-surface-default);border:1px solid var(--color-border-default);border-radius:var(--radius-lg);overflow:hidden;">
+            <div class="gs-tabs" id="ov-badge-tabs">
+              <div class="gs-tablist" role="tablist" style="padding:0 8px;">
+                <button class="gs-demo-tab gs-demo-tab--active" role="tab" aria-selected="true" onclick="gsDemoTabSelect('ov-badge-tabs',0)">
+                  Inbox <span class="gs-tab-badge">4</span>
+                </button>
+                <button class="gs-demo-tab" role="tab" aria-selected="false" onclick="gsDemoTabSelect('ov-badge-tabs',1)">
+                  Processing <span class="gs-tab-badge">12</span>
+                </button>
+                <button class="gs-demo-tab" role="tab" aria-selected="false" onclick="gsDemoTabSelect('ov-badge-tabs',2)">
+                  Completed <span class="gs-tab-badge">38</span>
+                </button>
+                <button class="gs-demo-tab" role="tab" aria-selected="false" onclick="gsDemoTabSelect('ov-badge-tabs',3)">
+                  Failed <span class="gs-tab-badge" style="background:var(--prim-red-50);color:var(--prim-red-500);">2</span>
+                </button>
+              </div>
+            </div>
+            <div class="gs-demo-panel-wrap" style="padding:0;">
+              <div class="gs-demo-panel gs-demo-panel--active" style="padding:16px 20px;"><p style="margin:0;color:var(--color-text-secondary);font-size:var(--prim-font-size-sm);">4 items in Inbox. Badge updates reactively as items move through processing.</p></div>
+              <div class="gs-demo-panel" style="padding:16px 20px;"><p style="margin:0;color:var(--color-text-secondary);font-size:var(--prim-font-size-sm);">12 items currently being processed. Badges use <code>--prim-grey-100</code> bg by default; on the active tab they shift to <code>--color-brand-subtle</code> with <code>--color-brand</code> text.</p></div>
+              <div class="gs-demo-panel" style="padding:16px 20px;"><p style="margin:0;color:var(--color-text-secondary);font-size:var(--prim-font-size-sm);">38 completed items.</p></div>
+              <div class="gs-demo-panel" style="padding:16px 20px;"><p style="margin:0;color:var(--color-text-secondary);font-size:var(--prim-font-size-sm);">2 failed items. The red badge overrides the default badge colour to draw attention to errors.</p></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="btn-when-examples" style="margin-top:16px;">
+          <span class="btn-when-example-tag">2 Variants</span>
+          <span class="btn-when-example-tag">3 Sizes</span>
+          <span class="btn-when-example-tag">4 Positions</span>
+          <span class="btn-when-example-tag">WCAG AA</span>
+        </div>
+      </div>
+
+      <!-- ANATOMY -->
+      <div id="tabs-s-anatomy" class="btn-family-card">
+        <div class="btn-family-title">Anatomy</div>
+        <p class="btn-family-desc">A Tab component has two main regions: the Tab List (trigger buttons in a row) and the Tab Panel (content area). The active indicator is a 2px border on the active edge.</p>
+
+        <div style="background:var(--color-surface-subtle);border:1px solid var(--color-border-default);border-radius:var(--radius-lg);padding:32px;display:flex;justify-content:center;margin-top:8px;overflow:auto;">
+          <svg width="560" height="200" viewBox="0 0 560 200" fill="none" xmlns="http://www.w3.org/2000/svg" style="min-width:480px;">
+            <!-- Tab list bg -->
+            <rect x="40" y="20" width="380" height="44" rx="0" fill="#f8fafc"/>
+            <line x1="40" y1="64" x2="420" y2="64" stroke="#e2e8f0" stroke-width="2"/>
+            <!-- Tab 1 active -->
+            <rect x="40" y="22" width="90" height="40" fill="#f0f6ff"/>
+            <text x="85" y="47" font-size="13" font-weight="600" fill="#1852fe" text-anchor="middle" font-family="Helvetica,Arial,sans-serif">Tab 1</text>
+            <rect x="40" y="62" width="90" height="2" fill="#1852fe"/>
+            <!-- Tab 2 -->
+            <text x="175" y="47" font-size="13" font-weight="600" fill="#64748b" text-anchor="middle" font-family="Helvetica,Arial,sans-serif">Tab 2</text>
+            <!-- Tab 3 -->
+            <text x="265" y="47" font-size="13" font-weight="600" fill="#64748b" text-anchor="middle" font-family="Helvetica,Arial,sans-serif">Tab 3</text>
+            <!-- Tab 4 disabled -->
+            <text x="365" y="47" font-size="13" font-weight="600" fill="#cbd5e1" text-anchor="middle" font-family="Helvetica,Arial,sans-serif">Disabled</text>
+            <!-- Panel area -->
+            <rect x="40" y="66" width="380" height="110" rx="0" fill="white" stroke="#e2e8f0" stroke-width="1"/>
+            <rect x="56" y="84" width="200" height="10" rx="3" fill="#e2e8f0"/>
+            <rect x="56" y="102" width="260" height="10" rx="3" fill="#e2e8f0"/>
+            <rect x="56" y="120" width="180" height="10" rx="3" fill="#e2e8f0"/>
+
+            <!-- Annotations -->
+            <line x1="85" y1="20" x2="85" y2="4" stroke="#cbd5e1" stroke-width="1"/>
+            <line x1="85" y1="4" x2="480" y2="4" stroke="#cbd5e1" stroke-width="1"/>
+            <circle cx="480" cy="4" r="10" fill="#1852fe"/>
+            <text x="480" y="8" font-size="11" font-weight="700" fill="white" text-anchor="middle" font-family="Helvetica,Arial,sans-serif">1</text>
+            <text x="496" y="8" font-size="11" fill="#475569" font-family="Helvetica,Arial,sans-serif">Tab List</text>
+
+            <line x1="85" y1="62" x2="480" y2="62" stroke="#cbd5e1" stroke-width="1"/>
+            <circle cx="480" cy="62" r="10" fill="#1852fe"/>
+            <text x="480" y="66" font-size="11" font-weight="700" fill="white" text-anchor="middle" font-family="Helvetica,Arial,sans-serif">2</text>
+            <text x="496" y="66" font-size="11" fill="#475569" font-family="Helvetica,Arial,sans-serif">Active indicator (2px)</text>
+
+            <line x1="230" y1="120" x2="480" y2="120" stroke="#cbd5e1" stroke-width="1"/>
+            <circle cx="480" cy="120" r="10" fill="#1852fe"/>
+            <text x="480" y="124" font-size="11" font-weight="700" fill="white" text-anchor="middle" font-family="Helvetica,Arial,sans-serif">3</text>
+            <text x="496" y="124" font-size="11" fill="#475569" font-family="Helvetica,Arial,sans-serif">Tab Panel</text>
+
+            <line x1="85" y1="43" x2="18" y2="43" stroke="#cbd5e1" stroke-width="1"/>
+            <circle cx="18" cy="43" r="10" fill="#1852fe"/>
+            <text x="18" y="47" font-size="11" font-weight="700" fill="white" text-anchor="middle" font-family="Helvetica,Arial,sans-serif">4</text>
+            <text x="0" y="35" font-size="10" fill="#475569" font-family="Helvetica,Arial,sans-serif" text-anchor="middle">Active</text>
+            <text x="0" y="47" font-size="10" fill="#475569" font-family="Helvetica,Arial,sans-serif" text-anchor="middle">tab</text>
+          </svg>
+        </div>
+
+        <ol style="margin-top:20px;display:flex;flex-direction:column;gap:8px;padding-left:20px;">
+          <li><strong>Tab List</strong> — <code>role="tablist"</code> container. Horizontal flex strip with <code>overflow-x:auto</code> for scrollable overflow. Border-bottom: 2px <code>--prim-grey-100</code>.</li>
+          <li><strong>Active indicator</strong> — 2px bottom (or appropriate edge) border in <code>--color-brand</code>. Sits flush on the tab list border, replacing it.</li>
+          <li><strong>Tab Panel</strong> — <code>role="tabpanel"</code>. Only the active panel is rendered/visible. Linked to its tab via <code>aria-controls</code> / <code>aria-labelledby</code>.</li>
+          <li><strong>Tab button</strong> — <code>role="tab"</code> with <code>aria-selected</code>. Font: <code>--prim-font-weight-semibold</code> 14px. Active: <code>--color-brand</code>. Inactive: <code>--prim-grey-500</code>.</li>
+        </ol>
+      </div>
+
+      <!-- VARIANTS -->
+      <div id="tabs-s-variants" class="btn-family-card">
+        <div class="btn-family-title">Variants</div>
+        <p class="btn-family-desc">Two visual styles × three sizes × optional content configurations. All demos are interactive.</p>
+
+        <!-- Line (default) -->
+        <div class="btn-sub-label" style="margin-bottom:10px;">Line (default) — underline indicator</div>
+        <div class="gs-tabs" id="var-line">
+          <div class="gs-tablist" role="tablist">
+            <button class="gs-demo-tab gs-demo-tab--active" role="tab" aria-selected="true" onclick="gsDemoTabSelect('var-line',0)">Map View</button>
+            <button class="gs-demo-tab" role="tab" aria-selected="false" onclick="gsDemoTabSelect('var-line',1)">List View</button>
+            <button class="gs-demo-tab" role="tab" aria-selected="false" onclick="gsDemoTabSelect('var-line',2)">Analytics</button>
+          </div>
+          <div class="gs-demo-panel-wrap">
+            <div class="gs-demo-panel gs-demo-panel--active" role="tabpanel"><p style="margin:0;color:var(--color-text-secondary);font-size:var(--prim-font-size-sm);">Map view panel content.</p></div>
+            <div class="gs-demo-panel" role="tabpanel"><p style="margin:0;color:var(--color-text-secondary);font-size:var(--prim-font-size-sm);">List view panel content.</p></div>
+            <div class="gs-demo-panel" role="tabpanel"><p style="margin:0;color:var(--color-text-secondary);font-size:var(--prim-font-size-sm);">Analytics panel content.</p></div>
+          </div>
+        </div>
+
+        <!-- Card -->
+        <div class="btn-sub-label" style="margin-top:24px;margin-bottom:10px;">Card — boxed tab buttons</div>
+        <div class="gs-tabs gs-tabs--card" id="var-card">
+          <div class="gs-tablist" role="tablist">
+            <button class="gs-demo-tab gs-demo-tab--active" role="tab" aria-selected="true" onclick="gsDemoTabSelect('var-card',0)">Details</button>
+            <button class="gs-demo-tab" role="tab" aria-selected="false" onclick="gsDemoTabSelect('var-card',1)">History</button>
+            <button class="gs-demo-tab" role="tab" aria-selected="false" onclick="gsDemoTabSelect('var-card',2)">Comments</button>
+          </div>
+          <div class="gs-demo-panel-wrap">
+            <div class="gs-demo-panel gs-demo-panel--active" role="tabpanel"><p style="margin:0;color:var(--color-text-secondary);font-size:var(--prim-font-size-sm);padding:16px;">Details panel — card variant creates a seamless border with the panel below.</p></div>
+            <div class="gs-demo-panel" role="tabpanel"><p style="margin:0;color:var(--color-text-secondary);font-size:var(--prim-font-size-sm);padding:16px;">History panel content.</p></div>
+            <div class="gs-demo-panel" role="tabpanel"><p style="margin:0;color:var(--color-text-secondary);font-size:var(--prim-font-size-sm);padding:16px;">Comments panel content.</p></div>
+          </div>
+        </div>
+
+        <!-- Sizes -->
+        <div class="btn-sub-label" style="margin-top:24px;margin-bottom:12px;">Sizes</div>
+        <div style="display:flex;flex-direction:column;gap:20px;">
+          <div>
+            <div style="font-size:var(--prim-font-size-xs);color:var(--color-text-secondary);margin-bottom:6px;font-weight:600;text-transform:uppercase;letter-spacing:.05em;">Small</div>
+            <div class="gs-tabs gs-tabs--sm" id="var-sm">
+              <div class="gs-tablist" role="tablist">
+                <button class="gs-demo-tab gs-demo-tab--active" role="tab" onclick="gsDemoTabSelect('var-sm',0)">Tab 1</button>
+                <button class="gs-demo-tab" role="tab" onclick="gsDemoTabSelect('var-sm',1)">Tab 2</button>
+                <button class="gs-demo-tab" role="tab" onclick="gsDemoTabSelect('var-sm',2)">Tab 3</button>
+              </div>
+              <div class="gs-demo-panel-wrap">
+                <div class="gs-demo-panel gs-demo-panel--active"><p style="margin:0;color:var(--color-text-secondary);font-size:var(--prim-font-size-sm);">Small size — padding 6/12px, 12px font.</p></div>
+                <div class="gs-demo-panel"><p style="margin:0;color:var(--color-text-secondary);font-size:var(--prim-font-size-sm);">Tab 2 content.</p></div>
+                <div class="gs-demo-panel"><p style="margin:0;color:var(--color-text-secondary);font-size:var(--prim-font-size-sm);">Tab 3 content.</p></div>
+              </div>
+            </div>
+          </div>
+          <div>
+            <div style="font-size:var(--prim-font-size-xs);color:var(--color-text-secondary);margin-bottom:6px;font-weight:600;text-transform:uppercase;letter-spacing:.05em;">Large</div>
+            <div class="gs-tabs gs-tabs--lg" id="var-lg">
+              <div class="gs-tablist" role="tablist">
+                <button class="gs-demo-tab gs-demo-tab--active" role="tab" onclick="gsDemoTabSelect('var-lg',0)">Tab 1</button>
+                <button class="gs-demo-tab" role="tab" onclick="gsDemoTabSelect('var-lg',1)">Tab 2</button>
+              </div>
+              <div class="gs-demo-panel-wrap">
+                <div class="gs-demo-panel gs-demo-panel--active"><p style="margin:0;color:var(--color-text-secondary);font-size:var(--prim-font-size-sm);">Large size — padding 14/20px, 16px font.</p></div>
+                <div class="gs-demo-panel"><p style="margin:0;color:var(--color-text-secondary);font-size:var(--prim-font-size-sm);">Tab 2 content.</p></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- With icons -->
+        <div class="btn-sub-label" style="margin-top:24px;margin-bottom:10px;">With Icons</div>
+        <div class="gs-tabs" id="var-icon">
+          <div class="gs-tablist" role="tablist">
+            <button class="gs-demo-tab gs-demo-tab--active" role="tab" aria-selected="true" onclick="gsDemoTabSelect('var-icon',0)">
+              <span class="gs-tab-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg></span>
+              Overview
+            </button>
+            <button class="gs-demo-tab" role="tab" aria-selected="false" onclick="gsDemoTabSelect('var-icon',1)">
+              <span class="gs-tab-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span>
+              Team
+            </button>
+            <button class="gs-demo-tab" role="tab" aria-selected="false" onclick="gsDemoTabSelect('var-icon',2)">
+              <span class="gs-tab-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg></span>
+              Files
+            </button>
+          </div>
+          <div class="gs-demo-panel-wrap">
+            <div class="gs-demo-panel gs-demo-panel--active"><p style="margin:0;color:var(--color-text-secondary);font-size:var(--prim-font-size-sm);">Overview content.</p></div>
+            <div class="gs-demo-panel"><p style="margin:0;color:var(--color-text-secondary);font-size:var(--prim-font-size-sm);">Team content.</p></div>
+            <div class="gs-demo-panel"><p style="margin:0;color:var(--color-text-secondary);font-size:var(--prim-font-size-sm);">Files content.</p></div>
+          </div>
+        </div>
+
+        <!-- With badges -->
+        <div class="btn-sub-label" style="margin-top:24px;margin-bottom:10px;">With Badges</div>
+        <div class="gs-tabs" id="var-badge">
+          <div class="gs-tablist" role="tablist">
+            <button class="gs-demo-tab gs-demo-tab--active" role="tab" aria-selected="true" onclick="gsDemoTabSelect('var-badge',0)">
+              Inbox <span class="gs-tab-badge">3</span>
+            </button>
+            <button class="gs-demo-tab" role="tab" aria-selected="false" onclick="gsDemoTabSelect('var-badge',1)">
+              Sent <span class="gs-tab-badge">12</span>
+            </button>
+            <button class="gs-demo-tab" role="tab" aria-selected="false" onclick="gsDemoTabSelect('var-badge',2)">
+              Drafts <span class="gs-tab-badge">1</span>
+            </button>
+          </div>
+          <div class="gs-demo-panel-wrap">
+            <div class="gs-demo-panel gs-demo-panel--active"><p style="margin:0;color:var(--color-text-secondary);font-size:var(--prim-font-size-sm);">3 messages in inbox.</p></div>
+            <div class="gs-demo-panel"><p style="margin:0;color:var(--color-text-secondary);font-size:var(--prim-font-size-sm);">12 sent messages.</p></div>
+            <div class="gs-demo-panel"><p style="margin:0;color:var(--color-text-secondary);font-size:var(--prim-font-size-sm);">1 draft message.</p></div>
+          </div>
+        </div>
+
+        <!-- Vertical -->
+        <div class="btn-sub-label" style="margin-top:24px;margin-bottom:10px;">Vertical tabs</div>
+        <div class="gs-tabs gs-tabs--vertical" id="var-vert" style="height:180px;">
+          <div class="gs-tablist" role="tablist">
+            <button class="gs-demo-tab gs-demo-tab--active" role="tab" aria-selected="true" onclick="gsDemoTabSelect('var-vert',0)">Profile</button>
+            <button class="gs-demo-tab" role="tab" aria-selected="false" onclick="gsDemoTabSelect('var-vert',1)">Security</button>
+            <button class="gs-demo-tab" role="tab" aria-selected="false" onclick="gsDemoTabSelect('var-vert',2)">Notifications</button>
+            <button class="gs-demo-tab" role="tab" aria-selected="false" onclick="gsDemoTabSelect('var-vert',3)">Billing</button>
+          </div>
+          <div class="gs-demo-panel-wrap">
+            <div class="gs-demo-panel gs-demo-panel--active"><p style="margin:0;color:var(--color-text-secondary);font-size:var(--prim-font-size-sm);">Profile settings panel.</p></div>
+            <div class="gs-demo-panel"><p style="margin:0;color:var(--color-text-secondary);font-size:var(--prim-font-size-sm);">Security settings panel.</p></div>
+            <div class="gs-demo-panel"><p style="margin:0;color:var(--color-text-secondary);font-size:var(--prim-font-size-sm);">Notification preferences panel.</p></div>
+            <div class="gs-demo-panel"><p style="margin:0;color:var(--color-text-secondary);font-size:var(--prim-font-size-sm);">Billing &amp; subscription panel.</p></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- STATES -->
+      <div id="tabs-s-states" class="btn-family-card">
+        <div class="btn-family-title">States</div>
+        <p class="btn-family-desc">Four tab button states. The interactive strip below shows all states live.</p>
+        <div class="btn-states-grid" style="grid-template-columns:repeat(4,1fr);">
+          <div class="btn-state-cell">
+            <div style="pointer-events:none;">
+              <div class="gs-tabs">
+                <div class="gs-tablist"><button class="gs-demo-tab">Inactive</button></div>
+              </div>
+            </div>
+            <span class="btn-state-label">Default</span>
+          </div>
+          <div class="btn-state-cell">
+            <div style="pointer-events:none;">
+              <div class="gs-tabs">
+                <div class="gs-tablist"><button class="gs-demo-tab" style="color:var(--color-brand);">Hover</button></div>
+              </div>
+            </div>
+            <span class="btn-state-label">Hover</span>
+          </div>
+          <div class="btn-state-cell">
+            <div style="pointer-events:none;">
+              <div class="gs-tabs">
+                <div class="gs-tablist"><button class="gs-demo-tab gs-demo-tab--active">Active</button></div>
+              </div>
+            </div>
+            <span class="btn-state-label">Active</span>
+          </div>
+          <div class="btn-state-cell">
+            <div style="pointer-events:none;">
+              <div class="gs-tabs">
+                <div class="gs-tablist"><button class="gs-demo-tab" aria-disabled="true" disabled>Disabled</button></div>
+              </div>
+            </div>
+            <span class="btn-state-label">Disabled</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- INTERACTIONS -->
+      <div id="tabs-s-interaction" class="btn-family-card">
+        <div class="btn-family-title">Interactions</div>
+        <table>
+          <thead><tr><th>Trigger</th><th>Behaviour</th><th>Timing</th></tr></thead>
+          <tbody>
+            <tr class="ds-tr-border"><td>Click tab</td><td>Sets <code>aria-selected="true"</code> on clicked tab, <code>"false"</code> on others. Shows corresponding panel.</td><td>Instant</td></tr>
+            <tr class="ds-tr-border"><td>Hover tab</td><td>Text colour transitions to <code>--color-brand</code>.</td><td>150ms ease</td></tr>
+            <tr class="ds-tr-border"><td><kbd>←</kbd> / <kbd>→</kbd></td><td>Moves focus between tabs (roving tabindex). Also activates if <code>activation=automatic</code>.</td><td>—</td></tr>
+            <tr class="ds-tr-border"><td><kbd>Home</kbd> / <kbd>End</kbd></td><td>Focus jumps to first / last tab.</td><td>—</td></tr>
+            <tr class="ds-tr-border"><td><kbd>Enter</kbd> / <kbd>Space</kbd></td><td>Activates focused tab if <code>activation=manual</code>.</td><td>—</td></tr>
+            <tr class="ds-tr-border"><td><kbd>Tab</kbd></td><td>Moves focus into the active tab panel.</td><td>—</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- ACCESSIBILITY -->
+      <div id="tabs-s-a11y" class="btn-family-card">
+        <div class="btn-family-title">Accessibility</div>
+        <div class="btn-sub-label">ARIA Pattern</div>
+        <p class="btn-family-desc">Implements the ARIA Tabs pattern. The container uses <code>role="tablist"</code>, each trigger is <code>role="tab"</code>, and each panel is <code>role="tabpanel"</code>. Roving tabindex ensures only one tab is in the Tab sequence at a time.</p>
+        <div class="btn-sub-label" style="margin-top:16px;">ARIA Attributes</div>
+        <table>
+          <thead><tr><th>Element</th><th>Attribute</th><th>Value</th></tr></thead>
+          <tbody>
+            <tr class="ds-tr-border"><td>Tab list</td><td><code>role="tablist"</code></td><td>—</td></tr>
+            <tr class="ds-tr-border"><td>Tab button</td><td><code>role="tab"</code></td><td>—</td></tr>
+            <tr class="ds-tr-border"><td>Tab button</td><td><code>aria-selected</code></td><td><code>"true"</code> / <code>"false"</code></td></tr>
+            <tr class="ds-tr-border"><td>Tab button</td><td><code>aria-controls</code></td><td>ID of the associated panel</td></tr>
+            <tr class="ds-tr-border"><td>Tab button</td><td><code>tabindex</code></td><td><code>0</code> (active) / <code>-1</code> (inactive)</td></tr>
+            <tr class="ds-tr-border"><td>Tab panel</td><td><code>role="tabpanel"</code></td><td>—</td></tr>
+            <tr class="ds-tr-border"><td>Tab panel</td><td><code>aria-labelledby</code></td><td>ID of the associated tab button</td></tr>
+          </tbody>
+        </table>
+        <div class="btn-sub-label" style="margin-top:16px;">Contrast Ratios</div>
+        <table>
+          <thead><tr><th>State</th><th>Token</th><th>Background</th><th>Ratio</th><th>WCAG</th></tr></thead>
+          <tbody>
+            <tr class="ds-tr-border"><td>Inactive</td><td><code>--prim-grey-500</code></td><td><code>--prim-white</code></td><td>5.9:1</td><td>AA ✓</td></tr>
+            <tr class="ds-tr-border"><td>Active</td><td><code>--color-brand</code></td><td><code>--prim-white</code></td><td>4.6:1</td><td>AA ✓</td></tr>
+            <tr class="ds-tr-border"><td>Disabled</td><td><code>--color-text-disabled</code></td><td><code>--prim-white</code></td><td>3.0:1</td><td>AA (large) ✓</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- RESPONSIVE -->
+      <div id="tabs-s-responsive" class="btn-family-card">
+        <div class="btn-family-title">Responsive Behaviour</div>
+        <table>
+          <thead><tr><th>Breakpoint</th><th>Behaviour</th></tr></thead>
+          <tbody>
+            <tr class="ds-tr-border"><td>&gt; 1024px</td><td>Full tab list displayed inline. Overflow handled by scroll if too many tabs.</td></tr>
+            <tr class="ds-tr-border"><td>768px – 1024px</td><td>Tabs scroll horizontally when overflow occurs. Scroll shadows indicate more tabs.</td></tr>
+            <tr class="ds-tr-border"><td>&lt; 768px</td><td>Consider switching to a Dropdown or Select for many tabs. For ≤ 4 tabs, scrollable line tabs work well on touch devices (min 44px tap height).</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- DO / DON'T -->
+      <div id="tabs-s-dosdonts" class="btn-family-card">
+        <div class="btn-family-title">Do / Don't</div>
+        <div class="btn-dos-donts">
+          <div class="btn-do-card">
+            <div class="btn-do-header"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>Do</div>
+            <ul>
+              <li>
+                <div class="btn-do-example">
+                  <div class="gs-tabs" id="do-tabs"><div class="gs-tablist" role="tablist">
+                    <button class="gs-demo-tab gs-demo-tab--active" role="tab" onclick="gsDemoTabSelect('do-tabs',0)">Profile</button>
+                    <button class="gs-demo-tab" role="tab" onclick="gsDemoTabSelect('do-tabs',1)">Security</button>
+                  </div><div class="gs-demo-panel-wrap"><div class="gs-demo-panel gs-demo-panel--active"><p style="margin:0;font-size:12px;color:var(--color-text-secondary);">Profile settings.</p></div><div class="gs-demo-panel"><p style="margin:0;font-size:12px;color:var(--color-text-secondary);">Security settings.</p></div></div></div>
+                </div>
+                <p>Use short, scannable tab labels (1–2 words). Users should predict panel content from the tab label alone.</p>
+              </li>
+            </ul>
+          </div>
+          <div class="btn-dont-card">
+            <div class="btn-dont-header"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>Don't</div>
+            <ul>
+              <li>
+                <div class="btn-dont-example" style="pointer-events:none;">
+                  <div class="gs-tabs"><div class="gs-tablist" role="tablist">
+                    <button class="gs-demo-tab gs-demo-tab--active" style="font-size:11px;">Account Settings</button>
+                    <button class="gs-demo-tab" style="font-size:11px;">Privacy &amp; Security</button>
+                    <button class="gs-demo-tab" style="font-size:11px;">Notifications</button>
+                    <button class="gs-demo-tab" style="font-size:11px;">Integrations &amp; API</button>
+                    <button class="gs-demo-tab" style="font-size:11px;">Advanced</button>
+                  </div></div>
+                </div>
+                <p>Don't cram too many tabs (5+) with long labels. Use a Side Navigation or grouped sections instead.</p>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- RELATED -->
+      <div id="tabs-s-related" class="btn-family-card">
+        <div class="btn-family-title">Related Components</div>
+        <ul class="btn-related-list">
+          <li><button class="btn-inline-link" onclick="navigate('nav-sidenav')">Side Navigation</button> — Use when you have many sections requiring persistent visibility of the full navigation structure.</li>
+          <li><button class="btn-inline-link" onclick="navigate('prim-segmented')">Segmented Button</button> — Use for 2–3 mutually exclusive options that switch a view inline without a content panel below.</li>
+          <li><button class="btn-inline-link" onclick="navigate('nav-steppers')">Steppers</button> — Use when content has a sequential, ordered flow rather than parallel sections.</li>
+        </ul>
+      </div>
+
+    </div><!-- /code-tab-main -->
+
+    <div class="code-tab-qnav">
+      <div class="code-qnav-inner">
+        <p class="code-qnav-title">On This Page</p>
+        <ul class="code-qnav-list">
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('tabs-s-overview')">Overview</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('tabs-s-anatomy')">Anatomy</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('tabs-s-variants')">Variants</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('tabs-s-states')">States</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('tabs-s-interaction')">Interactions</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('tabs-s-a11y')">Accessibility</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('tabs-s-responsive')">Responsive</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('tabs-s-dosdonts')">Do / Don't</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('tabs-s-related')">Related</button></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ CODE TAB ═══════════════════════════════════════════════════════ -->
+<div id="tabs-tab-code" class="btn-tab-pane tabs-tab-pane">
+  <div class="code-tab-layout">
+    <div class="code-tab-main">
+      <div class="fw-toggle-bar">
+        <button class="fw-toggle-bar-btn active" data-fw="react" onclick="switchFw('tabs-tab-code','react')"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="2.5" fill="#61dafb"/><ellipse cx="12" cy="12" rx="10" ry="4.5" stroke="#61dafb" stroke-width="1.5" fill="none"/><ellipse cx="12" cy="12" rx="10" ry="4.5" stroke="#61dafb" stroke-width="1.5" fill="none" transform="rotate(60 12 12)"/><ellipse cx="12" cy="12" rx="10" ry="4.5" stroke="#61dafb" stroke-width="1.5" fill="none" transform="rotate(120 12 12)"/></svg>React</button>
+        <button class="fw-toggle-bar-btn" data-fw="angular" onclick="switchFw('tabs-tab-code','angular')"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M12 2L2 6.5l1.5 12.5L12 22l8.5-3L22 6.5 12 2z" fill="#dd0031"/><path d="M12 2v20M12 2L6 17h12L12 2z" fill="none" stroke="#fff" stroke-width="1.2"/></svg>Angular</button>
+      </div>
+
+      <div id="tabs-c-overview" class="btn-family-card">
+        <div class="ds-step-row"><span class="ds-step-num">1</span><div class="btn-family-title" style="margin:0;">Overview</div></div>
+        <div class="fw-react"><p class="btn-family-desc"><code>&lt;Tabs&gt;</code> accepts an <code>items</code> array. Use <code>activeKey</code>+<code>onChange</code> for controlled mode or <code>defaultActiveKey</code> for uncontrolled.</p></div>
+        <div class="fw-angular" style="display:none;"><p class="btn-family-desc"><code>&lt;gs-tabs&gt;</code> with <code>[(activeKey)]</code> two-way binding. Each <code>&lt;gs-tab-item&gt;</code> provides key, label, and content.</p></div>
+      </div>
+
+      <div id="tabs-c-install" class="btn-family-card">
+        <div class="ds-step-row"><span class="ds-step-num">2</span><div class="btn-family-title" style="margin:0;">Install / Setup</div></div>
+        <div class="fw-react"><div class="btn-code-block"><div class="btn-code-head"><span class="btn-code-lang">bash</span><button class="btn-copy-btn" onclick="copyBtnCode('tabs-install',this)">Copy</button></div><div class="btn-code-body"><pre id="tabs-install"><code>npm install @pelagos/react-components</code></pre></div></div></div>
+        <div class="fw-angular" style="display:none;"><div class="btn-code-block"><div class="btn-code-head"><span class="btn-code-lang">bash</span><button class="btn-copy-btn" onclick="copyBtnCode('tabs-install-ng',this)">Copy</button></div><div class="btn-code-body"><pre id="tabs-install-ng"><code>npm install @pelagos/angular-components</code></pre></div></div></div>
+      </div>
+
+      <div id="tabs-c-imports" class="btn-family-card">
+        <div class="ds-step-row"><span class="ds-step-num">3</span><div class="btn-family-title" style="margin:0;">Import</div></div>
+        <div class="fw-react"><div class="btn-code-block"><div class="btn-code-head"><span class="btn-code-lang">JSX</span><button class="btn-copy-btn" onclick="copyBtnCode('tabs-import',this)">Copy</button></div><div class="btn-code-body"><pre id="tabs-import"><code><span class="c-kw">import</span> { <span class="c-type">Tabs</span> } <span class="c-kw">from</span> <span class="c-val">'@pelagos/react-components'</span>;</code></pre></div></div></div>
+        <div class="fw-angular" style="display:none;"><div class="btn-code-block"><div class="btn-code-head"><span class="btn-code-lang">TS</span><button class="btn-copy-btn" onclick="copyBtnCode('tabs-import-ng',this)">Copy</button></div><div class="btn-code-body"><pre id="tabs-import-ng"><code><span class="c-kw">import</span> { <span class="c-type">TabsModule</span> } <span class="c-kw">from</span> <span class="c-val">'@pelagos/angular-components'</span>;</code></pre></div></div></div>
+      </div>
+
+      <div id="tabs-c-api" class="btn-family-card">
+        <div class="ds-step-row"><span class="ds-step-num">4</span><div class="btn-family-title" style="margin:0;">API / Props</div></div>
+        <div class="fw-react">
+          <table>
+            <thead><tr><th>Prop</th><th>Type</th><th>Default</th><th>Required</th><th>Description</th></tr></thead>
+            <tbody>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">items</td><td class="ds-td-code-muted">TabItem[]</td><td class="ds-td-code-muted">—</td><td>Yes</td><td class="ds-td-value">Array of tab definitions (key, label, children, icon, badge, disabled)</td></tr>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">activeKey</td><td class="ds-td-code-muted">string</td><td class="ds-td-code-muted">—</td><td>No</td><td class="ds-td-value">Controlled active tab key</td></tr>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">defaultActiveKey</td><td class="ds-td-code-muted">string</td><td class="ds-td-code-muted">items[0].key</td><td>No</td><td class="ds-td-value">Initial active tab (uncontrolled)</td></tr>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">onChange</td><td class="ds-td-code-muted">(key: string) =&gt; void</td><td class="ds-td-code-muted">—</td><td>No</td><td class="ds-td-value">Called when active tab changes</td></tr>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">type</td><td class="ds-td-code-muted">'line' | 'card'</td><td class="ds-td-code-muted">'line'</td><td>No</td><td class="ds-td-value">Visual variant</td></tr>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">size</td><td class="ds-td-code-muted">'sm' | 'md' | 'lg'</td><td class="ds-td-code-muted">'md'</td><td>No</td><td class="ds-td-value">Tab button size</td></tr>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">tabPosition</td><td class="ds-td-code-muted">'top' | 'right' | 'bottom' | 'left'</td><td class="ds-td-code-muted">'top'</td><td>No</td><td class="ds-td-value">Tab list placement</td></tr>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">activation</td><td class="ds-td-code-muted">'automatic' | 'manual'</td><td class="ds-td-code-muted">'automatic'</td><td>No</td><td class="ds-td-value">Arrow-key focus also activates (automatic) or needs Enter (manual)</td></tr>
+            </tbody>
+          </table>
+          <div class="btn-sub-label" style="margin-top:20px;margin-bottom:8px;">TabItem type</div>
+          <div class="btn-code-block"><div class="btn-code-head"><span class="btn-code-lang">TS</span><button class="btn-copy-btn" onclick="copyBtnCode('tabs-type',this)">Copy</button></div><div class="btn-code-body"><pre id="tabs-type"><code><span class="c-kw">interface</span> <span class="c-type">TabItem</span> {
+  key:       <span class="c-type">string</span>;
+  label:     <span class="c-type">ReactNode</span>;
+  children?: <span class="c-type">ReactNode</span>;
+  icon?:     <span class="c-type">ReactNode</span>;
+  badge?:    <span class="c-type">number | string</span>;
+  disabled?: <span class="c-type">boolean</span>;
+  closable?: <span class="c-type">boolean</span>;
+}</code></pre></div></div>
+        </div>
+        <div class="fw-angular" style="display:none;">
+          <table>
+            <thead><tr><th>Input</th><th>Type</th><th>Default</th><th>Description</th></tr></thead>
+            <tbody>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">[(activeKey)]</td><td class="ds-td-code-muted">string</td><td class="ds-td-code-muted">—</td><td class="ds-td-value">Two-way active tab binding</td></tr>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">[type]</td><td class="ds-td-code-muted">'line' | 'card'</td><td class="ds-td-code-muted">'line'</td><td class="ds-td-value">Visual variant</td></tr>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">[size]</td><td class="ds-td-code-muted">'sm' | 'md' | 'lg'</td><td class="ds-td-code-muted">'md'</td><td class="ds-td-value">Tab size</td></tr>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">[tabPosition]</td><td class="ds-td-code-muted">'top' | 'left' | 'right' | 'bottom'</td><td class="ds-td-code-muted">'top'</td><td class="ds-td-value">Tab list side</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div id="tabs-c-variants" class="btn-family-card">
+        <div class="ds-step-row"><span class="ds-step-num">5</span><div class="btn-family-title" style="margin:0;">Variants</div></div>
+        <div class="fw-react"><div class="btn-code-block"><div class="btn-code-head"><span class="btn-code-lang">JSX</span><button class="btn-copy-btn" onclick="copyBtnCode('tabs-variants',this)">Copy</button></div><div class="btn-code-body"><pre id="tabs-variants"><code><span class="c-cmt">// Line tabs (default)</span>
+&lt;<span class="c-tag">Tabs</span>
+  <span class="c-attr">defaultActiveKey</span>=<span class="c-val">"overview"</span>
+  <span class="c-attr">items</span>={[
+    { key: <span class="c-val">'overview'</span>,  label: <span class="c-val">'Overview'</span>,  children: &lt;<span class="c-tag">OverviewPanel</span> /&gt; },
+    { key: <span class="c-val">'docs'</span>,      label: <span class="c-val">'Docs'</span>,      children: &lt;<span class="c-tag">DocsPanel</span> /&gt; },
+    { key: <span class="c-val">'disabled'</span>,  label: <span class="c-val">'Disabled'</span>,  disabled: <span class="c-kw">true</span> },
+  ]}
+/&gt;
+
+<span class="c-cmt">// Card tabs</span>
+&lt;<span class="c-tag">Tabs</span> <span class="c-attr">type</span>=<span class="c-val">"card"</span> <span class="c-attr">defaultActiveKey</span>=<span class="c-val">"1"</span> <span class="c-attr">items</span>={tabs} /&gt;
+
+<span class="c-cmt">// With icon + badge</span>
+&lt;<span class="c-tag">Tabs</span> <span class="c-attr">items</span>={[
+  { key: <span class="c-val">'inbox'</span>, label: <span class="c-val">'Inbox'</span>, icon: &lt;<span class="c-tag">InboxIcon</span> /&gt;, badge: 3 },
+]} /&gt;
+
+<span class="c-cmt">// Vertical</span>
+&lt;<span class="c-tag">Tabs</span> <span class="c-attr">tabPosition</span>=<span class="c-val">"left"</span> <span class="c-attr">items</span>={settingsTabs} /&gt;
+
+<span class="c-cmt">// Sizes</span>
+&lt;<span class="c-tag">Tabs</span> <span class="c-attr">size</span>=<span class="c-val">"sm"</span> <span class="c-attr">items</span>={tabs} /&gt;
+&lt;<span class="c-tag">Tabs</span> <span class="c-attr">size</span>=<span class="c-val">"lg"</span> <span class="c-attr">items</span>={tabs} /&gt;</code></pre></div></div></div>
+        <div class="fw-angular" style="display:none;"><div class="btn-code-block"><div class="btn-code-head"><span class="btn-code-lang">HTML</span><button class="btn-copy-btn" onclick="copyBtnCode('tabs-variants-ng',this)">Copy</button></div><div class="btn-code-body"><pre id="tabs-variants-ng"><code>&lt;<span class="c-tag">gs-tabs</span> [(activeKey)]=<span class="c-val">"activeTab"</span>&gt;
+  &lt;<span class="c-tag">gs-tab-item</span> [<span class="c-attr">key</span>]=<span class="c-val">"'overview'"</span> [<span class="c-attr">label</span>]=<span class="c-val">"'Overview'"</span>&gt;
+    &lt;<span class="c-tag">app-overview</span>&gt;&lt;/<span class="c-tag">app-overview</span>&gt;
+  &lt;/<span class="c-tag">gs-tab-item</span>&gt;
+  &lt;<span class="c-tag">gs-tab-item</span> [<span class="c-attr">key</span>]=<span class="c-val">"'docs'"</span> [<span class="c-attr">label</span>]=<span class="c-val">"'Docs'"</span>&gt;
+    &lt;<span class="c-tag">app-docs</span>&gt;&lt;/<span class="c-tag">app-docs</span>&gt;
+  &lt;/<span class="c-tag">gs-tab-item</span>&gt;
+&lt;/<span class="c-tag">gs-tabs</span>&gt;</code></pre></div></div></div>
+      </div>
+
+      <div id="tabs-c-tokens" class="btn-family-card">
+        <div class="ds-step-row"><span class="ds-step-num">10</span><div class="btn-family-title" style="margin:0;">Theming</div></div>
+        <div class="fw-react"><div class="btn-code-block"><div class="btn-code-head"><span class="btn-code-lang">SCSS</span><button class="btn-copy-btn" onclick="copyBtnCode('tabs-tokens',this)">Copy</button></div><div class="btn-code-body"><pre id="tabs-tokens"><code>:root {
+  <span class="c-attr">--tabs-active-color</span>:    <span class="c-val">var(--color-brand)</span>;            <span class="c-cmt">/* #1852fe */</span>
+  <span class="c-attr">--tabs-inactive-color</span>:  <span class="c-val">var(--prim-grey-500)</span>;          <span class="c-cmt">/* #475569 */</span>
+  <span class="c-attr">--tabs-disabled-color</span>:  <span class="c-val">var(--color-text-disabled)</span>;    <span class="c-cmt">/* --prim-grey-300 */</span>
+  <span class="c-attr">--tabs-border</span>:          <span class="c-val">var(--prim-grey-100)</span>;          <span class="c-cmt">/* #e2e8f0 */</span>
+  <span class="c-attr">--tabs-indicator-size</span>:  <span class="c-val">2px</span>;
+  <span class="c-attr">--tabs-font</span>:            <span class="c-val">var(--prim-font-primary)</span>;
+  <span class="c-attr">--tabs-font-size</span>:       <span class="c-val">var(--prim-font-size-md)</span>;      <span class="c-cmt">/* 14px */</span>
+  <span class="c-attr">--tabs-font-weight</span>:     <span class="c-val">var(--prim-font-weight-semibold)</span>;
+  <span class="c-attr">--tabs-pad-sm</span>:          <span class="c-val">var(--prim-space-2) var(--prim-space-3)</span>;
+  <span class="c-attr">--tabs-pad-md</span>:          <span class="c-val">var(--prim-space-3) var(--prim-space-4)</span>;
+  <span class="c-attr">--tabs-pad-lg</span>:          <span class="c-val">var(--prim-space-4) var(--prim-space-5)</span>;
+  <span class="c-attr">--tabs-card-bg</span>:         <span class="c-val">var(--prim-grey-50)</span>;
+  <span class="c-attr">--tabs-card-bg-active</span>:  <span class="c-val">var(--color-surface-default)</span>;
+}</code></pre></div></div></div>
+        <div class="fw-angular" style="display:none;"><p class="btn-family-desc">Same CSS custom properties apply globally.</p></div>
+      </div>
+
+      <div id="tabs-c-example" class="btn-family-card">
+        <div class="ds-step-row"><span class="ds-step-num">11</span><div class="btn-family-title" style="margin:0;">Full Example</div></div>
+        <div class="fw-react"><div class="btn-code-block"><div class="btn-code-head"><span class="btn-code-lang">JSX</span><button class="btn-copy-btn" onclick="copyBtnCode('tabs-example',this)">Copy</button></div><div class="btn-code-body"><pre id="tabs-example"><code><span class="c-kw">import</span> { useState } <span class="c-kw">from</span> <span class="c-val">'react'</span>;
+<span class="c-kw">import</span> { <span class="c-type">Tabs</span> } <span class="c-kw">from</span> <span class="c-val">'@pelagos/react-components'</span>;
+
+<span class="c-kw">export function</span> <span class="c-type">ProjectTabs</span>() {
+  <span class="c-kw">const</span> [activeKey, setActiveKey] = useState(<span class="c-val">'overview'</span>);
+
+  <span class="c-kw">return</span> (
+    &lt;<span class="c-tag">Tabs</span>
+      <span class="c-attr">activeKey</span>={activeKey}
+      <span class="c-attr">onChange</span>={setActiveKey}
+      <span class="c-attr">type</span>=<span class="c-val">"line"</span>
+      <span class="c-attr">size</span>=<span class="c-val">"md"</span>
+      <span class="c-attr">items</span>={[
+        {
+          key: <span class="c-val">'overview'</span>,
+          label: <span class="c-val">'Overview'</span>,
+          children: &lt;<span class="c-tag">ProjectOverview</span> /&gt;,
+        },
+        {
+          key: <span class="c-val">'team'</span>,
+          label: <span class="c-val">'Team'</span>,
+          icon: &lt;<span class="c-tag">UsersIcon</span> size={16} /&gt;,
+          badge: teamCount,
+          children: &lt;<span class="c-tag">TeamPanel</span> /&gt;,
+        },
+        {
+          key: <span class="c-val">'settings'</span>,
+          label: <span class="c-val">'Settings'</span>,
+          children: &lt;<span class="c-tag">SettingsPanel</span> /&gt;,
+        },
+        {
+          key: <span class="c-val">'archived'</span>,
+          label: <span class="c-val">'Archived'</span>,
+          disabled: !isAdmin,
+        },
+      ]}
+    /&gt;
+  );
+}</code></pre></div></div></div>
+        <div class="fw-angular" style="display:none;"><div class="btn-code-block"><div class="btn-code-head"><span class="btn-code-lang">HTML</span><button class="btn-copy-btn" onclick="copyBtnCode('tabs-example-ng',this)">Copy</button></div><div class="btn-code-body"><pre id="tabs-example-ng"><code>&lt;<span class="c-tag">gs-tabs</span> [(activeKey)]=<span class="c-val">"activeTab"</span> [<span class="c-attr">type</span>]=<span class="c-val">"'line'"</span>&gt;
+  &lt;<span class="c-tag">gs-tab-item</span> [<span class="c-attr">key</span>]=<span class="c-val">"'overview'"</span> [<span class="c-attr">label</span>]=<span class="c-val">"'Overview'"</span>&gt;
+    &lt;<span class="c-tag">app-overview</span>&gt;&lt;/<span class="c-tag">app-overview</span>&gt;
+  &lt;/<span class="c-tag">gs-tab-item</span>&gt;
+  &lt;<span class="c-tag">gs-tab-item</span> [<span class="c-attr">key</span>]=<span class="c-val">"'team'"</span> [<span class="c-attr">label</span>]=<span class="c-val">"'Team'"</span> [<span class="c-attr">badge</span>]=<span class="c-val">"teamCount"</span>&gt;
+    &lt;<span class="c-tag">app-team</span>&gt;&lt;/<span class="c-tag">app-team</span>&gt;
+  &lt;/<span class="c-tag">gs-tab-item</span>&gt;
+&lt;/<span class="c-tag">gs-tabs</span>&gt;</code></pre></div></div></div>
+      </div>
+
+    </div>
+    <div class="code-tab-qnav">
+      <div class="code-qnav-inner">
+        <p class="code-qnav-title">On This Page</p>
+        <ul class="code-qnav-list">
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('tabs-c-overview')">1 · Overview</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('tabs-c-install')">2 · Install</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('tabs-c-imports')">3 · Import</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('tabs-c-api')">4 · API / Props</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('tabs-c-variants')">5 · Variants</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('tabs-c-tokens')">10 · Theming</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('tabs-c-example')">11 · Full Example</button></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ USAGE TAB ═══════════════════════════════════════════════════════ -->
+<div id="tabs-tab-usage" class="btn-tab-pane tabs-tab-pane">
+  <div class="code-tab-layout">
+    <div class="code-tab-main">
+      <div id="tabs-u-when" class="btn-family-card">
+        <div class="btn-family-title">When to Use</div>
+        <ul class="btn-usage-list">
+          <li><strong>Parallel content sections</strong> — When content is logically grouped into peer-level categories (not sequential steps) and only one needs to be visible at a time.</li>
+          <li><strong>Settings pages</strong> — Profile / Security / Notifications / Billing grouped in vertical tabs with persistent navigation.</li>
+          <li><strong>Detail views</strong> — A record's Overview / History / Files in a card, where switching does not require page navigation.</li>
+          <li><strong>Content-heavy dashboards</strong> — Separating map, list, and chart views of the same dataset.</li>
+        </ul>
+      </div>
+      <div id="tabs-u-when-not" class="btn-family-card">
+        <div class="btn-family-title">When Not to Use</div>
+        <ul class="btn-usage-list">
+          <li><strong>Sequential processes</strong> — Use <button onclick="navigate('nav-steppers')" class="btn-inline-link">Steppers</button> when steps must be completed in order.</li>
+          <li><strong>2–3 view-mode options</strong> — Use <button onclick="navigate('prim-segmented')" class="btn-inline-link">Segmented Button</button> for compact, instant-apply view switching.</li>
+          <li><strong>5+ tabs with long labels</strong> — The strip becomes unwieldy. Use a Side Navigation or Dropdown instead.</li>
+        </ul>
+      </div>
+      <div id="tabs-u-best" class="btn-family-card">
+        <div class="btn-family-title">Best Practices</div>
+        <ul class="btn-usage-list">
+          <li><strong>Short labels</strong> — 1–2 words per tab. Users must predict panel content from the label.</li>
+          <li><strong>Default-active the primary tab</strong> — The most commonly needed section should be active on load.</li>
+          <li><strong>Keep panel count consistent</strong> — Don't add or remove tabs based on user action (use disabled, not removal).</li>
+          <li><strong>Lazy-load heavy panels</strong> — Only render panel content when its tab is first activated to improve initial load.</li>
+        </ul>
+      </div>
+      <div id="tabs-u-refs" class="btn-family-card">
+        <div class="btn-family-title">References</div>
+        <ul class="btn-related-list">
+          <li><a href="https://www.figma.com/design/TOLfBpRePgynqwvDVp6fg3/Design-System?node-id=370-933" target="_blank" rel="noopener">Figma — Tabs component frame</a></li>
+          <li><a href="https://ant.design/components/tabs" target="_blank" rel="noopener">Ant Design — Tabs reference</a></li>
+          <li><a href="https://www.w3.org/WAI/ARIA/apg/patterns/tabs/" target="_blank" rel="noopener">ARIA Authoring Practices — Tabs Pattern</a></li>
+          <li><a href="https://www.w3.org/WAI/WCAG21/Understanding/keyboard.html" target="_blank" rel="noopener">WCAG 2.1 — 2.1.1 Keyboard</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="code-tab-qnav">
+      <div class="code-qnav-inner">
+        <p class="code-qnav-title">On This Page</p>
+        <ul class="code-qnav-list">
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('tabs-u-when')">When to Use</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('tabs-u-when-not')">When Not to Use</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('tabs-u-best')">Best Practices</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('tabs-u-refs')">References</button></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>

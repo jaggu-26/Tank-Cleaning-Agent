@@ -1,0 +1,56 @@
+// ─────────────────────────────────────────────────────────────────────────────
+// Pelagos Scroll — primitives/scroll/Scroll.scss
+//
+// Show-on-hover mechanism:
+//   CSS custom properties (var()) cascade into ::-webkit-scrollbar pseudo-elements.
+//   JS sets --scroll-handle + --scroll-track-active to visible colours on mouseenter
+//   and back to 'transparent' on mouseleave.
+//
+//   This is more reliable than parent:hover → ::-webkit-scrollbar which Chrome
+//   does not consistently support in modern versions.
+//
+// Width expand (6px → 10px):
+//   JS adds/removes .gs-scroll--hover class on mouseenter/leave.
+//   CSS transitions cannot animate ::-webkit-scrollbar-width directly.
+//
+// Figma: node-id=1087-4781
+// ─────────────────────────────────────────────────────────────────────────────
+
+.gs-scroll {
+  // Sizes
+  --scroll-size:         6px;
+  --scroll-size-hover:   10px;
+  --scroll-radius:       100px;
+
+  // Toggled by JS — transparent by default (hidden), coloured on mouseenter
+  --scroll-handle:       transparent;
+  --scroll-track-active: transparent;
+
+  // Static colour references (JS writes these values to the dynamic vars above)
+  --scroll-handle-on:    #94a3b8;                    // grey/300
+  --scroll-handle-hover: #64748b;                    // grey/500 (thumb:hover)
+  --scroll-track-on:     rgba(226, 232, 240, 0.35);  // subtle groove
+
+  // ── Direction ──────────────────────────────────────────────────────────────
+  &--vertical   { overflow-y: auto; overflow-x: hidden; }
+  &--horizontal { overflow-x: auto; overflow-y: hidden; }
+  &--both       { overflow: auto; }
+
+  // ── Always 6px track — invisible via transparent vars ────────────────────
+  &::-webkit-scrollbar         { width: var(--scroll-size); height: var(--scroll-size); }
+  &::-webkit-scrollbar-track   { background: var(--scroll-track-active); border-radius: var(--scroll-radius); }
+  &::-webkit-scrollbar-thumb   { background: var(--scroll-handle);        border-radius: var(--scroll-radius); }
+  &::-webkit-scrollbar-corner  { background: transparent; }
+  // Thumb hover: darken slightly when thumb is directly hovered
+  &::-webkit-scrollbar-thumb:hover { background: var(--scroll-handle-hover); }
+
+  // ── JS class: expand track to 10px on mouseenter ─────────────────────────
+  &--hover::-webkit-scrollbar { width: var(--scroll-size-hover); height: var(--scroll-size-hover); }
+
+  // ── Firefox ────────────────────────────────────────────────────────────────
+  scrollbar-width: thin;
+  scrollbar-color: var(--scroll-handle) var(--scroll-track-active);
+
+  // ── Dark theme — no groove visible ────────────────────────────────────────
+  &--dark { --scroll-track-on: transparent; }
+}

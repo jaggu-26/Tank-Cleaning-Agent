@@ -1,0 +1,1042 @@
+<!-- Banner -->
+<div class="page-header"><h1 class="ds-hero-title">Breadcrumb</h1></div>
+
+<!-- Tab bar -->
+<div class="btn-tab-bar">
+  <button class="btn-tab-btn bc-tab-btn active" data-tab="design" onclick="switchBreadcrumbTab('design')">Design</button>
+  <button class="btn-tab-btn bc-tab-btn" data-tab="code"   onclick="switchBreadcrumbTab('code')">Code</button>
+  <button class="btn-tab-btn bc-tab-btn" data-tab="usage"  onclick="switchBreadcrumbTab('usage')">Usage</button>
+</div>
+
+<!-- ═══════════════════════════════ DESIGN TAB ═══════════════════════════════ -->
+<div id="bc-tab-design" class="btn-tab-pane bc-tab-pane active">
+  <div class="code-tab-layout">
+    <div class="code-tab-main">
+
+      <!-- Overview -->
+      <div id="bc-s-overview" class="btn-family-card">
+        <div class="btn-family-title">Overview</div>
+        <p class="btn-family-desc">Breadcrumbs show the user's current location in a navigation hierarchy. They are secondary orientation aids — not primary controls — and let users jump to any ancestor level. Each item is an icon-optional link; the final item is always the current (non-interactive) page.</p>
+
+        <!-- Live demo — without icon -->
+        <div style="background:var(--color-bg-subtle,#f8fafc);border:1px solid var(--color-border,#e2e8f0);border-radius:12px;padding:28px 24px;margin-top:16px;display:flex;flex-direction:column;gap:20px;">
+          <div>
+            <div style="font-size:11px;font-weight:600;color:#94a3b8;text-transform:uppercase;letter-spacing:.06em;margin-bottom:14px;">Without icon</div>
+            <nav class="gs-bc" aria-label="Breadcrumb demo">
+              <ol class="gs-bc-list">
+                <li class="gs-bc-item"><a class="gs-bc-link" href="#">Masters</a></li>
+                <li class="gs-bc-sep" aria-hidden="true">/</li>
+                <li class="gs-bc-item"><a class="gs-bc-link" href="#">Masters</a></li>
+                <li class="gs-bc-sep" aria-hidden="true">/</li>
+                <li class="gs-bc-item"><span class="gs-bc-current" aria-current="page">Masters</span></li>
+              </ol>
+            </nav>
+          </div>
+          <div>
+            <div style="font-size:11px;font-weight:600;color:#94a3b8;text-transform:uppercase;letter-spacing:.06em;margin-bottom:14px;">With icon</div>
+            <nav class="gs-bc" aria-label="Breadcrumb with icon demo">
+              <ol class="gs-bc-list">
+                <li class="gs-bc-item">
+                  <a class="gs-bc-link" href="#">
+                    <svg class="gs-bc-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                    Masters
+                  </a>
+                </li>
+                <li class="gs-bc-sep" aria-hidden="true">/</li>
+                <li class="gs-bc-item">
+                  <a class="gs-bc-link" href="#">
+                    <svg class="gs-bc-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                    Masters
+                  </a>
+                </li>
+                <li class="gs-bc-sep" aria-hidden="true">/</li>
+                <li class="gs-bc-item">
+                  <span class="gs-bc-current" aria-current="page">
+                    <svg class="gs-bc-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                    Masters
+                  </span>
+                </li>
+              </ol>
+            </nav>
+          </div>
+        </div>
+
+        <div class="btn-when-examples" style="margin-top:16px;">
+          <span class="btn-when-example-tag">3 Sizes</span>
+          <span class="btn-when-example-tag">/ separator</span>
+          <span class="btn-when-example-tag">Icon optional</span>
+          <span class="btn-when-example-tag">Collapsible</span>
+          <span class="btn-when-example-tag">WCAG AA</span>
+        </div>
+      </div>
+
+      <!-- Variants -->
+      <div id="bc-s-variants" class="btn-family-card">
+        <div class="btn-family-title">Variants</div>
+        <p class="btn-family-desc">Two structural variants — with and without icon — each available in three sizes. The icon is always the same color as its sibling label; it is not decorative but reinforces the page/category identity.</p>
+
+        <!-- WITHOUT ICON -->
+        <div class="btn-sub-label" style="margin-bottom:14px;">Without icon</div>
+        <div style="background:var(--color-bg-subtle,#f8fafc);border:1px solid var(--color-border,#e2e8f0);border-radius:12px;padding:24px 20px;display:flex;flex-direction:column;gap:20px;">
+          <div style="display:flex;align-items:center;gap:20px;">
+            <span style="font-size:11px;font-weight:600;color:#94a3b8;text-transform:uppercase;letter-spacing:.06em;min-width:20px;">SM</span>
+            <nav class="gs-bc gs-bc--sm" aria-label="sm no-icon">
+              <ol class="gs-bc-list">
+                <li class="gs-bc-item"><a class="gs-bc-link" href="#">Masters</a></li>
+                <li class="gs-bc-sep" aria-hidden="true">/</li>
+                <li class="gs-bc-item"><a class="gs-bc-link" href="#">Masters</a></li>
+                <li class="gs-bc-sep" aria-hidden="true">/</li>
+                <li class="gs-bc-item"><span class="gs-bc-current" aria-current="page">Masters</span></li>
+              </ol>
+            </nav>
+          </div>
+          <div style="display:flex;align-items:center;gap:20px;">
+            <span style="font-size:11px;font-weight:600;color:#94a3b8;text-transform:uppercase;letter-spacing:.06em;min-width:20px;">MD</span>
+            <nav class="gs-bc" aria-label="md no-icon">
+              <ol class="gs-bc-list">
+                <li class="gs-bc-item"><a class="gs-bc-link" href="#">Masters</a></li>
+                <li class="gs-bc-sep" aria-hidden="true">/</li>
+                <li class="gs-bc-item"><a class="gs-bc-link" href="#">Masters</a></li>
+                <li class="gs-bc-sep" aria-hidden="true">/</li>
+                <li class="gs-bc-item"><span class="gs-bc-current" aria-current="page">Masters</span></li>
+              </ol>
+            </nav>
+          </div>
+          <div style="display:flex;align-items:center;gap:20px;">
+            <span style="font-size:11px;font-weight:600;color:#94a3b8;text-transform:uppercase;letter-spacing:.06em;min-width:20px;">LG</span>
+            <nav class="gs-bc gs-bc--lg" aria-label="lg no-icon">
+              <ol class="gs-bc-list">
+                <li class="gs-bc-item"><a class="gs-bc-link" href="#">Masters</a></li>
+                <li class="gs-bc-sep" aria-hidden="true">/</li>
+                <li class="gs-bc-item"><a class="gs-bc-link" href="#">Masters</a></li>
+                <li class="gs-bc-sep" aria-hidden="true">/</li>
+                <li class="gs-bc-item"><span class="gs-bc-current" aria-current="page">Masters</span></li>
+              </ol>
+            </nav>
+          </div>
+        </div>
+
+        <!-- WITH ICON -->
+        <div class="btn-sub-label" style="margin-top:24px;margin-bottom:14px;">With icon</div>
+        <div style="background:var(--color-bg-subtle,#f8fafc);border:1px solid var(--color-border,#e2e8f0);border-radius:12px;padding:24px 20px;display:flex;flex-direction:column;gap:20px;">
+          <div style="display:flex;align-items:center;gap:20px;">
+            <span style="font-size:11px;font-weight:600;color:#94a3b8;text-transform:uppercase;letter-spacing:.06em;min-width:20px;">SM</span>
+            <nav class="gs-bc gs-bc--sm" aria-label="sm with-icon">
+              <ol class="gs-bc-list">
+                <li class="gs-bc-item"><a class="gs-bc-link" href="#"><svg class="gs-bc-icon" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>Masters</a></li>
+                <li class="gs-bc-sep" aria-hidden="true">/</li>
+                <li class="gs-bc-item"><a class="gs-bc-link" href="#"><svg class="gs-bc-icon" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>Masters</a></li>
+                <li class="gs-bc-sep" aria-hidden="true">/</li>
+                <li class="gs-bc-item"><span class="gs-bc-current" aria-current="page"><svg class="gs-bc-icon" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>Masters</span></li>
+              </ol>
+            </nav>
+          </div>
+          <div style="display:flex;align-items:center;gap:20px;">
+            <span style="font-size:11px;font-weight:600;color:#94a3b8;text-transform:uppercase;letter-spacing:.06em;min-width:20px;">MD</span>
+            <nav class="gs-bc" aria-label="md with-icon">
+              <ol class="gs-bc-list">
+                <li class="gs-bc-item"><a class="gs-bc-link" href="#"><svg class="gs-bc-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>Masters</a></li>
+                <li class="gs-bc-sep" aria-hidden="true">/</li>
+                <li class="gs-bc-item"><a class="gs-bc-link" href="#"><svg class="gs-bc-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>Masters</a></li>
+                <li class="gs-bc-sep" aria-hidden="true">/</li>
+                <li class="gs-bc-item"><span class="gs-bc-current" aria-current="page"><svg class="gs-bc-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>Masters</span></li>
+              </ol>
+            </nav>
+          </div>
+          <div style="display:flex;align-items:center;gap:20px;">
+            <span style="font-size:11px;font-weight:600;color:#94a3b8;text-transform:uppercase;letter-spacing:.06em;min-width:20px;">LG</span>
+            <nav class="gs-bc gs-bc--lg" aria-label="lg with-icon">
+              <ol class="gs-bc-list">
+                <li class="gs-bc-item"><a class="gs-bc-link" href="#"><svg class="gs-bc-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>Masters</a></li>
+                <li class="gs-bc-sep" aria-hidden="true">/</li>
+                <li class="gs-bc-item"><a class="gs-bc-link" href="#"><svg class="gs-bc-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>Masters</a></li>
+                <li class="gs-bc-sep" aria-hidden="true">/</li>
+                <li class="gs-bc-item"><span class="gs-bc-current" aria-current="page"><svg class="gs-bc-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>Masters</span></li>
+              </ol>
+            </nav>
+          </div>
+        </div>
+
+        <!-- Collapsed -->
+        <div class="btn-sub-label" style="margin-top:24px;margin-bottom:14px;">Collapsed (deep path)</div>
+        <div style="background:var(--color-bg-subtle,#f8fafc);border:1px solid var(--color-border,#e2e8f0);border-radius:12px;padding:24px 20px;">
+          <nav class="gs-bc" aria-label="Collapsed breadcrumb">
+            <ol class="gs-bc-list">
+              <li class="gs-bc-item"><a class="gs-bc-link" href="#">Masters</a></li>
+              <li class="gs-bc-sep" aria-hidden="true">/</li>
+              <li class="gs-bc-item"><button class="gs-bc-ellipsis" type="button" aria-label="Show full path" aria-expanded="false">···</button></li>
+              <li class="gs-bc-sep" aria-hidden="true">/</li>
+              <li class="gs-bc-item"><a class="gs-bc-link" href="#">Masters</a></li>
+              <li class="gs-bc-sep" aria-hidden="true">/</li>
+              <li class="gs-bc-item"><span class="gs-bc-current" aria-current="page">Masters</span></li>
+            </ol>
+          </nav>
+          <p style="font-size:12px;color:#64748b;margin:12px 0 0;line-height:1.5;">Clicking ··· expands hidden middle levels. Root and current always visible.</p>
+        </div>
+      </div>
+
+      <!-- Anatomy -->
+      <div id="bc-s-anatomy" class="btn-family-card">
+        <div class="btn-family-title">Anatomy</div>
+        <p class="btn-family-desc">A breadcrumb is a <code>&lt;nav&gt;</code> wrapping an <code>&lt;ol&gt;</code>. Each segment is an <code>&lt;li&gt;</code> — ancestors are links, separator is an aria-hidden <code>&lt;li&gt;</code>, and the current page is a non-interactive <code>&lt;span&gt;</code>.</p>
+
+        <div style="background:var(--color-bg-subtle,#f8fafc);border:1px solid var(--color-border,#e2e8f0);border-radius:12px;padding:32px;display:flex;justify-content:center;overflow:auto;margin-top:8px;">
+          <svg width="600" height="180" viewBox="0 0 600 180" fill="none" xmlns="http://www.w3.org/2000/svg" style="min-width:440px;">
+            <!-- Component row centred at y=90 -->
+            <!-- Item 1: icon + link -->
+            <rect x="48" y="77" width="100" height="24" rx="4" fill="none" stroke="#94a3b8" stroke-width="0.5" stroke-dasharray="2 1.5"/>
+            <polygon points="63,89 65.6,94.6 72,95.3 67.5,99.7 68.7,106 63,103 57.3,106 58.5,99.7 54,95.3 60.4,94.6" stroke="#94a3b8" stroke-width="1.5" fill="none"/>
+            <text x="76" y="90" font-size="13" font-family="Helvetica,Arial,sans-serif" fill="#94a3b8" dominant-baseline="middle">Masters</text>
+            <!-- Sep 1 -->
+            <text x="155" y="90" font-size="13" font-family="Helvetica,Arial,sans-serif" fill="#e2e8f0" dominant-baseline="middle">/</text>
+            <!-- Item 2: icon + link -->
+            <rect x="170" y="77" width="100" height="24" rx="4" fill="none" stroke="#94a3b8" stroke-width="0.5" stroke-dasharray="2 1.5"/>
+            <polygon points="185,89 187.6,94.6 194,95.3 189.5,99.7 190.7,106 185,103 179.3,106 180.5,99.7 176,95.3 182.4,94.6" stroke="#94a3b8" stroke-width="1.5" fill="none"/>
+            <text x="198" y="90" font-size="13" font-family="Helvetica,Arial,sans-serif" fill="#94a3b8" dominant-baseline="middle">Masters</text>
+            <!-- Sep 2 -->
+            <text x="277" y="90" font-size="13" font-family="Helvetica,Arial,sans-serif" fill="#e2e8f0" dominant-baseline="middle">/</text>
+            <!-- Item 3: icon + current (bold) -->
+            <rect x="292" y="77" width="110" height="24" rx="4" fill="none" stroke="#10172a" stroke-width="1"/>
+            <polygon points="307,89 309.6,94.6 316,95.3 311.5,99.7 312.7,106 307,103 301.3,106 302.5,99.7 298,95.3 304.4,94.6" stroke="#10172a" stroke-width="2" fill="none"/>
+            <text x="320" y="90" font-size="13" font-weight="600" font-family="Helvetica,Arial,sans-serif" fill="#10172a" dominant-baseline="middle">Masters</text>
+
+            <!-- Annotation lines -->
+            <line x1="75" y1="77" x2="75" y2="36" stroke="#cbd5e1" stroke-width="1"/>
+            <line x1="75" y1="36" x2="110" y2="36" stroke="#cbd5e1" stroke-width="1"/>
+            <line x1="157" y1="85" x2="157" y2="148" stroke="#cbd5e1" stroke-width="1"/>
+            <line x1="350" y1="77" x2="470" y2="32" stroke="#cbd5e1" stroke-width="1"/>
+            <line x1="67" y1="101" x2="67" y2="148" stroke="#cbd5e1" stroke-width="1"/>
+
+            <!-- Badges -->
+            <circle cx="110" cy="36" r="9" fill="#1852fe"/>
+            <text x="110" y="36" text-anchor="middle" dominant-baseline="middle" fill="white" font-size="10" font-weight="700" font-family="Helvetica,Arial,sans-serif">1</text>
+            <circle cx="157" cy="148" r="9" fill="#1852fe"/>
+            <text x="157" y="148" text-anchor="middle" dominant-baseline="middle" fill="white" font-size="10" font-weight="700" font-family="Helvetica,Arial,sans-serif">2</text>
+            <circle cx="470" cy="32" r="9" fill="#1852fe"/>
+            <text x="470" y="32" text-anchor="middle" dominant-baseline="middle" fill="white" font-size="10" font-weight="700" font-family="Helvetica,Arial,sans-serif">3</text>
+            <circle cx="67" cy="148" r="9" fill="#1852fe"/>
+            <text x="67" y="148" text-anchor="middle" dominant-baseline="middle" fill="white" font-size="10" font-weight="700" font-family="Helvetica,Arial,sans-serif">4</text>
+
+            <!-- Annotation labels -->
+            <text x="123" y="28" font-size="11" font-family="Helvetica,Arial,sans-serif" fill="#475569" dominant-baseline="middle">Ancestor link</text>
+            <text x="123" y="40" font-size="10" font-family="Helvetica,Arial,sans-serif" fill="#94a3b8" dominant-baseline="middle">13px · #94a3b8 → #1852fe hover · gap:6px</text>
+            <text x="145" y="141" font-size="11" font-family="Helvetica,Arial,sans-serif" fill="#475569" dominant-baseline="middle">Separator</text>
+            <text x="145" y="153" font-size="10" font-family="Helvetica,Arial,sans-serif" fill="#94a3b8" dominant-baseline="middle">"/" · aria-hidden · 8px padding · #e2e8f0</text>
+            <text x="483" y="24" font-size="11" font-family="Helvetica,Arial,sans-serif" fill="#475569" dominant-baseline="middle">Current page</text>
+            <text x="483" y="36" font-size="10" font-family="Helvetica,Arial,sans-serif" fill="#94a3b8" dominant-baseline="middle">13px · 600 · #10172a · aria-current="page"</text>
+            <text x="55" y="141" font-size="11" font-family="Helvetica,Arial,sans-serif" fill="#475569" dominant-baseline="middle" text-anchor="end">Icon</text>
+            <text x="55" y="153" font-size="10" font-family="Helvetica,Arial,sans-serif" fill="#94a3b8" dominant-baseline="middle" text-anchor="end">optional · inherits color</text>
+          </svg>
+        </div>
+
+        <ol class="btn-anatomy-list" style="margin-top:20px;">
+          <li><strong>Ancestor link</strong> — <code>&lt;a class="gs-bc-link"&gt;</code>. 13px / Regular (400) / <code>var(--color-text-muted, #94a3b8)</code>. Turns <code>var(--color-primary, #1852fe)</code> on hover. Displays inline-flex to accommodate optional icon with 6px gap.</li>
+          <li><strong>Separator</strong> — <code>&lt;li aria-hidden="true"&gt;/&lt;/li&gt;</code>. Forward-slash character. <code>var(--color-border, #e2e8f0)</code>. 8px horizontal padding. Purely decorative — hidden from assistive tech.</li>
+          <li><strong>Current page</strong> — <code>&lt;span class="gs-bc-current" aria-current="page"&gt;</code>. 13px / Bold (600) / <code>var(--color-text, #10172a)</code>. Non-interactive (<code>pointer-events:none</code>). Bold weight distinguishes from ancestors.</li>
+          <li><strong>Icon (optional)</strong> — <code>&lt;svg class="gs-bc-icon"&gt;</code> inside the link or current span. Inherits <code>color</code> from parent — automatically gray (ancestor), blue (hover), or dark (current) without extra CSS.</li>
+        </ol>
+
+        <!-- Token reference table -->
+        <div style="margin-top:24px;">
+          <div class="btn-sub-label" style="margin-bottom:12px;">Design Token Reference</div>
+          <table>
+            <thead><tr><th>Token</th><th>Component var</th><th>Fallback value</th><th>Usage</th></tr></thead>
+            <tbody>
+              <tr><td><code>--color-text-muted</code></td><td><code>--gs-bc-link-color</code></td><td><code>#94a3b8</code></td><td>Ancestor link default color</td></tr>
+              <tr><td><code>--color-primary</code></td><td><code>--gs-bc-link-hover</code></td><td><code>#1852fe</code></td><td>Ancestor link hover + focus</td></tr>
+              <tr><td><code>--color-primary-light</code></td><td><code>--gs-bc-link-focus</code></td><td><code>#5fa5f9</code></td><td>Focus ring outline</td></tr>
+              <tr><td><code>--color-text</code></td><td><code>--gs-bc-current-color</code></td><td><code>#10172a</code></td><td>Current page label + icon</td></tr>
+              <tr><td><code>--color-border</code></td><td><code>--gs-bc-sep-color</code></td><td><code>#e2e8f0</code></td><td>"/" separator character</td></tr>
+              <tr><td><code>--color-border</code></td><td><code>--gs-bc-dis-color</code></td><td><code>#e2e8f0</code></td><td>Disabled ancestor link</td></tr>
+              <tr><td><code>--font-sans</code></td><td><code>--gs-bc-font-family</code></td><td><code>'Gilroy', sans-serif</code></td><td>All text in breadcrumb</td></tr>
+              <tr><td><code>--color-bg-subtle</code></td><td>—</td><td><code>#f8fafc</code></td><td>Demo cell backgrounds</td></tr>
+              <tr><td><code>--radius-sm</code></td><td>—</td><td><code>4px</code></td><td>Ellipsis button radius</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- States -->
+      <div id="bc-s-states" class="btn-family-card">
+        <div class="btn-family-title">States</div>
+        <p class="btn-family-desc">Three states for every breadcrumb item, as specified in the Figma <strong>breadcrumb-base</strong> component. Icon (when present) always matches the label color — no separate icon state needed.</p>
+
+        <div class="bc-state-grid" style="margin-top:4px;">
+          <!-- Default -->
+          <div class="bc-state-cell">
+            <div style="display:flex;flex-direction:column;gap:16px;">
+              <!-- without icon -->
+              <a class="gs-bc-link" href="#" style="pointer-events:none;">Masters</a>
+              <!-- with icon -->
+              <a class="gs-bc-link" href="#" style="pointer-events:none;">
+                <svg class="gs-bc-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                Masters
+              </a>
+            </div>
+            <span class="bc-state-label">Default (ancestor)</span>
+            <span style="font-size:10px;color:#94a3b8;font-weight:500;">color-text-muted · #94a3b8</span>
+          </div>
+          <!-- Hover -->
+          <div class="bc-state-cell">
+            <div style="display:flex;flex-direction:column;gap:16px;">
+              <a class="gs-bc-link is-hover" href="#" style="pointer-events:none;">Masters</a>
+              <a class="gs-bc-link is-hover" href="#" style="pointer-events:none;">
+                <svg class="gs-bc-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                Masters
+              </a>
+            </div>
+            <span class="bc-state-label">Hover</span>
+            <span style="font-size:10px;color:#94a3b8;font-weight:500;">color-primary · #1852fe</span>
+          </div>
+          <!-- Current -->
+          <div class="bc-state-cell">
+            <div style="display:flex;flex-direction:column;gap:16px;">
+              <span class="gs-bc-current" aria-current="page">Masters</span>
+              <span class="gs-bc-current" aria-current="page">
+                <svg class="gs-bc-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                Masters
+              </span>
+            </div>
+            <span class="bc-state-label">Current page</span>
+            <span style="font-size:10px;color:#94a3b8;font-weight:500;">color-text · #10172a · 600</span>
+          </div>
+          <!-- Disabled -->
+          <div class="bc-state-cell">
+            <div style="display:flex;flex-direction:column;gap:16px;">
+              <a class="gs-bc-link is-disabled" aria-disabled="true">Masters</a>
+              <a class="gs-bc-link is-disabled" aria-disabled="true">
+                <svg class="gs-bc-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                Masters
+              </a>
+            </div>
+            <span class="bc-state-label">Disabled</span>
+            <span style="font-size:10px;color:#94a3b8;font-weight:500;">color-border · #e2e8f0</span>
+          </div>
+        </div>
+
+        <div style="margin-top:20px;background:#eff6ff;border:1px solid #bfdbfe;border-radius:8px;padding:14px 16px;font-size:13px;color:#1e40af;line-height:1.6;">
+          <strong>Icon colour is automatic</strong> — because <code>.gs-bc-icon</code> uses <code>color: inherit</code>, the icon always matches its sibling label. No per-state icon classes needed.
+        </div>
+      </div>
+
+      <!-- Interaction Behaviour -->
+      <div id="bc-s-interaction" class="btn-family-card">
+        <div class="btn-family-title">Interaction Behaviour</div>
+        <table>
+          <thead><tr><th>Trigger</th><th>Behaviour</th><th>Timing</th></tr></thead>
+          <tbody>
+            <tr><td>Click / Tap ancestor link</td><td>Navigate to that route. Icon + label both receive hover state together.</td><td>Immediate</td></tr>
+            <tr><td>Hover ancestor</td><td>Both icon and label transition to <code>var(--color-primary, #1852fe)</code>. Cursor: pointer.</td><td>120ms ease</td></tr>
+            <tr><td>Click / Tap current page</td><td>No action. <code>pointer-events: none</code> on <code>.gs-bc-current</code>.</td><td>—</td></tr>
+            <tr><td>Click ··· (ellipsis)</td><td>Expands collapsed items. <code>aria-expanded</code> toggles true/false.</td><td>200ms ease-out fade</td></tr>
+            <tr><td><kbd>Tab</kbd></td><td>Moves focus through ancestor links only. Separators and current are skipped.</td><td>OS-controlled</td></tr>
+            <tr><td><kbd>Enter</kbd> on focused link</td><td>Navigates to ancestor.</td><td>Immediate</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Motion -->
+      <div id="bc-s-motion" class="btn-family-card">
+        <div class="btn-family-title">Motion / Animation</div>
+        <table>
+          <thead><tr><th>Property</th><th>Duration</th><th>Easing</th><th>Token</th></tr></thead>
+          <tbody>
+            <tr><td>Link + icon <code>color</code></td><td>120ms</td><td>ease</td><td><code>--transition-fast</code></td></tr>
+            <tr><td>Ellipsis expand (<code>opacity</code>)</td><td>200ms</td><td>ease-out</td><td><code>--transition-base</code></td></tr>
+            <tr><td>Ellipsis button hover</td><td>120ms</td><td>ease</td><td><code>--transition-fast</code></td></tr>
+          </tbody>
+        </table>
+        <div style="margin-top:14px;background:var(--color-bg-subtle,#f8fafc);border:1px solid var(--color-border,#e2e8f0);border-radius:8px;padding:14px 16px;font-size:13px;color:#475569;line-height:1.6;">
+          All transitions respect <code>prefers-reduced-motion: reduce</code> — when enabled, colour and opacity changes are instant.
+        </div>
+      </div>
+
+      <!-- Responsive -->
+      <div id="bc-s-responsive" class="btn-family-card">
+        <div class="btn-family-title">Responsive Behaviour</div>
+        <table>
+          <thead><tr><th>Breakpoint</th><th>Behaviour</th><th>Recommendation</th></tr></thead>
+          <tbody>
+            <tr><td>Mobile (&lt; 640px)</td><td>Collapse to Root / ··· / Current.</td><td>Max 2 items + ellipsis.</td></tr>
+            <tr><td>Tablet (640–1024px)</td><td>Show 3–4 items; collapse deeper paths.</td><td>Ellipsis for &gt; 4 levels.</td></tr>
+            <tr><td>Desktop (&gt; 1024px)</td><td>Full path visible. Wraps if very long.</td><td>Use <code>white-space: nowrap</code> on items + <code>overflow: hidden</code> + <code>text-overflow: ellipsis</code> for long labels.</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Accessibility -->
+      <div id="bc-s-a11y" class="btn-family-card">
+        <div class="btn-family-title">Accessibility</div>
+        <table>
+          <thead><tr><th>Requirement</th><th>Implementation</th></tr></thead>
+          <tbody>
+            <tr><td>Landmark</td><td><code>&lt;nav aria-label="Breadcrumb"&gt;</code> — distinct from primary nav landmark.</td></tr>
+            <tr><td>Current page</td><td><code>aria-current="page"</code> on last item. Announced by screen readers as "current page".</td></tr>
+            <tr><td>Ordered list</td><td><code>&lt;ol&gt;</code> (not <code>&lt;ul&gt;</code>) — screen readers announce count + position.</td></tr>
+            <tr><td>Separators</td><td><code>aria-hidden="true"</code> on separator <code>&lt;li&gt;</code> — "/" is decorative.</td></tr>
+            <tr><td>Icons</td><td>Icons inside links are <code>aria-hidden</code> (they duplicate the visible label). Never use icon-only breadcrumb items.</td></tr>
+            <tr><td>Ellipsis button</td><td><code>&lt;button type="button" aria-label="Show full path" aria-expanded="false"&gt;</code> — toggle to true on expand.</td></tr>
+            <tr><td>Contrast</td><td>Ancestor <code>#94a3b8</code> on white: 2.8:1 (large text OK). Hover <code>#1852fe</code>: 4.6:1 ✓. Current <code>#10172a</code>: 17.7:1 ✓.</td></tr>
+          </tbody>
+        </table>
+        <div style="margin-top:16px;background:#fff7ed;border:1px solid #fed7aa;border-radius:8px;padding:14px 16px;font-size:13px;color:#c2410c;line-height:1.6;">
+          <strong>Contrast note:</strong> The default ancestor link color <code>#94a3b8</code> meets WCAG AA for large text (≥18px / 14px bold) but not for small text. At 13px regular weight it is below 4.5:1. Override <code>--gs-bc-link-color</code> to <code>#64748b</code> if strict AA compliance at this size is required by your context.
+        </div>
+      </div>
+
+    </div><!-- /code-tab-main -->
+
+    <!-- Design Quick-nav -->
+    <div class="code-tab-qnav">
+      <div class="code-qnav-inner">
+        <p class="code-qnav-title">On This Page</p>
+        <ul class="code-qnav-list">
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('bc-s-overview')">Overview</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('bc-s-variants')">Variants</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('bc-s-anatomy')">Anatomy</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('bc-s-states')">States</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('bc-s-interaction')">Interaction</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('bc-s-motion')">Motion</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('bc-s-responsive')">Responsive</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('bc-s-a11y')">Accessibility</button></li>
+        </ul>
+      </div>
+    </div>
+
+  </div><!-- /code-tab-layout -->
+</div><!-- /design tab -->
+
+
+<!-- ═══════════════════════════════ CODE TAB ═══════════════════════════════ -->
+<div id="bc-tab-code" class="btn-tab-pane bc-tab-pane">
+  <div class="code-tab-layout">
+    <div class="code-tab-main">
+
+      <!-- Framework switcher -->
+      <div class="fw-toggle-bar">
+        <button class="fw-toggle-bar-btn active" data-fw="react" onclick="switchFw('bc-tab-code','react')">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="2.5" fill="#61dafb"/><ellipse cx="12" cy="12" rx="10" ry="4.5" stroke="#61dafb" stroke-width="1.5" fill="none"/><ellipse cx="12" cy="12" rx="10" ry="4.5" stroke="#61dafb" stroke-width="1.5" fill="none" transform="rotate(60 12 12)"/><ellipse cx="12" cy="12" rx="10" ry="4.5" stroke="#61dafb" stroke-width="1.5" fill="none" transform="rotate(120 12 12)"/></svg>
+          React
+        </button>
+        <button class="fw-toggle-bar-btn" data-fw="angular" onclick="switchFw('bc-tab-code','angular')">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M12 2L2 6.5l1.5 12.5L12 22l8.5-3L22 6.5 12 2z" fill="#dd0031"/><path d="M12 2v20M12 2L6 17h12L12 2z" fill="none" stroke="#fff" stroke-width="1.2"/></svg>
+          Angular
+        </button>
+      </div>
+
+      <!-- 1 · Overview -->
+      <div id="bc-c-overview" class="btn-family-card">
+        <div class="ds-step-row"><span class="ds-step-num">1</span><div class="btn-family-title" style="margin:0;">Overview</div></div>
+        <p class="btn-family-desc">The <code>Breadcrumb</code> renders a semantic <code>&lt;nav&gt;</code> + <code>&lt;ol&gt;</code> trail. Pass an array of items; the last item without an <code>href</code> becomes the non-interactive current page. Each item optionally accepts an <code>icon</code> node — the icon inherits the link's colour automatically.</p>
+
+        <div class="fw-react">
+          <div class="btn-code-block">
+            <div class="btn-code-head"><span class="btn-code-lang">JSX</span><button class="btn-copy-btn" onclick="copyBtnCode('bc-ov-react',this)">Copy</button></div>
+            <div class="btn-code-body"><pre id="bc-ov-react"><code>{/* Without icon */}
+&lt;Breadcrumb items={[
+  { label: 'Masters', href: '/masters' },
+  { label: 'Masters', href: '/masters/sub' },
+  { label: 'Masters' },                        // no href = current
+]} /&gt;
+
+{/* With icon */}
+&lt;Breadcrumb items={[
+  { label: 'Masters', href: '/masters',     icon: &lt;StarIcon /&gt; },
+  { label: 'Masters', href: '/masters/sub', icon: &lt;StarIcon /&gt; },
+  { label: 'Masters',                        icon: &lt;StarIcon /&gt; },
+]} /&gt;</code></pre></div>
+          </div>
+        </div>
+        <div class="fw-angular" style="display:none;">
+          <div class="btn-code-block">
+            <div class="btn-code-head"><span class="btn-code-lang">HTML</span><button class="btn-copy-btn" onclick="copyBtnCode('bc-ov-ng',this)">Copy</button></div>
+            <div class="btn-code-body"><pre id="bc-ov-ng"><code>&lt;!-- Without icon --&gt;
+&lt;gs-breadcrumb [items]="items"&gt;&lt;/gs-breadcrumb&gt;
+
+&lt;!-- With icon (iconTemplate per item) --&gt;
+&lt;gs-breadcrumb [items]="itemsWithIcon"&gt;
+  &lt;ng-template gsIcon let-item&gt;
+    &lt;svg class="gs-bc-icon" ...&gt;&lt;/svg&gt;
+  &lt;/ng-template&gt;
+&lt;/gs-breadcrumb&gt;</code></pre></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2 · Install -->
+      <div id="bc-c-install" class="btn-family-card">
+        <div class="ds-step-row"><span class="ds-step-num">2</span><div class="btn-family-title" style="margin:0;">Install / Setup</div></div>
+        <div class="fw-react">
+          <div class="btn-code-block">
+            <div class="btn-code-head"><span class="btn-code-lang">bash</span><button class="btn-copy-btn" onclick="copyBtnCode('bc-install-react',this)">Copy</button></div>
+            <div class="btn-code-body"><pre id="bc-install-react"><code>npm install @pelagos/design-system</code></pre></div>
+          </div>
+        </div>
+        <div class="fw-angular" style="display:none;">
+          <div class="btn-code-block">
+            <div class="btn-code-head"><span class="btn-code-lang">bash</span><button class="btn-copy-btn" onclick="copyBtnCode('bc-install-ng',this)">Copy</button></div>
+            <div class="btn-code-body"><pre id="bc-install-ng"><code>npm install @pelagos/design-system-angular</code></pre></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3 · Imports -->
+      <div id="bc-c-imports" class="btn-family-card">
+        <div class="ds-step-row"><span class="ds-step-num">3</span><div class="btn-family-title" style="margin:0;">Import</div></div>
+        <div class="fw-react">
+          <div class="btn-code-block">
+            <div class="btn-code-head"><span class="btn-code-lang">JS</span><button class="btn-copy-btn" onclick="copyBtnCode('bc-import-react',this)">Copy</button></div>
+            <div class="btn-code-body"><pre id="bc-import-react"><code>import { Breadcrumb } from '@pelagos/design-system';
+import type { BreadcrumbItem } from '@pelagos/design-system';</code></pre></div>
+          </div>
+        </div>
+        <div class="fw-angular" style="display:none;">
+          <div class="btn-code-block">
+            <div class="btn-code-head"><span class="btn-code-lang">TS</span><button class="btn-copy-btn" onclick="copyBtnCode('bc-import-ng',this)">Copy</button></div>
+            <div class="btn-code-body"><pre id="bc-import-ng"><code>import { GsBreadcrumbModule } from '@pelagos/design-system-angular';
+
+@NgModule({ imports: [GsBreadcrumbModule] })
+export class FeatureModule {}</code></pre></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 4 · API -->
+      <div id="bc-c-api" class="btn-family-card">
+        <div class="ds-step-row"><span class="ds-step-num">4</span><div class="btn-family-title" style="margin:0;">API / Props</div></div>
+
+        <div class="fw-react">
+          <div class="btn-sub-label" style="margin-bottom:10px;">Breadcrumb</div>
+          <table>
+            <thead><tr><th>Prop</th><th>Type</th><th>Default</th><th>Description</th></tr></thead>
+            <tbody>
+              <tr><td><code>items</code></td><td><code>BreadcrumbItem[]</code></td><td>—</td><td>Ordered path segments. Last item without <code>href</code> = current page. Required.</td></tr>
+              <tr><td><code>size</code></td><td><code>'sm'|'md'|'lg'</code></td><td><code>'md'</code></td><td>Text + icon size. Maps to CSS size modifier.</td></tr>
+              <tr><td><code>maxItems</code></td><td><code>number</code></td><td>—</td><td>Collapse to ellipsis when count exceeds this. Always shows root + current.</td></tr>
+              <tr><td><code>separator</code></td><td><code>ReactNode</code></td><td><code>'/'</code></td><td>Custom separator character or element.</td></tr>
+              <tr><td><code>aria-label</code></td><td><code>string</code></td><td><code>'Breadcrumb'</code></td><td>Label for the <code>&lt;nav&gt;</code> landmark.</td></tr>
+              <tr><td><code>className</code></td><td><code>string</code></td><td>—</td><td>Extra class on the nav wrapper.</td></tr>
+            </tbody>
+          </table>
+          <div class="btn-sub-label" style="margin-top:20px;margin-bottom:10px;">BreadcrumbItem</div>
+          <table>
+            <thead><tr><th>Field</th><th>Type</th><th>Required</th><th>Description</th></tr></thead>
+            <tbody>
+              <tr><td><code>label</code></td><td><code>string</code></td><td>✓</td><td>Visible text for the segment.</td></tr>
+              <tr><td><code>href</code></td><td><code>string</code></td><td>—</td><td>Omit on the last item to render as current-page text.</td></tr>
+              <tr><td><code>icon</code></td><td><code>ReactNode</code></td><td>—</td><td>Optional icon. Rendered inside the link/current span; inherits color.</td></tr>
+              <tr><td><code>disabled</code></td><td><code>boolean</code></td><td>—</td><td>Renders ancestor as non-interactive with <code>is-disabled</code> styling.</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="fw-angular" style="display:none;">
+          <table>
+            <thead><tr><th>Input</th><th>Type</th><th>Default</th><th>Description</th></tr></thead>
+            <tbody>
+              <tr><td><code>[items]</code></td><td><code>BreadcrumbItem[]</code></td><td>—</td><td>Path segments. Required.</td></tr>
+              <tr><td><code>[size]</code></td><td><code>'sm'|'md'|'lg'</code></td><td><code>'md'</code></td><td>Text size variant.</td></tr>
+              <tr><td><code>[maxItems]</code></td><td><code>number</code></td><td>—</td><td>Collapse threshold.</td></tr>
+              <tr><td><code>[ariaLabel]</code></td><td><code>string</code></td><td><code>'Breadcrumb'</code></td><td>Nav landmark label.</td></tr>
+              <tr><td><code>(itemClick)</code></td><td><code>EventEmitter&lt;BreadcrumbItem&gt;</code></td><td>—</td><td>Emits clicked item — use for router navigation.</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- 5 · Variants -->
+      <div id="bc-c-variants" class="btn-family-card">
+        <div class="ds-step-row"><span class="ds-step-num">5</span><div class="btn-family-title" style="margin:0;">Variants</div></div>
+        <div class="fw-react">
+          <div class="btn-code-block">
+            <div class="btn-code-head"><span class="btn-code-lang">JSX</span><button class="btn-copy-btn" onclick="copyBtnCode('bc-variants-react',this)">Copy</button></div>
+            <div class="btn-code-body"><pre id="bc-variants-react"><code>import { StarIcon } from '@pelagos/icons'; // any icon library
+
+const items      = [{ label:'Masters', href:'/a' }, { label:'Masters', href:'/b' }, { label:'Masters' }];
+const itemsIcon  = items.map(i =&gt; ({ ...i, icon: &lt;StarIcon size={14} /&gt; }));
+
+{/* Without icon — 3 sizes */}
+&lt;Breadcrumb items={items} size="sm" /&gt;
+&lt;Breadcrumb items={items} size="md" /&gt;   {/* default */}
+&lt;Breadcrumb items={items} size="lg" /&gt;
+
+{/* With icon — 3 sizes */}
+&lt;Breadcrumb items={itemsIcon} size="sm" /&gt;
+&lt;Breadcrumb items={itemsIcon} size="md" /&gt;
+&lt;Breadcrumb items={itemsIcon} size="lg" /&gt;
+
+{/* Collapsed */}
+&lt;Breadcrumb items={deepItems} maxItems={3} /&gt;</code></pre></div>
+          </div>
+        </div>
+        <div class="fw-angular" style="display:none;">
+          <div class="btn-code-block">
+            <div class="btn-code-head"><span class="btn-code-lang">HTML</span><button class="btn-copy-btn" onclick="copyBtnCode('bc-variants-ng',this)">Copy</button></div>
+            <div class="btn-code-body"><pre id="bc-variants-ng"><code>&lt;!-- Without icon, all sizes --&gt;
+&lt;gs-breadcrumb [items]="items" size="sm"&gt;&lt;/gs-breadcrumb&gt;
+&lt;gs-breadcrumb [items]="items"&gt;&lt;/gs-breadcrumb&gt;
+&lt;gs-breadcrumb [items]="items" size="lg"&gt;&lt;/gs-breadcrumb&gt;
+
+&lt;!-- With icon --&gt;
+&lt;gs-breadcrumb [items]="itemsWithIcon"&gt;&lt;/gs-breadcrumb&gt;
+
+&lt;!-- Collapsed --&gt;
+&lt;gs-breadcrumb [items]="deepItems" [maxItems]="3"&gt;&lt;/gs-breadcrumb&gt;</code></pre></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 6 · Router Integration -->
+      <div id="bc-c-router" class="btn-family-card">
+        <div class="ds-step-row"><span class="ds-step-num">6</span><div class="btn-family-title" style="margin:0;">Router Integration</div></div>
+        <div class="fw-react">
+          <div class="btn-code-block">
+            <div class="btn-code-head"><span class="btn-code-lang">JSX</span><button class="btn-copy-btn" onclick="copyBtnCode('bc-router-react',this)">Copy</button></div>
+            <div class="btn-code-body"><pre id="bc-router-react"><code>import { Link } from 'react-router-dom';
+import { Breadcrumb } from '@pelagos/design-system';
+
+const items = [
+  { label: 'Masters', href: '/masters',     icon: &lt;StarIcon size={14} /&gt; },
+  { label: 'Masters', href: '/masters/sub', icon: &lt;StarIcon size={14} /&gt; },
+  { label: 'Masters',                        icon: &lt;StarIcon size={14} /&gt; }, // current
+];
+
+&lt;Breadcrumb
+  items={items}
+  itemRenderer={(item) =&gt;
+    item.href
+      ? &lt;Link to={item.href}&gt;{item.icon}{item.label}&lt;/Link&gt;
+      : &lt;span aria-current="page"&gt;{item.icon}{item.label}&lt;/span&gt;
+  }
+/&gt;</code></pre></div>
+          </div>
+        </div>
+        <div class="fw-angular" style="display:none;">
+          <div class="btn-code-block">
+            <div class="btn-code-head"><span class="btn-code-lang">TS</span><button class="btn-copy-btn" onclick="copyBtnCode('bc-router-ng-ts',this)">Copy</button></div>
+            <div class="btn-code-body"><pre id="bc-router-ng-ts"><code>import { Router } from '@angular/router';
+constructor(private router: Router) {}
+navigate(item: BreadcrumbItem) {
+  if (item.href) this.router.navigateByUrl(item.href);
+}</code></pre></div>
+          </div>
+          <div class="btn-code-block" style="margin-top:8px;">
+            <div class="btn-code-head"><span class="btn-code-lang">HTML</span><button class="btn-copy-btn" onclick="copyBtnCode('bc-router-ng-html',this)">Copy</button></div>
+            <div class="btn-code-body"><pre id="bc-router-ng-html"><code>&lt;gs-breadcrumb [items]="items" (itemClick)="navigate($event)"&gt;&lt;/gs-breadcrumb&gt;</code></pre></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 7 · Accessibility -->
+      <div id="bc-c-a11y" class="btn-family-card">
+        <div class="ds-step-row"><span class="ds-step-num">7</span><div class="btn-family-title" style="margin:0;">Accessibility</div></div>
+        <div class="fw-react">
+          <div class="btn-code-block">
+            <div class="btn-code-head"><span class="btn-code-lang">JSX — rendered HTML</span><button class="btn-copy-btn" onclick="copyBtnCode('bc-a11y-react',this)">Copy</button></div>
+            <div class="btn-code-body"><pre id="bc-a11y-react"><code>&lt;!-- Component output (icon variant) --&gt;
+&lt;nav aria-label="Breadcrumb"&gt;
+  &lt;ol&gt;
+    &lt;li&gt;
+      &lt;a class="gs-bc-link" href="/masters"&gt;
+        &lt;svg class="gs-bc-icon" aria-hidden="true"&gt;...&lt;/svg&gt;
+        Masters
+      &lt;/a&gt;
+    &lt;/li&gt;
+    &lt;li aria-hidden="true" class="gs-bc-sep"&gt;/&lt;/li&gt;
+    &lt;li&gt;
+      &lt;a class="gs-bc-link" href="/masters/sub"&gt;
+        &lt;svg class="gs-bc-icon" aria-hidden="true"&gt;...&lt;/svg&gt;
+        Masters
+      &lt;/a&gt;
+    &lt;/li&gt;
+    &lt;li aria-hidden="true" class="gs-bc-sep"&gt;/&lt;/li&gt;
+    &lt;li&gt;
+      &lt;span class="gs-bc-current" aria-current="page"&gt;
+        &lt;svg class="gs-bc-icon" aria-hidden="true"&gt;...&lt;/svg&gt;
+        Masters
+      &lt;/span&gt;
+    &lt;/li&gt;
+  &lt;/ol&gt;
+&lt;/nav&gt;
+
+{/* Collapsed ellipsis button */}
+&lt;button
+  type="button"
+  aria-label="Show full path"
+  aria-expanded={isExpanded}
+  className="gs-bc-ellipsis"
+&gt;
+  ···
+&lt;/button&gt;</code></pre></div>
+          </div>
+        </div>
+        <div class="fw-angular" style="display:none;">
+          <div class="btn-code-block">
+            <div class="btn-code-head"><span class="btn-code-lang">HTML</span><button class="btn-copy-btn" onclick="copyBtnCode('bc-a11y-ng',this)">Copy</button></div>
+            <div class="btn-code-body"><pre id="bc-a11y-ng"><code>&lt;!-- Icons always get aria-hidden; label text provides the accessible name --&gt;
+&lt;gs-breadcrumb [items]="items" ariaLabel="Breadcrumb"&gt;&lt;/gs-breadcrumb&gt;
+
+&lt;!-- The component renders the same semantic HTML as the React output above --&gt;</code></pre></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 8 · File Structure -->
+      <div id="bc-c-files" class="btn-family-card">
+        <div class="ds-step-row"><span class="ds-step-num">8</span><div class="btn-family-title" style="margin:0;">File Structure</div></div>
+        <div class="fw-react">
+          <div class="btn-code-block">
+            <div class="btn-code-head"><span class="btn-code-lang">tree</span><button class="btn-copy-btn" onclick="copyBtnCode('bc-files-react',this)">Copy</button></div>
+            <div class="btn-code-body"><pre id="bc-files-react"><code>src/
+└── components/
+    └── Breadcrumb/
+        ├── Breadcrumb.tsx          # Main component
+        ├── Breadcrumb.module.scss  # Consumes --gs-bc-* tokens
+        ├── BreadcrumbItem.tsx      # Single item (link or current)
+        ├── Breadcrumb.types.ts     # BreadcrumbItem interface
+        └── index.ts</code></pre></div>
+          </div>
+        </div>
+        <div class="fw-angular" style="display:none;">
+          <div class="btn-code-block">
+            <div class="btn-code-head"><span class="btn-code-lang">tree</span><button class="btn-copy-btn" onclick="copyBtnCode('bc-files-ng',this)">Copy</button></div>
+            <div class="btn-code-body"><pre id="bc-files-ng"><code>src/lib/breadcrumb/
+├── breadcrumb.component.ts
+├── breadcrumb.component.html
+├── breadcrumb.component.scss
+├── breadcrumb.module.ts
+└── breadcrumb.types.ts</code></pre></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 9 · Usage Patterns -->
+      <div id="bc-c-patterns" class="btn-family-card">
+        <div class="ds-step-row"><span class="ds-step-num">9</span><div class="btn-family-title" style="margin:0;">Usage Patterns</div></div>
+        <div class="btn-sub-label" style="margin-bottom:10px;">Dynamic from router</div>
+        <div class="fw-react">
+          <div class="btn-code-block">
+            <div class="btn-code-head"><span class="btn-code-lang">JSX</span><button class="btn-copy-btn" onclick="copyBtnCode('bc-pat-dyn-react',this)">Copy</button></div>
+            <div class="btn-code-body"><pre id="bc-pat-dyn-react"><code>import { useMatches } from 'react-router-dom';
+import { Breadcrumb } from '@pelagos/design-system';
+
+function AppBreadcrumb() {
+  const matches = useMatches();
+  const items = matches
+    .filter((m) =&gt; m.handle?.breadcrumb)
+    .map((m) =&gt; ({
+      label: m.handle.breadcrumb,
+      icon:  m.handle.icon,              // optional per-route icon
+      href:  m.pathname !== location.pathname ? m.pathname : undefined,
+    }));
+  return &lt;Breadcrumb items={items} /&gt;;
+}</code></pre></div>
+          </div>
+        </div>
+        <div class="fw-angular" style="display:none;">
+          <div class="btn-code-block">
+            <div class="btn-code-head"><span class="btn-code-lang">TS</span><button class="btn-copy-btn" onclick="copyBtnCode('bc-pat-dyn-ng',this)">Copy</button></div>
+            <div class="btn-code-body"><pre id="bc-pat-dyn-ng"><code>import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
+import { filter } from 'rxjs/operators';
+
+export class AppBreadcrumbComponent implements OnInit {
+  items: BreadcrumbItem[] = [];
+  constructor(private router: Router, private route: ActivatedRoute) {}
+  ngOnInit() {
+    this.router.events.pipe(filter(e =&gt; e instanceof NavigationEnd))
+      .subscribe(() =&gt; { this.items = this.buildCrumbs(this.route.root); });
+    this.items = this.buildCrumbs(this.route.root);
+  }
+  private buildCrumbs(route: ActivatedRoute, url='', acc: BreadcrumbItem[]=[]): BreadcrumbItem[] {
+    const { data, routeConfig } = route.snapshot;
+    const path = routeConfig?.path ?? '';
+    const fullUrl = path ? `${url}/${path}` : url;
+    if (data['breadcrumb'])
+      acc.push({ label: data['breadcrumb'], icon: data['icon'], href: route.firstChild ? fullUrl : undefined });
+    return route.firstChild ? this.buildCrumbs(route.firstChild, fullUrl, acc) : acc;
+  }
+}</code></pre></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 10 · Theming / Tokens -->
+      <div id="bc-c-tokens" class="btn-family-card">
+        <div class="ds-step-row"><span class="ds-step-num">10</span><div class="btn-family-title" style="margin:0;">Theming / Tokens</div></div>
+        <p class="btn-family-desc">All colour and font values map through CSS custom properties. Override at <code>:root</code> or any ancestor scope.</p>
+        <div class="fw-react">
+          <div class="btn-code-block">
+            <div class="btn-code-head"><span class="btn-code-lang">SCSS</span><button class="btn-copy-btn" onclick="copyBtnCode('bc-tokens-react',this)">Copy</button></div>
+            <div class="btn-code-body"><pre id="bc-tokens-react"><code>// tokens/_breadcrumb.scss
+// Component vars → system tokens → hard fallback
+:root {
+  --gs-bc-link-color:    var(--color-text-muted,    #94a3b8); // ancestor default
+  --gs-bc-link-hover:    var(--color-primary,        #1852fe); // ancestor hover
+  --gs-bc-link-focus:    var(--color-primary-light,  #5fa5f9); // focus ring
+  --gs-bc-current-color: var(--color-text,           #10172a); // current page
+  --gs-bc-sep-color:     var(--color-border,         #e2e8f0); // "/" separator
+  --gs-bc-dis-color:     var(--color-border,         #e2e8f0); // disabled link
+  --gs-bc-font-family:   var(--font-sans, 'Gilroy', sans-serif);
+  --gs-bc-font-sm:       12px;
+  --gs-bc-font-md:       13px;
+  --gs-bc-font-lg:       14px;
+}
+
+// Example: dark theme override
+[data-theme="dark"] {
+  --gs-bc-link-color:    #64748b;
+  --gs-bc-current-color: #f1f5f9;
+  --gs-bc-sep-color:     #334155;
+}</code></pre></div>
+          </div>
+        </div>
+        <div class="fw-angular" style="display:none;">
+          <div class="btn-code-block">
+            <div class="btn-code-head"><span class="btn-code-lang">SCSS</span><button class="btn-copy-btn" onclick="copyBtnCode('bc-tokens-ng',this)">Copy</button></div>
+            <div class="btn-code-body"><pre id="bc-tokens-ng"><code>// styles/themes/_breadcrumb.scss — identical token map
+:root {
+  --gs-bc-link-color:    var(--color-text-muted,   #94a3b8);
+  --gs-bc-link-hover:    var(--color-primary,       #1852fe);
+  --gs-bc-link-focus:    var(--color-primary-light, #5fa5f9);
+  --gs-bc-current-color: var(--color-text,          #10172a);
+  --gs-bc-sep-color:     var(--color-border,        #e2e8f0);
+  --gs-bc-dis-color:     var(--color-border,        #e2e8f0);
+  --gs-bc-font-family:   var(--font-sans, 'Gilroy', sans-serif);
+  --gs-bc-font-sm: 12px;  --gs-bc-font-md: 13px;  --gs-bc-font-lg: 14px;
+}</code></pre></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 11 · Full Working Example -->
+      <div id="bc-c-example" class="btn-family-card">
+        <div class="ds-step-row"><span class="ds-step-num">11</span><div class="btn-family-title" style="margin:0;">Full Working Example</div></div>
+        <p class="btn-family-desc">Production-ready component showing both icon variants, size options, and collapse behaviour.</p>
+        <div class="fw-react">
+          <div class="btn-code-block">
+            <div class="btn-code-head"><span class="btn-code-lang">JSX</span><button class="btn-copy-btn" onclick="copyBtnCode('bc-full-react',this)">Copy</button></div>
+            <div class="btn-code-body"><pre id="bc-full-react"><code>import { Breadcrumb } from '@pelagos/design-system';
+import { StarIcon, FolderIcon, FileIcon } from '@pelagos/icons';
+import type { BreadcrumbItem } from '@pelagos/design-system';
+
+// Without icon
+const PATH: BreadcrumbItem[] = [
+  { label: 'Masters', href: '/masters' },
+  { label: 'Masters', href: '/masters/sub' },
+  { label: 'Masters' },
+];
+
+// With icon — icon inherits color automatically
+const PATH_ICON: BreadcrumbItem[] = [
+  { label: 'Masters', href: '/masters',     icon: &lt;StarIcon size={14} /&gt; },
+  { label: 'Masters', href: '/masters/sub', icon: &lt;FolderIcon size={14} /&gt; },
+  { label: 'Masters',                        icon: &lt;FileIcon size={14} /&gt; },
+];
+
+// Deep path for collapse demo
+const DEEP: BreadcrumbItem[] = [
+  { label: 'Masters', href: '/a',   icon: &lt;StarIcon size={14} /&gt; },
+  { label: 'Masters', href: '/a/b', icon: &lt;FolderIcon size={14} /&gt; },
+  { label: 'Masters', href: '/a/b/c' },
+  { label: 'Masters', href: '/a/b/c/d' },
+  { label: 'Masters' },
+];
+
+export function BreadcrumbDemo() {
+  return (
+    &lt;div style={{ display: 'flex', flexDirection: 'column', gap: 24 }}&gt;
+      &lt;Breadcrumb items={PATH}       size="md" aria-label="No icon" /&gt;
+      &lt;Breadcrumb items={PATH_ICON}  size="md" aria-label="With icon" /&gt;
+      &lt;Breadcrumb items={DEEP}       size="md" maxItems={3} aria-label="Collapsed" /&gt;
+    &lt;/div&gt;
+  );
+}</code></pre></div>
+          </div>
+        </div>
+        <div class="fw-angular" style="display:none;">
+          <div class="btn-code-block">
+            <div class="btn-code-head"><span class="btn-code-lang">TS</span><button class="btn-copy-btn" onclick="copyBtnCode('bc-full-ng-ts',this)">Copy</button></div>
+            <div class="btn-code-body"><pre id="bc-full-ng-ts"><code>import { Component } from '@angular/core';
+import { BreadcrumbItem } from '@pelagos/design-system-angular';
+
+@Component({ selector: 'app-bc-demo', templateUrl: './bc-demo.component.html', standalone: true, imports: [GsBreadcrumbModule] })
+export class BcDemoComponent {
+  path: BreadcrumbItem[] = [
+    { label: 'Masters', href: '/masters' },
+    { label: 'Masters', href: '/masters/sub' },
+    { label: 'Masters' },
+  ];
+  pathIcon: BreadcrumbItem[] = [
+    { label: 'Masters', href: '/masters',     iconName: 'star' },
+    { label: 'Masters', href: '/masters/sub', iconName: 'folder' },
+    { label: 'Masters',                        iconName: 'file' },
+  ];
+  deep: BreadcrumbItem[] = [
+    { label: 'Masters', href: '/a' },
+    { label: 'Masters', href: '/a/b' },
+    { label: 'Masters', href: '/a/b/c' },
+    { label: 'Masters', href: '/a/b/c/d' },
+    { label: 'Masters' },
+  ];
+}</code></pre></div>
+          </div>
+          <div class="btn-code-block" style="margin-top:8px;">
+            <div class="btn-code-head"><span class="btn-code-lang">HTML</span><button class="btn-copy-btn" onclick="copyBtnCode('bc-full-ng-html',this)">Copy</button></div>
+            <div class="btn-code-body"><pre id="bc-full-ng-html"><code>&lt;gs-breadcrumb [items]="path"     ariaLabel="No icon"&gt;&lt;/gs-breadcrumb&gt;
+&lt;gs-breadcrumb [items]="pathIcon" ariaLabel="With icon"&gt;&lt;/gs-breadcrumb&gt;
+&lt;gs-breadcrumb [items]="deep" [maxItems]="3" ariaLabel="Collapsed"&gt;&lt;/gs-breadcrumb&gt;</code></pre></div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /code-tab-main -->
+
+    <!-- Code Quick-nav -->
+    <div class="code-tab-qnav">
+      <div class="code-qnav-inner">
+        <p class="code-qnav-title">On This Page</p>
+        <ul class="code-qnav-list">
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('bc-c-overview')">1 · Overview</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('bc-c-install')">2 · Install</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('bc-c-imports')">3 · Import</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('bc-c-api')">4 · API / Props</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('bc-c-variants')">5 · Variants</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('bc-c-router')">6 · Router</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('bc-c-a11y')">7 · Accessibility</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('bc-c-files')">8 · File Structure</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('bc-c-patterns')">9 · Patterns</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('bc-c-tokens')">10 · Theming</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('bc-c-example')">11 · Full Example</button></li>
+        </ul>
+      </div>
+    </div>
+
+  </div><!-- /code-tab-layout -->
+</div><!-- /code tab -->
+
+
+<!-- ═══════════════════════════════ USAGE TAB ═══════════════════════════════ -->
+<div id="bc-tab-usage" class="btn-tab-pane bc-tab-pane">
+  <div class="code-tab-layout">
+    <div class="code-tab-main">
+
+      <!-- When to Use -->
+      <div id="bc-u-when" class="btn-family-card">
+        <div class="btn-family-title">When to Use</div>
+        <ul class="btn-usage-list">
+          <li><strong>3+ levels of hierarchy</strong> — When app has a clear parent–child structure (Masters → Sub-section → Detail), breadcrumbs reduce disorientation for users who land deep.</li>
+          <li><strong>After deep links or search</strong> — When users arrive via notifications or external links, a breadcrumb orients them without requiring sidebar exploration.</li>
+          <li><strong>Detail pages</strong> — Record-level pages (vessel profile, invoice, report detail) nested inside tables or maps — lets users return to the parent list without losing state.</li>
+          <li><strong>Multi-level settings</strong> — Settings → Account → Security → 2FA. Breadcrumbs let users jump to any ancestor settings section.</li>
+          <li><strong>Use the icon variant</strong> when each level has a distinct category icon (folder, chart, map, etc.) — reinforces the hierarchy visually and matches the Figma design intent.</li>
+        </ul>
+      </div>
+
+      <!-- When Not to Use -->
+      <div id="bc-u-when-not" class="btn-family-card">
+        <div class="btn-family-title">When Not to Use</div>
+        <ul class="btn-usage-list">
+          <li><strong>Flat apps (&lt;3 levels)</strong> — "Home → Page" is redundant alongside a page title and topbar back button. Omit below 3 levels.</li>
+          <li><strong>Wizards / checkout</strong> — Use <button onclick="navigate('nav-steppers')" class="btn-inline-link">Stepper</button> instead. Breadcrumbs imply free back-navigation; steppers communicate linear progress.</li>
+          <li><strong>Modals and drawers</strong> — Navigation inside overlays should be self-contained. A breadcrumb inside a modal breaks the layered context.</li>
+          <li><strong>Mobile-only apps</strong> — OS back gesture covers the same need with less chrome. Reserve breadcrumbs for tablet/desktop or critical deep-link entry points.</li>
+        </ul>
+      </div>
+
+      <!-- Content Hierarchy -->
+      <div id="bc-u-hierarchy" class="btn-family-card">
+        <div class="btn-family-title">Content Hierarchy</div>
+
+        <div class="btn-sub-label">Label Writing Rules</div>
+        <ul class="btn-usage-list">
+          <li><strong>Match the page &lt;h1&gt; exactly</strong> — Each breadcrumb segment mirrors the heading of the page it links to. Inconsistency confuses users clicking back.</li>
+          <li><strong>Short and scannable</strong> — 1–3 words. "Reports" not "All Vessel Voyage Reports".</li>
+          <li><strong>Title case</strong> — "Port Calls" not "port calls". Breadcrumbs are navigation labels, not prose.</li>
+          <li><strong>Root = "Masters" (or "Home")</strong> — Use the root page's actual label, never the product or company name.</li>
+          <li><strong>Icon matches label context</strong> — Use a folder icon for a list level, a document icon for a detail level. The icon variant from the Figma design uses one consistent icon per level; don't mix styles.</li>
+        </ul>
+
+        <div class="btn-sub-label" style="margin-top:16px;">Depth Guide</div>
+        <table>
+          <thead><tr><th>Depth</th><th>Breadcrumb?</th><th>Variant</th></tr></thead>
+          <tbody>
+            <tr><td>1 level</td><td>No</td><td>—</td></tr>
+            <tr><td>2 levels</td><td>Optional</td><td>Without icon (minimal chrome)</td></tr>
+            <tr><td>3–5 levels</td><td>Yes — full path</td><td>With or without icon</td></tr>
+            <tr><td>6+ levels</td><td>Yes — collapse middle</td><td>With icon recommended (aids orientation)</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Common Mistakes -->
+      <div id="bc-u-mistakes" class="btn-family-card">
+        <div class="btn-family-title">Common Mistakes</div>
+        <div class="btn-mistake-list">
+
+          <div class="btn-mistake-item">
+            <div class="btn-mistake-label">❌ Mistake</div>
+            <p>Making the current page label a link — clicking reloads the same page.</p>
+            <div class="btn-mistake-fix-label">✅ Fix</div>
+            <p>The last item is always a non-interactive <code>&lt;span aria-current="page"&gt;</code>. Remove <code>href</code> from the final segment. Bold weight (600) and dark color (<code>--color-text</code>) visually distinguish it from links.</p>
+          </div>
+
+          <div class="btn-mistake-item">
+            <div class="btn-mistake-label">❌ Mistake</div>
+            <p>Adding <code>aria-hidden="true"</code> to the icon but not to the separator — "/" gets announced by screen readers ("slash").</p>
+            <div class="btn-mistake-fix-label">✅ Fix</div>
+            <p>Always set <code>aria-hidden="true"</code> on the separator <code>&lt;li&gt;</code>. Icons inside links also need <code>aria-hidden</code> since the text label already names the link.</p>
+          </div>
+
+          <div class="btn-mistake-item">
+            <div class="btn-mistake-label">❌ Mistake</div>
+            <p>Mixing icon variant and no-icon variant within the same breadcrumb trail — some items have icons, others don't.</p>
+            <div class="btn-mistake-fix-label">✅ Fix</div>
+            <p>Consistent treatment: either every item in the trail has an icon, or none do. Mixing creates uneven visual weight and misaligned baselines.</p>
+          </div>
+
+          <div class="btn-mistake-item">
+            <div class="btn-mistake-label">❌ Mistake</div>
+            <p>Using <code>&lt;ul&gt;</code> instead of <code>&lt;ol&gt;</code> for the breadcrumb list.</p>
+            <div class="btn-mistake-fix-label">✅ Fix</div>
+            <p><code>&lt;ol&gt;</code> communicates ordered sequence — screen readers announce item count and position ("2 of 4"), giving users spatial context that <code>&lt;ul&gt;</code> does not.</p>
+          </div>
+
+          <div class="btn-mistake-item">
+            <div class="btn-mistake-label">❌ Mistake</div>
+            <p>Hardcoding breadcrumb labels instead of deriving them from route data — labels drift from page headings over time.</p>
+            <div class="btn-mistake-fix-label">✅ Fix</div>
+            <p>Derive labels from route data or page metadata. Use the dynamic router pattern in the Code tab — breadcrumb labels stay in sync with page titles automatically.</p>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- References -->
+      <div id="bc-u-refs" class="btn-family-card">
+        <div class="btn-family-title">References</div>
+        <ul class="btn-related-list">
+          <li><a href="https://www.figma.com/design/TOLfBpRePgynqwvDVp6fg3/Design-System?node-id=587-354" target="_blank" rel="noopener">Figma — Breadcrumb component frame (node 587-354)</a></li>
+          <li><a href="https://www.w3.org/WAI/ARIA/apg/patterns/breadcrumb/" target="_blank" rel="noopener">ARIA Authoring Practices — Breadcrumb Pattern</a></li>
+          <li><a href="https://www.nngroup.com/articles/breadcrumbs/" target="_blank" rel="noopener">Nielsen Norman Group — Breadcrumb Navigation</a></li>
+          <li><a href="https://www.w3.org/WAI/WCAG21/Techniques/general/G65" target="_blank" rel="noopener">WCAG 2.1 — G65: Providing a breadcrumb trail</a></li>
+        </ul>
+      </div>
+
+    </div><!-- /code-tab-main -->
+
+    <!-- Usage Quick-nav -->
+    <div class="code-tab-qnav">
+      <div class="code-qnav-inner">
+        <p class="code-qnav-title">Quick Access</p>
+        <ul class="code-qnav-list">
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('bc-u-when')">When to Use</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('bc-u-when-not')">When Not to Use</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('bc-u-hierarchy')">Content Hierarchy</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('bc-u-mistakes')">Common Mistakes</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('bc-u-refs')">References</button></li>
+        </ul>
+      </div>
+    </div>
+
+  </div><!-- /code-tab-layout -->
+</div><!-- /usage tab -->

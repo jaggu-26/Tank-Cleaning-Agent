@@ -1,0 +1,600 @@
+<!-- ═══════════════════════════════════════════════════════════════
+     SIDE NAVIGATION — Pelagos Design System
+     Single-element sidebar: position:absolute, width animated with
+     will-change + GPU promotion to minimise transition artefacts.
+     ═══════════════════════════════════════════════════════════════ -->
+<style>
+/* ═══ TOKENS ════════════════════════════════════════════════════ */
+:root {
+  --snav-w-collapsed:  56px;
+  --snav-w-expanded:   260px;
+  --snav-bg:           var(--prim-white, #ffffff);
+  --snav-border:       var(--prim-grey-100, #e2e8f0);
+  --snav-ease:         0.28s cubic-bezier(0.4, 0, 0.2, 1);
+  --snav-item-r:       5px;
+  --snav-item-color:   var(--prim-blue-900, #001e4c);
+  --snav-item-act:     var(--prim-marine, #1852fe);
+  --snav-item-hov:     var(--prim-grey-50, #f1f5f9);
+  --snav-item-sel:     var(--prim-blue-10, #eef6ff);
+}
+
+/* ═══ SINGLE SIDEBAR ELEMENT ════════════════════════════════════
+   width animates 56 → 260 px.
+   position:absolute + will-change: width keeps it off the main
+   layout thread and minimises visual artefacts on transition.     */
+.gs-snav {
+  position: absolute;
+  top: 0; left: 0; bottom: 0;
+  width: var(--snav-w-collapsed);
+  background: var(--snav-bg);
+  border-right: 1px solid var(--snav-border);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  white-space: nowrap;
+  z-index: 20;
+
+  /* GPU-promote: tells the browser to prepare a compositing layer
+     so the width animation runs with minimal jank.               */
+  will-change: width;
+  transform: translateZ(0);          /* force GPU layer now */
+  backface-visibility: hidden;
+
+  transition: width var(--snav-ease);
+}
+.gs-snav.is-expanded {
+  width: var(--snav-w-expanded);
+}
+
+/* ═══ HEADER ══════════════════════════════════════════════════ */
+.gs-snav-header {
+  height: 56px;
+  display: flex;
+  align-items: center;
+  padding: 0 10px;
+  /* no bottom border — clean header */
+  flex-shrink: 0;
+  gap: 8px;
+  overflow: hidden;
+}
+.gs-snav-hamburger {
+  width: 36px; height: 36px; flex-shrink: 0;
+  border: none; background: transparent;
+  border-radius: var(--snav-item-r);
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; color: var(--snav-item-color);
+  transition: background .15s;
+}
+.gs-snav-hamburger:hover { background: var(--snav-item-hov); }
+.gs-snav.is-expanded .gs-snav-hamburger {
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .05s ease;   /* hides instantly on expand */
+}
+/* Hamburger reappears 0.2s AFTER collapse starts (delayed fade-in) */
+.gs-snav:not(.is-expanded) .gs-snav-hamburger {
+  opacity: 1;
+  pointer-events: all;
+  transition: opacity .12s ease .2s;  /* 0.2s delay before showing */
+}
+
+.gs-snav-logo {
+  display: flex; align-items: center; gap: 8px;
+  flex: 1; min-width: 0; overflow: hidden;
+  opacity: 0; max-width: 0;
+  transition: opacity .2s ease .1s, max-width var(--snav-ease);
+}
+.gs-snav.is-expanded .gs-snav-logo { opacity: 1; max-width: 200px; }
+.gs-snav-logo img { height: 22px; object-fit: contain; display: block; }
+
+.gs-snav-close {
+  width: 28px; height: 28px; flex-shrink: 0;
+  border: none; background: transparent; border-radius: var(--snav-item-r);
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; color: var(--snav-item-color);
+  margin-left: auto;
+  opacity: 0; pointer-events: none;
+  transition: opacity .15s ease .15s, background .15s;
+}
+.gs-snav.is-expanded .gs-snav-close { opacity: 1; pointer-events: all; }
+.gs-snav-close:hover { background: var(--snav-item-hov); }
+
+/* ═══ CONTENT ════════════════════════════════════════════════ */
+.gs-snav-content {
+  flex: 1; overflow-y: auto; overflow-x: hidden;
+  padding: 12px 8px; display: flex; flex-direction: column; gap: 2px;
+  scrollbar-width: thin; scrollbar-color: var(--prim-grey-200) transparent;
+}
+.gs-snav-content::-webkit-scrollbar { width: 3px; }
+.gs-snav-content::-webkit-scrollbar-thumb { background: var(--prim-grey-200); border-radius: 3px; }
+
+.gs-snav-section {
+  font-family: var(--prim-font-primary); font-size: 10px; font-weight: 700;
+  color: var(--prim-grey-400); text-transform: uppercase; letter-spacing: .07em;
+  padding: 0 4px; margin: 12px 0 4px; display: block;
+  opacity: 0; max-height: 0; overflow: hidden;
+  transition: opacity .2s ease .1s, max-height .2s ease;
+}
+.gs-snav.is-expanded .gs-snav-section { opacity: 1; max-height: 24px; }
+
+/* ═══ NAV ITEM ═══════════════════════════════════════════════ */
+.gs-snav-item {
+  display: flex; align-items: center;
+  justify-content: center;
+  gap: 0;
+  width: 100%; min-height: 36px;
+  padding: 4px;
+  border: none; border-radius: var(--snav-item-r); background: transparent;
+  font-family: var(--prim-font-primary);
+  font-size: var(--prim-font-size-md);
+  font-weight: var(--prim-font-weight-semibold);
+  color: var(--snav-item-color);
+  cursor: pointer; text-align: left;
+  overflow: hidden; white-space: nowrap;
+  transition: background .15s, gap var(--snav-ease), justify-content 0s;
+  position: relative;
+}
+.gs-snav.is-expanded .gs-snav-item {
+  justify-content: flex-start;
+  gap: 10px; padding: 4px 8px;
+}
+.gs-snav-item:hover  { background: var(--snav-item-hov); }
+.gs-snav-item:focus-visible { outline: none; box-shadow: 0 0 0 2px #5fa5f9 inset; border-radius: 8px; }
+.gs-snav-item--active { background: var(--snav-item-sel) !important; color: var(--snav-item-act) !important; }
+.gs-snav-item:disabled, .gs-snav-item[aria-disabled="true"] { opacity: .30; cursor: not-allowed; pointer-events: none; }
+
+.gs-snav-icon {
+  width: 24px; height: 24px; min-width: 24px;
+  display: inline-flex; align-items: center; justify-content: center;
+  flex-shrink: 0; color: inherit;
+}
+.gs-snav-label {
+  flex: 1; min-width: 0; line-height: 20px;
+  opacity: 0; max-width: 0; overflow: hidden;
+  transition: opacity .18s ease .1s, max-width var(--snav-ease);
+}
+.gs-snav.is-expanded .gs-snav-label { opacity: 1; max-width: 160px; }
+
+.gs-snav-chevron-r {
+  opacity: 0; max-width: 0; overflow: hidden; flex-shrink: 0;
+  display: inline-flex; align-items: center; color: var(--prim-grey-400);
+  transition: opacity .18s ease .1s, max-width var(--snav-ease), transform .2s ease;
+}
+.gs-snav.is-expanded .gs-snav-chevron-r { opacity: 1; max-width: 24px; }
+
+/* ═══ ACCORDION ═══════════════════════════════════════════════ */
+.gs-snav-group { display: flex; flex-direction: column; }
+.gs-snav-children {
+  display: flex; flex-direction: column;
+  max-height: 0; overflow: hidden;
+  transition: max-height .25s cubic-bezier(0.4,0,0.2,1);
+}
+.gs-snav-group.is-open .gs-snav-children { max-height: 400px; }
+.gs-snav-group.is-open > .gs-snav-item .gs-snav-chevron-r { transform: rotate(90deg); color: var(--snav-item-act); }
+.gs-snav-group.is-open > .gs-snav-item { color: var(--snav-item-act); }
+.gs-snav-item--child {
+  padding-left: 42px !important; font-size: var(--prim-font-size-sm); min-height: 32px;
+  border-left: 2px solid var(--snav-border); margin-left: 20px;
+  border-radius: 0 var(--snav-item-r) var(--snav-item-r) 0;
+}
+.gs-snav-item--child.gs-snav-item--active { border-left-color: var(--snav-item-act); }
+
+/* ═══ FOOTER ═════════════════════════════════════════════════ */
+.gs-snav-footer {
+  /* no top border — clean footer */
+  padding: 10px 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  flex-shrink: 0;
+}
+.gs-snav.is-expanded .gs-snav-footer {
+  flex-direction: row;
+  justify-content: center;
+  padding: 10px 12px;
+  gap: 4px;
+}
+
+.gs-snav-ftr-btn {
+  width: 32px; height: 32px; flex-shrink: 0;
+  border: none; background: transparent; border-radius: 6px;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; color: var(--snav-item-color);
+  position: relative; transition: background .15s;
+}
+.gs-snav-ftr-btn:hover { background: var(--snav-item-hov); }
+.gs-snav-ftr-badge {
+  position: absolute; top: 3px; right: 3px;
+  width: 14px; height: 14px; border-radius: 50%;
+  background: var(--prim-red-500, #dc2625); color: #fff;
+  font-size: 8px; font-weight: 700;
+  display: flex; align-items: center; justify-content: center;
+  border: 1.5px solid var(--snav-bg);
+}
+.gs-snav-avatar {
+  width: 28px; height: 28px; border-radius: 14px;
+  background: var(--prim-blue-900, #001e4c);
+  color: #fff; font-family: var(--prim-font-primary);
+  font-size: 13px; font-weight: 600;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0; cursor: pointer;
+}
+
+/* ═══ BACKDROP ═══════════════════════════════════════════════ */
+.gs-snav-backdrop {
+  position: absolute;
+  top: 0; left: var(--snav-w-collapsed); right: 0; bottom: 0;
+  background: rgba(31, 41, 55, 0.70);  /* matches --modal-overlay-bg */
+  opacity: 0; pointer-events: none;
+  transition: opacity var(--snav-ease);
+  z-index: 15; cursor: pointer;
+  will-change: opacity;
+  transform: translateZ(0);
+}
+.gs-snav-backdrop.is-open { opacity: 1; pointer-events: all; }
+
+/* ═══ DEMO FRAME ═════════════════════════════════════════════ */
+.gs-snav-demo-frame {
+  border: 1px solid var(--color-border-default);
+  border-radius: var(--radius-lg);
+  overflow: hidden; height: 480px;
+  display: flex; position: relative;
+  background: var(--prim-grey-50);
+}
+.gs-snav-demo-page {
+  flex: 1; padding: 20px; display: flex; flex-direction: column; gap: 14px;
+  min-width: 0; position: relative; z-index: 1;
+}
+
+/* ═══ SKELETON ═══════════════════════════════════════════════ */
+@keyframes gs-skeleton-pulse {
+  0%,100% { opacity:.45; }
+  50%      { opacity:.20; }
+}
+.gs-snav-skeleton-item  { display:flex; align-items:center; gap:10px; width:100%; min-height:36px; padding:6px 8px; border-radius:5px; }
+.gs-snav-skeleton-icon  { width:24px; height:24px; border-radius:4px; background:var(--prim-grey-200); flex-shrink:0; animation:gs-skeleton-pulse 1.5s ease-in-out infinite; }
+.gs-snav-skeleton-label { height:12px; border-radius:4px; background:var(--prim-grey-200); animation:gs-skeleton-pulse 1.5s ease-in-out infinite .1s; }
+</style>
+
+<!-- BANNER -->
+<div class="page-header"><h1 class="ds-hero-title">Side Navigation</h1></div>
+
+<!-- TAB BAR -->
+<div class="btn-tab-bar">
+  <button class="btn-tab-btn sidenav-tab-btn active" data-tab="design" onclick="switchSidenavTab('design')">Design</button>
+  <button class="btn-tab-btn sidenav-tab-btn" data-tab="code" onclick="switchSidenavTab('code')">Code</button>
+  <button class="btn-tab-btn sidenav-tab-btn" data-tab="usage" onclick="switchSidenavTab('usage')">Usage</button>
+</div>
+
+<!-- ═══ DESIGN TAB ══════════════════════════════════════════════════ -->
+<div id="sidenav-tab-design" class="btn-tab-pane sidenav-tab-pane active">
+  <div class="code-tab-layout">
+    <div class="code-tab-main">
+
+      <!-- OVERVIEW -->
+      <div id="snav-s-overview" class="btn-family-card">
+        <div class="btn-family-title">Overview</div>
+        <p class="btn-family-desc">The Side Navigation is a single sidebar element that expands its width from <strong>56px → 260px</strong>. The collapsed icon rail is always visible; clicking ☰ expands it with labels, logo, and a backdrop overlay. GPU compositing (<code>will-change: width; transform: translateZ(0)</code>) minimises transition artefacts. Clicking × or the backdrop collapses it.</p>
+
+        <div style="margin-top:16px;">
+          <div class="gs-snav-demo-frame" id="snav-demo-frame">
+
+            <!-- 56px spacer: holds layout. Sidebar sits on top (position:absolute). -->
+            <div style="width:var(--snav-w-collapsed);flex-shrink:0;min-width:var(--snav-w-collapsed);"></div>
+
+            <!-- SINGLE SIDEBAR ELEMENT — width animates, GPU-promoted -->
+            <div class="gs-snav" id="snav-demo">
+              <div class="gs-snav-header">
+                <button class="gs-snav-hamburger" onclick="gsSidenavExpand('snav-demo')" aria-label="Expand navigation">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+                </button>
+                <div class="gs-snav-logo">
+                  <img src="Assets/logos/geoserve-color.png" alt="GeoServes"/>
+                </div>
+                <button class="gs-snav-close" onclick="gsSidenavCollapse('snav-demo')" aria-label="Close navigation">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+                </button>
+              </div>
+
+              <div class="gs-snav-content">
+                <button class="gs-snav-item gs-snav-item--active" onclick="gsSidenavSelect(this,'snav-demo')" aria-current="page">
+                  <span class="gs-snav-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg></span>
+                  <span class="gs-snav-label">Dashboard</span>
+                </button>
+                <button class="gs-snav-item" onclick="gsSidenavSelect(this,'snav-demo')">
+                  <span class="gs-snav-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg></span>
+                  <span class="gs-snav-label">Port Calls</span>
+                </button>
+
+                <div class="gs-snav-group">
+                  <button class="gs-snav-item" onclick="gsSidenavToggleGroup(this,true)">
+                    <span class="gs-snav-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg></span>
+                    <span class="gs-snav-label">Accounts</span>
+                    <span class="gs-snav-chevron-r"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="9 18 15 12 9 6"/></svg></span>
+                  </button>
+                  <div class="gs-snav-children">
+                    <button class="gs-snav-item gs-snav-item--child gs-snav-item--active" onclick="gsSidenavSelect(this,'snav-demo')"><span class="gs-snav-label">Option 01</span></button>
+                    <button class="gs-snav-item gs-snav-item--child" onclick="gsSidenavSelect(this,'snav-demo')"><span class="gs-snav-label">Option 02</span></button>
+                    <button class="gs-snav-item gs-snav-item--child" onclick="gsSidenavSelect(this,'snav-demo')"><span class="gs-snav-label">Option 03</span></button>
+                  </div>
+                </div>
+
+                <button class="gs-snav-item" onclick="gsSidenavSelect(this,'snav-demo')">
+                  <span class="gs-snav-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></span>
+                  <span class="gs-snav-label">Reports</span>
+                </button>
+
+                <div class="gs-snav-group">
+                  <button class="gs-snav-item" onclick="gsSidenavToggleGroup(this,true)">
+                    <span class="gs-snav-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5M2 12l10 5 10-5"/></svg></span>
+                    <span class="gs-snav-label">Portcall Estimator</span>
+                    <span class="gs-snav-chevron-r"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="9 18 15 12 9 6"/></svg></span>
+                  </button>
+                  <div class="gs-snav-children">
+                    <button class="gs-snav-item gs-snav-item--child" onclick="gsSidenavSelect(this,'snav-demo')"><span class="gs-snav-label">My Fleet</span></button>
+                    <button class="gs-snav-item gs-snav-item--child" onclick="gsSidenavSelect(this,'snav-demo')"><span class="gs-snav-label">Schedules</span></button>
+                  </div>
+                </div>
+
+                <button class="gs-snav-item" aria-disabled="true">
+                  <span class="gs-snav-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></span>
+                  <span class="gs-snav-label">Compliance</span>
+                </button>
+              </div>
+
+              <div class="gs-snav-footer">
+                <button class="gs-snav-ftr-btn" title="Notifications" style="position:relative;">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg><span class="gs-snav-ftr-badge">2</span>
+                </button>
+                <button class="gs-snav-ftr-btn" title="Apps"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="5" cy="5" r="1.5"/><circle cx="12" cy="5" r="1.5"/><circle cx="19" cy="5" r="1.5"/><circle cx="5" cy="12" r="1.5"/><circle cx="12" cy="12" r="1.5"/><circle cx="19" cy="12" r="1.5"/><circle cx="5" cy="19" r="1.5"/><circle cx="12" cy="19" r="1.5"/><circle cx="19" cy="19" r="1.5"/></svg></button>
+                <div class="gs-snav-avatar" title="Profile">J</div>
+              </div>
+            </div>
+
+            <!-- Backdrop -->
+            <div class="gs-snav-backdrop" id="snav-backdrop" onclick="gsSidenavCollapse('snav-demo')"></div>
+
+            <!-- Fake page content -->
+            <div class="gs-snav-demo-page">
+              <div style="display:flex;align-items:center;justify-content:space-between;flex-shrink:0;">
+                <div style="height:9px;width:140px;background:var(--prim-grey-200);border-radius:3px;"></div>
+                <div style="height:28px;width:72px;background:var(--color-brand);border-radius:6px;opacity:.8;"></div>
+              </div>
+              <div style="background:#fff;border:1px solid var(--prim-grey-100);border-radius:8px;flex:1;overflow:hidden;display:flex;flex-direction:column;">
+                <div style="height:34px;background:var(--prim-grey-50);border-bottom:1px solid var(--prim-grey-100);display:flex;align-items:center;padding:0 14px;gap:8px;"><div style="height:6px;width:60px;background:var(--prim-grey-200);border-radius:2px;"></div><div style="height:6px;width:80px;background:var(--prim-grey-200);border-radius:2px;"></div></div>
+                <div style="padding:12px 14px;display:flex;flex-direction:column;gap:9px;">
+                  <div style="height:26px;border-bottom:1px solid var(--prim-grey-100);display:flex;align-items:center;"><div style="height:5px;width:110px;background:var(--prim-grey-200);border-radius:2px;"></div></div>
+                  <div style="height:26px;border-bottom:1px solid var(--prim-grey-100);display:flex;align-items:center;"><div style="height:5px;width:80px;background:var(--prim-grey-200);border-radius:2px;"></div></div>
+                  <div style="height:26px;display:flex;align-items:center;"><div style="height:5px;width:100px;background:var(--prim-grey-200);border-radius:2px;"></div></div>
+                </div>
+              </div>
+              <p style="font-size:11px;color:var(--color-text-secondary);margin:0;text-align:center;">Click ☰ to expand · backdrop or × to collapse</p>
+            </div>
+
+          </div>
+        </div>
+
+        <div class="btn-when-examples" style="margin-top:16px;">
+          <span class="btn-when-example-tag">56px → 260px expansion</span>
+          <span class="btn-when-example-tag">Labels fade in</span>
+          <span class="btn-when-example-tag">Footer vertical → horizontal</span>
+          <span class="btn-when-example-tag">Backdrop overlay</span>
+          <span class="btn-when-example-tag">Accordion groups</span>
+        </div>
+      </div>
+
+      <!-- ANATOMY -->
+      <div id="snav-s-anatomy" class="btn-family-card">
+        <div class="btn-family-title">Anatomy — Two States</div>
+        <p class="btn-family-desc">A single sidebar element with three zones. Width expands in-place. Labels are always in the DOM but hidden via <code>max-width:0; opacity:0</code> — no layout shift, no content shift.</p>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:12px;">
+          <div style="border:1px solid var(--color-border-default);border-radius:var(--radius-md);padding:16px;">
+            <div style="font-size:var(--prim-font-size-sm);font-weight:700;color:var(--color-brand);margin-bottom:8px;">Collapsed (56px — always visible)</div>
+            <ul style="margin:0;padding-left:18px;font-size:var(--prim-font-size-sm);color:var(--color-text-secondary);line-height:1.9;">
+              <li>Hamburger ☰ at top</li><li>Icon-only nav items centred</li>
+              <li>Footer icons stacked vertically</li><li>No backdrop</li>
+            </ul>
+          </div>
+          <div style="border:1px solid var(--color-border-default);border-radius:var(--radius-md);padding:16px;">
+            <div style="font-size:var(--prim-font-size-sm);font-weight:700;color:var(--color-brand);margin-bottom:8px;">Expanded (260px — overlay)</div>
+            <ul style="margin:0;padding-left:18px;font-size:var(--prim-font-size-sm);color:var(--color-text-secondary);line-height:1.9;">
+              <li>GeoServes logo + × close</li><li>Icon + label items, accordion</li>
+              <li>Footer icons horizontal row</li><li>Dark backdrop over content</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- STATES -->
+      <div id="snav-s-states" class="btn-family-card">
+        <div class="btn-family-title">Item States (Figma 8922-5625)</div>
+        <p class="btn-family-desc">Five states apply to both icon-only (collapsed) and icon+label (expanded) items.</p>
+        <div class="btn-sub-label" style="margin-bottom:10px;">Collapsed — Icon Only</div>
+        <div class="btn-states-grid" style="grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:24px;">
+          <div class="btn-state-cell"><div style="pointer-events:none;width:36px;height:36px;border-radius:5px;display:flex;align-items:center;justify-content:center;color:var(--prim-blue-900);"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg></div><span class="btn-state-label">Default</span></div>
+          <div class="btn-state-cell"><div style="pointer-events:none;width:36px;height:36px;border-radius:5px;background:var(--prim-grey-50);display:flex;align-items:center;justify-content:center;color:var(--prim-blue-900);"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg></div><span class="btn-state-label">Hovered</span></div>
+          <div class="btn-state-cell"><div style="pointer-events:none;width:36px;height:36px;border-radius:5px;background:var(--prim-blue-10);display:flex;align-items:center;justify-content:center;color:var(--prim-marine);"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg></div><span class="btn-state-label">Active</span></div>
+          <div class="btn-state-cell"><div style="pointer-events:none;width:36px;height:36px;border-radius:8px;box-shadow:0 0 0 2px #5fa5f9 inset;display:flex;align-items:center;justify-content:center;color:var(--prim-blue-900);"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg></div><span class="btn-state-label">Focused</span></div>
+          <div class="btn-state-cell"><div style="pointer-events:none;width:36px;height:36px;border-radius:5px;opacity:.30;display:flex;align-items:center;justify-content:center;color:var(--prim-blue-900);"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg></div><span class="btn-state-label">Disabled</span></div>
+        </div>
+        <div class="btn-sub-label" style="margin-bottom:10px;">Expanded — Icon + Label</div>
+        <div style="display:flex;flex-direction:column;gap:4px;max-width:280px;">
+          <div style="pointer-events:none;display:flex;align-items:center;gap:10px;padding:6px 8px;border-radius:5px;min-height:36px;"><span style="width:24px;height:24px;display:flex;align-items:center;justify-content:center;color:var(--prim-blue-900);flex-shrink:0;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg></span><span style="font-size:14px;font-weight:600;color:var(--prim-blue-900);flex:1;">Dashboard</span><span style="font-size:11px;color:var(--color-text-secondary);flex-shrink:0;">Default</span></div>
+          <div style="pointer-events:none;display:flex;align-items:center;gap:10px;padding:6px 8px;border-radius:5px;min-height:36px;background:var(--prim-grey-50);"><span style="width:24px;height:24px;display:flex;align-items:center;justify-content:center;color:var(--prim-blue-900);flex-shrink:0;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg></span><span style="font-size:14px;font-weight:600;color:var(--prim-blue-900);flex:1;">Dashboard</span><span style="font-size:11px;color:var(--color-text-secondary);flex-shrink:0;">Hovered</span></div>
+          <div style="pointer-events:none;display:flex;align-items:center;gap:10px;padding:6px 8px;border-radius:5px;min-height:36px;background:var(--prim-blue-10);"><span style="width:24px;height:24px;display:flex;align-items:center;justify-content:center;color:var(--prim-marine);flex-shrink:0;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg></span><span style="font-size:14px;font-weight:600;color:var(--prim-marine);flex:1;">Dashboard</span><span style="font-size:11px;color:var(--color-text-secondary);flex-shrink:0;">Active</span></div>
+          <div style="pointer-events:none;display:flex;align-items:center;gap:10px;padding:6px 8px;border-radius:8px;min-height:36px;box-shadow:0 0 0 2px #5fa5f9 inset;"><span style="width:24px;height:24px;display:flex;align-items:center;justify-content:center;color:var(--prim-blue-900);flex-shrink:0;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg></span><span style="font-size:14px;font-weight:600;color:var(--prim-blue-900);flex:1;">Dashboard</span><span style="font-size:11px;color:var(--color-text-secondary);flex-shrink:0;">Focused</span></div>
+          <div style="pointer-events:none;display:flex;align-items:center;gap:10px;padding:6px 8px;border-radius:5px;min-height:36px;opacity:.30;"><span style="width:24px;height:24px;display:flex;align-items:center;justify-content:center;color:var(--prim-blue-900);flex-shrink:0;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg></span><span style="font-size:14px;font-weight:600;color:var(--prim-blue-900);flex:1;">Dashboard</span><span style="font-size:11px;color:var(--color-text-secondary);flex-shrink:0;">Disabled</span></div>
+        </div>
+      </div>
+
+      <!-- SKELETON -->
+      <div id="snav-s-skeleton" class="btn-family-card">
+        <div class="btn-family-title">Skeleton Loading State</div>
+        <p class="btn-family-desc">Show skeleton placeholders while navigation items are loading from the API. The header and footer render immediately; only nav item slots show pulsing skeletons.</p>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:12px;">
+          <div>
+            <div class="btn-sub-label" style="margin-bottom:8px;">Collapsed — icon skeletons</div>
+            <div style="width:56px;border:1px solid var(--color-border-default);border-radius:var(--radius-md);background:#fff;overflow:hidden;">
+              <div style="height:56px;border-bottom:1px solid var(--color-border-default);display:flex;align-items:center;justify-content:center;"><div style="width:20px;height:20px;border-radius:3px;background:var(--prim-grey-200);animation:gs-skeleton-pulse 1.5s ease-in-out infinite;"></div></div>
+              <div style="padding:12px 8px;display:flex;flex-direction:column;align-items:center;gap:6px;">
+                <div style="width:28px;height:28px;border-radius:5px;background:var(--prim-grey-200);animation:gs-skeleton-pulse 1.5s ease-in-out infinite;"></div>
+                <div style="width:28px;height:28px;border-radius:5px;background:var(--prim-grey-200);animation:gs-skeleton-pulse 1.5s ease-in-out infinite .1s;"></div>
+                <div style="width:28px;height:28px;border-radius:5px;background:var(--prim-grey-200);animation:gs-skeleton-pulse 1.5s ease-in-out infinite .2s;"></div>
+                <div style="width:28px;height:28px;border-radius:5px;background:var(--prim-grey-200);animation:gs-skeleton-pulse 1.5s ease-in-out infinite .3s;"></div>
+              </div>
+              <div style="border-top:1px solid var(--color-border-default);padding:10px 8px;display:flex;flex-direction:column;align-items:center;gap:4px;"><div style="width:24px;height:24px;border-radius:50%;background:var(--prim-grey-200);animation:gs-skeleton-pulse 1.5s ease-in-out infinite;"></div></div>
+            </div>
+          </div>
+          <div>
+            <div class="btn-sub-label" style="margin-bottom:8px;">Expanded — icon+label skeletons</div>
+            <div style="width:240px;border:1px solid var(--color-border-default);border-radius:var(--radius-md);background:#fff;overflow:hidden;">
+              <div style="height:56px;border-bottom:1px solid var(--color-border-default);display:flex;align-items:center;padding:0 12px;gap:8px;"><img src="Assets/logos/geoserve-color.png" style="height:20px;object-fit:contain;" alt="GeoServes"/><div style="flex:1;"></div><div style="width:24px;height:24px;border-radius:50%;background:var(--prim-grey-100);display:flex;align-items:center;justify-content:center;"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="var(--prim-grey-400)" stroke-width="2.5" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg></div></div>
+              <div style="padding:12px 10px;display:flex;flex-direction:column;gap:4px;">
+                <div class="gs-snav-skeleton-item"><div class="gs-snav-skeleton-icon"></div><div class="gs-snav-skeleton-label" style="width:90px;"></div></div>
+                <div class="gs-snav-skeleton-item"><div class="gs-snav-skeleton-icon"></div><div class="gs-snav-skeleton-label" style="width:70px;animation-delay:.15s;"></div></div>
+                <div class="gs-snav-skeleton-item"><div class="gs-snav-skeleton-icon"></div><div class="gs-snav-skeleton-label" style="width:110px;animation-delay:.25s;"></div></div>
+                <div class="gs-snav-skeleton-item"><div class="gs-snav-skeleton-icon"></div><div class="gs-snav-skeleton-label" style="width:80px;animation-delay:.35s;"></div></div>
+              </div>
+              <div style="border-top:1px solid var(--color-border-default);padding:10px 12px;display:flex;align-items:center;justify-content:center;gap:4px;">
+                <div style="width:28px;height:28px;border-radius:50%;background:var(--prim-grey-200);animation:gs-skeleton-pulse 1.5s ease-in-out infinite;"></div>
+                <div style="width:28px;height:28px;border-radius:50%;background:var(--prim-grey-200);animation:gs-skeleton-pulse 1.5s ease-in-out infinite .1s;"></div>
+                <div class="gs-snav-avatar">J</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="btn-sub-label" style="margin-top:20px;margin-bottom:8px;">When to skeleton</div>
+        <table><thead><tr><th>Scenario</th><th>Skeleton what</th><th>Render immediately</th></tr></thead><tbody>
+          <tr class="ds-tr-border"><td>Initial app load</td><td>All nav items</td><td>Header (logo/hamburger), footer avatar</td></tr>
+          <tr class="ds-tr-border"><td>Role-based nav</td><td>Items until permissions resolve</td><td>Logo, footer icons</td></tr>
+          <tr class="ds-tr-border"><td>Slow network (&gt;300ms)</td><td>Full item list (staggered)</td><td>Shell structure — borders, height</td></tr>
+        </tbody></table>
+      </div>
+
+      <!-- RELATED -->
+      <div id="snav-s-related" class="btn-family-card">
+        <div class="btn-family-title">Related Components</div>
+        <ul class="btn-related-list">
+          <li><button class="btn-inline-link" onclick="navigate('panel-slideout')">Slide-out Panel</button> — For contextual overlays from row actions, not global navigation.</li>
+          <li><button class="btn-inline-link" onclick="navigate('nav-tabs')">Tabs</button> — For switching parallel sections within one page.</li>
+          <li><button class="btn-inline-link" onclick="navigate('prim-buttons')">Buttons</button> — Icon-only neutral ghost for ☰ and × controls.</li>
+        </ul>
+      </div>
+
+    </div>
+    <div class="code-tab-qnav">
+      <div class="code-qnav-inner">
+        <p class="code-qnav-title">On This Page</p>
+        <ul class="code-qnav-list">
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('snav-s-overview')">Overview</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('snav-s-anatomy')">Anatomy</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('snav-s-states')">States</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('snav-s-skeleton')">Skeleton Loading</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('snav-s-related')">Related</button></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CODE TAB -->
+<div id="sidenav-tab-code" class="btn-tab-pane sidenav-tab-pane">
+  <div class="code-tab-layout">
+    <div class="code-tab-main">
+      <div class="fw-toggle-bar">
+        <button class="fw-toggle-bar-btn active" data-fw="react" onclick="switchFw('sidenav-tab-code','react')"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="2.5" fill="#61dafb"/><ellipse cx="12" cy="12" rx="10" ry="4.5" stroke="#61dafb" stroke-width="1.5" fill="none"/><ellipse cx="12" cy="12" rx="10" ry="4.5" stroke="#61dafb" stroke-width="1.5" fill="none" transform="rotate(60 12 12)"/><ellipse cx="12" cy="12" rx="10" ry="4.5" stroke="#61dafb" stroke-width="1.5" fill="none" transform="rotate(120 12 12)"/></svg>React</button>
+        <button class="fw-toggle-bar-btn" data-fw="angular" onclick="switchFw('sidenav-tab-code','angular')"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M12 2L2 6.5l1.5 12.5L12 22l8.5-3L22 6.5 12 2z" fill="#dd0031"/><path d="M12 2v20M12 2L6 17h12L12 2z" fill="none" stroke="#fff" stroke-width="1.2"/></svg>Angular</button>
+      </div>
+      <div id="snav-c-tokens" class="btn-family-card">
+        <div class="ds-step-row"><span class="ds-step-num">1</span><div class="btn-family-title" style="margin:0;">Foundation Tokens</div></div>
+        <div class="fw-react"><div class="btn-code-block"><div class="btn-code-head"><span class="btn-code-lang">SCSS</span><button class="btn-copy-btn" onclick="copyBtnCode('snav-tokens',this)">Copy</button></div>
+        <div class="btn-code-body"><pre id="snav-tokens"><code>:root {
+  <span class="c-attr">--snav-w-collapsed</span>: <span class="c-val">56px</span>;
+  <span class="c-attr">--snav-w-expanded</span>:  <span class="c-val">260px</span>;
+  <span class="c-attr">--snav-bg</span>:          <span class="c-val">var(--prim-white)</span>;
+  <span class="c-attr">--snav-border</span>:      <span class="c-val">var(--prim-grey-100)</span>;
+  <span class="c-attr">--snav-ease</span>:        <span class="c-val">0.28s cubic-bezier(0.4,0,0.2,1)</span>;
+  <span class="c-attr">--snav-item-color</span>:  <span class="c-val">var(--prim-blue-900)</span>;  <span class="c-cmt">/* #001e4c */</span>
+  <span class="c-attr">--snav-item-act</span>:    <span class="c-val">var(--prim-marine)</span>;   <span class="c-cmt">/* #1852fe */</span>
+  <span class="c-attr">--snav-item-hov</span>:    <span class="c-val">var(--prim-grey-50)</span>;  <span class="c-cmt">/* #f1f5f9 */</span>
+  <span class="c-attr">--snav-item-sel</span>:    <span class="c-val">var(--prim-blue-10)</span>;  <span class="c-cmt">/* #eef6ff */</span>
+}</code></pre></div></div></div>
+        <div class="fw-angular" style="display:none;"><p class="btn-family-desc">Same CSS custom properties. Add to your app root stylesheet.</p></div>
+      </div>
+      <div id="snav-c-shell" class="btn-family-card">
+        <div class="ds-step-row"><span class="ds-step-num">2</span><div class="btn-family-title" style="margin:0;">HTML Shell</div></div>
+        <div class="fw-react"><div class="btn-code-block"><div class="btn-code-head"><span class="btn-code-lang">HTML</span><button class="btn-copy-btn" onclick="copyBtnCode('snav-shell',this)">Copy</button></div>
+        <div class="btn-code-body"><pre id="snav-shell"><code><span class="c-cmt">&lt;!-- Wrapper --&gt;</span>
+&lt;<span class="c-tag">div</span> <span class="c-attr">style</span>=<span class="c-val">"display:flex;height:100vh;position:relative;"</span>&gt;
+  <span class="c-cmt">&lt;!-- Spacer: holds 56px in layout. Sidebar overlays it. --&gt;</span>
+  &lt;<span class="c-tag">div</span> <span class="c-attr">style</span>=<span class="c-val">"width:56px;flex-shrink:0;"</span>&gt;&lt;/<span class="c-tag">div</span>&gt;
+
+  &lt;<span class="c-tag">nav</span> <span class="c-attr">class</span>=<span class="c-val">"gs-snav"</span> <span class="c-attr">id</span>=<span class="c-val">"app-nav"</span>&gt;
+    &lt;<span class="c-tag">div</span> <span class="c-attr">class</span>=<span class="c-val">"gs-snav-header"</span>&gt;
+      &lt;<span class="c-tag">button</span> <span class="c-attr">class</span>=<span class="c-val">"gs-snav-hamburger"</span>
+              <span class="c-attr">onclick</span>=<span class="c-val">"gsSidenavExpand('app-nav')"</span>&gt;☰&lt;/<span class="c-tag">button</span>&gt;
+      &lt;<span class="c-tag">div</span> <span class="c-attr">class</span>=<span class="c-val">"gs-snav-logo"</span>&gt;&lt;<span class="c-tag">img</span> <span class="c-attr">src</span>=<span class="c-val">"logo.png"</span>/&gt;&lt;/<span class="c-tag">div</span>&gt;
+      &lt;<span class="c-tag">button</span> <span class="c-attr">class</span>=<span class="c-val">"gs-snav-close"</span>
+              <span class="c-attr">onclick</span>=<span class="c-val">"gsSidenavCollapse('app-nav')"</span>&gt;×&lt;/<span class="c-tag">button</span>&gt;
+    &lt;/<span class="c-tag">div</span>&gt;
+    &lt;<span class="c-tag">div</span> <span class="c-attr">class</span>=<span class="c-val">"gs-snav-content"</span>&gt;
+      &lt;<span class="c-tag">button</span> <span class="c-attr">class</span>=<span class="c-val">"gs-snav-item gs-snav-item--active"</span>&gt;
+        &lt;<span class="c-tag">span</span> <span class="c-attr">class</span>=<span class="c-val">"gs-snav-icon"</span>&gt;...&lt;/<span class="c-tag">span</span>&gt;
+        &lt;<span class="c-tag">span</span> <span class="c-attr">class</span>=<span class="c-val">"gs-snav-label"</span>&gt;Dashboard&lt;/<span class="c-tag">span</span>&gt;
+      &lt;/<span class="c-tag">button</span>&gt;
+    &lt;/<span class="c-tag">div</span>&gt;
+    &lt;<span class="c-tag">div</span> <span class="c-attr">class</span>=<span class="c-val">"gs-snav-footer"</span>&gt;...&lt;/<span class="c-tag">div</span>&gt;
+  &lt;/<span class="c-tag">nav</span>&gt;
+
+  &lt;<span class="c-tag">div</span> <span class="c-attr">class</span>=<span class="c-val">"gs-snav-backdrop"</span>
+       <span class="c-attr">onclick</span>=<span class="c-val">"gsSidenavCollapse('app-nav')"</span>&gt;&lt;/<span class="c-tag">div</span>&gt;
+  &lt;<span class="c-tag">main</span> <span class="c-attr">style</span>=<span class="c-val">"flex:1;overflow-y:auto;"</span>&gt;...&lt;/<span class="c-tag">main</span>&gt;
+&lt;/<span class="c-tag">div</span>&gt;</code></pre></div></div></div>
+        <div class="fw-angular" style="display:none;"><p class="btn-family-desc">Use <code>&lt;gs-sidenav [(expanded)]="open"&gt;</code>. The component renders the shell, spacer, and backdrop automatically.</p></div>
+      </div>
+    </div>
+    <div class="code-tab-qnav">
+      <div class="code-qnav-inner">
+        <p class="code-qnav-title">On This Page</p>
+        <ul class="code-qnav-list">
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('snav-c-tokens')">1 · Tokens</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('snav-c-shell')">2 · HTML Shell</button></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- USAGE TAB -->
+<div id="sidenav-tab-usage" class="btn-tab-pane sidenav-tab-pane">
+  <div class="code-tab-layout">
+    <div class="code-tab-main">
+      <div id="snav-u-when" class="btn-family-card">
+        <div class="btn-family-title">When to Use</div>
+        <ul class="btn-usage-list">
+          <li><strong>Multi-section apps (4+ routes)</strong> — Collapsed rail provides quick icon access; expanding reveals labels.</li>
+          <li><strong>Space-constrained dashboards</strong> — 56px collapsed state maximises content area.</li>
+          <li><strong>Cross-product shell</strong> — Change the logo and nav items to deploy across all GeoServes products.</li>
+        </ul>
+      </div>
+      <div id="snav-u-best" class="btn-family-card">
+        <div class="btn-family-title">Best Practices</div>
+        <ul class="btn-usage-list">
+          <li><strong>Icons must be self-explanatory</strong> — In collapsed state only icons are visible. Add <code>title</code> attributes.</li>
+          <li><strong>Persist expanded state</strong> — Store in <code>localStorage</code> so the state survives navigation.</li>
+          <li><strong>Close on backdrop + Escape</strong> — Both dismiss paths are required for accessibility.</li>
+        </ul>
+      </div>
+    </div>
+    <div class="code-tab-qnav">
+      <div class="code-qnav-inner">
+        <p class="code-qnav-title">On This Page</p>
+        <ul class="code-qnav-list">
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('snav-u-when')">When to Use</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('snav-u-best')">Best Practices</button></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>

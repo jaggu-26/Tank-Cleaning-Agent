@@ -1,0 +1,1045 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Tank Cleaning — STI CLAPHAM</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+<style>
+@font-face{font-family:'Gilroy';src:url('fonts/Gilroy-Regular.ttf') format('truetype');font-weight:400;}
+@font-face{font-family:'Gilroy';src:url('fonts/Gilroy-Medium.ttf') format('truetype');font-weight:500;}
+@font-face{font-family:'Gilroy';src:url('fonts/Gilroy-SemiBold.ttf') format('truetype');font-weight:600;}
+@font-face{font-family:'Gilroy';src:url('fonts/Gilroy-Bold.ttf') format('truetype');font-weight:700;}
+
+:root{
+  --brand:#1852FE;--brand-h:#1242d4;--brand-soft:#EEF6FF;
+  --nav:#001E4C;--bg:#F0F4F8;--card:#fff;
+  --t1:#0F172A;--t2:#475569;--tm:#94A3B8;
+  --bd:#E2E8F0;--bdl:#F1F5F9;
+  --green:#22C55E;--gbg:#D3F3DF;--gt:#147638;
+  --amber:#EAB305;--abg:#FEF9C3;--at:#92400E;
+  --red:#EF4444;--rbg:#FDE2E2;--rt:#B91C1B;
+  --f:'Gilroy','Inter',-apple-system,system-ui,sans-serif;
+  --r:10px;--rl:14px;--rx:18px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html,body{height:100%;font-family:var(--f);font-size:13px;color:var(--t1);background:var(--bg);-webkit-font-smoothing:antialiased;}
+button,input,textarea,select{font-family:var(--f);}
+button{cursor:pointer;border:none;background:none;}
+:focus-visible{outline:2px solid var(--brand);outline-offset:2px;border-radius:3px;}
+:focus:not(:focus-visible){outline:none;}
+
+/* ── SHELL ── */
+.shell{display:flex;height:100vh;overflow:hidden;}
+
+/* ── NAV RAIL ── */
+.nav{width:56px;flex-shrink:0;background:var(--nav);display:flex;flex-direction:column;align-items:center;padding:10px 0 14px;gap:2px;}
+.nav-back{width:36px;height:36px;border-radius:9px;background:rgba(255,255,255,.08);color:rgba(255,255,255,.65);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:background 140ms;margin-bottom:6px;}
+.nav-back:hover{background:rgba(255,255,255,.16);color:#fff;}
+.nav-back svg{width:15px;height:15px;}
+.nav-lbl{font-size:8px;font-weight:600;color:rgba(255,255,255,.3);letter-spacing:.05em;text-transform:uppercase;margin-bottom:4px;}
+.nav-div{width:22px;height:1px;background:rgba(255,255,255,.1);margin:6px 0;}
+.nav-ico{width:36px;height:36px;border-radius:9px;background:transparent;color:rgba(255,255,255,.3);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all 140ms;}
+.nav-ico:hover{background:rgba(255,255,255,.08);color:rgba(255,255,255,.65);}
+.nav-ico.on{background:rgba(24,82,254,.3);color:#93c5fd;}
+.nav-ico svg{width:16px;height:16px;}
+
+/* ── MAIN ── */
+.main{flex:1;display:flex;flex-direction:column;overflow:hidden;min-width:0;}
+
+/* ── TOP BAR ── */
+.topbar{height:auto;flex-shrink:0;background:#fff;border-bottom:1px solid var(--bd);padding:0 20px;}
+
+/* Agent tab row */
+.agent-row{display:flex;align-items:center;gap:0;border-bottom:1px solid var(--bdl);padding:10px 0 0;}
+.agent-tab{display:flex;align-items:center;gap:10px;padding:9px 16px 10px;border-radius:10px 10px 0 0;border:1px solid transparent;border-bottom:none;cursor:pointer;background:transparent;transition:all 140ms;position:relative;bottom:-1px;}
+.agent-tab:hover{background:#F7FAFC;}
+.agent-tab.on{background:#fff;border-color:var(--bd);border-bottom-color:#fff;}
+.at-icon{width:30px;height:30px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;}
+.at-name{font-size:12.5px;font-weight:700;color:var(--t1);line-height:1.2;}
+.at-ctx{font-size:10.5px;color:var(--tm);margin-top:1px;}
+.at-badge{min-width:18px;height:18px;background:var(--brand);color:#fff;font-size:9px;font-weight:700;border-radius:999px;display:inline-flex;align-items:center;justify-content:center;padding:0 5px;flex-shrink:0;}
+.at-badge.amber{background:var(--amber);}
+.agent-tab-spacer{flex:1;}
+.open-geonix{display:inline-flex;align-items:center;gap:5px;height:30px;padding:0 12px;border-radius:7px;border:1px solid var(--bd);background:#fff;font-size:11.5px;font-weight:600;color:var(--t2);cursor:pointer;transition:all 120ms;align-self:center;margin-bottom:6px;}
+.open-geonix:hover{border-color:#CBD5E1;color:var(--t1);background:#F7FAFC;}
+.open-geonix svg{width:12px;height:12px;}
+
+/* Vessel switcher row */
+.vessel-row{display:flex;align-items:center;gap:8px;padding:8px 0;}
+.vessel-row-lbl{font-size:10px;font-weight:600;color:var(--tm);text-transform:uppercase;letter-spacing:.07em;margin-right:4px;}
+.vs-pill{display:inline-flex;align-items:center;gap:6px;height:26px;padding:0 12px;border-radius:999px;border:1px solid var(--bd);background:#F7FAFC;font-size:11.5px;font-weight:600;color:var(--t2);cursor:pointer;transition:all 130ms;}
+.vs-pill:hover{border-color:#CBD5E1;color:var(--t1);}
+.vs-pill.on{background:var(--brand);border-color:var(--brand);color:#fff;}
+.vs-dot{width:6px;height:6px;border-radius:50%;background:var(--amber);flex-shrink:0;}
+.vs-pill.on .vs-dot{background:rgba(255,255,255,.6);}
+.vs-pill-add{display:inline-flex;align-items:center;gap:4px;height:26px;padding:0 10px;border-radius:999px;border:1px dashed var(--bd);background:transparent;font-size:11px;font-weight:600;color:var(--tm);cursor:pointer;transition:all 130ms;}
+.vs-pill-add:hover{border-color:#CBD5E1;color:var(--t2);}
+
+/* ── 3 COLUMNS ── */
+.cols{flex:1;display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;padding:12px 16px;overflow:hidden;min-height:0;}
+
+/* ── COLUMN SHELL ── */
+.col{background:#fff;border-radius:var(--rx);border:1px solid var(--bd);display:flex;flex-direction:column;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.05);}
+
+.col-hd{padding:14px 16px 12px;border-bottom:1px solid var(--bdl);flex-shrink:0;}
+.col-hd-row{display:flex;align-items:center;justify-content:space-between;}
+.col-title{font-size:13px;font-weight:700;color:var(--t1);}
+.col-count{font-size:10.5px;font-weight:600;color:var(--tm);background:var(--bdl);border-radius:5px;padding:2px 8px;}
+.col-sub{font-size:11px;color:var(--tm);margin-top:3px;}
+
+/* ── STEPPER (col 1) ── */
+.stepper-wrap{flex:1;overflow-y:auto;padding:12px 14px;scrollbar-width:thin;scrollbar-color:var(--bd) transparent;}
+.stepper-wrap::-webkit-scrollbar{width:3px;}
+.stepper-wrap::-webkit-scrollbar-thumb{background:var(--bd);border-radius:99px;}
+
+.st{display:flex;gap:12px;align-items:flex-start;}
+.st-left{display:flex;flex-direction:column;align-items:center;flex-shrink:0;padding-top:3px;}
+.st-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;}
+.st-dot.ok{background:var(--green);}
+.st-dot.warn{background:var(--amber);}
+.st-dot.info{background:var(--brand);}
+.st-dot.grey{background:#CBD5E1;}
+.st-line{width:1.5px;background:var(--bdl);flex:1;min-height:20px;margin-top:4px;margin-bottom:4px;}
+.st-body{flex:1;min-width:0;padding-bottom:18px;}
+.st-label{font-size:10.5px;font-weight:700;color:var(--tm);text-transform:uppercase;letter-spacing:.06em;margin-bottom:3px;}
+.st-value{font-size:13.5px;font-weight:700;color:var(--t1);line-height:1.3;margin-bottom:3px;}
+.st-meta{font-size:11px;color:var(--tm);display:flex;align-items:center;gap:5px;flex-wrap:wrap;margin-bottom:7px;}
+.st-src{display:inline-flex;align-items:center;gap:3px;background:var(--brand-soft);color:var(--brand);border-radius:4px;padding:1px 6px;font-size:9.5px;font-weight:700;}
+.st-src svg{width:10px;height:10px;}
+.st-tag-ok{display:inline-flex;align-items:center;gap:3px;background:var(--gbg);color:var(--gt);border-radius:4px;padding:1px 6px;font-size:9.5px;font-weight:700;}
+.st-tag-warn{display:inline-flex;align-items:center;gap:3px;background:var(--abg);color:var(--at);border-radius:4px;padding:1px 6px;font-size:9.5px;font-weight:700;}
+.st-correct{display:inline-flex;align-items:center;gap:4px;height:24px;padding:0 10px;border-radius:6px;border:1px solid var(--bd);background:#fff;font-size:11px;font-weight:600;color:var(--t2);cursor:pointer;transition:all 120ms;}
+.st-correct:hover{border-color:#CBD5E1;color:var(--t1);background:#F7FAFC;}
+.st-correct.on{border-color:var(--brand);color:var(--brand);background:var(--brand-soft);}
+.st-correct svg{width:11px;height:11px;}
+
+/* sub-items (prev cargo groups) */
+.st-sub-list{display:flex;flex-direction:column;gap:5px;margin-bottom:7px;}
+.st-sub-item{display:flex;align-items:center;gap:7px;background:#F8FAFC;border:1px solid var(--bdl);border-radius:7px;padding:7px 10px;}
+.st-sub-dot{width:6px;height:6px;border-radius:50%;background:var(--brand);flex-shrink:0;}
+.st-sub-lbl{font-size:10px;color:var(--tm);font-weight:600;flex-shrink:0;}
+.st-sub-val{font-size:12.5px;font-weight:700;color:var(--t1);flex:1;}
+.st-sub-src{font-size:10px;color:var(--tm);}
+
+/* Correction expand panel */
+.corr-panel{max-height:0;overflow:hidden;transition:max-height 300ms ease;margin-top:0;}
+.corr-panel.open{max-height:380px;margin-top:8px;}
+.corr-inner{background:#EEF6FF;border:1px solid #BFDBFE;border-radius:9px;padding:13px;}
+.corr-ttl{font-size:11px;font-weight:700;color:#1D40AF;margin-bottom:10px;}
+.corr-lbl{font-size:10.5px;font-weight:600;color:var(--t2);margin-bottom:4px;}
+.corr-in{width:100%;border:1px solid #BFDBFE;border-radius:6px;background:#fff;font-size:12.5px;color:var(--t1);padding:7px 10px;outline:none;transition:border-color 150ms;display:block;margin-bottom:8px;}
+.corr-in:focus{border-color:var(--brand);}
+textarea.corr-in{resize:none;height:48px;}
+select.corr-in{height:34px;}
+.corr-btns{display:flex;gap:6px;}
+.corr-run{flex:1;height:31px;border-radius:7px;border:none;background:var(--brand);color:#fff;font-size:11.5px;font-weight:600;cursor:pointer;transition:background 120ms;}
+.corr-run:hover{background:var(--brand-h);}
+.corr-cancel{height:31px;padding:0 12px;border-radius:7px;border:1px solid var(--bd);background:#fff;font-size:11.5px;font-weight:600;color:var(--t2);cursor:pointer;}
+.corr-cancel:hover{background:#F7FAFC;}
+
+/* ── CHAT ── */
+.col-chat{flex-shrink:0;border-top:1px solid var(--bdl);padding:10px 12px;background:#FAFBFD;}
+.chat-msgs{display:flex;flex-direction:column;gap:6px;max-height:100px;overflow-y:auto;margin-bottom:8px;scrollbar-width:thin;}
+.chat-bubble{padding:7px 11px;border-radius:8px;font-size:12px;line-height:1.5;max-width:90%;}
+.chat-bubble.user{background:var(--brand);color:#fff;align-self:flex-end;border-radius:8px 8px 2px 8px;}
+.chat-bubble.agent{background:var(--bdl);color:var(--t2);align-self:flex-start;border-radius:8px 8px 8px 2px;}
+.chat-input-row{display:flex;gap:7px;align-items:center;}
+.chat-input{flex:1;border:1px solid var(--bd);border-radius:8px;background:#fff;padding:7px 12px;font-size:12.5px;color:var(--t1);outline:none;transition:border-color 150ms;}
+.chat-input:focus{border-color:var(--brand);}
+.chat-input::placeholder{color:var(--tm);}
+.chat-send{width:32px;height:32px;border-radius:8px;border:none;background:var(--brand);color:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;transition:background 120ms;}
+.chat-send:hover{background:var(--brand-h);}
+.chat-send svg{width:13px;height:13px;}
+
+/* ── STEP CARDS (col 2) ── */
+.steps-wrap{flex:1;overflow-y:auto;padding:12px 14px;scrollbar-width:thin;scrollbar-color:var(--bd) transparent;}
+.steps-wrap::-webkit-scrollbar{width:3px;}
+.steps-wrap::-webkit-scrollbar-thumb{background:var(--bd);border-radius:99px;}
+
+.sw{display:flex;gap:11px;align-items:flex-start;}
+.sw-left{display:flex;flex-direction:column;align-items:center;flex-shrink:0;}
+.sw-num{width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0;background:var(--brand);color:#fff;}
+.sw-num.done{background:var(--green);}
+.sw-line{width:1.5px;background:var(--bdl);flex:1;min-height:14px;margin:4px auto;}
+.sw-card{flex:1;background:#F8FAFC;border:1px solid var(--bd);border-radius:var(--rl);padding:12px 13px;margin-bottom:10px;min-width:0;}
+.sw-top{display:flex;align-items:flex-start;justify-content:space-between;gap:6px;margin-bottom:8px;}
+.sw-title-row{display:flex;align-items:center;gap:7px;flex-wrap:wrap;}
+.sw-title{font-size:13px;font-weight:700;color:var(--t1);}
+.sw-badge{display:inline-flex;align-items:center;font-size:9.5px;font-weight:700;border-radius:5px;padding:2px 7px;}
+.sw-badge.g{background:var(--gbg);color:var(--gt);}
+.sw-badge.b{background:#DBEAFE;color:#1D40AF;}
+.sw-badge.gr{background:var(--bdl);color:var(--t2);}
+.sw-badge.am{background:var(--abg);color:var(--at);}
+.sw-txt{font-size:12px;color:var(--t2);line-height:1.65;margin-bottom:7px;}
+.sw-txt strong{color:var(--t1);font-weight:700;}
+.sw-btn{display:inline-flex;align-items:center;gap:4px;height:26px;padding:0 10px;border-radius:6px;border:1px solid var(--bd);background:#fff;font-size:11px;font-weight:600;color:var(--t2);cursor:pointer;transition:all 120ms;flex-shrink:0;white-space:nowrap;}
+.sw-btn:hover{border-color:#CBD5E1;color:var(--t1);background:#F7FAFC;}
+.sw-btn.on{border-color:var(--brand);color:var(--brand);background:var(--brand-soft);}
+.sw-btn svg{width:10px;height:10px;}
+
+.proc-card{background:#fff;border:1px solid var(--bd);border-radius:8px;padding:10px 11px;margin-bottom:5px;}
+.proc-card:last-of-type{margin-bottom:0;}
+.proc-hdr{display:flex;align-items:center;gap:7px;flex-wrap:wrap;margin-bottom:6px;}
+.proc-title{font-size:12.5px;font-weight:700;color:var(--t1);}
+.proc-badge{display:inline-flex;font-size:9.5px;font-weight:700;border-radius:4px;padding:2px 7px;}
+.proc-badge.am{background:var(--abg);color:var(--at);}
+.proc-badge.g{background:var(--gbg);color:var(--gt);}
+.proc-badge.red{background:var(--rbg);color:var(--rt);}
+.proc-list{margin:0;padding-left:14px;}
+.proc-list li{font-size:11.5px;color:var(--t2);line-height:1.65;margin-bottom:2px;}
+.proc-list li strong{color:var(--t1);}
+.sw-attr{font-size:10px;color:var(--tm);margin-top:9px;padding-top:7px;border-top:1px solid var(--bdl);}
+
+/* ── OUTPUT COL (col 3) ── */
+.out-wrap{flex:1;overflow-y:auto;padding:10px 12px;display:flex;flex-direction:column;gap:9px;scrollbar-width:thin;scrollbar-color:var(--bd) transparent;}
+.out-wrap::-webkit-scrollbar{width:3px;}
+.out-wrap::-webkit-scrollbar-thumb{background:var(--bd);border-radius:99px;}
+
+.out-card{background:#F8FAFC;border:1px solid var(--bd);border-radius:var(--rl);}
+
+/* Email preview */
+.ep-hd{display:flex;align-items:center;gap:9px;padding:11px 13px;border-bottom:1px solid var(--bdl);}
+.ep-icon{width:30px;height:30px;background:var(--brand-soft);border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.ep-icon svg{width:13px;height:13px;color:var(--brand);}
+.ep-ttl{font-size:12.5px;font-weight:700;color:var(--t1);flex:1;}
+.ep-ai{display:inline-flex;align-items:center;gap:3px;background:var(--brand-soft);color:var(--brand);font-size:9px;font-weight:700;border-radius:4px;padding:2px 6px;}
+.ep-ai svg{width:9px;height:9px;}
+
+.ep-fields{border-bottom:1px solid var(--bdl);}
+.ep-field{display:flex;align-items:center;border-bottom:1px solid var(--bdl);}
+.ep-field:last-child{border-bottom:none;}
+.ep-key{font-size:9.5px;font-weight:700;color:var(--tm);min-width:50px;padding:6px 10px;text-transform:uppercase;letter-spacing:.04em;flex-shrink:0;}
+.ep-inp{flex:1;border:none;outline:none;background:transparent;font-family:var(--f);font-size:12px;color:var(--t1);padding:6px 10px 6px 0;}
+.ep-inp:focus{background:#F8FAFF;}
+
+.ep-body-wrap{padding:10px 13px 8px;}
+.ep-body{font-size:11.5px;color:var(--t2);line-height:1.75;white-space:pre-wrap;outline:none;caret-color:var(--brand);max-height:140px;overflow-y:auto;}
+.ep-body strong{font-weight:700;color:var(--t1);}
+.ep-foot{display:flex;align-items:center;justify-content:space-between;padding:5px 13px;border-top:1px solid var(--bdl);background:#FAFBFD;border-radius:0 0 var(--rl) var(--rl);}
+.ep-wc{font-size:10.5px;color:var(--tm);font-style:italic;}
+.ep-ed{display:none;font-size:9.5px;font-weight:700;color:var(--brand);background:var(--brand-soft);border-radius:999px;padding:2px 7px;}
+.ep-ed.show{display:inline-flex;}
+
+/* Context write card */
+.ctx-card{background:#F8FAFC;border:1px solid var(--bd);border-radius:var(--rl);padding:13px;}
+.ctx-icon-row{display:flex;align-items:flex-start;gap:10px;margin-bottom:9px;}
+.ctx-icon{width:30px;height:30px;border-radius:8px;background:#F0FDF4;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.ctx-icon svg{width:13px;height:13px;color:#16A34A;}
+.ctx-title{font-size:12.5px;font-weight:700;color:var(--t1);margin-bottom:3px;}
+.ctx-desc{font-size:11px;color:var(--tm);line-height:1.55;}
+.ctx-rev-btn{display:inline-flex;align-items:center;gap:5px;height:28px;padding:0 12px;border-radius:7px;border:1px solid var(--bd);background:#fff;font-size:11.5px;font-weight:600;color:var(--t2);cursor:pointer;transition:all 120ms;}
+.ctx-rev-btn:hover{border-color:#CBD5E1;color:var(--t1);}
+.ctx-rev-btn svg{width:11px;height:11px;}
+
+/* ── FOOTER ── */
+.col-foot{flex-shrink:0;border-top:1px solid var(--bdl);padding:10px 12px;background:#fff;display:flex;flex-direction:column;gap:7px;}
+.btn-approve{width:100%;height:40px;border-radius:9px;border:none;background:var(--brand);color:#fff;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center;gap:7px;cursor:pointer;transition:background 150ms,transform 100ms;}
+.btn-approve:hover{background:var(--brand-h);transform:translateY(-1px);}
+.btn-approve:active{transform:translateY(0);}
+.btn-approve svg{width:14px;height:14px;}
+.btn-row{display:flex;gap:6px;}
+.btn-2{flex:1;height:34px;border-radius:8px;border:1px solid var(--bd);background:#fff;font-size:12px;font-weight:600;color:var(--t2);cursor:pointer;transition:all 120ms;}
+.btn-2:hover{background:#F7FAFC;border-color:#CBD5E1;color:var(--t1);}
+.btn-danger{flex:1;height:34px;border-radius:8px;border:1px solid #FECACA;background:#fff;font-size:12px;font-weight:600;color:var(--red);cursor:pointer;transition:all 120ms;}
+.btn-danger:hover{background:var(--rbg);}
+.foot-from{font-size:9.5px;color:var(--tm);text-align:center;}
+
+/* ── CP&VO SPECIFIC ── */
+.cpvo-clause{background:#F8FAFC;border:1px solid var(--bd);border-radius:8px;padding:10px 12px;margin-bottom:6px;}
+.cpvo-clause:last-child{margin-bottom:0;}
+.cpvo-clause-hdr{display:flex;align-items:center;gap:7px;margin-bottom:5px;}
+.cpvo-clause-num{font-size:10px;font-weight:700;color:var(--tm);}
+.cpvo-clause-title{font-size:12.5px;font-weight:700;color:var(--t1);flex:1;}
+.cpvo-clause-flag{display:inline-flex;align-items:center;gap:3px;font-size:9.5px;font-weight:700;border-radius:4px;padding:2px 7px;}
+.cpvo-clause-flag.ok{background:var(--gbg);color:var(--gt);}
+.cpvo-clause-flag.warn{background:var(--abg);color:var(--at);}
+.cpvo-clause-flag.red{background:var(--rbg);color:var(--rt);}
+.cpvo-clause-body{font-size:11.5px;color:var(--t2);line-height:1.6;}
+
+/* ── DET TABS ── */
+.det-tabs{display:flex;gap:2px;margin-top:10px;}
+.det-tab-btn{height:27px;padding:0 12px;border-radius:7px;border:1px solid transparent;font-size:11.5px;font-weight:600;color:var(--tm);cursor:pointer;transition:all 130ms;background:transparent;}
+.det-tab-btn:hover{background:#F7FAFC;color:var(--t2);}
+.det-tab-btn.on{background:var(--brand-soft);color:var(--brand);border-color:#BFDBFE;}
+
+/* ── INLINE EMAIL PREVIEW ── */
+.email-preview{background:#fff;border:1px solid var(--bd);border-radius:8px;margin-top:9px;overflow:hidden;font-size:11.5px;}
+.email-preview-meta{border-bottom:1px solid var(--bdl);padding:7px 10px;display:flex;flex-direction:column;gap:3px;}
+.email-meta-row{display:flex;gap:6px;align-items:baseline;}
+.email-meta-key{font-size:10px;font-weight:700;color:var(--tm);text-transform:uppercase;letter-spacing:.04em;min-width:44px;flex-shrink:0;}
+.email-meta-val{font-size:11.5px;color:var(--t1);}
+.email-preview-body{padding:9px 10px;font-size:11.5px;color:var(--t2);line-height:1.7;white-space:pre-wrap;max-height:130px;overflow-y:auto;scrollbar-width:thin;}
+
+/* ── TOAST ── */
+.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%) translateY(16px);background:var(--t1);color:#fff;padding:10px 20px;border-radius:9px;font-size:13px;font-weight:600;z-index:9999;opacity:0;transition:all 250ms ease;pointer-events:none;display:flex;align-items:center;gap:7px;box-shadow:0 8px 24px rgba(0,0,0,.18);}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+
+/* view switching */
+.view{display:none;}.view.on{display:flex;flex-direction:column;height:100%;}
+.vessel-content{display:none;}.vessel-content.on{display:contents;}
+
+/* cp-vo fields table */
+.cpvo-field-table{width:100%;border-collapse:collapse;font-size:12px;}
+.cpvo-field-table tr{border-bottom:1px solid var(--bdl);}
+.cpvo-field-table tr:last-child{border-bottom:none;}
+.cpvo-field-table td{padding:7px 0;}
+.cpvo-field-table .fd-key{color:var(--tm);font-weight:600;font-size:11px;width:45%;padding-right:10px;}
+.cpvo-field-table .fd-val{color:var(--t1);font-weight:600;}
+.cpvo-field-table .fd-conf{text-align:right;}
+</style>
+</head>
+<body>
+<div class="shell">
+
+<!-- NAV -->
+<nav class="nav">
+  <button class="nav-back" onclick="goBack()" title="Back to Vessel 360">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
+  </button>
+  <span class="nav-lbl">Back</span>
+  <div class="nav-div"></div>
+  <button class="nav-ico on" title="Tank Cleaning"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a10 10 0 0 1 10 10c0 5.52-4.48 10-10 10S2 17.52 2 12"/><path d="M12 6v6l4 2"/></svg></button>
+  <button class="nav-ico" title="Voyages"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 17l4-8 4 3 4-8 4 8"/><path d="M3 17h18"/></svg></button>
+  <button class="nav-ico" title="Messages"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22 6 12 13 2 6"/></svg></button>
+  <button class="nav-ico" title="Documents"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></button>
+</nav>
+
+<!-- MAIN -->
+<div class="main">
+
+  <!-- TOP BAR -->
+  <header class="topbar">
+    <!-- Agent tabs -->
+    <div class="agent-row">
+      <button class="agent-tab on" id="tab-tc" onclick="switchAgent('tc')">
+        <div class="at-icon" style="background:#EEF6FF;">🧹</div>
+        <div>
+          <div class="at-name">Tank Cleaning Agent</div>
+          <div class="at-ctx">2 vessels active · determination ready</div>
+        </div>
+        <span class="at-badge">2</span>
+      </button>
+      <button class="agent-tab" id="tab-cpvo" onclick="switchAgent('cpvo')">
+        <div class="at-icon" style="background:#EDE9FE;">📄</div>
+        <div>
+          <div class="at-name">CP &amp; VO Agent</div>
+          <div class="at-ctx">STI CLAPHAM · instructions ready</div>
+        </div>
+        <span class="at-badge amber">1</span>
+      </button>
+      <div class="agent-tab-spacer"></div>
+      <button class="open-geonix" onclick="window.location='geonix.html'">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+        Open in Geonix
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+      </button>
+    </div>
+
+    <!-- Vessel switcher (TC only) -->
+    <div class="vessel-row" id="tcVesselRow">
+      <span class="vessel-row-lbl">Vessel</span>
+      <button class="vs-pill on" id="vs-clapham" onclick="switchVessel('clapham')">
+        <span class="vs-dot"></span>STI CLAPHAM
+      </button>
+      <button class="vs-pill" id="vs-mimosa" onclick="switchVessel('mimosa')">
+        <span class="vs-dot"></span>WONDER MIMOSA
+      </button>
+      <button class="vs-pill-add">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="11" height="11"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        Add vessel
+      </button>
+    </div>
+  </header>
+
+  <!-- ═══════════════════════════════════════════
+       TC AGENT VIEW
+  ═══════════════════════════════════════════ -->
+  <div class="view on" id="view-tc" style="flex:1;overflow:hidden;">
+    <div class="cols" style="height:100%;">
+
+      <!-- ── COL 1: INPUTS ── -->
+      <div class="col" style="display:flex;flex-direction:column;">
+        <div class="col-hd">
+          <div class="col-hd-row">
+            <span class="col-title">Sources &amp; Inputs</span>
+            <!-- vessel-specific count shown by JS -->
+            <span class="col-count" id="tc-src-count">5 inputs</span>
+          </div>
+          <div class="col-sub">What the agent received and parsed</div>
+        </div>
+
+        <!-- STI CLAPHAM inputs -->
+        <div class="vessel-content on" id="vc-clapham-inputs">
+        <div class="stepper-wrap" style="flex:1;">
+
+          <!-- 1: Email -->
+          <div class="st">
+            <div class="st-left"><div class="st-dot info"></div><div class="st-line"></div></div>
+            <div class="st-body">
+              <div class="st-label">Email received</div>
+              <div class="st-value">Voyage order — STI CLAPHAM</div>
+              <div class="st-meta">
+                <span class="st-src"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22 6 12 13 2 6"/></svg>Email</span>
+                voyage_order_20260514.eml · 18 May 09:42 UTC
+              </div>
+              <button class="st-correct" onclick="toggleCorr('tc-e1')" id="tcbtn-e1">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                Correct
+              </button>
+              <div class="corr-panel" id="tc-e1">
+                <div class="corr-inner">
+                  <div class="corr-ttl">Correct source email</div>
+                  <div class="corr-lbl">Upload corrected email or paste content</div>
+                  <textarea class="corr-in" placeholder="Paste corrected voyage order content…"></textarea>
+                  <div class="corr-btns"><button class="corr-run">Re-run with correction</button><button class="corr-cancel" onclick="toggleCorr('tc-e1')">Cancel</button></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 2: Vessel + Voyage -->
+          <div class="st">
+            <div class="st-left"><div class="st-dot ok"></div><div class="st-line"></div></div>
+            <div class="st-body">
+              <div class="st-label">Vessel &amp; voyage resolved</div>
+              <div class="st-value">STI CLAPHAM · Voyage 20260514</div>
+              <div class="st-meta"><span class="st-tag-ok">✓ Certain</span> parsed from email header</div>
+              <button class="st-correct" onclick="toggleCorr('tc-v1')" id="tcbtn-v1">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>Correct
+              </button>
+              <div class="corr-panel" id="tc-v1">
+                <div class="corr-inner">
+                  <div class="corr-ttl">Correct vessel / voyage</div>
+                  <div class="corr-lbl">Vessel name</div>
+                  <input class="corr-in" value="STI CLAPHAM"/>
+                  <div class="corr-lbl">Voyage reference</div>
+                  <input class="corr-in" value="20260514"/>
+                  <div class="corr-btns"><button class="corr-run">Re-run</button><button class="corr-cancel" onclick="toggleCorr('tc-v1')">Cancel</button></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 3: Next cargo -->
+          <div class="st">
+            <div class="st-left"><div class="st-dot ok"></div><div class="st-line"></div></div>
+            <div class="st-body">
+              <div class="st-label">Next cargo resolved</div>
+              <div class="st-value">LVN — Light Virgin Naphtha</div>
+              <div class="st-meta"><span class="st-tag-ok">✓ Certain</span> abbreviation matched in cargo dictionary</div>
+              <button class="st-correct" onclick="toggleCorr('tc-nc')" id="tcbtn-nc">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>Correct
+              </button>
+              <div class="corr-panel" id="tc-nc">
+                <div class="corr-inner">
+                  <div class="corr-ttl">Correct next cargo</div>
+                  <div class="corr-lbl">Cargo name</div>
+                  <input class="corr-in" value="LVN — Light Virgin Naphtha"/>
+                  <div class="corr-lbl">Reason</div>
+                  <textarea class="corr-in" placeholder="e.g. Cargo abbreviation resolved incorrectly…"></textarea>
+                  <div class="corr-btns"><button class="corr-run">Re-run</button><button class="corr-cancel" onclick="toggleCorr('tc-nc')">Cancel</button></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 4: Previous cargo -->
+          <div class="st">
+            <div class="st-left"><div class="st-dot ok"></div></div>
+            <div class="st-body">
+              <div class="st-label">Previous cargo retrieved</div>
+              <div class="st-meta" style="margin-bottom:6px;"><span class="st-src"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>Snowflake</span> VYG-2024-081 · discharged 14 Apr <span class="st-tag-ok">✓ Certain</span></div>
+              <div class="st-sub-list">
+                <div class="st-sub-item"><span class="st-sub-dot"></span><span class="st-sub-lbl">Group 1</span><span class="st-sub-val">Gasoil 500 / 2000ppm · UnDyed</span></div>
+                <div class="st-sub-item"><span class="st-sub-dot"></span><span class="st-sub-lbl">Group 2</span><span class="st-sub-val">Gasoline 10 / 50ppm</span></div>
+                <div class="st-sub-item"><span class="st-sub-dot"></span><span class="st-sub-lbl">Group 3</span><span class="st-sub-val">Naphtha</span></div>
+              </div>
+              <button class="st-correct" style="margin-top:7px;" onclick="toggleCorr('tc-pc')" id="tcbtn-pc">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>Correct previous cargo
+              </button>
+              <div class="corr-panel" id="tc-pc">
+                <div class="corr-inner">
+                  <div class="corr-ttl">Correct previous cargo</div>
+                  <div class="corr-lbl">Select correct cargo for any group</div>
+                  <select class="corr-in"><option>Gasoil 500ppm / 2000ppm</option><option>ULSD 10ppm</option><option>Jet A-1</option><option>VLSFO</option><option>Naphtha</option><option>Other…</option></select>
+                  <div class="corr-lbl">Reason</div>
+                  <textarea class="corr-in" placeholder="e.g. Wrong voyage reference retrieved…"></textarea>
+                  <div class="corr-btns"><button class="corr-run">Re-run</button><button class="corr-cancel" onclick="toggleCorr('tc-pc')">Cancel</button></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div><!-- /stepper-wrap -->
+        </div><!-- /vc-clapham-inputs -->
+
+        <!-- WONDER MIMOSA inputs -->
+        <div class="vessel-content" id="vc-mimosa-inputs">
+        <div class="stepper-wrap" style="flex:1;">
+          <div class="st">
+            <div class="st-left"><div class="st-dot info"></div><div class="st-line"></div></div>
+            <div class="st-body">
+              <div class="st-label">Email received</div>
+              <div class="st-value">Voyage order — WONDER MIMOSA</div>
+              <div class="st-meta"><span class="st-src"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22 6 12 13 2 6"/></svg>Email</span>voyage_order_VYG2025042.eml · 17 May 16:11 UTC</div>
+              <button class="st-correct" onclick="toggleCorr('mm-e1')" id="tcbtn-mm-e1"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>Correct</button>
+              <div class="corr-panel" id="mm-e1"><div class="corr-inner"><div class="corr-ttl">Correct source email</div><textarea class="corr-in" placeholder="Paste corrected voyage order…"></textarea><div class="corr-btns"><button class="corr-run">Re-run</button><button class="corr-cancel" onclick="toggleCorr('mm-e1')">Cancel</button></div></div></div>
+            </div>
+          </div>
+          <div class="st">
+            <div class="st-left"><div class="st-dot ok"></div><div class="st-line"></div></div>
+            <div class="st-body">
+              <div class="st-label">Vessel &amp; voyage resolved</div>
+              <div class="st-value">WONDER MIMOSA · Voyage VYG-2025-042</div>
+              <div class="st-meta"><span class="st-tag-ok">✓ Certain</span> from: ops@mercuria.com</div>
+            </div>
+          </div>
+          <div class="st">
+            <div class="st-left"><div class="st-dot ok"></div><div class="st-line"></div></div>
+            <div class="st-body">
+              <div class="st-label">Next cargo resolved</div>
+              <div class="st-value">Gasoil 10ppm</div>
+              <div class="st-meta"><span class="st-tag-ok">✓ Certain</span></div>
+              <button class="st-correct" onclick="toggleCorr('mm-nc')" id="tcbtn-mm-nc"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>Correct</button>
+              <div class="corr-panel" id="mm-nc"><div class="corr-inner"><div class="corr-ttl">Correct next cargo</div><input class="corr-in" value="Gasoil 10ppm"/><div class="corr-btns"><button class="corr-run">Re-run</button><button class="corr-cancel" onclick="toggleCorr('mm-nc')">Cancel</button></div></div></div>
+            </div>
+          </div>
+          <div class="st">
+            <div class="st-left"><div class="st-dot ok"></div></div>
+            <div class="st-body">
+              <div class="st-label">Previous cargo retrieved</div>
+              <div class="st-meta" style="margin-bottom:6px;"><span class="st-src"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>Snowflake</span> VYG-2025-041 · discharged 09 May <span class="st-tag-ok">✓ Certain</span></div>
+              <div class="st-sub-list">
+                <div class="st-sub-item"><span class="st-sub-dot" style="background:#F97316;"></span><span class="st-sub-lbl">Group 1</span><span class="st-sub-val">VLSFO</span></div>
+                <div class="st-sub-item"><span class="st-sub-dot" style="background:#F97316;"></span><span class="st-sub-lbl">Group 2</span><span class="st-sub-val">Fuel Oil 180 CST</span></div>
+              </div>
+              <button class="st-correct" style="margin-top:7px;" onclick="toggleCorr('mm-pc')" id="tcbtn-mm-pc"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>Correct previous cargo</button>
+              <div class="corr-panel" id="mm-pc"><div class="corr-inner"><div class="corr-ttl">Correct previous cargo</div><select class="corr-in"><option>VLSFO</option><option>Gasoil 500ppm</option><option>Fuel Oil 380 CST</option><option>Other…</option></select><textarea class="corr-in" placeholder="Reason…"></textarea><div class="corr-btns"><button class="corr-run">Re-run</button><button class="corr-cancel" onclick="toggleCorr('mm-pc')">Cancel</button></div></div></div>
+            </div>
+          </div>
+        </div>
+        </div><!-- /vc-mimosa-inputs -->
+
+        <!-- CHAT -->
+        <div class="col-chat">
+          <div class="chat-msgs" id="chatMsgs"></div>
+          <div class="chat-input-row">
+            <input class="chat-input" id="chatInput" placeholder="Ask about these inputs…" onkeydown="chatKey(event)"/>
+            <button class="chat-send" onclick="sendChat()">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+            </button>
+          </div>
+        </div>
+      </div><!-- /col inputs -->
+
+      <!-- ── COL 2: REASONING ── -->
+      <div class="col" style="display:flex;flex-direction:column;">
+        <div class="col-hd">
+          <div class="col-hd-row">
+            <span class="col-title">Determination</span>
+            <span class="col-count" id="tc-det-count">4 steps</span>
+          </div>
+          <div class="col-sub">How the agent reasoned this out</div>
+          <div class="det-tabs">
+            <button class="det-tab-btn on" id="det-tab-sources" onclick="switchDetTab('sources')">Sources</button>
+            <button class="det-tab-btn" id="det-tab-procedure" onclick="switchDetTab('procedure')">Procedure</button>
+          </div>
+        </div>
+
+        <!-- STI CLAPHAM reasoning -->
+        <div class="vessel-content on" id="vc-clapham-det">
+        <div class="steps-wrap" style="flex:1;">
+
+          <!-- Step 1: Sources tab only -->
+          <div class="sw det-sources">
+            <div class="sw-card" style="flex:1;">
+              <div class="sw-top">
+                <div class="sw-title-row"><span class="sw-title">Email parsed</span><span class="sw-badge g">✓ No issues</span></div>
+              </div>
+              <div class="sw-txt">Vessel <strong>STI CLAPHAM</strong> · Voyage <strong>20260514</strong></div>
+              <div class="email-preview">
+                <div class="email-preview-meta">
+                  <div class="email-meta-row"><span class="email-meta-key">From</span><span class="email-meta-val">ops@moeve-trading.com</span></div>
+                  <div class="email-meta-row"><span class="email-meta-key">To</span><span class="email-meta-val">operations@geoserve.com</span></div>
+                  <div class="email-meta-row"><span class="email-meta-key">Subject</span><span class="email-meta-val">Voyage Order — STI CLAPHAM — Voyage 20260514</span></div>
+                  <div class="email-meta-row"><span class="email-meta-key">Date</span><span class="email-meta-val">18 May 2026, 09:42 UTC</span></div>
+                </div>
+                <div class="email-preview-body">Dear GeoServe Operations,
+
+Please find the voyage order for <strong>STI CLAPHAM</strong>, Voyage <strong>20260514</strong>.
+
+Next cargo: <strong>LVN (Light Virgin Naphtha)</strong>
+Charterer: MOEVE TRADING S.A.U.
+Load port: ALGECIRAS, SPAIN
+Discharge port: ROTTERDAM
+Laycan: 18–19 May 2026
+
+Please arrange tank cleaning instructions accordingly.
+
+Best regards,
+MOEVE Trading Operations</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Steps 2, 3, 4: Procedure tab only -->
+          <div class="det-procedure" style="display:none;">
+
+          <div class="sw">
+            <div class="sw-left"><div class="sw-num">2</div><div class="sw-line"></div></div>
+            <div class="sw-card">
+              <div class="sw-top">
+                <div class="sw-title-row"><span class="sw-title">Previous cargo retrieved</span><span class="sw-badge gr">Sorted by date</span></div>
+                <button class="sw-btn" onclick="toggleCorr('tc-s2')" id="tcbtn-s2"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>Correct</button>
+              </div>
+              <div class="sw-txt">3 tank groups from Snowflake · VYG-2024-081 · 14 Apr<br>Gasoil 500/2000ppm · Gasoline 10/50ppm · Naphtha</div>
+              <div class="corr-panel" id="tc-s2"><div class="corr-inner"><div class="corr-ttl">Correct previous cargo</div><select class="corr-in"><option>Gasoil 500ppm</option><option>ULSD 10ppm</option><option>Jet A-1</option><option>VLSFO</option></select><textarea class="corr-in" placeholder="Reason…"></textarea><div class="corr-btns"><button class="corr-run">Re-run</button><button class="corr-cancel" onclick="toggleCorr('tc-s2')">Cancel</button></div></div></div>
+            </div>
+          </div>
+
+          <div class="sw">
+            <div class="sw-left"><div class="sw-num done">3</div><div class="sw-line"></div></div>
+            <div class="sw-card">
+              <div class="sw-top">
+                <div class="sw-title-row"><span class="sw-title">Guide lookup</span><span class="sw-badge g">Shell Guide v2.4</span></div>
+                <button class="sw-btn" onclick="toggleCorr('tc-s3')" id="tcbtn-s3"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>Correct</button>
+              </div>
+              <div class="sw-txt"><strong>Gasoil/2000ppm → LVN</strong> — Well Drained<br><strong>Gasoline 10/50ppm → LVN</strong> — Well Drained<br><strong>Naphtha → LVN</strong> — Same Grade</div>
+              <div class="corr-panel" id="tc-s3"><div class="corr-inner"><div class="corr-ttl">Correct guide</div><select class="corr-in"><option>Shell Tanker Cleaning Guide v2.4</option><option>BP Shipping Guide</option><option>Chevron Guide</option><option>Custom</option></select><div class="corr-btns"><button class="corr-run">Re-run</button><button class="corr-cancel" onclick="toggleCorr('tc-s3')">Cancel</button></div></div></div>
+            </div>
+          </div>
+
+          <div class="sw">
+            <div class="sw-left"><div class="sw-num done">4</div></div>
+            <div class="sw-card">
+              <div class="sw-top">
+                <div class="sw-title-row"><span class="sw-title">Procedure determined</span><span class="sw-badge g">✓ 2 procedures</span></div>
+              </div>
+              <div class="proc-card"><div class="proc-hdr"><span class="proc-title">Gasoil / Gasoline → LVN</span><span class="proc-badge am">Well Drained</span></div><ol class="proc-list"><li>Tank, pump columns and pipelines <strong>well drained</strong> — ROB ≤ 0.05%.</li><li>Any ROB to remain only in the <strong>pump well</strong>.</li><li>Pump columns, pipelines and drops cleared of all free-standing product.</li></ol></div>
+              <div class="proc-card"><div class="proc-hdr"><span class="proc-title">Naphtha → LVN</span><span class="proc-badge g">Same Grade</span></div><ol class="proc-list"><li><strong>No cleaning required</strong> — same product category.</li><li>Ensure tanks are well drained and pump columns cleared.</li></ol></div>
+              <div class="sw-attr">Tank Cleaning Agent · Shell Guide Ed.11 · 18 May 2026 14:32 UTC</div>
+            </div>
+          </div>
+
+          </div><!-- /det-procedure clapham -->
+
+        </div>
+        </div><!-- /vc-clapham-det -->
+
+        <!-- WONDER MIMOSA reasoning -->
+        <div class="vessel-content" id="vc-mimosa-det">
+        <div class="steps-wrap" style="flex:1;">
+          <!-- Step 1: Sources tab only -->
+          <div class="sw det-sources">
+            <div class="sw-card" style="flex:1;">
+              <div class="sw-top">
+                <div class="sw-title-row"><span class="sw-title">Email parsed</span><span class="sw-badge g">✓ No issues</span></div>
+              </div>
+              <div class="sw-txt">Vessel <strong>WONDER MIMOSA</strong> · Voyage <strong>VYG-2025-042</strong></div>
+              <div class="email-preview">
+                <div class="email-preview-meta">
+                  <div class="email-meta-row"><span class="email-meta-key">From</span><span class="email-meta-val">ops@mercuria.com</span></div>
+                  <div class="email-meta-row"><span class="email-meta-key">To</span><span class="email-meta-val">operations@geoserve.com</span></div>
+                  <div class="email-meta-row"><span class="email-meta-key">Subject</span><span class="email-meta-val">Voyage Order — WONDER MIMOSA — Voyage VYG-2025-042</span></div>
+                  <div class="email-meta-row"><span class="email-meta-key">Date</span><span class="email-meta-val">17 May 2026, 16:11 UTC</span></div>
+                </div>
+                <div class="email-preview-body">Dear GeoServe Operations,
+
+Please find the voyage order for <strong>WONDER MIMOSA</strong>, Voyage <strong>VYG-2025-042</strong>.
+
+Next cargo: <strong>Gasoil 10ppm</strong>
+Load port: SKIKDA, ALGERIA
+Discharge port: AMSTERDAM
+Laycan: 20–21 May 2026
+
+Kindly arrange tank cleaning instructions.
+
+Best regards,
+Mercuria Chartering</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Steps 2, 3, 4: Procedure tab only -->
+          <div class="det-procedure" style="display:none;">
+          <div class="sw"><div class="sw-left"><div class="sw-num">2</div><div class="sw-line"></div></div><div class="sw-card"><div class="sw-top"><div class="sw-title-row"><span class="sw-title">Previous cargo retrieved</span><span class="sw-badge gr">Sorted by date</span></div></div><div class="sw-txt">2 tank groups from Snowflake · VYG-2025-041 · 09 May<br>VLSFO · Fuel Oil 180 CST</div></div></div>
+          <div class="sw"><div class="sw-left"><div class="sw-num done">3</div><div class="sw-line"></div></div><div class="sw-card"><div class="sw-top"><div class="sw-title-row"><span class="sw-title">Guide lookup</span><span class="sw-badge g">Shell Guide v2.4</span></div></div><div class="sw-txt"><strong>VLSFO → Gasoil 10ppm</strong> — Hot Wash required<br><strong>Fuel Oil 180 CST → Gasoil 10ppm</strong> — Hot Wash required</div></div></div>
+          <div class="sw"><div class="sw-left"><div class="sw-num done">4</div></div><div class="sw-card"><div class="sw-top"><div class="sw-title-row"><span class="sw-title">Procedure determined</span><span class="sw-badge am">⚠ Hot Wash</span></div></div><div class="proc-card"><div class="proc-hdr"><span class="proc-title">VLSFO / FO 180 → Gasoil 10ppm</span><span class="proc-badge red">Hot Wash</span></div><ol class="proc-list"><li><strong>Hot wash required</strong> — prior cargo is residual fuel.</li><li>Minimum 2 cycles at 60°C wash water temperature.</li><li>Strip and drain fully before loading.</li></ol></div><div class="sw-attr">Tank Cleaning Agent · Shell Guide Ed.11 · 17 May 2026 16:44 UTC</div></div></div>
+          </div><!-- /det-procedure mimosa -->
+        </div>
+        </div><!-- /vc-mimosa-det -->
+
+      </div><!-- /col reasoning -->
+
+      <!-- ── COL 3: OUTPUT ── -->
+      <div class="col" style="display:flex;flex-direction:column;">
+        <div class="col-hd">
+          <div class="col-hd-row">
+            <span class="col-title">Output &amp; Actions</span>
+            <span class="col-count" id="tc-out-count">2 pending</span>
+          </div>
+          <div class="col-sub">Review and approve to send</div>
+        </div>
+
+        <!-- STI CLAPHAM output -->
+        <div class="vessel-content on" id="vc-clapham-out" style="display:flex;flex-direction:column;flex:1;min-height:0;">
+        <div class="out-wrap" style="flex:1;">
+          <div class="out-card">
+            <div class="ep-hd">
+              <div class="ep-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22 6 12 13 2 6"/></svg></div>
+              <span class="ep-ttl">Draft Email</span>
+              <span class="ep-ai"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>AI Generated</span>
+            </div>
+            <div class="ep-fields">
+              <div class="ep-field"><span class="ep-key">To</span><input class="ep-inp" value="master@sticlapham.fleet.com"/></div>
+              <div class="ep-field"><span class="ep-key">CC</span><input class="ep-inp" value="ops@geoserve.com"/></div>
+              <div class="ep-field"><span class="ep-key">Subject</span><input class="ep-inp" value="Tank Cleaning Instructions — STI CLAPHAM — Voyage 20260514"/></div>
+            </div>
+            <div class="ep-body-wrap">
+              <div class="ep-body" id="epBody1" contenteditable="true" oninput="epWC('epBody1','epWC1','epEd1')" onkeydown="epKey(event)">Dear Captain,
+
+Please find below tank cleaning recommendation for voyage 20260514.
+
+<strong>Next Cargo:</strong> LVN — Light Virgin Naphtha
+<strong>Charterer:</strong> MOEVE TRADING S.A.U.
+
+<strong>Combination 1</strong> — Gasoil/Gasoline → LVN
+Method: Well Drained. ROB ≤ 0.05% tank capacity.
+
+<strong>Combination 2</strong> — Naphtha → LVN
+Same Grade. No cleaning required.
+
+Best regards,
+GeoServe Operations</div>
+            </div>
+            <div class="ep-foot">
+              <span class="ep-wc" id="epWC1">124 words</span>
+              <span class="ep-ed" id="epEd1">Edited</span>
+            </div>
+          </div>
+          <div class="ctx-card">
+            <div class="ctx-icon-row">
+              <div class="ctx-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 9h6M9 13h4"/></svg></div>
+              <div><div class="ctx-title">Write to voyage context</div><div class="ctx-desc">Stores determination — downstream agents (bunker, port, inspection) can consume it.</div></div>
+            </div>
+            <button class="ctx-rev-btn" onclick="showToast('Voyage context saved.','ok')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="11" height="11"><polyline points="9 18 15 12 9 6"/></svg>Review &amp; Save</button>
+          </div>
+        </div>
+        <div class="col-foot">
+          <button class="btn-approve" onclick="approveTC()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Approve &amp; send to master</button>
+          <div class="btn-row"><button class="btn-2" onclick="showToast('Draft saved.','ok')">Save draft</button><button class="btn-danger" onclick="rejectTC()">Reject</button></div>
+          <div class="foot-from">Sent from: j.kowalski@geoserve.com</div>
+        </div>
+        </div><!-- /vc-clapham-out -->
+
+        <!-- WONDER MIMOSA output -->
+        <div class="vessel-content" id="vc-mimosa-out" style="display:flex;flex-direction:column;flex:1;min-height:0;">
+        <div class="out-wrap" style="flex:1;">
+          <div class="out-card">
+            <div class="ep-hd">
+              <div class="ep-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22 6 12 13 2 6"/></svg></div>
+              <span class="ep-ttl">Draft Email</span>
+              <span class="ep-ai" style="background:#FEF9C3;color:#92400E;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/></svg>Hot Wash required</span>
+            </div>
+            <div class="ep-fields">
+              <div class="ep-field"><span class="ep-key">To</span><input class="ep-inp" value="master@wondermimosa.fleet.com"/></div>
+              <div class="ep-field"><span class="ep-key">CC</span><input class="ep-inp" value="ops@geoserve.com"/></div>
+              <div class="ep-field"><span class="ep-key">Subject</span><input class="ep-inp" value="Tank Cleaning Instructions — WONDER MIMOSA — Voyage VYG-2025-042"/></div>
+            </div>
+            <div class="ep-body-wrap">
+              <div class="ep-body" id="epBody2" contenteditable="true" oninput="epWC('epBody2','epWC2','epEd2')" onkeydown="epKey(event)">Dear Captain,
+
+Tank cleaning instructions for Voyage VYG-2025-042.
+
+<strong>Next Cargo:</strong> Gasoil 10ppm
+
+<strong>All groups (VLSFO / FO 180 → Gasoil 10ppm):</strong>
+Method: Hot Wash required.
+Minimum 2 cycles at 60°C. Strip fully before loading.
+
+⚠ This vessel carries residual fuel — stricter cleaning applies.
+
+Best regards,
+GeoServe Operations</div>
+            </div>
+            <div class="ep-foot">
+              <span class="ep-wc" id="epWC2">71 words</span>
+              <span class="ep-ed" id="epEd2">Edited</span>
+            </div>
+          </div>
+        </div>
+        <div class="col-foot">
+          <button class="btn-approve" onclick="approveTC()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Approve &amp; send to master</button>
+          <div class="btn-row"><button class="btn-2" onclick="showToast('Draft saved.','ok')">Save draft</button><button class="btn-danger" onclick="rejectTC()">Reject</button></div>
+          <div class="foot-from">Sent from: j.kowalski@geoserve.com</div>
+        </div>
+        </div><!-- /vc-mimosa-out -->
+
+      </div><!-- /col-3 -->
+
+    </div><!-- /cols TC -->
+  </div><!-- /view-tc -->
+
+  <!-- ═══════════════════════════════════════════
+       CP & VO AGENT VIEW
+  ═══════════════════════════════════════════ -->
+  <div class="view" id="view-cpvo" style="flex:1;overflow:hidden;">
+    <div class="cols" style="height:100%;">
+
+      <!-- CP COL 1: INPUTS -->
+      <div class="col" style="display:flex;flex-direction:column;">
+        <div class="col-hd">
+          <div class="col-hd-row"><span class="col-title">Sources &amp; Inputs</span><span class="col-count">6 inputs</span></div>
+          <div class="col-sub">CP document &amp; voyage order parsed</div>
+        </div>
+        <div class="stepper-wrap" style="flex:1;">
+          <div class="st"><div class="st-left"><div class="st-dot info"></div><div class="st-line"></div></div><div class="st-body"><div class="st-label">CP document received</div><div class="st-value">SHELL VOVOY 93</div><div class="st-meta"><span class="st-src">Upload</span> SHELL_VOVOY93_STI_CLAPHAM.pdf · 17 May 11:03 UTC</div><div class="st-meta"><span class="st-tag-ok">✓ 24 fields extracted</span></div></div></div>
+          <div class="st"><div class="st-left"><div class="st-dot ok"></div><div class="st-line"></div></div><div class="st-body"><div class="st-label">Parties identified</div><div class="st-value">Owner: STI · Charterer: MOEVE TRADING S.A.U.</div><div class="st-meta"><span class="st-tag-ok">✓ Certain</span></div></div></div>
+          <div class="st"><div class="st-left"><div class="st-dot ok"></div><div class="st-line"></div></div><div class="st-body"><div class="st-label">Voyage details</div><div class="st-value">ALGECIRAS → ROTTERDAM</div><div class="st-meta">Laycan: 18–19 May 2026 · Cargo: LVN <span class="st-tag-ok">✓ Certain</span></div></div></div>
+          <div class="st"><div class="st-left"><div class="st-dot ok"></div><div class="st-line"></div></div><div class="st-body"><div class="st-label">Freight &amp; demurrage</div><div class="st-value">USD 42.50/MT · 72 hrs SHINC</div><div class="st-meta"><span class="st-tag-ok">✓ Certain</span></div></div></div>
+          <div class="st"><div class="st-left"><div class="st-dot warn"></div><div class="st-line"></div></div><div class="st-body"><div class="st-label">Special clauses detected</div><div class="st-value">3 clauses flagged</div><div class="st-meta"><span class="st-tag-warn">⚠ Review needed</span> heating, inspection, deviation</div><button class="st-correct" onclick="toggleCorr('cp-cl')" id="tcbtn-cp-cl"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>Override flags</button><div class="corr-panel" id="cp-cl"><div class="corr-inner"><div class="corr-ttl">Override clause flags</div><div class="corr-lbl">Select clauses to dismiss</div><select class="corr-in"><option>Dismiss: Heating clause (irrelevant cargo)</option><option>Dismiss: Inspection clause</option><option>Dismiss: Deviation clause</option></select><div class="corr-btns"><button class="corr-run">Apply override</button><button class="corr-cancel" onclick="toggleCorr('cp-cl')">Cancel</button></div></div></div></div></div>
+          <div class="st"><div class="st-left"><div class="st-dot ok"></div></div><div class="st-body"><div class="st-label">Voyage order email</div><div class="st-value">Voyage 20260514 confirmed</div><div class="st-meta"><span class="st-src"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22 6 12 13 2 6"/></svg>Email</span> voyage_order_20260514.eml · cross-referenced <span class="st-tag-ok">✓ Match</span></div></div></div>
+        </div>
+        <div class="col-chat">
+          <div class="chat-msgs" id="chatMsgs2"></div>
+          <div class="chat-input-row"><input class="chat-input" id="chatInput2" placeholder="Ask about the CP document…" onkeydown="chatKey2(event)"/><button class="chat-send" onclick="sendChat2()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg></button></div>
+        </div>
+      </div>
+
+      <!-- CP COL 2: REASONING -->
+      <div class="col" style="display:flex;flex-direction:column;">
+        <div class="col-hd">
+          <div class="col-hd-row"><span class="col-title">Determination</span><span class="col-count">4 steps</span></div>
+          <div class="col-sub">Clause extraction &amp; cross-reference</div>
+        </div>
+        <div class="steps-wrap" style="flex:1;">
+          <div class="sw"><div class="sw-left"><div class="sw-num done">1</div><div class="sw-line"></div></div><div class="sw-card"><div class="sw-top"><div class="sw-title-row"><span class="sw-title">CP document parsed</span><span class="sw-badge g">24 fields</span></div></div><div class="sw-txt">SHELL VOVOY 93 · 24 fields extracted across 8 sections<br>Parties, voyage terms, cargo, freight &amp; demurrage confirmed</div></div></div>
+          <div class="sw"><div class="sw-left"><div class="sw-num done">2</div><div class="sw-line"></div></div><div class="sw-card"><div class="sw-top"><div class="sw-title-row"><span class="sw-title">Clause routing</span><span class="sw-badge am">3 flagged</span></div></div><div class="sw-txt">Matched against standard clause library<br><strong>Heating clause</strong> — likely irrelevant (LVN cargo)<br><strong>Inspection clause</strong> — requires port agent confirmation<br><strong>Deviation clause</strong> — requires owner approval</div></div></div>
+          <div class="sw"><div class="sw-left"><div class="sw-num done">3</div><div class="sw-line"></div></div><div class="sw-card"><div class="sw-top"><div class="sw-title-row"><span class="sw-title">Voyage order cross-ref</span><span class="sw-badge g">✓ Match</span></div></div><div class="sw-txt">CP terms cross-referenced with voyage order email<br>Load: <strong>ALGECIRAS</strong> · Discharge: <strong>ROTTERDAM</strong> · Cargo: <strong>LVN</strong><br>No discrepancies detected</div></div></div>
+          <div class="sw"><div class="sw-left"><div class="sw-num done">4</div></div><div class="sw-card"><div class="sw-top"><div class="sw-title-row"><span class="sw-title">Sailing instructions generated</span><span class="sw-badge g">✓ Ready</span></div></div>
+            <div class="cpvo-clause"><div class="cpvo-clause-hdr"><span class="cpvo-clause-num">CL.7</span><span class="cpvo-clause-title">Heating clause</span><span class="cpvo-clause-flag ok">✓ Likely N/A</span></div><div class="cpvo-clause-body">LVN is not a heated cargo — clause unlikely to apply. Flagged for operator confirmation.</div></div>
+            <div class="cpvo-clause"><div class="cpvo-clause-hdr"><span class="cpvo-clause-num">CL.12</span><span class="cpvo-clause-title">Inspection rights</span><span class="cpvo-clause-flag warn">⚠ Confirm</span></div><div class="cpvo-clause-body">Charterer retains right to inspect tanks before loading. Port agent must confirm inspection window.</div></div>
+            <div class="cpvo-clause"><div class="cpvo-clause-hdr"><span class="cpvo-clause-num">CL.18</span><span class="cpvo-clause-title">Deviation clause</span><span class="cpvo-clause-flag warn">⚠ Owner approval</span></div><div class="cpvo-clause-body">Any deviation requires written owner consent within 24hrs of request.</div></div>
+            <div class="sw-attr">CP &amp; VO Agent · SHELL VOVOY 93 · 18 May 2026 11:47 UTC</div>
+          </div></div>
+        </div>
+      </div>
+
+      <!-- CP COL 3: OUTPUT -->
+      <div class="col" style="display:flex;flex-direction:column;">
+        <div class="col-hd">
+          <div class="col-hd-row"><span class="col-title">Output &amp; Actions</span><span class="col-count">2 pending</span></div>
+          <div class="col-sub">Sailing instructions &amp; CP summary</div>
+        </div>
+        <div class="out-wrap" style="flex:1;">
+          <!-- Extracted fields card -->
+          <div class="out-card" style="padding:0;">
+            <div class="ep-hd"><div class="ep-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div><span class="ep-ttl">Extracted CP Fields</span><span class="ep-ai"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>24 fields</span></div>
+            <div style="padding:10px 13px;">
+              <table class="cpvo-field-table">
+                <tr><td class="fd-key">Vessel</td><td class="fd-val">STI CLAPHAM</td><td class="fd-conf"><span class="sw-badge g" style="font-size:9px;">✓</span></td></tr>
+                <tr><td class="fd-key">Charterer</td><td class="fd-val">MOEVE TRADING S.A.U.</td><td class="fd-conf"><span class="sw-badge g" style="font-size:9px;">✓</span></td></tr>
+                <tr><td class="fd-key">Load port</td><td class="fd-val">ALGECIRAS, SPAIN</td><td class="fd-conf"><span class="sw-badge g" style="font-size:9px;">✓</span></td></tr>
+                <tr><td class="fd-key">Discharge port</td><td class="fd-val">ROTTERDAM</td><td class="fd-conf"><span class="sw-badge g" style="font-size:9px;">✓</span></td></tr>
+                <tr><td class="fd-key">Cargo</td><td class="fd-val">LVN</td><td class="fd-conf"><span class="sw-badge g" style="font-size:9px;">✓</span></td></tr>
+                <tr><td class="fd-key">Laycan</td><td class="fd-val">18–19 May 2026</td><td class="fd-conf"><span class="sw-badge g" style="font-size:9px;">✓</span></td></tr>
+                <tr><td class="fd-key">Freight</td><td class="fd-val">USD 42.50/MT</td><td class="fd-conf"><span class="sw-badge g" style="font-size:9px;">✓</span></td></tr>
+                <tr><td class="fd-key">Demurrage</td><td class="fd-val">72 hrs SHINC</td><td class="fd-conf"><span class="sw-badge am" style="font-size:9px;">⚠</span></td></tr>
+              </table>
+            </div>
+          </div>
+          <!-- Sailing instructions draft -->
+          <div class="out-card">
+            <div class="ep-hd"><div class="ep-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22 6 12 13 2 6"/></svg></div><span class="ep-ttl">Sailing Instructions</span><span class="ep-ai"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>Draft</span></div>
+            <div class="ep-fields">
+              <div class="ep-field"><span class="ep-key">To</span><input class="ep-inp" value="master@sticlapham.fleet.com"/></div>
+              <div class="ep-field"><span class="ep-key">Subject</span><input class="ep-inp" value="Sailing Instructions — STI CLAPHAM — Voyage 20260514"/></div>
+            </div>
+            <div class="ep-body-wrap">
+              <div class="ep-body" contenteditable="true" onkeydown="epKey(event)">Dear Captain,
+
+Please find your sailing instructions for Voyage 20260514.
+
+<strong>Load:</strong> ALGECIRAS, SPAIN
+<strong>Discharge:</strong> ROTTERDAM FOR ORDERS
+<strong>Cargo:</strong> LVN — Light Virgin Naphtha
+<strong>Laycan:</strong> 18.05.2026 00:01 – 19.05.2026 23:59
+<strong>Freight:</strong> USD 42.50/MT
+
+Note: 3 clauses flagged for your attention (CL.7, CL.12, CL.18).
+
+Best regards,
+GeoServe Operations</div>
+            </div>
+          </div>
+        </div>
+        <div class="col-foot">
+          <button class="btn-approve" onclick="showToast('Sailing instructions sent to master.','ok');setTimeout(goBack,1800)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Approve &amp; send to master</button>
+          <div class="btn-row"><button class="btn-2" onclick="showToast('Draft saved.','ok')">Save draft</button><button class="btn-danger" onclick="showToast('Instructions rejected.','warn');setTimeout(goBack,1600)">Reject</button></div>
+          <div class="foot-from">Sent from: j.kowalski@geoserve.com</div>
+        </div>
+      </div>
+
+    </div><!-- /cols CPVO -->
+  </div><!-- /view-cpvo -->
+
+</div><!-- /main -->
+</div><!-- /shell -->
+
+<div class="toast" id="toastEl" role="status"><span id="toastMsg"></span></div>
+
+<script>
+/* ── AGENT SWITCH ── */
+var activeAgent = 'tc';
+function switchAgent(a) {
+  activeAgent = a;
+  document.getElementById('view-tc').classList.toggle('on', a === 'tc');
+  document.getElementById('view-cpvo').classList.toggle('on', a === 'cpvo');
+  document.getElementById('tab-tc').classList.toggle('on', a === 'tc');
+  document.getElementById('tab-cpvo').classList.toggle('on', a === 'cpvo');
+  document.getElementById('tcVesselRow').style.display = a === 'tc' ? '' : 'none';
+}
+
+/* ── VESSEL SWITCH ── */
+var activeVessel = 'clapham';
+function switchVessel(v) {
+  activeVessel = v;
+  var vessels = ['clapham', 'mimosa'];
+  vessels.forEach(function(id) {
+    var on = id === v;
+    // inputs
+    var inp = document.getElementById('vc-' + id + '-inputs');
+    if (inp) { inp.classList.toggle('on', on); }
+    // det
+    var det = document.getElementById('vc-' + id + '-det');
+    if (det) { det.classList.toggle('on', on); }
+    // out
+    var out = document.getElementById('vc-' + id + '-out');
+    if (out) { out.classList.toggle('on', on); }
+    // pill
+    var pill = document.getElementById('vs-' + id);
+    if (pill) pill.classList.toggle('on', on);
+  });
+  // update counts
+  var cnt = v === 'clapham' ? '5 inputs' : '4 inputs';
+  document.getElementById('tc-src-count').textContent = cnt;
+  var ocnt = v === 'clapham' ? '2 pending' : '1 pending';
+  document.getElementById('tc-out-count').textContent = ocnt;
+}
+
+/* ── CORRECTION PANELS ── */
+var openCorr = null;
+function toggleCorr(id) {
+  var panel = document.getElementById(id);
+  var btn = document.getElementById('tcbtn-' + id);
+  if (!panel) return;
+  var isOpen = panel.classList.contains('open');
+  if (openCorr && openCorr !== id) {
+    var prev = document.getElementById(openCorr);
+    var prevBtn = document.getElementById('tcbtn-' + openCorr);
+    if (prev) prev.classList.remove('open');
+    if (prevBtn) prevBtn.classList.remove('on');
+  }
+  panel.classList.toggle('open', !isOpen);
+  if (btn) btn.classList.toggle('on', !isOpen);
+  openCorr = !isOpen ? id : null;
+  if (!isOpen) {
+    setTimeout(function(){
+      var f = panel.querySelector('input,select,textarea');
+      if (f) f.focus();
+    }, 310);
+  }
+}
+
+/* ── EMAIL ── */
+function epWC(bodyId, wcId, edId) {
+  var el = document.getElementById(bodyId);
+  var text = (el.innerText || el.textContent || '').trim();
+  var w = text ? text.split(/\s+/).filter(function(x){return x.length>0;}).length : 0;
+  document.getElementById(wcId).textContent = w + ' words';
+  document.getElementById(edId).classList.add('show');
+}
+function epKey(e) {
+  if (e.key === 'Enter') { e.preventDefault(); document.execCommand('insertLineBreak'); }
+}
+
+/* ── CHAT ── */
+var chatAnswers = [
+  'LVN was matched to "Light Virgin Naphtha" using the ICS cargo dictionary.',
+  'Previous cargo was retrieved from Snowflake using voyage reference VYG-2024-081.',
+  'Shell Guide v2.4 was selected based on the charterer\'s CP requirements.',
+  'The agent ran 3 table lookups across the Shell Tanker Cleaning Guide.'
+];
+var chatIdx = 0;
+function sendChat() {
+  var inp = document.getElementById('chatInput');
+  var msg = inp.value.trim();
+  if (!msg) return;
+  var msgs = document.getElementById('chatMsgs');
+  msgs.innerHTML += '<div class="chat-bubble user">' + msg + '</div>';
+  inp.value = '';
+  setTimeout(function() {
+    msgs.innerHTML += '<div class="chat-bubble agent">' + chatAnswers[chatIdx % chatAnswers.length] + '</div>';
+    chatIdx++;
+    msgs.scrollTop = msgs.scrollHeight;
+  }, 600);
+  msgs.scrollTop = msgs.scrollHeight;
+}
+function chatKey(e) { if (e.key === 'Enter') sendChat(); }
+function sendChat2() {
+  var inp = document.getElementById('chatInput2');
+  var msg = inp.value.trim();
+  if (!msg) return;
+  var msgs = document.getElementById('chatMsgs2');
+  msgs.innerHTML += '<div class="chat-bubble user">' + msg + '</div>';
+  inp.value = '';
+  setTimeout(function() {
+    msgs.innerHTML += '<div class="chat-bubble agent">The CP &amp; VO agent extracted this field from clause 4.2 of SHELL VOVOY 93.</div>';
+    msgs.scrollTop = msgs.scrollHeight;
+  }, 600);
+}
+function chatKey2(e) { if (e.key === 'Enter') sendChat2(); }
+
+/* ── TOAST ── */
+var _tt;
+function showToast(msg, type) {
+  var el = document.getElementById('toastEl');
+  document.getElementById('toastMsg').textContent = msg;
+  el.className = 'toast show';
+  clearTimeout(_tt);
+  _tt = setTimeout(function() { el.classList.remove('show'); }, 2600);
+}
+
+/* ── ACTIONS ── */
+function approveTC() { showToast('✓ Email sent to master · ' + (activeVessel === 'clapham' ? 'STI CLAPHAM' : 'WONDER MIMOSA')); setTimeout(goBack, 1700); }
+function rejectTC()  { showToast('Determination rejected'); setTimeout(goBack, 1500); }
+function goBack()    { window.location.href = 'vessel.html'; }
+
+/* ── DET TAB SWITCH ── */
+var activeDetTab = 'sources';
+function switchDetTab(tab) {
+  activeDetTab = tab;
+  document.getElementById('det-tab-sources').classList.toggle('on', tab === 'sources');
+  document.getElementById('det-tab-procedure').classList.toggle('on', tab === 'procedure');
+  document.querySelectorAll('.det-sources').forEach(function(el) {
+    el.style.display = tab === 'sources' ? '' : 'none';
+  });
+  document.querySelectorAll('.det-procedure').forEach(function(el) {
+    el.style.display = tab === 'procedure' ? '' : 'none';
+  });
+}
+
+/* vessel-content toggle helper */
+document.querySelectorAll('.vessel-content').forEach(function(el) {
+  if (!el.classList.contains('on')) { el.style.display = 'none'; }
+});
+function applyVesselDisplay() {
+  document.querySelectorAll('.vessel-content').forEach(function(el) {
+    el.style.display = el.classList.contains('on') ? '' : 'none';
+  });
+}
+var _origSwitch = switchVessel;
+switchVessel = function(v) { _origSwitch(v); applyVesselDisplay(); };
+</script>
+</body>
+</html>

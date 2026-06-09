@@ -1,0 +1,177 @@
+/**
+ * Pelagos Design System — Color Tokens
+ * foundations/colors.css
+ *
+ * Usage:
+ *   @import '../foundations/colors.css';
+ *
+ * Three tiers:
+ *   Tier 1  Primitive  — raw hex values, no semantics (--prim-*)
+ *   Tier 2  Semantic   — purpose-driven aliases      (--color-*)
+ *   Tier 3  Component  — component-level overrides   (per component file)
+ */
+
+:root {
+
+  /* ════════════════════════════════════════════════════════════
+     TIER 1 · PRIMITIVE COLOR TOKENS
+     ════════════════════════════════════════════════════════════ */
+
+  /* Blue scale */
+  --prim-blue-900: #001e4c;
+  --prim-blue-800: #1f3a8a;
+  --prim-blue-700: #1d40af;
+  --prim-blue-600: #1c4ed8;
+  --prim-blue-500: #2463eb;
+  --prim-blue-400: #3b81f6;
+  --prim-blue-300: #5fa5f9;
+  --prim-blue-200: #92c5fd;
+  --prim-blue-100: #bedbfe;
+  --prim-blue-50:  #dbeafe;
+  --prim-blue-10:  #eef6ff;
+  --prim-marine:   #1852FE; /* Brand primary */
+
+  /* Red scale */
+  --prim-red-900: #450a0b;
+  --prim-red-800: #7f1c1d;
+  --prim-red-700: #981b1b;
+  --prim-red-600: #b91c1b;
+  --prim-red-500: #dc2625;
+  --prim-red-400: #ef4444;
+  --prim-red-300: #f77171;
+  --prim-red-200: #fca5a5;
+  --prim-red-100: #fecaca;
+  --prim-red-50:  #fde2e2;
+  --prim-red-10:  #fef1f2;
+
+  /* Yellow scale */
+  --prim-yellow-900: #412007;
+  --prim-yellow-800: #713e11;
+  --prim-yellow-700: #844d0f;
+  --prim-yellow-600: #a16207;
+  --prim-yellow-500: #ca8a03;
+  --prim-yellow-400: #eab305;
+  --prim-yellow-300: #facc14;
+  --prim-yellow-200: #fde046;
+  --prim-yellow-100: #feef89;
+  --prim-yellow-50:  #fef9c3;
+  --prim-yellow-10:  #fefce8;
+
+  /* Orange scale */
+  --prim-orange-900: #5c2a06;
+  --prim-orange-800: #a34706;
+  --prim-orange-700: #c25203;
+  --prim-orange-600: #ce5b0a;
+  --prim-orange-500: #e76a10;
+  --prim-orange-400: #fb7d24;
+  --prim-orange-300: #ff9348;
+  --prim-orange-200: #ffa96b;
+  --prim-orange-100: #ffb988;
+  --prim-orange-50:  #ffe0ca;
+  --prim-orange-10:  #fff3eb;
+
+  /* Green scale */
+  --prim-green-900: #0a3b1c;
+  --prim-green-800: #0e4f26;
+  --prim-green-700: #147638;
+  --prim-green-600: #1b9e4b;
+  --prim-green-500: #22c55e;
+  --prim-green-400: #4ed17e;
+  --prim-green-300: #7adc9e;
+  --prim-green-200: #a7e8bf;
+  --prim-green-100: #bdeecf;
+  --prim-green-50:  #d3f3df;
+  --prim-green-10:  #e9f9ef;
+
+  /* Teal scale */
+  --prim-teal-900: #01443c;
+  --prim-teal-800: #006559;
+  --prim-teal-700: #008475;
+  --prim-teal-600: #00aa97;
+  --prim-teal-500: #00dac1;
+  --prim-teal-400: #00f0d4;
+  --prim-teal-300: #42f8e3;
+  --prim-teal-200: #7cf7e8;
+  --prim-teal-100: #99fbef;
+  --prim-teal-50:  #b9fff7;
+  --prim-teal-10:  #e6fefb;
+
+  /* Purple scale */
+  --prim-purple-900: #380731;
+  --prim-purple-800: #4b0941;
+  --prim-purple-700: #710e61;
+  --prim-purple-600: #961282;
+  --prim-purple-500: #bc17a2;
+  --prim-purple-400: #c945b4;
+  --prim-purple-300: #d773c7;
+  --prim-purple-200: #e4a0d9;
+  --prim-purple-100: #ebb7e2;
+  --prim-purple-50:  #f2ceec;
+  --prim-purple-10:  #f8e5f5;
+
+  /* Grey scale */
+  --prim-grey-900: #030712;
+  --prim-grey-800: #10172a;
+  --prim-grey-700: #1e293b;
+  --prim-grey-600: #334154;
+  --prim-grey-500: #475569;
+  --prim-grey-400: #64748b;
+  --prim-grey-300: #94a3b8;
+  --prim-grey-200: #cbd5e1;
+  --prim-grey-100: #e2e8f0;
+  --prim-grey-50:  #f1f5f9;
+  --prim-grey-10:  #f7fafc;
+
+  /* Black / White */
+  --prim-white: #ffffff;
+  --prim-black: #000000;
+
+  /* ════════════════════════════════════════════════════════════
+     TIER 2 · SEMANTIC COLOR TOKENS
+     ════════════════════════════════════════════════════════════ */
+
+  /* Brand */
+  --color-brand:        var(--prim-marine);
+  --color-brand-hover:  #1242d4;
+  --color-brand-active: #0d3299;
+  --color-brand-subtle: var(--prim-blue-10);
+  --color-brand-border: var(--prim-blue-100);
+
+  /* Danger */
+  --color-danger:        var(--prim-red-500);
+  --color-danger-hover:  var(--prim-red-600);
+  --color-danger-active: var(--prim-red-700);
+  --color-danger-subtle: var(--prim-red-10);
+  --color-danger-border: var(--prim-red-100);
+
+  /* Warning */
+  --color-warning:        var(--prim-yellow-500);
+  --color-warning-hover:  var(--prim-yellow-600);
+  --color-warning-subtle: var(--prim-yellow-10);
+  --color-warning-border: var(--prim-yellow-100);
+
+  /* Success */
+  --color-success:        var(--prim-green-600);
+  --color-success-hover:  var(--prim-green-700);
+  --color-success-subtle: var(--prim-green-10);
+  --color-success-border: var(--prim-green-100);
+
+  /* Text */
+  --color-text-default:     var(--prim-grey-900);
+  --color-text-secondary:   var(--prim-grey-600);
+  --color-text-placeholder: var(--prim-grey-400);
+  --color-text-disabled:    var(--prim-grey-300);
+  --color-text-inverse:     var(--prim-white);
+  --color-text-brand:       var(--color-brand);
+  --color-text-danger:      var(--color-danger);
+
+  /* Surface */
+  --color-surface-default: var(--prim-white);
+  --color-surface-subtle:  var(--prim-grey-10);
+  --color-surface-overlay: var(--prim-grey-50);
+
+  /* Border */
+  --color-border-default: var(--prim-grey-100);
+  --color-border-subtle:  var(--prim-grey-50);
+  --color-border-strong:  var(--prim-grey-200);
+}

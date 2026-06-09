@@ -1,0 +1,1372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GeoOne – Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    /* ── GILROY FONT ── */
+    @font-face { font-family:'Gilroy'; src:url('fonts/Gilroy-Regular.ttf') format('truetype'); font-weight:400; font-style:normal; font-display:swap; }
+    @font-face { font-family:'Gilroy'; src:url('fonts/Gilroy-Medium.ttf') format('truetype'); font-weight:500; font-style:normal; font-display:swap; }
+    @font-face { font-family:'Gilroy'; src:url('fonts/Gilroy-SemiBold.ttf') format('truetype'); font-weight:600; font-style:normal; font-display:swap; }
+    @font-face { font-family:'Gilroy'; src:url('fonts/Gilroy-Bold.ttf') format('truetype'); font-weight:700; font-style:normal; font-display:swap; }
+    @font-face { font-family:'Gilroy'; src:url('fonts/Gilroy-ExtraBold.ttf') format('truetype'); font-weight:800; font-style:normal; font-display:swap; }
+
+    :root {
+      /* ── PRIMITIVES · Blue ── */
+      --prim-blue-900:#001e4c; --prim-blue-800:#1f3a8a; --prim-blue-700:#1d40af;
+      --prim-blue-600:#1c4ed8; --prim-blue-500:#2463eb; --prim-blue-400:#3b81f6;
+      --prim-blue-300:#5fa5f9; --prim-blue-200:#92c5fd; --prim-blue-100:#bedbfe;
+      --prim-blue-50:#dbeafe; --prim-blue-10:#eef6ff; --prim-marine:#1852FE;
+      /* ── PRIMITIVES · Red ── */
+      --prim-red-900:#450a0b; --prim-red-800:#7f1c1d; --prim-red-700:#981b1b;
+      --prim-red-600:#b91c1b; --prim-red-500:#dc2625; --prim-red-400:#ef4444;
+      --prim-red-300:#f77171; --prim-red-200:#fca5a5; --prim-red-100:#fecaca;
+      --prim-red-50:#fde2e2; --prim-red-10:#fef1f2;
+      /* ── PRIMITIVES · Yellow ── */
+      --prim-yellow-900:#412007; --prim-yellow-800:#713e11; --prim-yellow-700:#844d0f;
+      --prim-yellow-600:#a16207; --prim-yellow-500:#ca8a03; --prim-yellow-400:#eab305;
+      --prim-yellow-300:#facc14; --prim-yellow-200:#fde046; --prim-yellow-100:#feef89;
+      --prim-yellow-50:#fef9c3; --prim-yellow-10:#fefce8;
+      /* ── PRIMITIVES · Orange ── */
+      --prim-orange-900:#5c2a06; --prim-orange-800:#a34706; --prim-orange-700:#c25203;
+      --prim-orange-600:#ce5b0a; --prim-orange-500:#e76a10; --prim-orange-400:#fb7d24;
+      --prim-orange-300:#ff9348; --prim-orange-200:#ffa96b; --prim-orange-100:#ffb988;
+      --prim-orange-50:#ffe0ca; --prim-orange-10:#fff3eb;
+      /* ── PRIMITIVES · Green ── */
+      --prim-green-900:#0a3b1c; --prim-green-800:#0e4f26; --prim-green-700:#147638;
+      --prim-green-600:#1b9e4b; --prim-green-500:#22c55e; --prim-green-400:#4ed17e;
+      --prim-green-300:#7adc9e; --prim-green-200:#a7e8bf; --prim-green-100:#bdeecf;
+      --prim-green-50:#d3f3df; --prim-green-10:#e9f9ef;
+      /* ── PRIMITIVES · Teal ── */
+      --prim-teal-700:#008475; --prim-teal-500:#00dac1; --prim-teal-10:#e6fefb;
+      /* ── PRIMITIVES · Purple ── */
+      --prim-purple-700:#710e61; --prim-purple-500:#bc17a2; --prim-purple-10:#f8e5f5;
+      /* ── PRIMITIVES · Grey ── */
+      --prim-grey-900:#030712; --prim-grey-800:#10172a; --prim-grey-700:#1e293b;
+      --prim-grey-600:#334154; --prim-grey-500:#475569; --prim-grey-400:#64748b;
+      --prim-grey-300:#94a3b8; --prim-grey-200:#cbd5e1; --prim-grey-100:#e2e8f0;
+      --prim-grey-50:#f1f5f9; --prim-grey-10:#f7fafc;
+      --prim-white:#ffffff; --prim-black:#000000;
+      /* ── PRIMITIVES · Spacing ── */
+      --prim-space-1:4px; --prim-space-2:8px; --prim-space-3:12px; --prim-space-4:16px;
+      --prim-space-5:20px; --prim-space-6:24px; --prim-space-8:32px; --prim-space-10:40px;
+      --prim-space-12:48px; --prim-space-16:64px;
+      /* ── PRIMITIVES · Radius ── */
+      --prim-radius-none:0; --prim-radius-xs:2px; --prim-radius-sm:4px; --prim-radius-md:8px;
+      --prim-radius-lg:12px; --prim-radius-xl:16px; --prim-radius-2xl:24px; --prim-radius-full:9999px;
+      /* ── PRIMITIVES · Shadow ── */
+      --prim-shadow-none:none; --prim-shadow-xs:0 1px 2px rgba(0,0,0,.05);
+      --prim-shadow-sm:0 1px 3px rgba(0,0,0,.08); --prim-shadow-md:0 4px 16px rgba(0,0,0,.10);
+      --prim-shadow-lg:0 8px 32px rgba(0,0,0,.14); --prim-shadow-xl:0 20px 60px rgba(0,0,0,.18);
+      /* ── PRIMITIVES · Typography ── */
+      --prim-font-primary:'Gilroy','Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;
+      --prim-font-mono:'SF Mono','Fira Code','Cascadia Code',monospace;
+      --prim-font-size-xs:11px; --prim-font-size-sm:12px; --prim-font-size-md:14px;
+      --prim-font-size-lg:16px; --prim-font-size-xl:20px; --prim-font-size-2xl:24px;
+      --prim-font-size-3xl:32px; --prim-font-size-4xl:34px;
+      --prim-font-weight-regular:400; --prim-font-weight-medium:500;
+      --prim-font-weight-semibold:600; --prim-font-weight-bold:700; --prim-font-weight-extrabold:800;
+      --prim-line-height-tight:1.25; --prim-line-height-normal:1.5; --prim-line-height-relaxed:1.65;
+
+      /* ── SEMANTIC · Brand ── */
+      --color-brand:var(--prim-marine); --color-brand-hover:#1242d4; --color-brand-active:#0d3299;
+      --color-brand-subtle:var(--prim-blue-10); --color-brand-border:var(--prim-blue-100);
+      /* ── SEMANTIC · Status ── */
+      --color-danger:var(--prim-red-500); --color-danger-hover:var(--prim-red-600); --color-danger-active:var(--prim-red-700);
+      --color-danger-subtle:var(--prim-red-10); --color-danger-border:var(--prim-red-100);
+      --color-warning:var(--prim-yellow-500); --color-warning-hover:var(--prim-yellow-600);
+      --color-warning-subtle:var(--prim-yellow-10); --color-warning-border:var(--prim-yellow-100);
+      --color-success:var(--prim-green-600); --color-success-hover:var(--prim-green-700);
+      --color-success-subtle:var(--prim-green-10); --color-success-border:var(--prim-green-100);
+      /* ── SEMANTIC · Text ── */
+      --color-text-default:var(--prim-grey-900); --color-text-secondary:var(--prim-grey-600);
+      --color-text-placeholder:var(--prim-grey-400); --color-text-disabled:var(--prim-grey-300);
+      --color-text-inverse:var(--prim-white); --color-text-brand:var(--color-brand);
+      --color-text-danger:var(--color-danger);
+      /* ── SEMANTIC · Surface ── */
+      --color-surface-default:var(--prim-white); --color-surface-subtle:var(--prim-grey-10);
+      --color-surface-overlay:var(--prim-grey-50);
+      /* ── SEMANTIC · Border ── */
+      --color-border-default:var(--prim-grey-100); --color-border-subtle:var(--prim-grey-50);
+      --color-border-strong:var(--prim-grey-200);
+      /* ── SEMANTIC · Radius ── */
+      --radius-sm:var(--prim-radius-sm); --radius-md:var(--prim-radius-md);
+      --radius-lg:var(--prim-radius-lg); --radius-xl:var(--prim-radius-xl);
+      --radius-2xl:var(--prim-radius-2xl); --radius-full:var(--prim-radius-full);
+      /* ── SEMANTIC · Shadow ── */
+      --shadow-sm:var(--prim-shadow-sm); --shadow-md:var(--prim-shadow-md); --shadow-lg:var(--prim-shadow-lg);
+      --shadow-card:var(--prim-shadow-sm); --shadow-dropdown:var(--prim-shadow-md);
+      --shadow-modal:var(--prim-shadow-lg); --shadow-toast:var(--prim-shadow-md);
+      --shadow-tooltip:var(--prim-shadow-xs);
+      /* ── SEMANTIC · Spacing ── */
+      --space-xs:var(--prim-space-1); --space-sm:var(--prim-space-2);
+      --space-md:var(--prim-space-4); --space-lg:var(--prim-space-6);
+      --space-xl:var(--prim-space-8); --space-2xl:var(--prim-space-10);
+
+      /* ── LEGACY ALIASES (backward-compat) ── */
+      --brand:var(--color-brand); --brand-light:var(--prim-blue-400);
+      --nav:var(--prim-blue-900); --nav-hover:rgba(255,255,255,0.08); --nav-active:var(--color-brand);
+      --card:var(--color-surface-default); --bg:var(--prim-grey-10);
+      --danger:var(--color-danger); --success:var(--color-success); --warning:var(--color-warning);
+      --text-primary:var(--color-text-default); --text-secondary:var(--color-text-secondary);
+      --text-muted:var(--prim-grey-300);
+      --border:var(--color-border-default); --border-light:var(--color-border-subtle);
+      /* ── SIDEBAR ── */
+      --sidebar-width: 220px; --sidebar-width-collapsed: 52px;
+      --color-sidebar: #ffffff;
+      --color-sidebar-hover: var(--prim-grey-10); --color-sidebar-active: var(--prim-blue-10);
+      --color-sidebar-text: var(--prim-grey-500); --color-sidebar-text-active: var(--prim-marine);
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family:var(--prim-font-primary); background:#001E4C; color:var(--color-text-default); display:flex; height:100vh; overflow:hidden; }
+
+    /* NAV RAIL */
+    .nav-rail {
+      width: var(--sidebar-width); background: var(--color-sidebar);
+      display: flex; flex-direction: column; height: 100vh; flex-shrink: 0;
+      border-right: 1px solid var(--color-border-default);
+      overflow: hidden; transition: width 220ms ease;
+    }
+    .nav-rail.collapsed { width: var(--sidebar-width-collapsed); }
+    .sidebar-logo {
+      height: 56px; padding: 0 14px;
+      display: flex; align-items: center; gap: 10px; flex-shrink: 0;
+      border-bottom: 1px solid var(--color-border-default); overflow: hidden;
+    }
+    .sidebar-logo-icon { width: 22px; height: 22px; flex-shrink: 0; }
+    .sidebar-logo-text { flex: 1; overflow: hidden; white-space: nowrap; }
+    .nav-rail.collapsed .sidebar-logo-text { opacity: 0; width: 0; pointer-events: none; }
+    .sidebar-logo-name { font-size: 14px; font-weight: var(--prim-font-weight-semibold); color: var(--color-text-default); letter-spacing: -0.2px; }
+    .sidebar-logo-sub { font-size: 10px; color: var(--color-text-placeholder); }
+    .nav-collapse-btn {
+      border: none; background: transparent; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; color: var(--color-text-secondary);
+      border-radius: var(--radius-sm); padding: 4px;
+      transition: background 120ms ease, color 120ms ease;
+    }
+    .nav-collapse-btn:hover { background: var(--color-surface-subtle); color: var(--color-text-default); }
+    .collapse-chevron { width: 15px; height: 15px; display: block; }
+    .collapse-hamburger { width: 18px; height: 18px; display: none; }
+    .nav-rail.collapsed .collapse-chevron { display: none; }
+    .nav-rail.collapsed .collapse-hamburger { display: block; }
+    .nav-rail.collapsed .sidebar-logo { padding: 0; justify-content: center; }
+    .nav-rail.collapsed .sidebar-logo-icon { display: none; }
+    .nav-rail.collapsed .sidebar-logo .nav-collapse-btn { width: 52px; height: 56px; border-radius: 0; padding: 0; }
+    .sidebar-nav { flex: 1; overflow-y: auto; padding: 8px 0; scrollbar-width: none; }
+    .sidebar-nav::-webkit-scrollbar { display: none; }
+    .nav-section { margin-bottom: 2px; }
+    .nav-item {
+      display: flex; align-items: center; gap: 10px;
+      padding: 9px 12px 9px 13px; font-size: 13.5px; font-family: var(--prim-font-primary);
+      color: var(--color-sidebar-text); cursor: pointer;
+      transition: background 120ms ease, color 120ms ease;
+      position: relative; user-select: none; text-decoration: none;
+      border-left: 3px solid transparent; white-space: nowrap; overflow: hidden;
+    }
+    .nav-item:hover { background: var(--color-sidebar-hover); color: var(--color-text-default); }
+    .nav-item.active {
+      background: var(--color-sidebar-active); color: var(--color-sidebar-text-active);
+      border-left-color: var(--prim-marine);
+    }
+    .nav-item svg { width: 20px; height: 20px; flex-shrink: 0; }
+    .nav-item-label { flex: 1; overflow: hidden; transition: opacity 150ms ease; }
+    .nav-rail.collapsed .nav-item { justify-content: center; padding: 10px; border-left: 3px solid transparent !important; }
+    .nav-rail.collapsed .nav-item.active { background: var(--color-sidebar-active); }
+    .nav-rail.collapsed .nav-item-label { opacity: 0; width: 0; overflow: hidden; }
+    .nav-badge-wrap { position: relative; }
+    .nav-badge {
+      position: absolute; top: 5px; right: 10px;
+      background: var(--color-danger); color: #fff; font-size: 9px; font-weight: 700;
+      border-radius: var(--radius-full); min-width: 16px; height: 16px;
+      display: flex; align-items: center; justify-content: center; padding: 0 3px;
+    }
+    .sidebar-footer { flex-shrink: 0; padding: 10px 0; border-top: 1px solid var(--color-border-default); }
+    .sidebar-user {
+      display: flex; align-items: center; gap: 10px;
+      padding: 8px 14px; cursor: pointer; overflow: hidden; white-space: nowrap;
+      transition: background 120ms ease;
+    }
+    .sidebar-user:hover { background: var(--color-sidebar-hover); }
+    .nav-rail.collapsed .sidebar-user { justify-content: center; padding: 10px; }
+    .nav-avatar {
+      width: 28px; height: 28px; border-radius: var(--radius-full);
+      background: var(--prim-marine); display: flex; align-items: center;
+      justify-content: center; color: #fff; font-size: 11px;
+      font-weight: var(--prim-font-weight-semibold); flex-shrink: 0;
+    }
+    .sidebar-user-info { flex: 1; overflow: hidden; transition: opacity 150ms ease; }
+    .nav-rail.collapsed .sidebar-user-info { opacity: 0; width: 0; }
+    .sidebar-user-name { font-size: 13px; font-weight: var(--prim-font-weight-semibold); color: var(--color-text-default); }
+    .sidebar-user-role { font-size: 11px; color: var(--color-text-placeholder); margin-top: 1px; }
+
+
+    /* MAIN */
+    .main { flex:1; display:flex; flex-direction:column; overflow:hidden; background:transparent; }
+
+    /* HERO */
+    .hero {
+      position:relative; height:220px;
+      background:transparent;
+      display:flex; flex-direction:column; align-items:center;
+      justify-content:center; flex-shrink:0; overflow:hidden;
+      border-bottom:1px solid rgba(255,255,255,0.06);
+    }
+    .world-dots { position:absolute; inset:0; width:100%; height:100%; opacity:0.15; }
+    .map-view-btn {
+      position:absolute; top:16px; right:16px;
+      color:rgba(255,255,255,0.8); font-size:11px;
+      display:flex; flex-direction:column; align-items:center; gap:4px;
+      cursor:pointer; background:none; border:none; transition:color 150ms;
+    }
+    .map-view-btn:hover { color:#fff; }
+    .map-view-btn svg { width:20px; height:20px; }
+
+    /* GeoAI Morning Brief button */
+    .geoai-brief-btn {
+      position:absolute; top:16px; left:16px;
+      display:flex; align-items:center; gap:7px;
+      background:rgba(255,255,255,0.12);
+      border:1px solid rgba(255,255,255,0.22);
+      border-radius:var(--radius-full);
+      padding:7px 14px; cursor:pointer;
+      color:#fff; font-size:12px; font-weight:600;
+      transition:background 150ms; backdrop-filter:blur(6px);
+    }
+    .geoai-brief-btn:hover { background:rgba(255,255,255,0.22); }
+    .geoai-brief-btn .ai-dot {
+      width:8px; height:8px; border-radius:var(--radius-full);
+      background:linear-gradient(135deg,#60A5FA,#A78BFA);
+      box-shadow:0 0 6px rgba(167,139,250,0.7);
+      animation:pulse 2s infinite;
+    }
+    @keyframes pulse { 0%,100%{opacity:1}50%{opacity:0.5} }
+
+    .hero-title  { color:#fff; font-size:30px; font-weight:800; letter-spacing:-0.5px; margin-bottom:4px; position:relative; }
+    .hero-subtitle { color:rgba(255,255,255,0.65); font-size:13px; margin-bottom:20px; position:relative; }
+    .hero-search { position:relative; width:440px; }
+    .hero-search input {
+      width:100%; height:46px; border-radius:var(--radius-full);
+      border:1.5px solid rgba(255,255,255,0.25);
+      background:rgba(255,255,255,0.12); backdrop-filter:blur(8px);
+      color:rgba(255,255,255,0.9); font-size:14px;
+      padding:0 16px 0 42px; outline:none; transition:border-color 150ms;
+    }
+    .hero-search input::placeholder { color:rgba(255,255,255,0.5); }
+    .hero-search input:focus { border-color:rgba(255,255,255,0.5); }
+    .hero-search-icon { position:absolute; left:14px; top:50%; transform:translateY(-50%); color:rgba(255,255,255,0.5); }
+    .hero-search-icon svg { width:16px; height:16px; }
+
+    /* CONTENT */
+    .content {
+      flex:1; overflow:hidden; padding:24px 20%;
+      display:grid; grid-template-columns:1fr 2fr 1fr; gap:16px; align-items:stretch;
+    }
+    @media (max-width: 1280px) { .content { padding:24px 5%; } }
+
+    /* MIDDLE COL — fills height, vessel list scrolls internally */
+    .middle-col { display:flex; flex-direction:column; gap:16px; height:100%; overflow:hidden; min-height:0; }
+    .vessel-card-wrap { flex:1; display:flex; flex-direction:column; overflow:hidden; min-height:0; padding:var(--prim-space-5); }
+    .vessel-card-wrap .card-header { flex-shrink:0; }
+    .vessel-list { flex:1; overflow-y:auto; min-height:0; }
+    .vessel-list::-webkit-scrollbar { width:3px; }
+    .vessel-list::-webkit-scrollbar-thumb { background:#E2E8F0; border-radius:2px; }
+
+    /* RIGHT COL — scrolls if content overflows */
+    .right-col { display:flex; flex-direction:column; gap:16px; overflow-y:auto; height:100%; }
+    .right-col::-webkit-scrollbar { width:3px; }
+    .right-col::-webkit-scrollbar-thumb { background:#E2E8F0; border-radius:2px; }
+
+    /* QUICK ACTIONS */
+    .quick-actions { background:var(--brand); border-radius:var(--radius-lg); padding:16px; display:flex; flex-direction:column; gap:12px; }
+    .qa-header h3 { color:#fff; font-size:14px; font-weight:700; }
+    .qa-header p  { color:rgba(255,255,255,0.65); font-size:11px; margin-top:2px; }
+    .qa-grid { display:grid; grid-template-columns:1fr 1fr; gap:8px; }
+    .qa-btn {
+      background:rgba(255,255,255,0.12); border:1px solid rgba(255,255,255,0.15);
+      border-radius:var(--radius-md); padding:12px 10px; color:#fff;
+      cursor:pointer; display:flex; flex-direction:column; align-items:flex-start; gap:8px;
+      text-align:left; position:relative; transition:background 150ms,transform 150ms;
+    }
+    .qa-btn:hover { background:rgba(255,255,255,0.2); transform:translateY(-1px); }
+    .qa-btn.disabled { opacity:0.5; cursor:not-allowed; }
+    .qa-btn.disabled:hover { background:rgba(255,255,255,0.12); transform:none; }
+    .qa-btn svg { width:20px; height:20px; opacity:0.9; }
+    .qa-btn-label { font-size:12px; font-weight:600; line-height:1.3; }
+    .qa-lock { position:absolute; top:8px; right:8px; opacity:0.5; width:12px; height:12px; }
+    .geonix-card { background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.18); border-radius:var(--radius-md); padding:14px; position:relative; backdrop-filter:blur(4px); }
+    .geonix-ai-badge { position:absolute; top:10px; right:10px; background:linear-gradient(135deg,rgba(96,165,250,0.25),rgba(167,139,250,0.25)); border:1px solid rgba(167,139,250,0.35); border-radius:var(--radius-sm); padding:2px 6px; font-size:10px; color:rgba(255,255,255,0.9); font-weight:600; }
+    .geonix-icon { width:36px; height:36px; background:linear-gradient(135deg,rgba(96,165,250,0.2),rgba(167,139,250,0.2)); border:1px solid rgba(167,139,250,0.3); border-radius:var(--radius-md); display:flex; align-items:center; justify-content:center; margin-bottom:10px; color:#fff; }
+    .geonix-icon svg { width:18px; height:18px; }
+    .geonix-card h4 { color:#fff; font-size:14px; font-weight:700; margin-bottom:6px; }
+    .geonix-card p  { color:rgba(255,255,255,0.65); font-size:11px; line-height:1.5; margin-bottom:12px; }
+    .geonix-link { color:rgba(255,255,255,0.9); font-size:12px; font-weight:600; display:inline-flex; align-items:center; gap:4px; cursor:pointer; transition:gap 200ms cubic-bezier(0.4,0,0.2,1), color 150ms; }
+    .geonix-link:hover { gap:8px; color:#fff; }
+
+    /* MIDDLE */
+    .middle-col { display:flex; flex-direction:column; gap:16px; }
+
+    /* ── DS BUTTON COMPONENT ── */
+    .btn { display:inline-flex; align-items:center; justify-content:center; gap:var(--prim-space-2); border:1.5px solid transparent; border-radius:var(--radius-sm); font-family:var(--prim-font-primary); font-size:var(--prim-font-size-md); font-weight:var(--prim-font-weight-semibold); line-height:1; white-space:nowrap; cursor:pointer; user-select:none; text-decoration:none; transition:background 120ms ease,border-color 120ms ease,color 120ms ease,box-shadow 120ms ease; }
+    .btn:focus-visible { outline:none; box-shadow:0 0 0 3px rgba(24,82,254,0.35); }
+    .btn:disabled,.btn[disabled] { opacity:0.5; cursor:not-allowed; pointer-events:none; }
+    .btn--lg { height:48px; padding:0 24px; font-size:var(--prim-font-size-lg); }
+    .btn--md { height:40px; padding:0 16px; }
+    .btn--sm { height:32px; padding:0 12px; font-size:var(--prim-font-size-sm); }
+    .btn--xs { height:28px; padding:0 10px; font-size:var(--prim-font-size-sm); }
+    .btn--full { width:100%; }
+    .btn--primary { background:var(--color-brand); color:var(--prim-white); border-color:var(--color-brand); }
+    .btn--primary:hover:not(:disabled) { background:var(--color-brand-hover); border-color:var(--color-brand-hover); }
+    .btn--secondary { background:var(--color-brand-subtle); color:var(--color-brand); border-color:var(--color-brand-border); }
+    .btn--secondary:hover:not(:disabled) { background:#dde7ff; }
+    .btn--tertiary { background:transparent; color:var(--color-brand); border-color:transparent; }
+    .btn--tertiary:hover:not(:disabled) { background:var(--color-brand-subtle); }
+    .btn--neutral { background:var(--color-surface-default); color:var(--prim-grey-500); border-color:var(--color-border-default); }
+    .btn--neutral:hover:not(:disabled) { background:var(--prim-grey-50); }
+    .btn--link { background:transparent; color:var(--color-brand); border-color:transparent; padding-left:0; padding-right:0; height:auto; font-size:inherit; }
+    .btn--link:hover:not(:disabled) { color:var(--color-brand-hover); text-decoration:underline; }
+
+    /* CARD */
+    .card { background:var(--color-surface-default); border-radius:var(--radius-lg); box-shadow:var(--shadow-card); border:1px solid var(--color-border-default); padding:var(--prim-space-5); }
+    .card-header { margin-bottom:16px; }
+    .card-header h3 { font-size:15px; font-weight:var(--prim-font-weight-semibold); color:var(--color-text-default); }
+    .card-header p  { font-size:12px; color:var(--color-text-placeholder); margin-top:3px; }
+
+    /* FLEET ALERTS — 3-col chip grid */
+    .alert-chips { display:grid; grid-template-columns:repeat(3,1fr); gap:9px; }
+    .alert-chip {
+      background:#F8FAFC; border:1px solid #EDF1F7;
+      border-radius:10px; padding:12px 13px;
+      display:flex; align-items:center; gap:11px;
+      cursor:pointer; transition:border-color 150ms, box-shadow 150ms;
+    }
+    .alert-chip:hover { border-color:#CDD5E0; box-shadow:0 2px 8px rgba(0,0,0,0.05); }
+    .alert-chip-icon {
+      width:42px; height:42px; border-radius:9px;
+      background:#EDF1F7; display:flex; align-items:center;
+      justify-content:center; flex-shrink:0; color:#1E293B;
+    }
+    .alert-chip-icon svg { width:20px; height:20px; }
+    .alert-chip-num { font-size:22px; font-weight:700; color:#0F172A; line-height:1; margin-bottom:3px; }
+    .alert-chip-label { font-size:10.5px; color:#64748B; line-height:1.3; }
+
+    /* VESSELS — iOS list hierarchy */
+    .vessels-header { display:flex; align-items:center; gap:10px; margin-bottom:2px; }
+    .vessels-header h3 { font-size:15px; font-weight:600; color:#0F172A; }
+    .vessels-subtitle { font-size:11px; color:#94A3B8; margin-bottom:12px; }
+    /* voyage CTA inside card */
+    .voyage-cta-card {
+      display:inline-flex; align-items:center; gap:6px; margin-left:auto;
+      background:var(--color-brand-subtle); border:1px solid var(--color-brand-border);
+      border-radius:var(--radius-full); padding:6px 14px;
+      color:var(--color-brand); font-size:11px; font-weight:600;
+      font-family:var(--prim-font-primary); cursor:pointer; transition:background 150ms;
+    }
+    .voyage-cta-card:hover { background:#d8e4ff; }
+    .voyage-cta-card svg { width:12px; height:12px; }
+    .voyage-cta-card.active { background:var(--color-brand); color:#fff; border-color:var(--color-brand); }
+
+    .vessel-row {
+      display:flex; align-items:center; padding:10px 6px;
+      border-bottom:1px solid #F1F5F9; gap:12px;
+      cursor:pointer; transition:background 150ms;
+      border-radius:8px; text-decoration:none; color:inherit;
+    }
+    .vessel-row:last-child { border-bottom:none; }
+    .vessel-row:hover { background:#F4F6FF; }
+    .vessel-icon-sm {
+      width:36px; height:36px; border-radius:9px; flex-shrink:0;
+      background:var(--brand); display:flex; align-items:center;
+      justify-content:center; color:#fff; font-size:9px;
+      font-weight:700; letter-spacing:0.3px;
+    }
+    .vessel-info { flex:1; min-width:0; }
+    .vessel-name { font-size:13px; font-weight:600; color:#0F172A; margin-bottom:2px;
+      white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .vessel-route-ports { font-size:11px; color:#64748B;
+      white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .vessel-chevron { width:14px; height:14px; color:#CBD5E1; flex-shrink:0; }
+    .status-badge { display:inline-flex; align-items:center; gap:4px; padding:2px 8px; border-radius:var(--radius-full); font-family:var(--prim-font-primary); font-size:var(--prim-font-size-xs); font-weight:var(--prim-font-weight-semibold); white-space:nowrap; line-height:var(--prim-line-height-tight); }
+    .status-at-port    { background:var(--prim-yellow-50); color:var(--prim-yellow-700); }
+    .status-in-passage { background:var(--prim-blue-50); color:var(--prim-blue-700); }
+
+    /* AGENT ACTION CARD */
+    .agent-action-card {
+      position:relative; border-radius:14px; padding:18px 18px 16px;
+      background:#07234A;
+      border:1px solid rgba(59,130,246,0.45);
+      box-shadow:0 0 0 1px rgba(59,130,246,0.15), 0 4px 24px rgba(24,82,254,0.18);
+      cursor:pointer; transition:box-shadow 200ms, border-color 200ms;
+      overflow:hidden;
+    }
+    .agent-action-card::before {
+      content:''; position:absolute; inset:0; border-radius:inherit;
+      background:linear-gradient(135deg,rgba(59,130,246,0.07) 0%,transparent 60%);
+      pointer-events:none;
+    }
+    .agent-action-card:hover {
+      border-color:rgba(59,130,246,0.7);
+      box-shadow:0 0 0 1px rgba(59,130,246,0.3), 0 6px 28px rgba(24,82,254,0.28);
+    }
+    .aac-badge {
+      position:absolute; top:14px; right:14px;
+      background:#1852FE; color:#fff;
+      font-size:10px; font-weight:700; letter-spacing:0.8px;
+      padding:3px 10px; border-radius:6px;
+      text-transform:uppercase;
+    }
+    .aac-label {
+      display:flex; align-items:center; gap:5px;
+      font-size:10.5px; font-weight:700; letter-spacing:0.6px; text-transform:uppercase;
+      color:#F5A623; margin-bottom:10px;
+    }
+    .aac-label svg { width:13px; height:13px; flex-shrink:0; }
+    .aac-title {
+      font-size:16px; font-weight:700; color:#fff; line-height:1.35;
+      margin-bottom:9px; padding-right:52px;
+    }
+    .aac-body {
+      font-size:12.5px; color:rgba(255,255,255,0.52); line-height:1.6;
+      margin-bottom:16px;
+    }
+    .aac-btn {
+      display:inline-flex; align-items:center; gap:6px;
+      border:1px solid rgba(255,255,255,0.22); border-radius:8px;
+      background:transparent; color:rgba(255,255,255,0.7);
+      font-size:12px; font-weight:600; font-family:var(--prim-font-primary);
+      padding:7px 14px; cursor:pointer; transition:border-color 150ms, color 150ms, background 150ms;
+    }
+    .aac-btn:hover { border-color:rgba(255,255,255,0.5); color:#fff; background:rgba(255,255,255,0.06); }
+
+    /* RIGHT */
+    .right-col { display:flex; flex-direction:column; gap:16px; }
+    .task-row { display:flex; align-items:center; padding:10px 0; border-bottom:1px solid var(--border-light); gap:12px; cursor:pointer; border-radius:var(--radius-sm); }
+    .task-row:last-child { border-bottom:none; }
+    .task-num { min-width:36px; height:28px; background:var(--prim-yellow-50); color:var(--prim-yellow-700); border-radius:var(--radius-sm); display:flex; align-items:center; justify-content:center; font-size:var(--prim-font-size-md); font-weight:var(--prim-font-weight-bold); }
+    .task-num.blue { background:var(--prim-blue-50); color:var(--prim-blue-700); }
+    .task-label { flex:1; font-size:14px; font-weight:var(--prim-font-weight-medium); color:var(--color-text-default); }
+    .task-arrow { color:var(--text-muted); }
+    .task-arrow svg { width:16px; height:16px; }
+
+    /* ACTIVE AGENTS CARD */
+    .agents-card-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:14px; }
+    .agents-card-title { display:flex; align-items:center; gap:8px; }
+    .agents-card-title h3 { font-size:14px; font-weight:700; color:var(--color-text-default); margin:0; }
+    .agents-count-badge { background:#EEF6FF; color:#1852FE; font-size:10px; font-weight:700; border-radius:var(--radius-full); padding:2px 8px; }
+    .agents-manage-link { font-size:12px; font-weight:600; color:#1852FE; text-decoration:none; display:flex; align-items:center; gap:3px; transition:color 120ms; }
+    .agents-manage-link:hover { color:#1242d4; }
+    .agents-manage-link svg { width:13px; height:13px; }
+    /* Agent row */
+    .ag-row { display:flex; align-items:center; gap:10px; padding:9px 0; border-bottom:1px solid var(--prim-grey-50); cursor:pointer; transition:background 120ms; border-radius:6px; }
+    .ag-row:last-child { border-bottom:none; }
+    .ag-row:hover { background:var(--prim-grey-10); padding-left:4px; padding-right:4px; }
+    .ag-icon { width:32px; height:32px; border-radius:8px; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+    .ag-icon svg { width:15px; height:15px; }
+    .ag-main { flex:1; min-width:0; }
+    .ag-name { font-size:13px; font-weight:600; color:var(--color-text-default); line-height:1.3; }
+    .ag-context { font-size:11px; color:var(--prim-grey-400); margin-top:1px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .ag-status { flex-shrink:0; display:inline-flex; align-items:center; gap:4px; border-radius:var(--radius-full); padding:3px 9px; font-size:10px; font-weight:700; line-height:1; }
+    .ag-status-dot { width:5px; height:5px; border-radius:50%; flex-shrink:0; }
+    .ag-status.active    { background:#D3F3DF; color:#147638; }
+    .ag-status.active .ag-status-dot { background:#22C55E; animation:ag-pulse-green 1.8s ease-in-out infinite; }
+    .ag-status.waiting   { background:#FEF9C3; color:#92400E; }
+    .ag-status.waiting .ag-status-dot { background:#EAB305; animation:ag-pulse-amber 1.8s ease-in-out infinite; }
+    .ag-status.processing{ background:#DBEAFE; color:#1D40AF; }
+    .ag-status.processing .ag-status-dot { background:#3B81F6; animation:ag-pulse-blue 1.4s ease-in-out infinite; }
+    .ag-status.idle      { background:#F1F5F9; color:#64748B; }
+    .ag-status.idle .ag-status-dot { background:#94A3B8; }
+    @keyframes ag-pulse-green { 0%,100%{opacity:1} 50%{opacity:0.35} }
+    @keyframes ag-pulse-amber { 0%,100%{opacity:1} 50%{opacity:0.35} }
+    @keyframes ag-pulse-blue  { 0%,100%{opacity:1} 50%{opacity:0.35} }
+    .port-row { padding:10px 0; border-bottom:1px solid var(--border-light); cursor:pointer; }
+    .port-row:last-child { border-bottom:none; }
+    .port-row-header { display:flex; align-items:flex-start; justify-content:space-between; }
+    .port-vessel-name { font-size:14px; font-weight:var(--prim-font-weight-semibold); color:var(--color-text-default); }
+    .port-type { font-size:12px; color:var(--color-text-secondary); }
+    .port-location { font-size:12px; color:var(--color-text-placeholder); margin-top:2px; }
+    .port-date { font-size:12px; color:var(--color-text-placeholder); }
+
+    /* GeoAI Morning Brief Modal */
+    .modal-overlay {
+      position:fixed; inset:0; background:rgba(3,7,18,0.5);
+      backdrop-filter:blur(2px); z-index:1000;
+      display:none; align-items:center; justify-content:center; padding:var(--prim-space-4);
+    }
+    .modal-overlay.open { display:flex; animation:modal-fade 150ms ease; }
+    .modal {
+      background:var(--color-surface-default); border-radius:var(--radius-xl);
+      width:680px; max-height:80vh;
+      box-shadow:var(--shadow-modal); overflow:hidden;
+      display:flex; flex-direction:column; animation:modal-up 200ms ease;
+    }
+    .modal-header {
+      padding:var(--prim-space-5) var(--prim-space-6) var(--prim-space-4);
+      border-bottom:1px solid var(--color-border-default);
+      display:flex; align-items:center; justify-content:space-between; flex-shrink:0;
+    }
+    @keyframes modal-fade { from{opacity:0} to{opacity:1} }
+    @keyframes modal-up { from{opacity:0;transform:translateY(12px) scale(0.98)} to{opacity:1;transform:none} }
+    .modal-title {
+      display:flex; align-items:center; gap:10px;
+    }
+    .modal-ai-icon {
+      width:36px; height:36px;
+      background:linear-gradient(135deg,#1852FE,#7C3AED);
+      border-radius:var(--radius-md);
+      display:flex; align-items:center; justify-content:center; color:#fff;
+    }
+    .modal-ai-icon svg { width:18px; height:18px; }
+    .modal-title h2 { font-size:16px; font-weight:var(--prim-font-weight-semibold); }
+    .modal-title p  { font-size:11px; color:var(--text-muted); }
+    .modal-close { width:32px; height:32px; border-radius:var(--radius-full); background:var(--color-surface-overlay); border:none; cursor:pointer; display:flex; align-items:center; justify-content:center; color:var(--color-text-secondary); transition:background 150ms; }
+    .modal-close:hover { background:var(--color-border-default); color:var(--color-text-default); }
+    .modal-close svg { width:16px; height:16px; }
+    .modal-body { flex:1; overflow-y:auto; padding:20px 24px; display:flex; flex-direction:column; gap:16px; }
+    .modal-body::-webkit-scrollbar { width:4px; }
+    .modal-body::-webkit-scrollbar-thumb { background:#CBD5E1; border-radius:2px; }
+    .brief-date { font-size:11px; color:var(--text-muted); font-weight:600; text-transform:uppercase; letter-spacing:0.5px; }
+    .brief-summary {
+      background:linear-gradient(135deg,var(--prim-blue-10),#F5F3FF);
+      border:1px solid var(--prim-blue-50); border-radius:var(--radius-lg); padding:var(--prim-space-4);
+    }
+    .brief-summary h3 { font-size:var(--prim-font-size-md); font-weight:var(--prim-font-weight-semibold); margin-bottom:8px; display:flex; align-items:center; gap:6px; }
+    .brief-summary p  { font-size:var(--prim-font-size-md); color:var(--color-text-secondary); line-height:var(--prim-line-height-relaxed); }
+    .brief-vessels { display:flex; flex-direction:column; gap:10px; }
+    .brief-vessel-card {
+      border:1px solid var(--border); border-radius:var(--radius-lg);
+      padding:14px; display:flex; gap:12px; align-items:flex-start;
+    }
+    .bvc-icon { width:36px; height:36px; background:var(--brand); border-radius:var(--radius-md); display:flex; align-items:center; justify-content:center; color:#fff; flex-shrink:0; }
+    .bvc-icon svg { width:18px; height:18px; }
+    .bvc-body { flex:1; }
+    .bvc-name { font-size:14px; font-weight:var(--prim-font-weight-semibold); margin-bottom:2px; }
+    .bvc-port { font-size:12px; color:var(--color-text-placeholder); margin-bottom:6px; }
+    .bvc-tags { display:flex; gap:6px; flex-wrap:wrap; }
+    .bvc-tag { display:inline-flex; align-items:center; gap:4px; font-family:var(--prim-font-primary); font-size:var(--prim-font-size-xs); font-weight:var(--prim-font-weight-semibold); border-radius:var(--radius-full); padding:2px 8px; line-height:var(--prim-line-height-tight); white-space:nowrap; }
+    .bvc-tag.info    { background:var(--prim-blue-50); color:var(--prim-blue-700); }
+    .bvc-tag.warn    { background:var(--prim-yellow-50); color:var(--prim-yellow-700); }
+    .bvc-tag.success { background:var(--prim-green-50); color:var(--prim-green-700); }
+    .bvc-tag.danger  { background:var(--color-danger-subtle); color:var(--prim-red-700); }
+    .bvc-note { font-size:12px; color:var(--text-secondary); margin-top:6px; line-height:1.5; }
+    .bvc-source { font-size:10px; color:var(--text-muted); margin-top:4px; display:flex; align-items:center; gap:4px; }
+    .bvc-source svg { width:10px; height:10px; }
+
+    /* Chat bubble */
+    .chat-bubble { position:fixed; bottom:20px; right:20px; width:40px; height:40px; background:var(--card); border-radius:var(--radius-full); box-shadow:var(--shadow-lg); display:flex; align-items:center; justify-content:center; cursor:pointer; border:1px solid var(--border); color:var(--text-secondary); transition:transform 150ms; }
+    .chat-bubble:hover { transform:scale(1.05); }
+    .chat-bubble svg { width:18px; height:18px; }
+
+    /* ── VOYAGE CTA ── */
+    .voyage-cta-wrap { display:flex; align-items:center; gap:10px; margin-top:16px; position:relative; }
+    .voyage-cta {
+      display:inline-flex; align-items:center; gap:7px;
+      background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.18);
+      border-radius:var(--radius-full); padding:8px 20px;
+      color:rgba(255,255,255,0.85); font-size:12px; font-weight:600; font-family:var(--prim-font-primary);
+      cursor:pointer; transition:background 150ms, border-color 150ms;
+    }
+    .voyage-cta:hover { background:rgba(255,255,255,0.14); border-color:rgba(255,255,255,0.28); color:#fff; }
+    .voyage-cta svg { width:14px; height:14px; }
+    .voyage-cta.active { background:rgba(59,130,246,0.2); border-color:rgba(59,130,246,0.4); color:#93C5FD; }
+
+    /* ── VOYAGE KANBAN BOARD ── */
+    #voyageBoard { display:none; flex:1; flex-direction:column; overflow:hidden; padding:24px 20%; }
+    #voyageBoard.active { display:flex; }
+
+    /* Topbar */
+    .vb-topbar { display:flex; align-items:center; gap:8px; margin-bottom:40px; flex-shrink:0; }
+    .vb-topbar-back {
+      display:inline-flex; align-items:center; justify-content:center;
+      background:none; border:none; cursor:pointer; padding:0; margin:0;
+      color:rgba(255,255,255,0.38); transition:color 180ms; font-family:inherit;
+    }
+    .vb-topbar-back:hover { color:rgba(255,255,255,0.75); }
+    .vb-topbar-back svg { width:24px; height:24px; }
+    .vb-topbar-title { font-size:28px; font-weight:700; color:#fff; letter-spacing:-0.4px; }
+    .vb-topbar-sub {
+      margin-left:auto; font-size:12px; color:rgba(255,255,255,0.3);
+      font-weight:500; letter-spacing:0;
+    }
+
+    /* Columns — no card, no border */
+    .vb-columns { display:grid; grid-template-columns:repeat(5,1fr); gap:24px; flex:1; min-height:0; }
+    .vb-col { background:transparent; border:none; border-radius:0; display:flex; flex-direction:column; overflow:hidden; min-height:0; }
+    .vb-col-hdr {
+      padding:0 0 16px 0; display:flex; align-items:center;
+      justify-content:space-between; flex-shrink:0;
+      border-bottom:1px solid rgba(255,255,255,0.06); margin-bottom:14px;
+    }
+    .vb-col-label { font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:1px; }
+    .vb-col-count { font-size:10px; font-weight:600; border-radius:20px; padding:2px 8px; }
+
+    .vb-col.pre-fix .vb-col-label { color:rgba(255,255,255,0.28); }
+    .vb-col.pre-fix .vb-col-count { color:rgba(255,255,255,0.28); background:rgba(255,255,255,0.05); }
+    .vb-col.in-bal .vb-col-label { color:#60A5FA; }
+    .vb-col.in-bal .vb-col-count { background:rgba(59,130,246,0.12); color:#93C5FD; }
+    .vb-col.at-load .vb-col-label { color:#FCD34D; }
+    .vb-col.at-load .vb-col-count { background:rgba(234,179,5,0.12); color:#FDE68A; }
+    .vb-col.in-lad .vb-col-label { color:#4ADE80; }
+    .vb-col.in-lad .vb-col-count { background:rgba(34,197,94,0.12); color:#86EFAC; }
+    .vb-col.at-disch .vb-col-label { color:#C084FC; }
+    .vb-col.at-disch .vb-col-count { background:rgba(168,85,247,0.12); color:#D8B4FE; }
+
+    /* Cards list */
+    .vb-cards {
+      flex:1; overflow-y:auto; padding:2px 0;
+      display:flex; flex-direction:column; gap:10px;
+      scrollbar-width:thin; scrollbar-color:rgba(255,255,255,0.06) transparent;
+    }
+    .vb-cards::-webkit-scrollbar { width:3px; }
+    .vb-cards::-webkit-scrollbar-thumb { background:rgba(255,255,255,0.08); border-radius:2px; }
+
+    /* Vessel card — iOS-inspired: clean glass surface */
+    a.vc { text-decoration:none; }
+    .vc {
+      background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.08);
+      border-radius:14px; padding:16px 18px; cursor:pointer;
+      transition:background 200ms, transform 150ms, box-shadow 200ms;
+      display:flex; flex-direction:column; min-height:178px;
+    }
+    .vc:hover { background:rgba(255,255,255,0.09); transform:translateY(-2px); box-shadow:0 8px 24px rgba(0,0,0,0.25); }
+    .vc-name { font-size:13px; font-weight:700; color:#fff; letter-spacing:0.1px; margin-bottom:4px; }
+    .vc-route { font-size:11px; color:rgba(255,255,255,0.42); margin-bottom:6px; line-height:1.45; }
+    .vc-party { font-size:10px; color:rgba(255,255,255,0.26); margin-bottom:10px; }
+    .vc-badge { display:inline-flex; align-items:center; font-size:9px; font-weight:700; border-radius:20px; padding:3px 9px; letter-spacing:0.2px; }
+    .vc-badge.port    { background:rgba(234,179,5,0.14); color:#FCD34D; }
+    .vc-badge.laden   { background:rgba(34,197,94,0.12); color:#4ADE80; }
+    .vc-badge.ballast { background:rgba(59,130,246,0.12); color:#60A5FA; }
+    .vc-badge.fix     { background:rgba(148,163,184,0.10); color:rgba(255,255,255,0.38); }
+    /* Flag / alert row — always reserved so card height stays uniform */
+    .vc-flag {
+      display:flex; align-items:flex-start; gap:5px;
+      font-size:10px; line-height:1.45; margin-top:9px; min-height:30px;
+      border-radius:6px; padding:5px 7px;
+    }
+    .vc-flag.empty { visibility:hidden; }
+    .vc-flag svg { width:10px; height:10px; flex-shrink:0; margin-top:1px; }
+    .vc-flag.warn   { background:rgba(234,179,5,0.10); color:#FCD34D; }
+    .vc-flag.danger { background:rgba(239,68,68,0.12); color:#FCA5A5; }
+    .vc-flag.action { background:rgba(99,102,241,0.12); color:#A5B4FC; }
+    /* Progress chip — visual filled pill, sits above alert */
+    .vc-prog-chip {
+      position:relative; width:100%; height:22px;
+      border-radius:20px; overflow:hidden; flex-shrink:0;
+      display:flex; align-items:center;
+      padding:0 10px; margin-top:10px;
+      font-size:10px; font-weight:600; letter-spacing:0.2px;
+    }
+    .vc-prog-fill {
+      position:absolute; top:0; left:0; bottom:0;
+      border-radius:0; pointer-events:none;
+      transition:width 500ms ease;
+    }
+    .vc-prog-text { position:relative; z-index:1; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    /* light bg = full chip; dark fill = progress */
+    .vc-prog-chip.chip-ballast              { background:rgba(59,130,246,0.12);  color:#93C5FD; }
+    .vc-prog-chip.chip-ballast .vc-prog-fill{ background:rgba(59,130,246,0.35);  }
+    .vc-prog-chip.chip-load                 { background:rgba(234,179,5,0.12);   color:#FDE068; }
+    .vc-prog-chip.chip-load    .vc-prog-fill{ background:rgba(234,179,5,0.36);   }
+    .vc-prog-chip.chip-laden                { background:rgba(34,197,94,0.11);   color:#86EFAC; }
+    .vc-prog-chip.chip-laden   .vc-prog-fill{ background:rgba(34,197,94,0.32);   }
+    .vc-prog-chip.chip-disch                { background:rgba(168,85,247,0.11);  color:#D8B4FE; }
+    .vc-prog-chip.chip-disch   .vc-prog-fill{ background:rgba(168,85,247,0.32);  }
+    .vc-prog-chip.chip-fix                  { background:rgba(255,255,255,0.05); color:rgba(255,255,255,0.30); }
+    .vc-prog-chip.chip-fix     .vc-prog-fill{ background:rgba(255,255,255,0.10); }
+    /* Meta date — pushed to bottom */
+    .vc-meta { font-size:10px; color:rgba(255,255,255,0.28); letter-spacing:0.1px; margin-top:auto; padding-top:8px; }
+    /* Responsive board padding */
+    @media (max-width:1280px) { #voyageBoard { padding:24px 5% 24px; } }
+  </style>
+</head>
+<body>
+
+<!-- NAV RAIL (Dashboard only) -->
+<nav class="nav-rail collapsed" id="navRail" aria-label="Primary navigation">
+  <!-- Logo + collapse toggle -->
+  <div class="sidebar-logo">
+    <div class="sidebar-logo-icon">
+      <svg width="22" height="22" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <path d="M10.75 9.5H13.25C13.9404 9.5 14.5 10.0596 14.5 10.75V13.25C14.5 13.9404 13.9404 14.5 13.25 14.5H10.75C10.0596 14.5 9.5 13.9404 9.5 13.25V10.75C9.5 10.0596 10.0596 9.5 10.75 9.5Z" fill="#1852FE" stroke="#1852FE"/>
+        <path d="M18.75 9.5H21.25C21.9404 9.5 22.5 10.0596 22.5 10.75V13.25C22.5 13.9404 21.9404 14.5 21.25 14.5H18.75C18.0596 14.5 17.5 13.9404 17.5 13.25V10.75C17.5 10.0596 18.0596 9.5 18.75 9.5Z" fill="#1852FE" stroke="#1852FE"/>
+        <path d="M10.75 17.5H13.25C13.9404 17.5 14.5 18.0596 14.5 18.75V21.25C14.5 21.9404 13.9404 22.5 13.25 22.5H10.75C10.0596 22.5 9.5 21.9404 9.5 21.25V18.75C9.5 18.0596 10.0596 17.5 10.75 17.5Z" fill="#1852FE" stroke="#1852FE"/>
+        <path d="M18.75 17.5H21.25C21.9404 17.5 22.5 18.0596 22.5 18.75V21.25C22.5 21.9404 21.9404 22.5 21.25 22.5H18.75C18.0596 22.5 17.5 21.9404 17.5 21.25V18.75C17.5 18.0596 18.0596 17.5 18.75 17.5Z" fill="#1852FE" stroke="#1852FE"/>
+      </svg>
+    </div>
+    <div class="sidebar-logo-text">
+      <div class="sidebar-logo-name">GeoOne</div>
+      <div class="sidebar-logo-sub">Maritime Platform</div>
+    </div>
+    <button class="nav-collapse-btn" id="collapseBtn" aria-label="Toggle sidebar">
+      <svg class="collapse-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg>
+      <svg class="collapse-hamburger" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M4 12H20" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M4 6.75H20" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M4 17.25H20" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+  </div>
+
+  <!-- Nav items -->
+  <div class="sidebar-nav">
+    <div class="nav-section">
+      <a href="index.html" class="nav-item active" aria-label="Dashboard">
+        <svg width="20" height="20" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path d="M10.75 9.5H13.25C13.9404 9.5 14.5 10.0596 14.5 10.75V13.25C14.5 13.9404 13.9404 14.5 13.25 14.5H10.75C10.0596 14.5 9.5 13.9404 9.5 13.25V10.75C9.5 10.0596 10.0596 9.5 10.75 9.5Z" fill="#212121" stroke="black"/>
+          <path d="M18.75 9.5H21.25C21.9404 9.5 22.5 10.0596 22.5 10.75V13.25C22.5 13.9404 21.9404 14.5 21.25 14.5H18.75C18.0596 14.5 17.5 13.9404 17.5 13.25V10.75C17.5 10.0596 18.0596 9.5 18.75 9.5Z" fill="#212121" stroke="black"/>
+          <path d="M10.75 17.5H13.25C13.9404 17.5 14.5 18.0596 14.5 18.75V21.25C14.5 21.9404 13.9404 22.5 13.25 22.5H10.75C10.0596 22.5 9.5 21.9404 9.5 21.25V18.75C9.5 18.0596 10.0596 17.5 10.75 17.5Z" fill="#212121" stroke="black"/>
+          <path d="M18.75 17.5H21.25C21.9404 17.5 22.5 18.0596 22.5 18.75V21.25C22.5 21.9404 21.9404 22.5 21.25 22.5H18.75C18.0596 22.5 17.5 21.9404 17.5 21.25V18.75C17.5 18.0596 18.0596 17.5 18.75 17.5Z" fill="#212121" stroke="black"/>
+        </svg>
+        <span class="nav-item-label">Dashboard</span>
+      </a>
+      <a href="vessel.html" class="nav-item" aria-label="Vessel 360">
+        <svg width="20" height="20" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <g clip-path="url(#clip0_dash)">
+            <path d="M22.4668 20.751C22.6767 20.7417 22.8815 20.8213 23.0303 20.9697C23.0334 20.9724 23.0387 20.9758 23.0439 20.9805C23.0638 20.9979 23.1003 21.0285 23.1523 21.0684C23.2574 21.1486 23.4303 21.2698 23.6777 21.4072C24.1731 21.6823 24.9759 22.0301 26.1484 22.2646L25.8535 23.7354C24.5274 23.4701 23.5788 23.0675 22.9492 22.7178C22.8121 22.6416 22.6901 22.567 22.583 22.498C21.5209 23.4733 20.332 23.7032 19.2471 23.5137C18.0532 23.3047 17.045 22.6044 16.4707 22.0303L16.6064 21.8936C17.2531 21.7125 17.8105 21.5665 18.2275 21.5176C18.6007 21.7534 19.0419 21.955 19.5049 22.0361C20.2481 22.1659 21.1021 22.0068 21.9248 21.0195L21.9785 20.9619C22.1093 20.8351 22.283 20.7594 22.4668 20.751ZM19.6836 9C20.0173 9.00026 20.2891 9.2982 20.2891 9.66504V11.2158H21.7002C22.4782 11.2162 23.1113 11.9123 23.1113 12.7676V15.9814L25.4463 16.9688C26.1338 17.2597 26.4992 18.0657 26.2969 18.8438L25.8428 20.6133C25.5148 20.4812 25.2139 20.2704 24.9971 19.9834C24.6529 19.5262 24.1446 19.2629 23.6006 19.2617C23.0628 19.2617 22.5559 19.5217 22.21 19.9746C22.135 20.0738 22.0504 20.1657 21.9609 20.248C21.603 20.5777 21.1481 20.7597 20.6797 20.7598C20.3867 20.7597 20.1022 20.6902 19.8438 20.5605C19.8577 20.5327 19.9067 20.5122 20 20.5C21 19 21 17 20.5 16.5C19.8779 15.8779 19.6433 15.8548 19.5684 15.4199L20.459 15.0439C20.5983 14.9856 20.7532 14.9856 20.8926 15.0439L21.9014 15.4697V12.7676C21.9014 12.6455 21.8112 12.5463 21.7002 12.5459H19.5498V12C19.5006 10.8928 18.1237 10.0358 17.0625 10.0029V9.66504C17.0625 9.29804 17.3341 9 17.668 9H19.6836Z" fill="#212121"/>
+            <path d="M12.3293 8.5H14.6731C14.7553 8.50012 14.8762 8.58144 14.8762 8.75V11H17.0168C17.6157 11 18.1575 11.5303 18.1575 12.25V16.2793C18.1573 16.4478 18.0365 16.5293 17.9543 16.5293C17.8722 16.5291 17.7514 16.4476 17.7512 16.2793V12.25C17.7512 11.8667 17.4522 11.5 17.0168 11.5H9.98462C9.54935 11.5001 9.25024 11.8667 9.25024 12.25V16.2793C9.2501 16.4478 9.12925 16.5293 9.04712 16.5293C8.96499 16.5292 8.84414 16.4477 8.84399 16.2793V12.25C8.84399 11.5304 9.38589 11.0001 9.98462 11H12.1252V8.75C12.1252 8.58132 12.2472 8.5 12.3293 8.5Z" fill="#212121" stroke="black"/>
+            <path d="M13.4368 14.5127C13.478 14.4959 13.5234 14.495 13.5647 14.5117L18.8577 16.6836C19.4061 16.9088 19.7284 17.5517 19.553 18.2061V18.208L19.1887 19.583C19.1181 19.5273 19.0525 19.4671 18.9934 19.4023L18.9192 19.3145C18.4283 18.6822 17.6949 18.3089 16.9016 18.3076H16.9006C16.1152 18.3077 15.3844 18.6763 14.8918 19.3018L14.8899 19.3047C14.8214 19.3927 14.7442 19.4747 14.6624 19.5479C14.3352 19.8402 13.9242 19.997 13.5061 19.9971C12.9727 19.9971 12.4641 19.7499 12.1125 19.3027V19.3018C11.6161 18.6721 10.8839 18.3096 10.0442 18.3096H10.0266L10.0139 18.3105C9.25515 18.3477 8.55271 18.7146 8.08423 19.3154C8.00667 19.4149 7.91919 19.503 7.82446 19.5811L7.45044 18.207C7.27504 17.5496 7.59787 16.9072 8.14478 16.6826V16.6836L13.4368 14.5127Z" fill="#212121" stroke="black"/>
+            <path d="M20.2752 23.5005C19.016 23.5005 17.8215 23.0105 16.897 22.1325C16.8651 22.1625 16.8332 22.1915 16.8013 22.2205C14.8314 23.9815 11.9773 23.8925 10.1039 22.1335C9.17943 23.0105 7.98491 23.5015 6.72569 23.5015H6.6985C6.31032 23.4995 5.99716 23.1615 5.99903 22.7475C6.00091 22.3345 6.31501 22.0015 6.70225 22.0015C6.71068 22.0015 6.71819 22.0015 6.72569 22.0015C7.82551 22.0015 8.85783 21.4845 9.55917 20.5815C9.69325 20.4105 9.90234 20.3195 10.1011 20.3105C10.3093 20.3105 10.5062 20.4085 10.6402 20.5785C11.9623 22.2605 14.3213 22.4815 15.8965 21.0725C16.0634 20.9235 16.22 20.7565 16.3597 20.5785C16.4938 20.4085 16.6907 20.3105 16.8988 20.3105H16.9007C17.1089 20.3105 17.3067 20.4105 17.4399 20.5815C18.1459 21.4905 19.227 21.9995 20.293 22.0015H20.2968C20.684 22.0015 20.9981 22.3345 21 22.7475C21.0019 23.1615 20.6887 23.4995 20.3005 23.5015H20.2733L20.2752 23.5005Z" fill="#212121"/>
+          </g>
+          <defs><clipPath id="clip0_dash"><rect width="18" height="18" fill="white" transform="translate(7 7)"/></clipPath></defs>
+        </svg>
+        <span class="nav-item-label">Vessel 360</span>
+      </a>
+      <a href="geonix.html" class="nav-item" aria-label="Geonix">
+        <svg width="20" height="20" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <g clip-path="url(#clip_idx_geonix)">
+            <path d="M6.45452 13.2408C6.45452 13.2408 7.80284 13.6153 8.40464 14.2163C9.00808 14.8189 9.3797 16.1674 9.3797 16.1674C9.6586 16.7255 10.5744 16.7255 10.8533 16.1674C10.8533 16.1674 11.2249 14.8189 11.8283 14.2163C12.4301 13.6153 13.7784 13.2408 13.7784 13.2408C14.0573 13.1012 14.2341 12.8156 14.2341 12.5036C14.2341 12.1916 14.0573 11.906 13.7784 11.7665C13.7784 11.7665 12.4301 11.3919 11.8283 10.7909C11.2249 10.1883 10.8533 8.83983 10.8533 8.83983C10.7138 8.56079 10.4283 8.38392 10.1165 8.38392C9.80464 8.38392 9.51915 8.56079 9.3797 8.83983C9.3797 8.83983 9.00808 10.1883 8.40464 10.7909C7.80284 11.3919 6.45452 11.7665 6.45452 11.7665C6.17562 11.906 5.99884 12.1916 5.99884 12.5036C5.99884 12.8156 6.17562 13.1012 6.45452 13.2408Z" fill="#212121"/>
+            <path d="M14.4294 9.29364L15.2652 9.71173L15.6831 10.5479C15.8026 10.7871 16.1951 10.7871 16.3146 10.5479L16.7325 9.71173L17.5683 9.29364C17.6878 9.23385 17.7635 9.11144 17.7635 8.97772C17.7635 8.84401 17.6878 8.7216 17.5683 8.6618L16.7325 8.24371L16.3146 7.40753C16.2548 7.28795 16.1325 7.21214 15.9988 7.21214C15.8652 7.21214 15.7428 7.28795 15.6831 7.40753L15.2652 8.24371L14.4294 8.6618C14.3099 8.7216 14.2341 8.84401 14.2341 8.97772C14.2341 9.11144 14.3099 9.23385 14.4294 9.29364Z" fill="#212121"/>
+            <path d="M12.6616 19.5311C12.6616 19.5311 14.9635 20.0773 16.0046 21.0641C16.9956 22.0034 17.6762 24.1301 17.6762 24.1301C18.1543 25.0071 19.7242 25.0071 20.2023 24.1301C20.2023 24.1301 20.8828 22.0034 21.8738 21.0641C22.915 20.0773 25.2169 19.5311 25.2169 19.5311C25.695 19.3119 25.998 18.863 25.998 18.3727C25.998 17.8825 25.695 17.4336 25.2169 17.2144C25.2169 17.2144 22.915 16.6682 21.8738 15.6814C20.8828 14.7421 20.2023 12.6154 20.2023 12.6154C19.9632 12.1769 19.4738 11.899 18.9392 11.899C18.4046 11.899 17.9152 12.1769 17.6762 12.6154C17.6762 12.6154 16.9956 14.7421 16.0046 15.6814C14.9635 16.6682 12.6616 17.2144 12.6616 17.2144C12.1835 17.4336 11.8804 17.8825 11.8804 18.3727C11.8804 18.863 12.1835 19.3119 12.6616 19.5311Z" fill="#212121"/>
+          </g>
+          <defs><clipPath id="clip_idx_geonix"><rect width="20" height="17.5758" fill="white" transform="translate(26 24.7878) rotate(-180)"/></clipPath></defs>
+        </svg>
+        <span class="nav-item-label">Geonix</span>
+      </a>
+    </div>
+  </div>
+
+  <!-- Footer: user -->
+  <div class="sidebar-footer">
+    <div class="sidebar-user">
+      <div class="nav-avatar">V</div>
+      <div class="sidebar-user-info">
+        <div class="sidebar-user-name">Vishnu</div>
+        <div class="sidebar-user-role">Fleet Manager</div>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!-- MAIN -->
+<main class="main">
+
+  <!-- Hero -->
+  <div class="hero" role="banner">
+    <svg class="world-dots" viewBox="0 0 1400 220" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+      <defs>
+        <pattern id="dotPat" x="0" y="0" width="8" height="8" patternUnits="userSpaceOnUse"><circle cx="1.5" cy="1.5" r="1.2" fill="#60A5FA"/></pattern>
+        <clipPath id="continents">
+          <ellipse cx="230" cy="90" rx="120" ry="70"/>
+          <ellipse cx="300" cy="170" rx="60" ry="50"/>
+          <ellipse cx="650" cy="70" rx="80" ry="55"/>
+          <ellipse cx="680" cy="155" rx="75" ry="60"/>
+          <ellipse cx="950" cy="80" rx="160" ry="70"/>
+          <ellipse cx="1130" cy="165" rx="65" ry="45"/>
+        </clipPath>
+      </defs>
+      <rect width="1400" height="220" fill="url(#dotPat)" clip-path="url(#continents)"/>
+    </svg>
+
+    <!-- GeoAI Morning Brief -->
+    <button class="geoai-brief-btn" onclick="document.getElementById('briefModal').classList.add('open')" aria-label="Open GeoAI Morning Brief">
+      <span class="ai-dot" aria-hidden="true"></span>
+      GeoAI Morning Brief
+    </button>
+
+    <button class="map-view-btn" aria-label="Switch to Map View">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
+      <span>Map View</span>
+    </button>
+
+    <h1 class="hero-title">Welcome to GeoOne!</h1>
+    <p class="hero-subtitle">An Integrated Voyage Operations Suite (VOS)</p>
+    <div class="hero-search" role="search">
+      <span class="hero-search-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      </span>
+      <input type="search" placeholder="Search by IMO or Vessel Name" aria-label="Search by IMO or Vessel Name" />
+    </div>
+  </div>
+
+  <!-- Content Grid -->
+  <div class="content">
+
+    <!-- LEFT: Quick Actions -->
+    <aside class="quick-actions" aria-label="Quick Actions">
+      <div class="qa-header"><h3>Quick Actions</h3><p>Essentials for your everyday sailing</p></div>
+      <div class="qa-grid">
+        <button class="qa-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 9h6M9 13h4"/></svg><span class="qa-btn-label">Create<br/>Bunker Req</span></button>
+        <button class="qa-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg><span class="qa-btn-label">Analyze<br/>TCE Variance</span></button>
+        <button class="qa-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg><span class="qa-btn-label">Optimise<br/>Voyage</span></button>
+        <button class="qa-btn disabled" disabled><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg><span class="qa-btn-label">Raise<br/>a Claim</span><svg class="qa-lock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></button>
+        <button class="qa-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg><span class="qa-btn-label">Email<br/>Templates</span></button>
+        <button class="qa-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s-8-4.5-8-11.8A8 8 0 0 1 12 2a8 8 0 0 1 8 8.2c0 7.3-8 11.8-8 11.8z"/><circle cx="12" cy="10" r="3"/></svg><span class="qa-btn-label">Create<br/>Port Call</span></button>
+        <button class="qa-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg><span class="qa-btn-label">Send<br/>Pre fix Mail</span></button>
+        <button class="qa-btn disabled" disabled><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg><span class="qa-btn-label">Plan your<br/>Bunker</span><svg class="qa-lock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></button>
+      </div>
+      <div class="geonix-card">
+        <span class="geonix-ai-badge">AI</span>
+        <div class="geonix-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M9.94 3.94a1 1 0 0 1 .86-.44 1 1 0 0 1 .86.44l1.44 2.16 2.44.78a1 1 0 0 1 .44 1.62l-1.6 1.74.2 2.56a1 1 0 0 1-1.38.98L10.8 13l-2.44.78a1 1 0 0 1-1.38-.98l.2-2.56-1.6-1.74a1 1 0 0 1 .44-1.62l2.44-.78 1.44-2.16z"/><path d="M4 20l2-2"/><path d="M20 4l-2 2"/><circle cx="19" cy="19" r="1"/><circle cx="5" cy="5" r="1"/></svg></div>
+        <h4>Geonix</h4>
+        <p>Smart AI for actionable insights in commercial voyage operations</p>
+        <div class="geonix-link" role="button" tabindex="0">Get Started <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></div>
+      </div>
+    </aside>
+
+    <!-- MIDDLE -->
+    <div class="middle-col">
+
+      <!-- Fleet Alerts -->
+      <section class="card" aria-labelledby="alerts-title">
+        <div class="card-header"><h3 id="alerts-title">My Fleet Alerts</h3><p>No. of vessels having alerts</p></div>
+        <div class="alert-chips" role="list">
+          <div class="alert-chip" role="listitem">
+            <div class="alert-chip-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"/></svg></div>
+            <div><div class="alert-chip-num">3</div><div class="alert-chip-label">Facing Bad Weather</div></div>
+          </div>
+          <div class="alert-chip" role="listitem">
+            <div class="alert-chip-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div>
+            <div><div class="alert-chip-num">8</div><div class="alert-chip-label">High TCE Variance</div></div>
+          </div>
+          <div class="alert-chip" role="listitem">
+            <div class="alert-chip-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></div>
+            <div><div class="alert-chip-num">3</div><div class="alert-chip-label">Inspection Due</div></div>
+          </div>
+          <div class="alert-chip" role="listitem">
+            <div class="alert-chip-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v14c0 1.66 4.03 3 9 3s9-1.34 9-3V5"/><path d="M3 12c0 1.66 4.03 3 9 3s9-1.34 9-3"/></svg></div>
+            <div><div class="alert-chip-num">1</div><div class="alert-chip-label">Low Bunker</div></div>
+          </div>
+          <div class="alert-chip" role="listitem">
+            <div class="alert-chip-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
+            <div><div class="alert-chip-num">1</div><div class="alert-chip-label">Speed Deviation</div></div>
+          </div>
+          <div class="alert-chip" role="listitem">
+            <div class="alert-chip-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22a7 7 0 0 0 7-7c0-2-1-3.9-3-5.5s-3.5-4-4-6.5c-.5 2.5-2 4.9-4 6.5C6 11.1 5 13 5 15a7 7 0 0 0 7 7z"/></svg></div>
+            <div><div class="alert-chip-num">2</div><div class="alert-chip-label">High Consumption</div></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- My Vessels — iOS list style, fills remaining height -->
+      <section class="card vessel-card-wrap" aria-labelledby="vessels-title" style="padding:0;">
+        <div style="padding:var(--prim-space-5) var(--prim-space-5) 0;">
+          <div class="vessels-header">
+            <h3 id="vessels-title">My Vessels</h3>
+            <button class="voyage-cta-card" id="voyageBtn" onclick="toggleVoyageBoard()">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 18l4-8 4 3 4-8 4 8"/><path d="M2 18h20"/><path d="M6 21H18"/></svg>
+              Voyages Overview
+            </button>
+          </div>
+          <p class="vessels-subtitle">14 vessels · fleet overview</p>
+        </div>
+        <div class="vessel-list" style="padding:0 var(--prim-space-5) var(--prim-space-5);">
+          <a href="vessel.html" class="vessel-row">
+            <div class="vessel-icon-sm">WM</div>
+            <div class="vessel-info"><div class="vessel-name">WONDER MIMOSA</div><div class="vessel-route-ports">Las Palmas → Corpus Christi</div></div>
+            <span class="status-badge status-at-port">At Port</span>
+            <svg class="vessel-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+          </a>
+          <a href="vessel.html" class="vessel-row">
+            <div class="vessel-icon-sm">SC</div>
+            <div class="vessel-info"><div class="vessel-name">STI ST CHARLES</div><div class="vessel-route-ports">Houston → Antwerp</div></div>
+            <span class="status-badge status-at-port">At Port</span>
+            <svg class="vessel-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+          </a>
+          <a href="vessel.html" class="vessel-row">
+            <div class="vessel-icon-sm">CL</div>
+            <div class="vessel-info"><div class="vessel-name">STI CLAPHAM</div><div class="vessel-route-ports">Jorf Lasfar → Le Havre</div></div>
+            <span class="status-badge status-at-port">At Port</span>
+            <svg class="vessel-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+          </a>
+          <a href="vessel.html" class="vessel-row">
+            <div class="vessel-icon-sm">PO</div>
+            <div class="vessel-info"><div class="vessel-name">STI POPLAR</div><div class="vessel-route-ports">Augusta → Koper</div></div>
+            <span class="status-badge status-in-passage">In Passage</span>
+            <svg class="vessel-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+          </a>
+          <a href="vessel.html" class="vessel-row">
+            <div class="vessel-icon-sm">BH</div>
+            <div class="vessel-info"><div class="vessel-name">STI BLACK HAWK</div><div class="vessel-route-ports">Antwerp → Milford Haven</div></div>
+            <span class="status-badge status-at-port">At Port</span>
+            <svg class="vessel-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+          </a>
+          <a href="vessel.html" class="vessel-row">
+            <div class="vessel-icon-sm">LG</div>
+            <div class="vessel-info"><div class="vessel-name">LAGOM</div><div class="vessel-route-ports">Thameshaven → Amsterdam</div></div>
+            <span class="status-badge status-in-passage">In Passage</span>
+            <svg class="vessel-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+          </a>
+          <a href="vessel.html" class="vessel-row">
+            <div class="vessel-icon-sm">MU</div>
+            <div class="vessel-info"><div class="vessel-name">MURMURE</div><div class="vessel-route-ports">Baton Rouge → New Jersey</div></div>
+            <span class="status-badge status-in-passage">In Passage</span>
+            <svg class="vessel-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+          </a>
+          <a href="vessel.html" class="vessel-row">
+            <div class="vessel-icon-sm">SY</div>
+            <div class="vessel-info"><div class="vessel-name">STI SYMPHONY</div><div class="vessel-route-ports">Bonny → Luanda</div></div>
+            <span class="status-badge status-at-port">At Port</span>
+            <svg class="vessel-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+          </a>
+          <a href="vessel.html" class="vessel-row">
+            <div class="vessel-icon-sm">AU</div>
+            <div class="vessel-info"><div class="vessel-name">AUGENSTERN</div><div class="vessel-route-ports">Lagos → Port Harcourt</div></div>
+            <span class="status-badge status-at-port">At Port</span>
+            <svg class="vessel-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+          </a>
+        </div>
+      </section>
+    </div>
+
+    <!-- RIGHT -->
+    <div class="right-col">
+
+      <!-- Agent Action Card — Tank Cleaning -->
+      <div class="agent-action-card" onclick="window.location='geonix.html'">
+        <span class="aac-badge">AGENT</span>
+        <div class="aac-label">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M13 2L4.09 12.97 12 12l-1 10L20.91 11H13L14 2z"/></svg>
+          Action Required
+        </div>
+        <div class="aac-title">Tank cleaning determination ready</div>
+        <div class="aac-body">Next cargo: ULSD 10ppm · 4 tanks · Shell Guide v2.4 · Awaiting your approval before sending to master.</div>
+        <button class="aac-btn" onclick="event.stopPropagation(); window.location='geonix.html'">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="13" height="13"><path d="M7 2h10a3 3 0 013 3v7a3 3 0 01-3 3h-1.586l-2.707 2.707A1 1 0 0111 17v-2H7a3 3 0 01-3-3V5a3 3 0 013-3z"/></svg>
+          Tank Cleaning Agent
+        </button>
+      </div>
+
+      <!-- Agent Action Card — CP & VO: Master Instructions -->
+      <div class="agent-action-card" style="border-color:rgba(99,102,241,0.45);box-shadow:0 0 0 1px rgba(99,102,241,0.15), 0 4px 24px rgba(79,70,229,0.18);" onclick="window.location='vessel.html'">
+        <span class="aac-badge" style="background:#4F46E5;">AGENT</span>
+        <div class="aac-label" style="color:#A5B4FC;">
+          <svg viewBox="0 0 24 24" fill="currentColor" width="13" height="13"><path d="M13 2L4.09 12.97 12 12l-1 10L20.91 11H13L14 2z"/></svg>
+          ⚡ Action Required
+        </div>
+        <div class="aac-title">Sailing instructions ready to send</div>
+        <div class="aac-body">STI CLAPHAM · Voyage 20260514 · ALGECIRAS → ROTTERDAM · Awaiting approval before sending to master.</div>
+        <button class="aac-btn" onclick="event.stopPropagation(); window.location='vessel.html'">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="13" height="13"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          CP &amp; VO Agent →
+        </button>
+      </div>
+
+      <!-- Agent Action Card — CP & VO: CP Summary (teal, lower urgency) -->
+      <div class="agent-action-card" style="border-color:rgba(12,166,120,0.45);box-shadow:0 0 0 1px rgba(12,166,120,0.15), 0 4px 24px rgba(12,166,120,0.14);" onclick="window.location='vessel.html'">
+        <span class="aac-badge" style="background:#0CA678;">AGENT</span>
+        <div class="aac-label" style="color:#6EE7B7;">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="13" height="13"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+          📋 Review
+        </div>
+        <div class="aac-title">CP summary ready to acknowledge</div>
+        <div class="aac-body">STI CLAPHAM · 24 fields extracted · SHELL VOVOY 93 · 3 clauses flagged.</div>
+        <button class="aac-btn" onclick="event.stopPropagation(); window.location='vessel.html'">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="13" height="13"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          View CP Summary →
+        </button>
+      </div>
+
+      <!-- Active Agents Card -->
+      <section class="card" aria-labelledby="agents-title">
+        <div class="agents-card-header">
+          <div class="agents-card-title">
+            <h3 id="agents-title">Active Agents</h3>
+            <span class="agents-count-badge">5 running</span>
+          </div>
+          <a href="geonix.html" class="agents-manage-link">
+            Manage
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+          </a>
+        </div>
+
+        <!-- Tank Cleaning Agent -->
+        <div class="ag-row" onclick="window.location='vessel.html?slide=1'" title="Open Tank Cleaning Agent">
+          <div class="ag-icon" style="background:#EEF6FF;">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#1852FE" stroke-width="2"><path d="M12 2a10 10 0 1 0 10 10"/><path d="M12 6v6l4 2"/><path d="M18 2v4m2-2h-4"/></svg>
+          </div>
+          <div class="ag-main">
+            <div class="ag-name">Tank Cleaning Agent</div>
+            <div class="ag-context">STI CLAPHAM · Awaiting operator approval</div>
+          </div>
+          <span class="ag-status waiting"><span class="ag-status-dot"></span>Input needed</span>
+        </div>
+
+        <!-- CP & VO Agent (Sailing Instructions) -->
+        <div class="ag-row" onclick="window.location='vessel.html'" title="Open CP & VO Agent">
+          <div class="ag-icon" style="background:#EDE9FE;">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#4F46E5" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+          </div>
+          <div class="ag-main">
+            <div class="ag-name">CP &amp; VO Agent</div>
+            <div class="ag-context">STI CLAPHAM · Sailing instructions ready</div>
+          </div>
+          <span class="ag-status waiting"><span class="ag-status-dot"></span>Input needed</span>
+        </div>
+
+        <!-- Voyage Estimator -->
+        <div class="ag-row" onclick="window.location='geonix.html'" title="Open Voyage Estimator">
+          <div class="ag-icon" style="background:#FEF3C7;">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#D97706" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/><path d="M3 17l4-8 4 3 4-8 4 8"/></svg>
+          </div>
+          <div class="ag-main">
+            <div class="ag-name">Voyage Estimator</div>
+            <div class="ag-context">WONDER MIMOSA · Estimating voyage P&amp;L</div>
+          </div>
+          <span class="ag-status processing"><span class="ag-status-dot"></span>Processing</span>
+        </div>
+
+        <!-- Fleet Compliance Agent -->
+        <div class="ag-row" onclick="window.location='geonix.html'" title="Open Fleet Compliance Agent">
+          <div class="ag-icon" style="background:#D1FAE5;">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#059669" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          </div>
+          <div class="ag-main">
+            <div class="ag-name">Fleet Compliance</div>
+            <div class="ag-context">12 vessels · CII &amp; FuelEU monitoring</div>
+          </div>
+          <span class="ag-status active"><span class="ag-status-dot"></span>Active</span>
+        </div>
+
+        <!-- Bunker Optimizer -->
+        <div class="ag-row" onclick="window.location='geonix.html'" title="Open Bunker Optimizer">
+          <div class="ag-icon" style="background:#FFF7ED;">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#EA580C" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 3v18"/><path d="M3 9h18"/></svg>
+          </div>
+          <div class="ag-main">
+            <div class="ag-name">Bunker Optimizer</div>
+            <div class="ag-context">MURMURE · Stem confirmation pending</div>
+          </div>
+          <span class="ag-status idle"><span class="ag-status-dot"></span>Idle</span>
+        </div>
+
+      </section>
+
+      <section class="card" aria-labelledby="portcalls-title">
+        <div class="card-header"><h3 id="portcalls-title">Upcoming Port Calls</h3><p>Vessels reaching a port soon</p></div>
+        <div role="list">
+          <div class="port-row" role="listitem"><div class="port-row-header"><span class="port-vessel-name">STI DONALD C TRAUSCHT</span><div style="text-align:right;"><div class="port-type">Arrival</div><div class="port-date">19 May 2026</div></div></div><div class="port-location">Bordeaux</div></div>
+          <div class="port-row" role="listitem"><div class="port-row-header"><span class="port-vessel-name">MURMURE</span><div style="text-align:right;"><div class="port-type">Arrival</div><div class="port-date">21 May 2026</div></div></div><div class="port-location">New Jersey, NY</div></div>
+          <div class="port-row" role="listitem"><div class="port-row-header"><span class="port-vessel-name">STI SYMPHONY</span><div style="text-align:right;"><div class="port-type">Arrival</div><div class="port-date">24 May 2026</div></div></div><div class="port-location">Luanda</div></div>
+          <div class="port-row" role="listitem"><div class="port-row-header"><span class="port-vessel-name">LAGOM</span><div style="text-align:right;"><div class="port-type">Arrival</div><div class="port-date">26 May 2026</div></div></div><div class="port-location">Amsterdam</div></div>
+          <div class="port-row" role="listitem"><div class="port-row-header"><span class="port-vessel-name">AUGENSTERN</span><div style="text-align:right;"><div class="port-type">Arrival</div><div class="port-date">31 May 2026</div></div></div><div class="port-location">Port Harcourt</div></div>
+        </div>
+      </section>
+    </div>
+
+  </div>
+
+  <!-- Voyage Kanban Board -->
+  <div id="voyageBoard">
+    <div class="vb-topbar">
+      <button class="vb-topbar-back" onclick="toggleVoyageBoard()" aria-label="Back to Dashboard">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
+      </button>
+      <h2 class="vb-topbar-title">Voyages Overview</h2>
+      <span class="vb-topbar-sub">54 active voyages</span>
+    </div>
+
+    <div class="vb-columns">
+
+      <!-- PRE-FIXTURE — 2 vessels -->
+      <div class="vb-col pre-fix">
+        <div class="vb-col-hdr">
+          <span class="vb-col-label">Pre-Fixture</span>
+          <span class="vb-col-count">5</span>
+        </div>
+        <div class="vb-cards">
+
+          <a href="vessel.html?v=NORDIC+BREEZE" class="vc">
+            <div class="vc-name">NORDIC BREEZE</div>
+            <div class="vc-route">Rotterdam → TBN</div>
+            <div class="vc-party">Vitol SA</div>
+            <span class="vc-badge fix">Negotiating</span>
+            <div class="vc-prog-chip chip-fix">
+              <span class="vc-prog-text">Laycan · 28–30 May</span>
+            </div>
+            <div class="vc-flag action">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+              CP terms not yet confirmed
+            </div>
+          </a>
+
+          <a href="vessel.html?v=ZEPHYR+III" class="vc">
+            <div class="vc-name">ZEPHYR III</div>
+            <div class="vc-route">Fujairah → TBN</div>
+            <div class="vc-party">Trafigura</div>
+            <span class="vc-badge fix">On Subjects</span>
+            <div class="vc-prog-chip chip-fix">
+              <span class="vc-prog-text">Laycan · 1–3 Jun</span>
+            </div>
+            <div class="vc-flag warn">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+              Heating instructions not confirmed
+            </div>
+          </a>
+
+        </div>
+      </div>
+
+      <!-- IN BALLAST — 3 vessels -->
+      <div class="vb-col in-bal">
+        <div class="vb-col-hdr">
+          <span class="vb-col-label">In Ballast</span>
+          <span class="vb-col-count">11</span>
+        </div>
+        <div class="vb-cards">
+
+          <a href="vessel.html?v=WONDER+MIMOSA" class="vc">
+            <div class="vc-name">WONDER MIMOSA</div>
+            <div class="vc-route">Las Palmas → Corpus Christi</div>
+            <div class="vc-party">Mercuria</div>
+            <div class="vc-prog-chip chip-ballast">
+              <div class="vc-prog-fill" style="width:20%"></div>
+              <span class="vc-prog-text">Ballast leg · 20%</span>
+            </div>
+            <div class="vc-flag danger">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+              Speed deviation flagged — BF7 weather hold
+            </div>
+            <div class="vc-meta">ETA Load: 5 Jun 2026</div>
+          </a>
+
+          <a href="vessel.html?v=STI+JERMYN" class="vc">
+            <div class="vc-name">STI JERMYN</div>
+            <div class="vc-route">Houston → Fujairah</div>
+            <div class="vc-party">Gunvor</div>
+            <div class="vc-prog-chip chip-ballast">
+              <div class="vc-prog-fill" style="width:35%"></div>
+              <span class="vc-prog-text">Ballast leg · 35%</span>
+            </div>
+            <div class="vc-flag warn">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+              Bunker stem at Fujairah unconfirmed
+            </div>
+            <div class="vc-meta">ETA Load: 2 Jun 2026</div>
+          </a>
+
+          <a href="vessel.html?v=STI+CLAPHAM" class="vc">
+            <div class="vc-name">STI CLAPHAM</div>
+            <div class="vc-route">Jorf Lasfar → Le Havre</div>
+            <div class="vc-party">Total Energies</div>
+            <div class="vc-prog-chip chip-ballast">
+              <div class="vc-prog-fill" style="width:80%"></div>
+              <span class="vc-prog-text">Ballast leg · 80%</span>
+            </div>
+            <div class="vc-flag empty">placeholder</div>
+            <div class="vc-meta">ETA Load: 26 May 2026</div>
+          </a>
+
+        </div>
+      </div>
+
+      <!-- AT LOAD PORT — 2 vessels -->
+      <div class="vb-col at-load">
+        <div class="vb-col-hdr">
+          <span class="vb-col-label">At Load Port</span>
+          <span class="vb-col-count">6</span>
+        </div>
+        <div class="vb-cards">
+
+          <a href="vessel.html?v=ATLANTIC+GLORY" class="vc">
+            <div class="vc-name">ATLANTIC GLORY</div>
+            <div class="vc-route">Ras Tanura → Rotterdam</div>
+            <div class="vc-party">Vitol SA</div>
+            <div class="vc-prog-chip chip-load">
+              <div class="vc-prog-fill" style="width:60%"></div>
+              <span class="vc-prog-text">Loading · 60%</span>
+            </div>
+            <div class="vc-flag action">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+              SOF to issue on departure
+            </div>
+            <div class="vc-meta">ETC: 25 May 2026</div>
+          </a>
+
+          <a href="vessel.html?v=STI+ST+CHARLES" class="vc">
+            <div class="vc-name">STI ST CHARLES</div>
+            <div class="vc-route">Houston → Antwerp</div>
+            <div class="vc-party">Shell</div>
+            <div class="vc-prog-chip chip-load">
+              <div class="vc-prog-fill" style="width:85%"></div>
+              <span class="vc-prog-text">Loading · 85%</span>
+            </div>
+            <div class="vc-flag action">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+              BL draft pending owner approval
+            </div>
+            <div class="vc-meta">ETC: 24 May 2026</div>
+          </a>
+
+        </div>
+      </div>
+
+      <!-- IN LADEN — 1 vessel -->
+      <div class="vb-col in-lad">
+        <div class="vb-col-hdr">
+          <span class="vb-col-label">In Laden</span>
+          <span class="vb-col-count">25</span>
+        </div>
+        <div class="vb-cards">
+
+          <a href="vessel.html?v=CONTI+BENGUELA" class="vc">
+            <div class="vc-name">CONTI BENGUELA</div>
+            <div class="vc-route">Port Sudan → Trieste</div>
+            <div class="vc-party">Eni</div>
+            <div class="vc-prog-chip chip-laden">
+              <div class="vc-prog-fill" style="width:62%"></div>
+              <span class="vc-prog-text">Laden leg · 62%</span>
+            </div>
+            <div class="vc-flag warn">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+              Heating instructions not confirmed
+            </div>
+            <div class="vc-meta">ETA Disch: 28 May 2026</div>
+          </a>
+
+        </div>
+      </div>
+
+      <!-- AT DISCH PORT — 2 vessels -->
+      <div class="vb-col at-disch">
+        <div class="vb-col-hdr">
+          <span class="vb-col-label">At Disch Port</span>
+          <span class="vb-col-count">7</span>
+        </div>
+        <div class="vb-cards">
+
+          <a href="vessel.html?v=GLORIOUS+SEA" class="vc">
+            <div class="vc-name">GLORIOUS SEA</div>
+            <div class="vc-route">Primorsk → Rotterdam</div>
+            <div class="vc-party">Vitol SA</div>
+            <div class="vc-prog-chip chip-disch">
+              <div class="vc-prog-fill" style="width:70%"></div>
+              <span class="vc-prog-text">Discharge · 70%</span>
+            </div>
+            <div class="vc-flag action">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+              DA to approve before departure
+            </div>
+            <div class="vc-meta">ETD: 25 May 2026</div>
+          </a>
+
+          <a href="vessel.html?v=STI+SYMPHONY" class="vc">
+            <div class="vc-name">STI SYMPHONY</div>
+            <div class="vc-route">Bonny → Luanda</div>
+            <div class="vc-party">Sonangol</div>
+            <div class="vc-prog-chip chip-disch">
+              <div class="vc-prog-fill" style="width:92%"></div>
+              <span class="vc-prog-text">Discharge · 92%</span>
+            </div>
+            <div class="vc-flag danger">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+              SOF to issue on departure
+            </div>
+            <div class="vc-meta">ETD: 24 May 2026</div>
+          </a>
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</main>
+
+<!-- GeoAI Morning Brief Modal -->
+<div id="briefModal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="briefModalTitle" onclick="if(event.target===this)this.classList.remove('open')">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title">
+        <div class="modal-ai-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></div>
+        <div><h2 id="briefModalTitle">GeoAI Morning Brief</h2><p>AI-parsed vessel status from overnight emails · 19 May 2026</p></div>
+      </div>
+      <button class="modal-close" onclick="document.getElementById('briefModal').classList.remove('open')" aria-label="Close"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+    </div>
+    <div class="modal-body">
+      <div class="brief-date">Monday, 19 May 2026 · 07:00 UTC</div>
+      <div class="brief-summary">
+        <h3><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg> Fleet Overview</h3>
+        <p>Overnight emails parsed across <strong>14 vessels</strong>. 3 vessels require urgent attention — STI Poplar (berthing delay), Wonder Mimosa (weather hold), STI Black Hawk (DA pending approval). 2 vessels completed discharge and are awaiting orders.</p>
+      </div>
+      <div style="font-size:12px;font-weight:700;color:var(--text-secondary);text-transform:uppercase;letter-spacing:0.5px;">Vessel Updates</div>
+      <div class="brief-vessels">
+
+        <div class="brief-vessel-card">
+          <div class="bvc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 18l4-8 4 3 4-8 4 8"/><path d="M2 18h20"/><path d="M6 21H18"/></svg></div>
+          <div class="bvc-body">
+            <div class="bvc-name">STI POPLAR</div>
+            <div class="bvc-port">Augusta → Deviation Point</div>
+            <div class="bvc-tags"><span class="bvc-tag warn">Berthing Pending</span><span class="bvc-tag info">In Passage</span></div>
+            <div class="bvc-note">Notice of Arrival filed at Aratu Pilot Station. Berthing prospect pending confirmation from Fertimport/Ashwini. Daily updates requested by GeoServe Voyage Ops.</div>
+            <div class="bvc-source"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg> Parsed from: agent-update@fertimport.com · 18 May 2026 23:41 UTC</div>
+          </div>
+        </div>
+
+        <div class="brief-vessel-card">
+          <div class="bvc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 18l4-8 4 3 4-8 4 8"/><path d="M2 18h20"/><path d="M6 21H18"/></svg></div>
+          <div class="bvc-body">
+            <div class="bvc-name">WONDER MIMOSA</div>
+            <div class="bvc-port">Las Palmas — At Port</div>
+            <div class="bvc-tags"><span class="bvc-tag danger">Weather Hold</span><span class="bvc-tag warn">Departure Delayed</span></div>
+            <div class="bvc-note">Vessel held at berth due to Beaufort 7 conditions forecast for 19–20 May. Pilot booking rescheduled to 21 May 06:00 LT pending weather confirmation. Owner notified.</div>
+            <div class="bvc-source"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg> Parsed from: ops@laspalmasagency.es · 19 May 2026 01:15 UTC</div>
+          </div>
+        </div>
+
+        <div class="brief-vessel-card">
+          <div class="bvc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 18l4-8 4 3 4-8 4 8"/><path d="M2 18h20"/><path d="M6 21H18"/></svg></div>
+          <div class="bvc-body">
+            <div class="bvc-name">STI BLACK HAWK</div>
+            <div class="bvc-port">Antwerp — At Port</div>
+            <div class="bvc-tags"><span class="bvc-tag warn">DA Pending</span><span class="bvc-tag success">Discharge Complete</span></div>
+            <div class="bvc-note">Discharge completed 18 May 19:30 LT. Proforma DA submitted by Antwerp agency — awaiting owner approval. Bunker stem of 450 MT VLSFO confirmed for 20 May.</div>
+            <div class="bvc-source"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg> Parsed from: accounts@antwerpshipping.be · 18 May 2026 22:05 UTC</div>
+          </div>
+        </div>
+
+        <div class="brief-vessel-card">
+          <div class="bvc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 18l4-8 4 3 4-8 4 8"/><path d="M2 18h20"/><path d="M6 21H18"/></svg></div>
+          <div class="bvc-body">
+            <div class="bvc-name">STI ST CHARLES</div>
+            <div class="bvc-port">Houston — At Port</div>
+            <div class="bvc-tags"><span class="bvc-tag success">Loading</span><span class="bvc-tag info">On Schedule</span></div>
+            <div class="bvc-note">Loading commenced 18 May 14:00 LT. Expected completion 19 May 20:00 LT. All docs in order. Bunker barge confirmed for 19 May 08:00.</div>
+            <div class="bvc-source"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg> Parsed from: ops@houstonagency.com · 18 May 2026 20:30 UTC</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<button class="chat-bubble" aria-label="Open chat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></button>
+<script>
+  // Sidebar collapse
+  const navRail = document.getElementById('navRail');
+  const collapseBtn = document.getElementById('collapseBtn');
+  if (collapseBtn) {
+    collapseBtn.addEventListener('click', () => navRail.classList.toggle('collapsed'));
+  }
+
+  // Voyage board toggle
+  function toggleVoyageBoard() {
+    const board   = document.getElementById('voyageBoard');
+    const content = document.querySelector('.content');
+    const btn     = document.getElementById('voyageBtn');
+    const isOpen  = board.classList.toggle('active');
+    content.style.display = isOpen ? 'none' : '';
+    btn.classList.toggle('active', isOpen);
+  }
+</script>
+</body>
+</html>

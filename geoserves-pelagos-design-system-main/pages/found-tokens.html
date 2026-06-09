@@ -1,0 +1,424 @@
+<div class="page-header"><h1 class="ds-hero-title">Design Tokens</h1></div>
+
+    <div class="code-tab-layout">
+      <div class="code-tab-main">
+
+      <!-- Architecture overview -->
+      <div id="tok-arch" class="tok-card">
+        <div class="tok-card-title">Token Architecture</div>
+        <p class="tok-card-desc">Three tiers keep values, meaning, and usage cleanly separated. Change a primitive and every semantic and component token updates automatically.</p>
+
+        <div class="tok-arch-grid">
+          <div class="tok-arch-block tok-arch-prim">
+            <span class="tok-arch-label">Tier 1</span>
+            <div class="tok-arch-title">Primitive</div>
+            <p class="tok-arch-desc">Raw values - no semantic meaning. The single source of truth for every value in the system.</p>
+            <div class="tok-arch-examples">
+              <span class="tok-arch-ex">--prim-marine: #1852FE</span>
+              <span class="tok-arch-ex">--prim-space-4: 16px</span>
+              <span class="tok-arch-ex">--prim-radius-sm: 4px</span>
+            </div>
+          </div>
+          <div class="tok-arch-block tok-arch-semantic">
+            <span class="tok-arch-label">Tier 2</span>
+            <div class="tok-arch-title">Semantic</div>
+            <p class="tok-arch-desc">Purpose-driven aliases that reference primitives. Communicate intent, not appearance.</p>
+            <div class="tok-arch-examples">
+              <span class="tok-arch-ex">--color-brand → --prim-marine</span>
+              <span class="tok-arch-ex">--space-md → --prim-space-4</span>
+              <span class="tok-arch-ex">--radius-sm → --prim-radius-sm</span>
+            </div>
+          </div>
+          <div class="tok-arch-block tok-arch-comp">
+            <span class="tok-arch-label">Tier 3</span>
+            <div class="tok-arch-title">Component</div>
+            <p class="tok-arch-desc">Component-specific tokens that reference semantic tokens. Scoped, overridable per theme.</p>
+            <div class="tok-arch-examples">
+              <span class="tok-arch-ex">--btn-primary-bg → --color-brand</span>
+              <span class="tok-arch-ex">--btn-radius → --radius-sm</span>
+              <span class="tok-arch-ex">--btn-height-md: 40px</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- PRIMITIVE COLOR TOKENS -->
+      <div id="tok-prim-color" class="tok-card">
+        <div class="tok-card-title">Primitive Color Tokens</div>
+        <p class="tok-card-desc">Raw color values. Never use these directly in components - always reference through a semantic token.</p>
+
+        <div class="tok-sub-heading">Blue Scale</div>
+        <table class="tok-table">
+          <thead><tr><th>Token</th><th>Tier</th><th>Value</th><th>Preview</th></tr></thead>
+          <tbody>
+            <tr><td><div class="tok-name-cell"><span class="tok-name">--prim-marine</span><button class="tok-copy-btn" onclick="copyTok(this,'--prim-marine')">Copy</button></div></td><td><span class="tok-tier-badge tok-tier-prim">Primitive</span></td><td><span class="tok-value">#1852FE</span></td><td><span class="tok-swatch" style="background:#1852FE;"></span></td></tr>
+            <tr><td><div class="tok-name-cell"><span class="tok-name">--prim-blue-900</span><button class="tok-copy-btn" onclick="copyTok(this,'--prim-blue-900')">Copy</button></div></td><td><span class="tok-tier-badge tok-tier-prim">Primitive</span></td><td><span class="tok-value">#001e4c</span></td><td><span class="tok-swatch" style="background:#001e4c;"></span></td></tr>
+            <tr><td><div class="tok-name-cell"><span class="tok-name">--prim-blue-800</span><button class="tok-copy-btn" onclick="copyTok(this,'--prim-blue-800')">Copy</button></div></td><td><span class="tok-tier-badge tok-tier-prim">Primitive</span></td><td><span class="tok-value">#1f3a8a</span></td><td><span class="tok-swatch" style="background:#1f3a8a;"></span></td></tr>
+            <tr><td><div class="tok-name-cell"><span class="tok-name">--prim-blue-700</span><button class="tok-copy-btn" onclick="copyTok(this,'--prim-blue-700')">Copy</button></div></td><td><span class="tok-tier-badge tok-tier-prim">Primitive</span></td><td><span class="tok-value">#1d40af</span></td><td><span class="tok-swatch" style="background:#1d40af;"></span></td></tr>
+            <tr><td><div class="tok-name-cell"><span class="tok-name">--prim-blue-600</span><button class="tok-copy-btn" onclick="copyTok(this,'--prim-blue-600')">Copy</button></div></td><td><span class="tok-tier-badge tok-tier-prim">Primitive</span></td><td><span class="tok-value">#1c4ed8</span></td><td><span class="tok-swatch" style="background:#1c4ed8;"></span></td></tr>
+            <tr><td><div class="tok-name-cell"><span class="tok-name">--prim-blue-500</span><button class="tok-copy-btn" onclick="copyTok(this,'--prim-blue-500')">Copy</button></div></td><td><span class="tok-tier-badge tok-tier-prim">Primitive</span></td><td><span class="tok-value">#2463eb</span></td><td><span class="tok-swatch" style="background:#2463eb;"></span></td></tr>
+            <tr><td><div class="tok-name-cell"><span class="tok-name">--prim-blue-400</span><button class="tok-copy-btn" onclick="copyTok(this,'--prim-blue-400')">Copy</button></div></td><td><span class="tok-tier-badge tok-tier-prim">Primitive</span></td><td><span class="tok-value">#3b81f6</span></td><td><span class="tok-swatch" style="background:#3b81f6;"></span></td></tr>
+            <tr><td><div class="tok-name-cell"><span class="tok-name">--prim-blue-300</span><button class="tok-copy-btn" onclick="copyTok(this,'--prim-blue-300')">Copy</button></div></td><td><span class="tok-tier-badge tok-tier-prim">Primitive</span></td><td><span class="tok-value">#5fa5f9</span></td><td><span class="tok-swatch" style="background:#5fa5f9;"></span></td></tr>
+            <tr><td><div class="tok-name-cell"><span class="tok-name">--prim-blue-100</span><button class="tok-copy-btn" onclick="copyTok(this,'--prim-blue-100')">Copy</button></div></td><td><span class="tok-tier-badge tok-tier-prim">Primitive</span></td><td><span class="tok-value">#bedbfe</span></td><td><span class="tok-swatch tok-swatch-light" style="background:#bedbfe;"></span></td></tr>
+            <tr><td><div class="tok-name-cell"><span class="tok-name">--prim-blue-10</span><button class="tok-copy-btn" onclick="copyTok(this,'--prim-blue-10')">Copy</button></div></td><td><span class="tok-tier-badge tok-tier-prim">Primitive</span></td><td><span class="tok-value">#eef6ff</span></td><td><span class="tok-swatch tok-swatch-light" style="background:#eef6ff;"></span></td></tr>
+          </tbody>
+        </table>
+
+        <div class="tok-sub-heading">Red Scale</div>
+        <table class="tok-table">
+          <thead><tr><th>Token</th><th>Tier</th><th>Value</th><th>Preview</th></tr></thead>
+          <tbody>
+            <tr><td><div class="tok-name-cell"><span class="tok-name">--prim-red-700</span><button class="tok-copy-btn" onclick="copyTok(this,'--prim-red-700')">Copy</button></div></td><td><span class="tok-tier-badge tok-tier-prim">Primitive</span></td><td><span class="tok-value">#981b1b</span></td><td><span class="tok-swatch" style="background:#981b1b;"></span></td></tr>
+            <tr><td><div class="tok-name-cell"><span class="tok-name">--prim-red-600</span><button class="tok-copy-btn" onclick="copyTok(this,'--prim-red-600')">Copy</button></div></td><td><span class="tok-tier-badge tok-tier-prim">Primitive</span></td><td><span class="tok-value">#b91c1b</span></td><td><span class="tok-swatch" style="background:#b91c1b;"></span></td></tr>
+            <tr><td><div class="tok-name-cell"><span class="tok-name">--prim-red-500</span><button class="tok-copy-btn" onclick="copyTok(this,'--prim-red-500')">Copy</button></div></td><td><span class="tok-tier-badge tok-tier-prim">Primitive</span></td><td><span class="tok-value">#dc2625</span></td><td><span class="tok-swatch" style="background:#dc2625;"></span></td></tr>
+            <tr><td><div class="tok-name-cell"><span class="tok-name">--prim-red-300</span><button class="tok-copy-btn" onclick="copyTok(this,'--prim-red-300')">Copy</button></div></td><td><span class="tok-tier-badge tok-tier-prim">Primitive</span></td><td><span class="tok-value">#f77171</span></td><td><span class="tok-swatch" style="background:#f77171;"></span></td></tr>
+            <tr><td><div class="tok-name-cell"><span class="tok-name">--prim-red-100</span><button class="tok-copy-btn" onclick="copyTok(this,'--prim-red-100')">Copy</button></div></td><td><span class="tok-tier-badge tok-tier-prim">Primitive</span></td><td><span class="tok-value">#fecaca</span></td><td><span class="tok-swatch tok-swatch-light" style="background:#fecaca;"></span></td></tr>
+            <tr><td><div class="tok-name-cell"><span class="tok-name">--prim-red-50</span><button class="tok-copy-btn" onclick="copyTok(this,'--prim-red-50')">Copy</button></div></td><td><span class="tok-tier-badge tok-tier-prim">Primitive</span></td><td><span class="tok-value">#fde2e2</span></td><td><span class="tok-swatch tok-swatch-light" style="background:#fde2e2;"></span></td></tr>
+            <tr><td><div class="tok-name-cell"><span class="tok-name">--prim-red-10</span><button class="tok-copy-btn" onclick="copyTok(this,'--prim-red-10')">Copy</button></div></td><td><span class="tok-tier-badge tok-tier-prim">Primitive</span></td><td><span class="tok-value">#fef1f2</span></td><td><span class="tok-swatch tok-swatch-light" style="background:#fef1f2;"></span></td></tr>
+          </tbody>
+        </table>
+
+        <div class="tok-sub-heading">Grey Scale</div>
+        <table class="tok-table">
+          <thead><tr><th>Token</th><th>Tier</th><th>Value</th><th>Preview</th></tr></thead>
+          <tbody>
+            <tr><td><div class="tok-name-cell"><span class="tok-name">--prim-grey-900</span><button class="tok-copy-btn" onclick="copyTok(this,'--prim-grey-900')">Copy</button></div></td><td><span class="tok-tier-badge tok-tier-prim">Primitive</span></td><td><span class="tok-value">#030712</span></td><td><span class="tok-swatch" style="background:#030712;"></span></td></tr>
+            <tr><td><div class="tok-name-cell"><span class="tok-name">--prim-grey-700</span><button class="tok-copy-btn" onclick="copyTok(this,'--prim-grey-700')">Copy</button></div></td><td><span class="tok-tier-badge tok-tier-prim">Primitive</span></td><td><span class="tok-value">#1e293b</span></td><td><span class="tok-swatch" style="background:#1e293b;"></span></td></tr>
+            <tr><td><div class="tok-name-cell"><span class="tok-name">--prim-grey-600</span><button class="tok-copy-btn" onclick="copyTok(this,'--prim-grey-600')">Copy</button></div></td><td><span class="tok-tier-badge tok-tier-prim">Primitive</span></td><td><span class="tok-value">#334154</span></td><td><span class="tok-swatch" style="background:#334154;"></span></td></tr>
+            <tr><td><div class="tok-name-cell"><span class="tok-name">--prim-grey-500</span><button class="tok-copy-btn" onclick="copyTok(this,'--prim-grey-500')">Copy</button></div></td><td><span class="tok-tier-badge tok-tier-prim">Primitive</span></td><td><span class="tok-value">#475569</span></td><td><span class="tok-swatch" style="background:#475569;"></span></td></tr>
+            <tr><td><div class="tok-name-cell"><span class="tok-name">--prim-grey-400</span><button class="tok-copy-btn" onclick="copyTok(this,'--prim-grey-400')">Copy</button></div></td><td><span class="tok-tier-badge tok-tier-prim">Primitive</span></td><td><span class="tok-value">#64748b</span></td><td><span class="tok-swatch" style="background:#64748b;"></span></td></tr>
+            <tr><td><div class="tok-name-cell"><span class="tok-name">--prim-grey-300</span><button class="tok-copy-btn" onclick="copyTok(this,'--prim-grey-300')">Copy</button></div></td><td><span class="tok-tier-badge tok-tier-prim">Primitive</span></td><td><span class="tok-value">#94a3b8</span></td><td><span class="tok-swatch" style="background:#94a3b8;"></span></td></tr>
+            <tr><td><div class="tok-name-cell"><span class="tok-name">--prim-grey-200</span><button class="tok-copy-btn" onclick="copyTok(this,'--prim-grey-200')">Copy</button></div></td><td><span class="tok-tier-badge tok-tier-prim">Primitive</span></td><td><span class="tok-value">#cbd5e1</span></td><td><span class="tok-swatch tok-swatch-light" style="background:#cbd5e1;"></span></td></tr>
+            <tr><td><div class="tok-name-cell"><span class="tok-name">--prim-grey-100</span><button class="tok-copy-btn" onclick="copyTok(this,'--prim-grey-100')">Copy</button></div></td><td><span class="tok-tier-badge tok-tier-prim">Primitive</span></td><td><span class="tok-value">#e2e8f0</span></td><td><span class="tok-swatch tok-swatch-light" style="background:#e2e8f0;"></span></td></tr>
+            <tr><td><div class="tok-name-cell"><span class="tok-name">--prim-grey-50</span><button class="tok-copy-btn" onclick="copyTok(this,'--prim-grey-50')">Copy</button></div></td><td><span class="tok-tier-badge tok-tier-prim">Primitive</span></td><td><span class="tok-value">#f1f5f9</span></td><td><span class="tok-swatch tok-swatch-light" style="background:#f1f5f9;"></span></td></tr>
+            <tr><td><div class="tok-name-cell"><span class="tok-name">--prim-white</span><button class="tok-copy-btn" onclick="copyTok(this,'--prim-white')">Copy</button></div></td><td><span class="tok-tier-badge tok-tier-prim">Primitive</span></td><td><span class="tok-value">#ffffff</span></td><td><span class="tok-swatch tok-swatch-light" style="background:#ffffff;"></span></td></tr>
+          </tbody>
+        </table>
+
+        <div class="tok-sub-heading">Spacing, Radius &amp; Elevation</div>
+        <table class="tok-table">
+          <thead><tr><th>Token</th><th>Tier</th><th>Value</th><th>Preview</th></tr></thead>
+          <tbody>
+            <tr><td><div class="tok-name-cell"><span class="tok-name">--prim-space-1</span><button class="tok-copy-btn" onclick="copyTok(this,'--prim-space-1')">Copy</button></div></td><td><span class="tok-tier-badge tok-tier-prim">Primitive</span></td><td><span class="tok-value">4px</span></td><td><span class="tok-space-bar" style="width:4px;"></span></td></tr>
+            <tr><td><div class="tok-name-cell"><span class="tok-name">--prim-space-2</span><button class="tok-copy-btn" onclick="copyTok(this,'--prim-space-2')">Copy</button></div></td><td><span class="tok-tier-badge tok-tier-prim">Primitive</span></td><td><span class="tok-value">8px</span></td><td><span class="tok-space-bar" style="width:8px;"></span></td></tr>
+            <tr><td><div class="tok-name-cell"><span class="tok-name">--prim-space-3</span><button class="tok-copy-btn" onclick="copyTok(this,'--prim-space-3')">Copy</button></div></td><td><span class="tok-tier-badge tok-tier-prim">Primitive</span></td><td><span class="tok-value">12px</span></td><td><span class="tok-space-bar" style="width:12px;"></span></td></tr>
+            <tr><td><div class="tok-name-cell"><span class="tok-name">--prim-space-4</span><button class="tok-copy-btn" onclick="copyTok(this,'--prim-space-4')">Copy</button></div></td><td><span class="tok-tier-badge tok-tier-prim">Primitive</span></td><td><span class="tok-value">16px</span></td><td><span class="tok-space-bar" style="width:16px;"></span></td></tr>
+            <tr><td><div class="tok-name-cell"><span class="tok-name">--prim-space-6</span><button class="tok-copy-btn" onclick="copyTok(this,'--prim-space-6')">Copy</button></div></td><td><span class="tok-tier-badge tok-tier-prim">Primitive</span></td><td><span class="tok-value">24px</span></td><td><span class="tok-space-bar" style="width:24px;"></span></td></tr>
+            <tr><td><div class="tok-name-cell"><span class="tok-name">--prim-space-8</span><button class="tok-copy-btn" onclick="copyTok(this,'--prim-space-8')">Copy</button></div></td><td><span class="tok-tier-badge tok-tier-prim">Primitive</span></td><td><span class="tok-value">32px</span></td><td><span class="tok-space-bar" style="width:32px;"></span></td></tr>
+            <tr><td><div class="tok-name-cell"><span class="tok-name">--prim-radius-sm</span><button class="tok-copy-btn" onclick="copyTok(this,'--prim-radius-sm')">Copy</button></div></td><td><span class="tok-tier-badge tok-tier-prim">Primitive</span></td><td><span class="tok-value">4px</span></td><td><span style="width:24px;height:24px;border-radius:4px;background:#1852fe;opacity:0.3;display:inline-block;"></span></td></tr>
+            <tr><td><div class="tok-name-cell"><span class="tok-name">--prim-radius-md</span><button class="tok-copy-btn" onclick="copyTok(this,'--prim-radius-md')">Copy</button></div></td><td><span class="tok-tier-badge tok-tier-prim">Primitive</span></td><td><span class="tok-value">8px</span></td><td><span style="width:24px;height:24px;border-radius:8px;background:#1852fe;opacity:0.3;display:inline-block;"></span></td></tr>
+            <tr><td><div class="tok-name-cell"><span class="tok-name">--prim-radius-lg</span><button class="tok-copy-btn" onclick="copyTok(this,'--prim-radius-lg')">Copy</button></div></td><td><span class="tok-tier-badge tok-tier-prim">Primitive</span></td><td><span class="tok-value">12px</span></td><td><span style="width:24px;height:24px;border-radius:12px;background:#1852fe;opacity:0.3;display:inline-block;"></span></td></tr>
+            <tr><td><div class="tok-name-cell"><span class="tok-name">--prim-shadow-sm</span><button class="tok-copy-btn" onclick="copyTok(this,'--prim-shadow-sm')">Copy</button></div></td><td><span class="tok-tier-badge tok-tier-prim">Primitive</span></td><td><span class="tok-value">0 1px 3px rgba(0,0,0,0.08)</span></td><td><span style="width:28px;height:28px;border-radius:6px;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,0.08);border:1px solid #f1f5f9;display:inline-block;"></span></td></tr>
+            <tr><td><div class="tok-name-cell"><span class="tok-name">--prim-shadow-md</span><button class="tok-copy-btn" onclick="copyTok(this,'--prim-shadow-md')">Copy</button></div></td><td><span class="tok-tier-badge tok-tier-prim">Primitive</span></td><td><span class="tok-value">0 4px 16px rgba(0,0,0,0.10)</span></td><td><span style="width:28px;height:28px;border-radius:6px;background:#fff;box-shadow:0 4px 16px rgba(0,0,0,0.10);display:inline-block;"></span></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- SEMANTIC TOKENS -->
+      <div id="tok-semantic" class="tok-card">
+        <div class="tok-card-title">Semantic Tokens</div>
+        <p class="tok-card-desc">Purpose-driven aliases that reference primitives. Use these in components - never reference primitives directly.</p>
+
+        <div class="tok-sub-heading">Brand</div>
+        <table class="tok-table">
+          <thead><tr><th>Token</th><th>Tier</th><th>References</th><th>Preview</th></tr></thead>
+          <tbody>
+            <tr><td><div class="tok-name-cell"><span class="tok-name">--color-brand</span><button class="tok-copy-btn" onclick="copyTok(this,'--color-brand')">Copy</button></div></td><td><span class="tok-tier-badge tok-tier-semantic">Semantic</span></td><td><span class="tok-ref">--prim-marine</span></td><td><span class="tok-swatch" style="background:#1852FE;"></span></td></tr>
+            <tr><td><div class="tok-name-cell"><span class="tok-name">--color-brand-hover</span><button class="tok-copy-btn" onclick="copyTok(this,'--color-brand-hover')">Copy</button></div></td><td><span class="tok-tier-badge tok-tier-semantic">Semantic</span></td><td><span class="tok-value">#1242d4</span></td><td><span class="tok-swatch" style="background:#1242d4;"></span></td></tr>
+            <tr><td><div class="tok-name-cell"><span class="tok-name">--color-brand-active</span><button class="tok-copy-btn" onclick="copyTok(this,'--color-brand-active')">Copy</button></div></td><td><span class="tok-tier-badge tok-tier-semantic">Semantic</span></td><td><span class="tok-value">#0d3299</span></td><td><span class="tok-swatch" style="background:#0d3299;"></span></td></tr>
+            <tr><td><div class="tok-name-cell"><span class="tok-name">--color-brand-subtle</span><button class="tok-copy-btn" onclick="copyTok(this,'--color-brand-subtle')">Copy</button></div></td><td><span class="tok-tier-badge tok-tier-semantic">Semantic</span></td><td><span class="tok-ref">--prim-blue-10</span></td><td><span class="tok-swatch tok-swatch-light" style="background:#eef6ff;"></span></td></tr>
+            <tr><td><div class="tok-name-cell"><span class="tok-name">--color-brand-border</span><button class="tok-copy-btn" onclick="copyTok(this,'--color-brand-border')">Copy</button></div></td><td><span class="tok-tier-badge tok-tier-semantic">Semantic</span></td><td><span class="tok-ref">--prim-blue-100</span></td><td><span class="tok-swatch tok-swatch-light" style="background:#bedbfe;"></span></td></tr>
+          </tbody>
+        </table>
+
+        <div class="tok-sub-heading">Danger</div>
+        <table class="tok-table">
+          <thead><tr><th>Token</th><th>Tier</th><th>References</th><th>Preview</th></tr></thead>
+          <tbody>
+            <tr><td><div class="tok-name-cell"><span class="tok-name">--color-danger</span><button class="tok-copy-btn" onclick="copyTok(this,'--color-danger')">Copy</button></div></td><td><span class="tok-tier-badge tok-tier-semantic">Semantic</span></td><td><span class="tok-ref">--prim-red-500</span></td><td><span class="tok-swatch" style="background:#dc2625;"></span></td></tr>
+            <tr><td><div class="tok-name-cell"><span class="tok-name">--color-danger-hover</span><button class="tok-copy-btn" onclick="copyTok(this,'--color-danger-hover')">Copy</button></div></td><td><span class="tok-tier-badge tok-tier-semantic">Semantic</span></td><td><span class="tok-ref">--prim-red-600</span></td><td><span class="tok-swatch" style="background:#b91c1b;"></span></td></tr>
+            <tr><td><div class="tok-name-cell"><span class="tok-name">--color-danger-active</span><button class="tok-copy-btn" onclick="copyTok(this,'--color-danger-active')">Copy</button></div></td><td><span class="tok-tier-badge tok-tier-semantic">Semantic</span></td><td><span class="tok-ref">--prim-red-700</span></td><td><span class="tok-swatch" style="background:#981b1b;"></span></td></tr>
+            <tr><td><div class="tok-name-cell"><span class="tok-name">--color-danger-subtle</span><button class="tok-copy-btn" onclick="copyTok(this,'--color-danger-subtle')">Copy</button></div></td><td><span class="tok-tier-badge tok-tier-semantic">Semantic</span></td><td><span class="tok-ref">--prim-red-10</span></td><td><span class="tok-swatch tok-swatch-light" style="background:#fef1f2;"></span></td></tr>
+            <tr><td><div class="tok-name-cell"><span class="tok-name">--color-danger-border</span><button class="tok-copy-btn" onclick="copyTok(this,'--color-danger-border')">Copy</button></div></td><td><span class="tok-tier-badge tok-tier-semantic">Semantic</span></td><td><span class="tok-ref">--prim-red-100</span></td><td><span class="tok-swatch tok-swatch-light" style="background:#fecaca;"></span></td></tr>
+          </tbody>
+        </table>
+
+        <div class="tok-sub-heading">Text, Surface &amp; Border</div>
+        <table class="tok-table">
+          <thead><tr><th>Token</th><th>Tier</th><th>References</th><th>Preview</th></tr></thead>
+          <tbody>
+            <tr><td><div class="tok-name-cell"><span class="tok-name">--color-text-default</span><button class="tok-copy-btn" onclick="copyTok(this,'--color-text-default')">Copy</button></div></td><td><span class="tok-tier-badge tok-tier-semantic">Semantic</span></td><td><span class="tok-ref">--prim-grey-900</span></td><td><span class="tok-swatch" style="background:#030712;"></span></td></tr>
+            <tr><td><div class="tok-name-cell"><span class="tok-name">--color-text-secondary</span><button class="tok-copy-btn" onclick="copyTok(this,'--color-text-secondary')">Copy</button></div></td><td><span class="tok-tier-badge tok-tier-semantic">Semantic</span></td><td><span class="tok-ref">--prim-grey-600</span></td><td><span class="tok-swatch" style="background:#334154;"></span></td></tr>
+            <tr><td><div class="tok-name-cell"><span class="tok-name">--color-text-placeholder</span><button class="tok-copy-btn" onclick="copyTok(this,'--color-text-placeholder')">Copy</button></div></td><td><span class="tok-tier-badge tok-tier-semantic">Semantic</span></td><td><span class="tok-ref">--prim-grey-400</span></td><td><span class="tok-swatch" style="background:#64748b;"></span></td></tr>
+            <tr><td><div class="tok-name-cell"><span class="tok-name">--color-text-disabled</span><button class="tok-copy-btn" onclick="copyTok(this,'--color-text-disabled')">Copy</button></div></td><td><span class="tok-tier-badge tok-tier-semantic">Semantic</span></td><td><span class="tok-ref">--prim-grey-300</span></td><td><span class="tok-swatch" style="background:#94a3b8;"></span></td></tr>
+            <tr><td><div class="tok-name-cell"><span class="tok-name">--color-text-inverse</span><button class="tok-copy-btn" onclick="copyTok(this,'--color-text-inverse')">Copy</button></div></td><td><span class="tok-tier-badge tok-tier-semantic">Semantic</span></td><td><span class="tok-ref">--prim-white</span></td><td><span class="tok-swatch tok-swatch-light" style="background:#fff;"></span></td></tr>
+            <tr><td><div class="tok-name-cell"><span class="tok-name">--color-surface-default</span><button class="tok-copy-btn" onclick="copyTok(this,'--color-surface-default')">Copy</button></div></td><td><span class="tok-tier-badge tok-tier-semantic">Semantic</span></td><td><span class="tok-ref">--prim-white</span></td><td><span class="tok-swatch tok-swatch-light" style="background:#fff;"></span></td></tr>
+            <tr><td><div class="tok-name-cell"><span class="tok-name">--color-surface-subtle</span><button class="tok-copy-btn" onclick="copyTok(this,'--color-surface-subtle')">Copy</button></div></td><td><span class="tok-tier-badge tok-tier-semantic">Semantic</span></td><td><span class="tok-ref">--prim-grey-10</span></td><td><span class="tok-swatch tok-swatch-light" style="background:#f7fafc;"></span></td></tr>
+            <tr><td><div class="tok-name-cell"><span class="tok-name">--color-border-default</span><button class="tok-copy-btn" onclick="copyTok(this,'--color-border-default')">Copy</button></div></td><td><span class="tok-tier-badge tok-tier-semantic">Semantic</span></td><td><span class="tok-ref">--prim-grey-100</span></td><td><span class="tok-swatch tok-swatch-light" style="background:#e2e8f0;"></span></td></tr>
+            <tr><td><div class="tok-name-cell"><span class="tok-name">--color-border-strong</span><button class="tok-copy-btn" onclick="copyTok(this,'--color-border-strong')">Copy</button></div></td><td><span class="tok-tier-badge tok-tier-semantic">Semantic</span></td><td><span class="tok-ref">--prim-grey-200</span></td><td><span class="tok-swatch tok-swatch-light" style="background:#cbd5e1;"></span></td></tr>
+            <tr><td><div class="tok-name-cell"><span class="tok-name">--radius-sm</span><button class="tok-copy-btn" onclick="copyTok(this,'--radius-sm')">Copy</button></div></td><td><span class="tok-tier-badge tok-tier-semantic">Semantic</span></td><td><span class="tok-ref">--prim-radius-sm · 4px</span></td><td><span style="width:22px;height:22px;border-radius:4px;background:#1852fe;opacity:0.3;display:inline-block;"></span></td></tr>
+            <tr><td><div class="tok-name-cell"><span class="tok-name">--shadow-card</span><button class="tok-copy-btn" onclick="copyTok(this,'--shadow-card')">Copy</button></div></td><td><span class="tok-tier-badge tok-tier-semantic">Semantic</span></td><td><span class="tok-ref">--prim-shadow-sm</span></td><td><span style="width:28px;height:28px;border-radius:6px;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,0.08);border:1px solid #f1f5f9;display:inline-block;"></span></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- COMPONENT TOKENS - BUTTON -->
+      <div id="tok-comp-button" class="tok-card">
+        <div class="tok-card-title">Component Tokens — Button</div>
+        <p class="tok-card-desc">Token chain for the Button component. Each component token references a semantic token which resolves to a primitive. Override at any tier to theme the component.</p>
+
+        <div class="tok-sub-heading">Structure</div>
+        <table class="tok-table">
+          <thead><tr><th>Component Token</th><th>Tier</th><th>→ Semantic</th><th>→ Primitive / Value</th></tr></thead>
+          <tbody>
+            <tr><td><div class="tok-name-cell"><span class="tok-name">--btn-radius</span><button class="tok-copy-btn" onclick="copyTok(this,'--btn-radius')">Copy</button></div></td><td><span class="tok-tier-badge tok-tier-component">Component</span></td><td><span class="tok-ref">--radius-sm</span></td><td><span style="color:#94a3b8;font-family:monospace;font-size:12px;">--prim-radius-sm · <strong style="color:#0f172a;">4px</strong></span></td></tr>
+            <tr><td><div class="tok-name-cell"><span class="tok-name">--btn-font-weight</span><button class="tok-copy-btn" onclick="copyTok(this,'--btn-font-weight')">Copy</button></div></td><td><span class="tok-tier-badge tok-tier-component">Component</span></td><td style="color:#94a3b8;">-</td><td><span style="color:#94a3b8;font-family:monospace;font-size:12px;">--prim-font-weight-semibold · <strong style="color:#0f172a;">600</strong></span></td></tr>
+            <tr><td><div class="tok-name-cell"><span class="tok-name">--btn-font-size</span><button class="tok-copy-btn" onclick="copyTok(this,'--btn-font-size')">Copy</button></div></td><td><span class="tok-tier-badge tok-tier-component">Component</span></td><td style="color:#94a3b8;">-</td><td><span style="color:#94a3b8;font-family:monospace;font-size:12px;">--prim-font-size-md · <strong style="color:#0f172a;">14px</strong></span></td></tr>
+            <tr><td><div class="tok-name-cell"><span class="tok-name">--btn-height-lg</span><button class="tok-copy-btn" onclick="copyTok(this,'--btn-height-lg')">Copy</button></div></td><td><span class="tok-tier-badge tok-tier-component">Component</span></td><td style="color:#94a3b8;">-</td><td><strong style="color:#0f172a;font-family:monospace;font-size:12px;">48px</strong></td></tr>
+            <tr><td><div class="tok-name-cell"><span class="tok-name">--btn-height-md</span><button class="tok-copy-btn" onclick="copyTok(this,'--btn-height-md')">Copy</button></div></td><td><span class="tok-tier-badge tok-tier-component">Component</span></td><td style="color:#94a3b8;">-</td><td><strong style="color:#0f172a;font-family:monospace;font-size:12px;">40px</strong></td></tr>
+            <tr><td><div class="tok-name-cell"><span class="tok-name">--btn-height-sm</span><button class="tok-copy-btn" onclick="copyTok(this,'--btn-height-sm')">Copy</button></div></td><td><span class="tok-tier-badge tok-tier-component">Component</span></td><td style="color:#94a3b8;">-</td><td><strong style="color:#0f172a;font-family:monospace;font-size:12px;">32px</strong></td></tr>
+          </tbody>
+        </table>
+
+        <div class="tok-sub-heading">Primary (Default)</div>
+        <table class="tok-table">
+          <thead><tr><th>Component Token</th><th>Tier</th><th>→ Semantic</th><th>→ Primitive / Value</th></tr></thead>
+          <tbody>
+            <tr><td><div class="tok-name-cell"><span class="tok-name">--btn-primary-bg</span><button class="tok-copy-btn" onclick="copyTok(this,'--btn-primary-bg')">Copy</button></div></td><td><span class="tok-tier-badge tok-tier-component">Component</span></td><td><span class="tok-ref">--color-brand</span></td><td><span style="color:#94a3b8;font-family:monospace;font-size:12px;">--prim-marine · </span><span class="tok-swatch" style="background:#1852FE;width:14px;height:14px;border-radius:3px;vertical-align:middle;display:inline-block;"></span></td></tr>
+            <tr><td><div class="tok-name-cell"><span class="tok-name">--btn-primary-bg-hover</span><button class="tok-copy-btn" onclick="copyTok(this,'--btn-primary-bg-hover')">Copy</button></div></td><td><span class="tok-tier-badge tok-tier-component">Component</span></td><td><span class="tok-ref">--color-brand-hover</span></td><td><span class="tok-swatch" style="background:#1242d4;width:14px;height:14px;border-radius:3px;vertical-align:middle;display:inline-block;"></span></td></tr>
+            <tr><td><div class="tok-name-cell"><span class="tok-name">--btn-primary-bg-active</span><button class="tok-copy-btn" onclick="copyTok(this,'--btn-primary-bg-active')">Copy</button></div></td><td><span class="tok-tier-badge tok-tier-component">Component</span></td><td><span class="tok-ref">--color-brand-active</span></td><td><span class="tok-swatch" style="background:#0d3299;width:14px;height:14px;border-radius:3px;vertical-align:middle;display:inline-block;"></span></td></tr>
+            <tr><td><div class="tok-name-cell"><span class="tok-name">--btn-primary-text</span><button class="tok-copy-btn" onclick="copyTok(this,'--btn-primary-text')">Copy</button></div></td><td><span class="tok-tier-badge tok-tier-component">Component</span></td><td><span class="tok-ref">--color-text-inverse</span></td><td><span class="tok-swatch tok-swatch-light" style="background:#fff;width:14px;height:14px;border-radius:3px;vertical-align:middle;display:inline-block;"></span></td></tr>
+            <tr><td><div class="tok-name-cell"><span class="tok-name">--btn-secondary-bg</span><button class="tok-copy-btn" onclick="copyTok(this,'--btn-secondary-bg')">Copy</button></div></td><td><span class="tok-tier-badge tok-tier-component">Component</span></td><td><span class="tok-ref">--color-brand-subtle</span></td><td><span class="tok-swatch tok-swatch-light" style="background:#eef6ff;width:14px;height:14px;border-radius:3px;vertical-align:middle;display:inline-block;"></span></td></tr>
+            <tr><td><div class="tok-name-cell"><span class="tok-name">--btn-tertiary-text</span><button class="tok-copy-btn" onclick="copyTok(this,'--btn-tertiary-text')">Copy</button></div></td><td><span class="tok-tier-badge tok-tier-component">Component</span></td><td><span class="tok-ref">--color-brand</span></td><td><span class="tok-swatch" style="background:#1852FE;width:14px;height:14px;border-radius:3px;vertical-align:middle;display:inline-block;"></span></td></tr>
+          </tbody>
+        </table>
+
+        <div class="tok-sub-heading">Danger</div>
+        <table class="tok-table">
+          <thead><tr><th>Component Token</th><th>Tier</th><th>→ Semantic</th><th>→ Primitive / Value</th></tr></thead>
+          <tbody>
+            <tr><td><div class="tok-name-cell"><span class="tok-name">--btn-danger-bg</span><button class="tok-copy-btn" onclick="copyTok(this,'--btn-danger-bg')">Copy</button></div></td><td><span class="tok-tier-badge tok-tier-component">Component</span></td><td><span class="tok-ref">--color-danger</span></td><td><span style="color:#94a3b8;font-family:monospace;font-size:12px;">--prim-red-500 · </span><span class="tok-swatch" style="background:#dc2625;width:14px;height:14px;border-radius:3px;vertical-align:middle;display:inline-block;"></span></td></tr>
+            <tr><td><div class="tok-name-cell"><span class="tok-name">--btn-danger-bg-hover</span><button class="tok-copy-btn" onclick="copyTok(this,'--btn-danger-bg-hover')">Copy</button></div></td><td><span class="tok-tier-badge tok-tier-component">Component</span></td><td><span class="tok-ref">--color-danger-hover</span></td><td><span class="tok-swatch" style="background:#b91c1b;width:14px;height:14px;border-radius:3px;vertical-align:middle;display:inline-block;"></span></td></tr>
+            <tr><td><div class="tok-name-cell"><span class="tok-name">--btn-danger-sec-bg</span><button class="tok-copy-btn" onclick="copyTok(this,'--btn-danger-sec-bg')">Copy</button></div></td><td><span class="tok-tier-badge tok-tier-component">Component</span></td><td><span class="tok-ref">--color-danger-subtle</span></td><td><span class="tok-swatch tok-swatch-light" style="background:#fef1f2;width:14px;height:14px;border-radius:3px;vertical-align:middle;display:inline-block;"></span></td></tr>
+          </tbody>
+        </table>
+
+        <div class="tok-sub-heading">Neutral &amp; Link</div>
+        <table class="tok-table">
+          <thead><tr><th>Component Token</th><th>Tier</th><th>→ Semantic</th><th>→ Primitive / Value</th></tr></thead>
+          <tbody>
+            <tr><td><div class="tok-name-cell"><span class="tok-name">--btn-neutral-bg</span><button class="tok-copy-btn" onclick="copyTok(this,'--btn-neutral-bg')">Copy</button></div></td><td><span class="tok-tier-badge tok-tier-component">Component</span></td><td><span class="tok-ref">--color-surface-default</span></td><td><span class="tok-swatch tok-swatch-light" style="background:#fff;width:14px;height:14px;border-radius:3px;vertical-align:middle;display:inline-block;"></span></td></tr>
+            <tr><td><div class="tok-name-cell"><span class="tok-name">--btn-neutral-text</span><button class="tok-copy-btn" onclick="copyTok(this,'--btn-neutral-text')">Copy</button></div></td><td><span class="tok-tier-badge tok-tier-component">Component</span></td><td><span class="tok-ref">--prim-grey-500</span></td><td><span class="tok-swatch" style="background:#475569;width:14px;height:14px;border-radius:3px;vertical-align:middle;display:inline-block;"></span></td></tr>
+            <tr><td><div class="tok-name-cell"><span class="tok-name">--btn-neutral-border</span><button class="tok-copy-btn" onclick="copyTok(this,'--btn-neutral-border')">Copy</button></div></td><td><span class="tok-tier-badge tok-tier-component">Component</span></td><td><span class="tok-ref">--color-border-default</span></td><td><span class="tok-swatch tok-swatch-light" style="background:#e2e8f0;width:14px;height:14px;border-radius:3px;vertical-align:middle;display:inline-block;"></span></td></tr>
+            <tr><td><div class="tok-name-cell"><span class="tok-name">--btn-link-text</span><button class="tok-copy-btn" onclick="copyTok(this,'--btn-link-text')">Copy</button></div></td><td><span class="tok-tier-badge tok-tier-component">Component</span></td><td><span class="tok-ref">--color-brand</span></td><td><span class="tok-swatch" style="background:#1852FE;width:14px;height:14px;border-radius:3px;vertical-align:middle;display:inline-block;"></span></td></tr>
+            <tr><td><div class="tok-name-cell"><span class="tok-name">--btn-link-danger-text</span><button class="tok-copy-btn" onclick="copyTok(this,'--btn-link-danger-text')">Copy</button></div></td><td><span class="tok-tier-badge tok-tier-component">Component</span></td><td><span class="tok-ref">--color-danger</span></td><td><span class="tok-swatch" style="background:#dc2625;width:14px;height:14px;border-radius:3px;vertical-align:middle;display:inline-block;"></span></td></tr>
+          </tbody>
+        </table>
+
+      </div><!-- /code-tab-main -->
+
+      <!-- ── Component token sections for updated components ── -->
+      <div id="tok-comp-popover" class="tok-card">
+        <div class="tok-card-title">Component Tokens — Popover</div>
+        <p class="tok-card-desc">All Popover visual properties driven by CSS custom properties. Override at the <code>:root</code> level to retheme without touching component markup. Figma node: <code>12983-50855</code>.</p>
+        <table class="tok-table">
+          <thead><tr><th>Component Token</th><th>Tier</th><th>→ Semantic / Value</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr><td><div class="tok-name-cell"><span class="tok-name">--pop-bg</span><button class="tok-copy-btn" onclick="copyTok(this,'--pop-bg')">Copy</button></div></td><td><span class="tok-tier-badge tok-tier-component">Component</span></td><td><span class="tok-ref">--color-surface-default</span></td><td>Panel background — white</td></tr>
+            <tr><td><div class="tok-name-cell"><span class="tok-name">--pop-border</span><button class="tok-copy-btn" onclick="copyTok(this,'--pop-border')">Copy</button></div></td><td><span class="tok-tier-badge tok-tier-component">Component</span></td><td><span class="tok-ref">--color-border-default</span></td><td>Panel border — <span style="font-family:monospace;font-size:12px;">#e2e8f0</span></td></tr>
+            <tr><td><div class="tok-name-cell"><span class="tok-name">--pop-radius</span><button class="tok-copy-btn" onclick="copyTok(this,'--pop-radius')">Copy</button></div></td><td><span class="tok-tier-badge tok-tier-component">Component</span></td><td><span class="tok-ref">--radius-md · 8px</span></td><td>Panel corner radius — Figma spec</td></tr>
+            <tr><td><div class="tok-name-cell"><span class="tok-name">--pop-shadow</span><button class="tok-copy-btn" onclick="copyTok(this,'--pop-shadow')">Copy</button></div></td><td><span class="tok-tier-badge tok-tier-component">Component</span></td><td style="color:#94a3b8;font-family:monospace;font-size:11px;">0 2px 8px rgba(0,0,0,.12)</td><td>Composite soft shadow</td></tr>
+            <tr><td><div class="tok-name-cell"><span class="tok-name">--pop-padding</span><button class="tok-copy-btn" onclick="copyTok(this,'--pop-padding')">Copy</button></div></td><td><span class="tok-tier-badge tok-tier-component">Component</span></td><td><strong style="font-family:monospace;font-size:12px;">4px</strong></td><td>Inner panel padding — Figma spec</td></tr>
+            <tr><td><div class="tok-name-cell"><span class="tok-name">--pop-item-h</span><button class="tok-copy-btn" onclick="copyTok(this,'--pop-item-h')">Copy</button></div></td><td><span class="tok-tier-badge tok-tier-component">Component</span></td><td><strong style="font-family:monospace;font-size:12px;">40px</strong></td><td>Item min-height — Figma spec</td></tr>
+            <tr><td><div class="tok-name-cell"><span class="tok-name">--pop-item-px</span><button class="tok-copy-btn" onclick="copyTok(this,'--pop-item-px')">Copy</button></div></td><td><span class="tok-tier-badge tok-tier-component">Component</span></td><td><strong style="font-family:monospace;font-size:12px;">12px</strong></td><td>Item horizontal padding — Figma spec</td></tr>
+            <tr><td><div class="tok-name-cell"><span class="tok-name">--pop-item-font</span><button class="tok-copy-btn" onclick="copyTok(this,'--pop-item-font')">Copy</button></div></td><td><span class="tok-tier-badge tok-tier-component">Component</span></td><td><span class="tok-ref">--prim-font-size-md · 14px</span></td><td>Item font size — Gilroy Medium</td></tr>
+            <tr><td><div class="tok-name-cell"><span class="tok-name">--pop-item-color</span><button class="tok-copy-btn" onclick="copyTok(this,'--pop-item-color')">Copy</button></div></td><td><span class="tok-tier-badge tok-tier-component">Component</span></td><td><span class="tok-ref">--color-text-default</span></td><td>Default item text colour</td></tr>
+            <tr><td><div class="tok-name-cell"><span class="tok-name">--pop-item-hover</span><button class="tok-copy-btn" onclick="copyTok(this,'--pop-item-hover')">Copy</button></div></td><td><span class="tok-tier-badge tok-tier-component">Component</span></td><td><span class="tok-ref">--prim-grey-50 · #f7fafc</span></td><td>Item hover background</td></tr>
+            <tr><td><div class="tok-name-cell"><span class="tok-name">--pop-icon-size</span><button class="tok-copy-btn" onclick="copyTok(this,'--pop-icon-size')">Copy</button></div></td><td><span class="tok-tier-badge tok-tier-component">Component</span></td><td><strong style="font-family:monospace;font-size:12px;">24px</strong></td><td>Icon box size — Figma spec</td></tr>
+            <tr><td><div class="tok-name-cell"><span class="tok-name">--pop-min-w</span><button class="tok-copy-btn" onclick="copyTok(this,'--pop-min-w')">Copy</button></div></td><td><span class="tok-tier-badge tok-tier-component">Component</span></td><td><strong style="font-family:monospace;font-size:12px;">200px</strong></td><td>Minimum panel width — Figma spec</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div id="tok-comp-accordion" class="tok-card">
+        <div class="tok-card-title">Component Tokens — Accordion</div>
+        <p class="tok-card-desc">Accordion references semantic tokens directly. Motion uses Carbon Design System productive easing curves. Override to retheme.</p>
+        <table class="tok-table">
+          <thead><tr><th>Component Token</th><th>Tier</th><th>→ Semantic / Value</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr><td><div class="tok-name-cell"><span class="tok-name">--accordion-border</span><button class="tok-copy-btn" onclick="copyTok(this,'--accordion-border')">Copy</button></div></td><td><span class="tok-tier-badge tok-tier-component">Component</span></td><td><span class="tok-ref">--color-border-default</span></td><td>Item and group border</td></tr>
+            <tr><td><div class="tok-name-cell"><span class="tok-name">--accordion-radius</span><button class="tok-copy-btn" onclick="copyTok(this,'--accordion-radius')">Copy</button></div></td><td><span class="tok-tier-badge tok-tier-component">Component</span></td><td><span class="tok-ref">--radius-md · 8px</span></td><td>Item corner radius</td></tr>
+            <tr><td><div class="tok-name-cell"><span class="tok-name">--accordion-gap</span><button class="tok-copy-btn" onclick="copyTok(this,'--accordion-gap')">Copy</button></div></td><td><span class="tok-tier-badge tok-tier-component">Component</span></td><td><span class="tok-ref">--prim-space-2 · 6px</span></td><td>Gap between accordion items</td></tr>
+            <tr><td><div class="tok-name-cell"><span class="tok-name">--accordion-hover-bg</span><button class="tok-copy-btn" onclick="copyTok(this,'--accordion-hover-bg')">Copy</button></div></td><td><span class="tok-tier-badge tok-tier-component">Component</span></td><td><span class="tok-ref">--prim-blue-10 · #eef6ff</span></td><td>Header hover fill — blue/10</td></tr>
+            <tr><td><div class="tok-name-cell"><span class="tok-name">--accordion-active-bg</span><button class="tok-copy-btn" onclick="copyTok(this,'--accordion-active-bg')">Copy</button></div></td><td><span class="tok-tier-badge tok-tier-component">Component</span></td><td><span class="tok-ref">--color-surface-default · white</span></td><td>Expanded header — stays white</td></tr>
+            <tr><td><div class="tok-name-cell"><span class="tok-name">--accordion-label-closed</span><button class="tok-copy-btn" onclick="copyTok(this,'--accordion-label-closed')">Copy</button></div></td><td><span class="tok-tier-badge tok-tier-component">Component</span></td><td><span class="tok-ref">--prim-grey-800 · #10172a</span></td><td>Header label — collapsed</td></tr>
+            <tr><td><div class="tok-name-cell"><span class="tok-name">--accordion-label-open</span><button class="tok-copy-btn" onclick="copyTok(this,'--accordion-label-open')">Copy</button></div></td><td><span class="tok-tier-badge tok-tier-component">Component</span></td><td><span class="tok-ref">--prim-grey-800 · #10172a</span></td><td>Header label — expanded (same, no blue)</td></tr>
+            <tr><td><div class="tok-name-cell"><span class="tok-name">--accordion-content-color</span><button class="tok-copy-btn" onclick="copyTok(this,'--accordion-content-color')">Copy</button></div></td><td><span class="tok-tier-badge tok-tier-component">Component</span></td><td><span class="tok-ref">--color-text-secondary · #475569</span></td><td>Panel content text colour</td></tr>
+            <tr><td><div class="tok-name-cell"><span class="tok-name">--accordion-motion-expand</span><button class="tok-copy-btn" onclick="copyTok(this,'--accordion-motion-expand')">Copy</button></div></td><td><span class="tok-tier-badge tok-tier-component">Component</span></td><td style="font-family:monospace;font-size:11px;color:#475569;">110ms cubic-bezier(0,0,0.38,0.9)</td><td>Carbon productive-expand easing</td></tr>
+            <tr><td><div class="tok-name-cell"><span class="tok-name">--accordion-motion-collapse</span><button class="tok-copy-btn" onclick="copyTok(this,'--accordion-motion-collapse')">Copy</button></div></td><td><span class="tok-tier-badge tok-tier-component">Component</span></td><td style="font-family:monospace;font-size:11px;color:#475569;">110ms cubic-bezier(0.2,0,1,0.9)</td><td>Carbon productive-collapse easing</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div id="tok-comp-modal" class="tok-card">
+        <div class="tok-card-title">Component Tokens — Modal</div>
+        <p class="tok-card-desc">Shared by both <code>Modal</code> (general purpose) and <code>ConfirmModal</code> (confirmation dialogs with illustration). Confirmation modals use the smaller <code>10px</code> radius.</p>
+
+        <div class="tok-sub-heading">Shell &amp; Overlay</div>
+        <table class="tok-table">
+          <thead><tr><th>Component Token</th><th>Tier</th><th>→ Semantic / Value</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr><td><div class="tok-name-cell"><span class="tok-name">--modal-overlay-bg</span><button class="tok-copy-btn" onclick="copyTok(this,'--modal-overlay-bg')">Copy</button></div></td><td><span class="tok-tier-badge tok-tier-component">Component</span></td><td style="font-family:monospace;font-size:11px;color:#475569;">rgba(31,41,55,0.7)</td><td>Backdrop overlay — grey-800 at 70%</td></tr>
+            <tr><td><div class="tok-name-cell"><span class="tok-name">--modal-bg</span><button class="tok-copy-btn" onclick="copyTok(this,'--modal-bg')">Copy</button></div></td><td><span class="tok-tier-badge tok-tier-component">Component</span></td><td><span class="tok-ref">--color-surface-default · white</span></td><td>Modal surface background</td></tr>
+            <tr><td><div class="tok-name-cell"><span class="tok-name">--modal-shadow</span><button class="tok-copy-btn" onclick="copyTok(this,'--modal-shadow')">Copy</button></div></td><td><span class="tok-tier-badge tok-tier-component">Component</span></td><td style="font-family:monospace;font-size:11px;color:#475569;">0 20px 60px rgba(0,0,0,0.18)</td><td>Modal elevation shadow</td></tr>
+            <tr><td><div class="tok-name-cell"><span class="tok-name">--modal-radius-md</span><button class="tok-copy-btn" onclick="copyTok(this,'--modal-radius-md')">Copy</button></div></td><td><span class="tok-tier-badge tok-tier-component">Component</span></td><td><strong style="font-family:monospace;font-size:12px;">16px</strong></td><td>Default / large modal radius</td></tr>
+            <tr><td><div class="tok-name-cell"><span class="tok-name">--modal-radius-sm</span><button class="tok-copy-btn" onclick="copyTok(this,'--modal-radius-sm')">Copy</button></div></td><td><span class="tok-tier-badge tok-tier-component">Component</span></td><td><strong style="font-family:monospace;font-size:12px;">10px</strong></td><td>Confirmation modal radius — Figma spec</td></tr>
+          </tbody>
+        </table>
+
+        <div class="tok-sub-heading">Typography</div>
+        <table class="tok-table">
+          <thead><tr><th>Component Token</th><th>Tier</th><th>→ Semantic / Value</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr><td><div class="tok-name-cell"><span class="tok-name">--modal-title-color</span><button class="tok-copy-btn" onclick="copyTok(this,'--modal-title-color')">Copy</button></div></td><td><span class="tok-tier-badge tok-tier-component">Component</span></td><td><span class="tok-ref">--prim-blue-900 · #001e4c</span></td><td>Modal &amp; confirm heading — navy</td></tr>
+            <tr><td><div class="tok-name-cell"><span class="tok-name">--modal-title-size</span><button class="tok-copy-btn" onclick="copyTok(this,'--modal-title-size')">Copy</button></div></td><td><span class="tok-tier-badge tok-tier-component">Component</span></td><td><span class="tok-ref">--prim-font-size-lg · 16px</span></td><td>Default modal title size</td></tr>
+            <tr><td><div class="tok-name-cell"><span class="tok-name">--modal-confirm-title-size</span><button class="tok-copy-btn" onclick="copyTok(this,'--modal-confirm-title-size')">Copy</button></div></td><td><span class="tok-tier-badge tok-tier-component">Component</span></td><td><strong style="font-family:monospace;font-size:12px;">20px</strong></td><td>Confirmation modal title — Figma spec</td></tr>
+            <tr><td><div class="tok-name-cell"><span class="tok-name">--modal-title-weight</span><button class="tok-copy-btn" onclick="copyTok(this,'--modal-title-weight')">Copy</button></div></td><td><span class="tok-tier-badge tok-tier-component">Component</span></td><td><span class="tok-ref">--prim-font-weight-bold · 700</span></td><td>Title font weight</td></tr>
+            <tr><td><div class="tok-name-cell"><span class="tok-name">--modal-desc-color</span><button class="tok-copy-btn" onclick="copyTok(this,'--modal-desc-color')">Copy</button></div></td><td><span class="tok-tier-badge tok-tier-component">Component</span></td><td><span class="tok-ref">--prim-grey-500 · #475569</span></td><td>Confirmation modal body text</td></tr>
+          </tbody>
+        </table>
+
+        <div class="tok-sub-heading">Structure &amp; Motion</div>
+        <table class="tok-table">
+          <thead><tr><th>Component Token</th><th>Tier</th><th>→ Semantic / Value</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr><td><div class="tok-name-cell"><span class="tok-name">--modal-divider</span><button class="tok-copy-btn" onclick="copyTok(this,'--modal-divider')">Copy</button></div></td><td><span class="tok-tier-badge tok-tier-component">Component</span></td><td><span class="tok-ref">1px solid --color-border-default</span></td><td>Header / footer separator</td></tr>
+            <tr><td><div class="tok-name-cell"><span class="tok-name">--modal-padding</span><button class="tok-copy-btn" onclick="copyTok(this,'--modal-padding')">Copy</button></div></td><td><span class="tok-tier-badge tok-tier-component">Component</span></td><td><span class="tok-ref">--prim-space-4 · 16px</span></td><td>Standard modal inner padding</td></tr>
+            <tr><td><div class="tok-name-cell"><span class="tok-name">--modal-padding-lg</span><button class="tok-copy-btn" onclick="copyTok(this,'--modal-padding-lg')">Copy</button></div></td><td><span class="tok-tier-badge tok-tier-component">Component</span></td><td><span class="tok-ref">--prim-space-6 · 24px</span></td><td>Body / large zone padding</td></tr>
+            <tr><td><div class="tok-name-cell"><span class="tok-name">--modal-illus-size</span><button class="tok-copy-btn" onclick="copyTok(this,'--modal-illus-size')">Copy</button></div></td><td><span class="tok-tier-badge tok-tier-component">Component</span></td><td><strong style="font-family:monospace;font-size:12px;">150px</strong></td><td>Confirmation illustration box — Figma spec</td></tr>
+            <tr><td><div class="tok-name-cell"><span class="tok-name">--modal-anim-enter</span><button class="tok-copy-btn" onclick="copyTok(this,'--modal-anim-enter')">Copy</button></div></td><td><span class="tok-tier-badge tok-tier-component">Component</span></td><td style="font-family:monospace;font-size:11px;color:#475569;">200ms ease</td><td>Enter transition duration</td></tr>
+            <tr><td><div class="tok-name-cell"><span class="tok-name">--modal-anim-exit</span><button class="tok-copy-btn" onclick="copyTok(this,'--modal-anim-exit')">Copy</button></div></td><td><span class="tok-tier-badge tok-tier-component">Component</span></td><td style="font-family:monospace;font-size:11px;color:#475569;">160ms ease</td><td>Exit transition duration</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div id="tok-comp-segmented" class="tok-card">
+        <div class="tok-card-title">Component Tokens — Segmented Button</div>
+        <p class="btn-family-desc" style="font-size:14px;color:var(--color-text-secondary);margin:0 0 16px;">Sliding pill animation uses Material Design standard easing. The pill position is set via JS from <code>offsetLeft / offsetWidth</code>.</p>
+
+        <div class="tok-sub-heading">Track (Group container)</div>
+        <table class="tok-table">
+          <thead><tr><th>Component Token</th><th>Tier</th><th>→ Semantic / Value</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr><td><div class="tok-name-cell"><span class="tok-name">--seg-track-bg</span><button class="tok-copy-btn" onclick="copyTok(this,'--seg-track-bg')">Copy</button></div></td><td><span class="tok-tier-badge tok-tier-component">Component</span></td><td><span class="tok-ref">--prim-grey-50 · #f1f5f9</span></td><td>Group track background</td></tr>
+            <tr><td><div class="tok-name-cell"><span class="tok-name">--seg-track-radius</span><button class="tok-copy-btn" onclick="copyTok(this,'--seg-track-radius')">Copy</button></div></td><td><span class="tok-tier-badge tok-tier-component">Component</span></td><td><span class="tok-ref">--radius-md · 8px</span></td><td>Track corner radius</td></tr>
+            <tr><td><div class="tok-name-cell"><span class="tok-name">--seg-track-padding</span><button class="tok-copy-btn" onclick="copyTok(this,'--seg-track-padding')">Copy</button></div></td><td><span class="tok-tier-badge tok-tier-component">Component</span></td><td><strong style="font-family:monospace;font-size:12px;">4px</strong></td><td>Inset padding around buttons</td></tr>
+          </tbody>
+        </table>
+
+        <div class="tok-sub-heading">Segment Button</div>
+        <table class="tok-table">
+          <thead><tr><th>Component Token</th><th>Tier</th><th>→ Semantic / Value</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr><td><div class="tok-name-cell"><span class="tok-name">--seg-btn-radius</span><button class="tok-copy-btn" onclick="copyTok(this,'--seg-btn-radius')">Copy</button></div></td><td><span class="tok-tier-badge tok-tier-component">Component</span></td><td><span class="tok-ref">--radius-sm · 4px</span></td><td>Individual segment radius</td></tr>
+            <tr><td><div class="tok-name-cell"><span class="tok-name">--seg-btn-font</span><button class="tok-copy-btn" onclick="copyTok(this,'--seg-btn-font')">Copy</button></div></td><td><span class="tok-tier-badge tok-tier-component">Component</span></td><td><span class="tok-ref">--prim-font-size-md · 14px</span></td><td>Label font size (md variant)</td></tr>
+            <tr><td><div class="tok-name-cell"><span class="tok-name">--seg-btn-weight</span><button class="tok-copy-btn" onclick="copyTok(this,'--seg-btn-weight')">Copy</button></div></td><td><span class="tok-tier-badge tok-tier-component">Component</span></td><td><span class="tok-ref">--prim-font-weight-semibold · 600</span></td><td>Label font weight</td></tr>
+            <tr><td><div class="tok-name-cell"><span class="tok-name">--seg-btn-color</span><button class="tok-copy-btn" onclick="copyTok(this,'--seg-btn-color')">Copy</button></div></td><td><span class="tok-tier-badge tok-tier-component">Component</span></td><td><span class="tok-ref">--prim-grey-600 · #334154</span></td><td>Unselected label colour</td></tr>
+            <tr><td><div class="tok-name-cell"><span class="tok-name">--seg-btn-hover-bg</span><button class="tok-copy-btn" onclick="copyTok(this,'--seg-btn-hover-bg')">Copy</button></div></td><td><span class="tok-tier-badge tok-tier-component">Component</span></td><td><span class="tok-ref">--prim-grey-100 · #e2e8f0</span></td><td>Unselected hover background</td></tr>
+          </tbody>
+        </table>
+
+        <div class="tok-sub-heading">Sliding Pill (selected state)</div>
+        <table class="tok-table">
+          <thead><tr><th>Component Token</th><th>Tier</th><th>→ Semantic / Value</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr><td><div class="tok-name-cell"><span class="tok-name">--seg-pill-bg</span><button class="tok-copy-btn" onclick="copyTok(this,'--seg-pill-bg')">Copy</button></div></td><td><span class="tok-tier-badge tok-tier-component">Component</span></td><td><span class="tok-ref">--color-brand · #1852fe</span></td><td>Pill background — selected indicator</td></tr>
+            <tr><td><div class="tok-name-cell"><span class="tok-name">--seg-pill-shadow</span><button class="tok-copy-btn" onclick="copyTok(this,'--seg-pill-shadow')">Copy</button></div></td><td><span class="tok-tier-badge tok-tier-component">Component</span></td><td style="font-family:monospace;font-size:11px;color:#475569;">0 1px 4px rgba(24,82,254,0.25)</td><td>Pill elevation — brand-tinted</td></tr>
+            <tr><td><div class="tok-name-cell"><span class="tok-name">--seg-pill-color</span><button class="tok-copy-btn" onclick="copyTok(this,'--seg-pill-color')">Copy</button></div></td><td><span class="tok-tier-badge tok-tier-component">Component</span></td><td><span class="tok-ref">--prim-white · #ffffff</span></td><td>Selected label colour</td></tr>
+            <tr><td><div class="tok-name-cell"><span class="tok-name">--seg-pill-motion</span><button class="tok-copy-btn" onclick="copyTok(this,'--seg-pill-motion')">Copy</button></div></td><td><span class="tok-tier-badge tok-tier-component">Component</span></td><td style="font-family:monospace;font-size:11px;color:#475569;">220ms cubic-bezier(0.4,0,0.2,1)</td><td>Slide animation — Material standard easing</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      </div><!-- /code-tab-main -->
+
+      <!-- ── On This Page — tree-structured quick-nav ── -->
+      <div class="code-tab-qnav">
+        <div class="code-qnav-inner">
+          <p class="code-qnav-title">On This Page</p>
+          <ul class="code-qnav-list">
+
+            <li class="code-qnav-item">
+              <button class="code-qnav-link" onclick="scrollToSection('tok-arch')">Architecture</button>
+            </li>
+
+            <!-- Primitives tree -->
+            <li class="code-qnav-item" style="margin-top:10px;">
+              <span style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:var(--color-text-placeholder);display:block;padding:2px 0;">Primitives</span>
+            </li>
+            <li class="code-qnav-item">
+              <button class="code-qnav-link" onclick="scrollToSection('tok-prim-color')" style="padding-left:12px;">
+                <span style="color:var(--color-text-placeholder);margin-right:4px;">├</span> Color — Blue / Red / Grey
+              </button>
+            </li>
+            <li class="code-qnav-item">
+              <button class="code-qnav-link" onclick="scrollToSection('tok-prim-color')" style="padding-left:12px;">
+                <span style="color:var(--color-text-placeholder);margin-right:4px;">└</span> Spacing &amp; Radius
+              </button>
+            </li>
+
+            <!-- Semantic tree -->
+            <li class="code-qnav-item" style="margin-top:10px;">
+              <span style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:var(--color-text-placeholder);display:block;padding:2px 0;">Semantic</span>
+            </li>
+            <li class="code-qnav-item">
+              <button class="code-qnav-link" onclick="scrollToSection('tok-semantic')" style="padding-left:12px;">
+                <span style="color:var(--color-text-placeholder);margin-right:4px;">├</span> Brand
+              </button>
+            </li>
+            <li class="code-qnav-item">
+              <button class="code-qnav-link" onclick="scrollToSection('tok-semantic')" style="padding-left:12px;">
+                <span style="color:var(--color-text-placeholder);margin-right:4px;">├</span> Danger
+              </button>
+            </li>
+            <li class="code-qnav-item">
+              <button class="code-qnav-link" onclick="scrollToSection('tok-semantic')" style="padding-left:12px;">
+                <span style="color:var(--color-text-placeholder);margin-right:4px;">└</span> Text, Surface &amp; Border
+              </button>
+            </li>
+
+            <!-- Component tokens tree -->
+            <li class="code-qnav-item" style="margin-top:10px;">
+              <span style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:var(--color-text-placeholder);display:block;padding:2px 0;">Component Tokens</span>
+            </li>
+            <li class="code-qnav-item">
+              <button class="code-qnav-link" onclick="scrollToSection('tok-comp-button')" style="padding-left:12px;">
+                <span style="color:var(--color-text-placeholder);margin-right:4px;">├</span> Button
+              </button>
+            </li>
+            <li class="code-qnav-item">
+              <button class="code-qnav-link" onclick="scrollToSection('tok-comp-popover')" style="padding-left:12px;">
+                <span style="color:var(--color-text-placeholder);margin-right:4px;">├</span> Popover
+              </button>
+            </li>
+            <li class="code-qnav-item">
+              <button class="code-qnav-link" onclick="scrollToSection('tok-comp-accordion')" style="padding-left:12px;">
+                <span style="color:var(--color-text-placeholder);margin-right:4px;">├</span> Accordion
+              </button>
+            </li>
+            <li class="code-qnav-item">
+              <button class="code-qnav-link" onclick="scrollToSection('tok-comp-modal')" style="padding-left:12px;">
+                <span style="color:var(--color-text-placeholder);margin-right:4px;">├</span> Modal
+              </button>
+            </li>
+            <li class="code-qnav-item">
+              <button class="code-qnav-link" onclick="scrollToSection('tok-comp-segmented')" style="padding-left:12px;">
+                <span style="color:var(--color-text-placeholder);margin-right:4px;">└</span> Segmented Button
+              </button>
+            </li>
+
+          </ul>
+        </div>
+      </div>
+
+    </div><!-- /code-tab-layout -->

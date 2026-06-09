@@ -1,0 +1,721 @@
+<!-- ═══════════════════════════════════════════════════════════════
+     SLIDER — Pelagos Design System
+     Single + Range  ·  Figma: node-id=11866-4068
+     ═══════════════════════════════════════════════════════════════ -->
+<style>
+  /* ── Slider core ────────────────────────────────────────────── */
+  .gs-slider {
+    --slider-fill:    var(--color-brand, #1852fe);
+    --slider-track:   var(--prim-grey-100, #e2e8f0);
+    --slider-thumb:   16px;
+    --slider-track-h: 4px;
+    display: flex; flex-direction: column; gap: 6px; width: 100%;
+  }
+  .gs-slider--disabled { opacity: .45; pointer-events: none; }
+
+  .gs-slider__track-wrap {
+    position: relative; height: calc(var(--slider-thumb) + 8px);
+    display: flex; align-items: center;
+  }
+  .gs-slider__track {
+    position: absolute; left: 0; right: 0;
+    height: var(--slider-track-h);
+    background: var(--slider-track);
+    border-radius: var(--radius-full);
+  }
+  .gs-slider__fill {
+    position: absolute; left: 0; height: 100%;
+    background: var(--slider-fill);
+    border-radius: var(--radius-full);
+    pointer-events: none;
+  }
+  .gs-slider__fill--range { /* left + width set via gsRangeUpdate() */ }
+
+  .gs-slider__input {
+    position: absolute; left: 0; right: 0; width: 100%;
+    margin: 0; appearance: none; -webkit-appearance: none;
+    background: transparent; cursor: pointer; outline: none;
+    height: var(--slider-thumb); z-index: 2;
+  }
+  .gs-slider__input::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: var(--slider-thumb); height: var(--slider-thumb);
+    border-radius: 50%; background: var(--slider-fill);
+    border: 2px solid #fff;
+    box-shadow: var(--shadow-xs, var(--prim-shadow-xs, 0 1px 2px rgba(0,0,0,0.05)));
+    cursor: pointer; transition: transform 120ms ease, box-shadow 120ms ease;
+  }
+  .gs-slider__input:hover::-webkit-slider-thumb {
+    transform: scale(1.18); box-shadow: 0 0 0 5px rgba(24,82,254,0.12);
+  }
+  .gs-slider__input:active::-webkit-slider-thumb {
+    transform: scale(1.22); box-shadow: 0 0 0 7px rgba(24,82,254,0.10);
+  }
+  .gs-slider__input::-moz-range-thumb {
+    width: var(--slider-thumb); height: var(--slider-thumb);
+    border-radius: 50%; background: var(--slider-fill);
+    border: 2px solid #fff;
+    box-shadow: var(--shadow-xs, var(--prim-shadow-xs, 0 1px 2px rgba(0,0,0,0.05)));
+    cursor: pointer;
+  }
+  .gs-slider__input:focus-visible::-webkit-slider-thumb {
+    box-shadow: 0 0 0 5px rgba(24,82,254,0.25);
+  }
+  /* Range — both inputs overlap; hi on top so it can always be grabbed */
+  .gs-slider__input--lo,
+  .gs-slider__input--hi { pointer-events: auto; }
+  .gs-slider__input--hi { z-index: 3; }
+
+  /* Navy tooltip — hidden by default, shown on drag */
+  .gs-slider__tip,
+  .gs-slider__tip-lo,
+  .gs-slider__tip-hi {
+    position: absolute; top: -32px; transform: translateX(-50%);
+    background: var(--prim-blue-900, #001e4c); color: #fff;
+    font-family: var(--prim-font-primary); font-size: 11px; font-weight: 600;
+    padding: 3px 8px; border-radius: 4px; white-space: nowrap;
+    pointer-events: none; z-index: 10;
+    opacity: 0; transition: opacity 100ms ease;
+  }
+  .gs-slider__tip.is-visible,
+  .gs-slider__tip-lo.is-visible,
+  .gs-slider__tip-hi.is-visible { opacity: 1; }
+  .gs-slider__tip::after,
+  .gs-slider__tip-lo::after,
+  .gs-slider__tip-hi::after {
+    content: ''; position: absolute; bottom: -4px; left: 50%; transform: translateX(-50%);
+    border: 4px solid transparent;
+    border-top-color: var(--prim-blue-900, #001e4c);
+    border-bottom: none;
+  }
+
+  /* Marks */
+  .gs-slider__marks { position: relative; height: 20px; }
+  .gs-slider__mark {
+    position: absolute; transform: translateX(-50%);
+    width: 6px; height: 6px; border-radius: var(--radius-full);
+    background: var(--slider-track); top: 2px;
+  }
+  .gs-slider__mark--active { background: var(--slider-fill); }
+  .gs-slider__mark-label {
+    position: absolute; top: 12px; left: 50%; transform: translateX(-50%);
+    font-family: var(--prim-font-primary); font-size: 11px; color: var(--color-text-secondary);
+    white-space: nowrap;
+  }
+
+  /* Header / value display */
+  .gs-slider__header {
+    display: flex; justify-content: space-between; align-items: center;
+    font-family: var(--prim-font-primary); font-size: 13px;
+  }
+  .gs-slider__label     { font-weight: 600; color: var(--color-text-default); }
+  .gs-slider__value     { color: var(--color-brand); font-weight: 600; }
+  .gs-slider__range-val { color: var(--color-brand); font-weight: 600; }
+
+  /* Range with inputs variant */
+  .gs-slider__inputs-row {
+    display: flex; align-items: flex-end; gap: 8px; margin-top: 14px;
+  }
+  .gs-slider__input-group { display: flex; flex-direction: column; gap: 4px; }
+  .gs-slider__input-label {
+    font-family: var(--prim-font-primary); font-size: 10px; font-weight: 600;
+    color: var(--color-text-secondary); text-transform: uppercase;
+    letter-spacing: var(--prim-letter-spacing-wider, 0.05em);
+  }
+  .gs-slider__input-field {
+    width: 76px; height: 34px;
+    border: 1px solid var(--color-border-default, #e2e8f0);
+    border-radius: var(--radius-md, 8px);
+    padding: 0 10px;
+    font-family: var(--prim-font-primary); font-size: 13px; font-weight: 500;
+    color: var(--color-text-default); background: var(--color-surface-default, #fff);
+    text-align: center; appearance: none; -moz-appearance: textfield;
+  }
+  .gs-slider__input-field::-webkit-inner-spin-button,
+  .gs-slider__input-field::-webkit-outer-spin-button { -webkit-appearance: none; }
+  .gs-slider__input-field:focus {
+    outline: none;
+    border-color: var(--color-brand, #1852fe);
+    box-shadow: 0 0 0 3px rgba(24,82,254,0.12);
+  }
+  .gs-slider__inputs-sep {
+    font-family: var(--prim-font-primary); font-size: 14px;
+    color: var(--color-text-secondary); padding: 0 2px; margin-bottom: 6px;
+  }
+  .gs-slider__minmax {
+    display: flex; justify-content: space-between;
+    font-family: var(--prim-font-primary); font-size: 11px;
+    color: var(--color-text-secondary); margin-top: 4px;
+  }
+</style>
+
+<!-- BANNER -->
+<div class="page-header"><h1 class="ds-hero-title">Slider</h1></div>
+
+<!-- TAB BAR -->
+<div class="btn-tab-bar">
+  <button class="btn-tab-btn sld-tab-btn active" data-tab="design" onclick="switchSliderTab('design')">Design</button>
+  <button class="btn-tab-btn sld-tab-btn" data-tab="code"   onclick="switchSliderTab('code')">Code</button>
+  <button class="btn-tab-btn sld-tab-btn" data-tab="usage"  onclick="switchSliderTab('usage')">Usage</button>
+</div>
+
+<!-- ═══ DESIGN TAB ═══════════════════════════════════════════════ -->
+<div id="sld-tab-design" class="btn-tab-pane sld-tab-pane active">
+  <div class="code-tab-layout">
+    <div class="code-tab-main">
+
+      <!-- OVERVIEW -->
+      <div id="sld-s-overview" class="btn-family-card">
+        <div class="btn-family-title">Overview</div>
+        <p class="btn-family-desc">A Slider lets users select a value — or range of values — from a continuous or stepped scale by dragging a thumb along a track. Pelagos provides a <strong>Single</strong> variant (one thumb) and a <strong>Range</strong> variant (two thumbs, filled between them). Hover the thumb to see the value tooltip.</p>
+
+        <div class="btn-preview-strip" style="display:flex;flex-direction:column;gap:32px;padding:36px 40px;background:var(--color-surface-subtle);border:1px solid var(--color-border-default);border-radius:var(--radius-lg);margin-top:16px;">
+          <!-- Single -->
+          <div style="max-width:400px;width:100%;">
+            <div class="gs-slider__header" style="margin-bottom:8px;">
+              <span class="gs-slider__label">Volume</span>
+              <span class="gs-slider__value" id="ov-single-val">40</span>
+            </div>
+            <div class="gs-slider">
+              <div class="gs-slider__track-wrap">
+                <div class="gs-slider__track"><div class="gs-slider__fill" id="ov-single-fill" style="width:40%"></div></div>
+                <div class="gs-slider__tip" style="left:40%">40</div>
+                <input type="range" class="gs-slider__input" min="0" max="100" value="40"
+                  oninput="gsSliderUpdate(this);document.getElementById('ov-single-val').textContent=this.value"
+                  onmouseenter="gsSliderShowTip(this)" onmouseleave="if(!event.buttons)gsSliderHideTip(this)"
+                  onmousedown="gsSliderShowTip(this)" ontouchstart="gsSliderShowTip(this)"
+                  onmouseup="gsSliderHideTip(this)" ontouchend="gsSliderHideTip(this)"
+                  aria-label="Volume slider" />
+              </div>
+            </div>
+          </div>
+          <!-- Range -->
+          <div style="max-width:400px;width:100%;">
+            <div class="gs-slider__header" style="margin-bottom:8px;">
+              <span class="gs-slider__label">Price range</span>
+              <span class="gs-slider__range-val">$<span id="ov-range-lo">20</span> – $<span id="ov-range-hi">75</span></span>
+            </div>
+            <div class="gs-slider gs-slider--range">
+              <div class="gs-slider__track-wrap">
+                <div class="gs-slider__track">
+                  <div class="gs-slider__fill gs-slider__fill--range" id="ov-range-fill" style="left:20%;width:55%"></div>
+                </div>
+                <div class="gs-slider__tip-lo" style="left:20%">20</div>
+                <div class="gs-slider__tip-hi" style="left:75%">75</div>
+                <input type="range" class="gs-slider__input gs-slider__input--lo" min="0" max="100" value="20"
+                  oninput="gsRangeUpdate(this.closest('.gs-slider'));document.getElementById('ov-range-lo').textContent=Math.round(this.value)"
+                  onmouseenter="gsSliderShowTip(this)" onmouseleave="if(!event.buttons)gsSliderHideTip(this)"
+                  onmousedown="gsSliderShowTip(this)" ontouchstart="gsSliderShowTip(this)"
+                  onmouseup="gsSliderHideTip(this)" ontouchend="gsSliderHideTip(this)"
+                  aria-label="Minimum price" />
+                <input type="range" class="gs-slider__input gs-slider__input--hi" min="0" max="100" value="75"
+                  oninput="gsRangeUpdate(this.closest('.gs-slider'));document.getElementById('ov-range-hi').textContent=Math.round(this.value)"
+                  onmouseenter="gsSliderShowTip(this)" onmouseleave="if(!event.buttons)gsSliderHideTip(this)"
+                  onmousedown="gsSliderShowTip(this)" ontouchstart="gsSliderShowTip(this)"
+                  onmouseup="gsSliderHideTip(this)" ontouchend="gsSliderHideTip(this)"
+                  aria-label="Maximum price" />
+              </div>
+              <div class="gs-slider__minmax"><span>0</span><span>100</span></div>
+            </div>
+          </div>
+        </div>
+        <div class="btn-when-examples" style="margin-top:16px;">
+          <span class="btn-when-example-tag">Single + Range</span>
+          <span class="btn-when-example-tag">Value tooltip</span>
+          <span class="btn-when-example-tag">Marks + steps</span>
+          <span class="btn-when-example-tag">Disabled state</span>
+          <span class="btn-when-example-tag">WCAG AA</span>
+        </div>
+      </div>
+
+      <!-- ANATOMY -->
+      <div id="sld-s-anatomy" class="btn-family-card">
+        <div class="btn-family-title">Anatomy</div>
+        <p class="btn-family-desc">Single thumb slider. The range slider adds a second thumb and fills the segment between them.</p>
+        <div style="background:var(--color-surface-subtle);border:1px solid var(--color-border-default);border-radius:var(--radius-lg);padding:40px 32px;display:flex;justify-content:center;margin-top:8px;overflow:auto;">
+          <svg width="480" height="140" viewBox="0 0 480 140" fill="none" xmlns="http://www.w3.org/2000/svg" style="min-width:420px;">
+            <!-- Track -->
+            <rect x="40" y="68" width="380" height="4" rx="2" fill="#e2e8f0"/>
+            <!-- Fill -->
+            <rect x="40" y="68" width="150" height="4" rx="2" fill="#1852fe"/>
+            <!-- Thumb -->
+            <circle cx="190" cy="70" r="9" fill="#1852fe" stroke="#fff" stroke-width="2"/>
+            <!-- Tooltip -->
+            <rect x="175" y="38" width="30" height="20" rx="4" fill="#1852fe"/>
+            <text x="190" y="52" text-anchor="middle" font-size="10" font-weight="700" fill="white" font-family="Helvetica,Arial,sans-serif">40</text>
+            <path d="M185 58 L190 65 L195 58Z" fill="#1852fe"/>
+            <!-- Badge labels -->
+            <circle cx="40" cy="100" r="10" fill="#1852fe"/>
+            <text x="40" y="104" text-anchor="middle" font-size="11" font-weight="700" fill="white" font-family="Helvetica,Arial,sans-serif">1</text>
+            <circle cx="195" cy="100" r="10" fill="#1852fe"/>
+            <text x="195" y="104" text-anchor="middle" font-size="11" font-weight="700" fill="white" font-family="Helvetica,Arial,sans-serif">2</text>
+            <circle cx="115" cy="100" r="10" fill="#1852fe"/>
+            <text x="115" y="104" text-anchor="middle" font-size="11" font-weight="700" fill="white" font-family="Helvetica,Arial,sans-serif">3</text>
+            <circle cx="190" cy="28" r="10" fill="#1852fe"/>
+            <text x="190" y="32" text-anchor="middle" font-size="11" font-weight="700" fill="white" font-family="Helvetica,Arial,sans-serif">4</text>
+            <!-- Connector lines -->
+            <line x1="40" y1="75" x2="40" y2="89" stroke="#cbd5e1" stroke-width="1" stroke-dasharray="3,2"/>
+            <line x1="195" y1="79" x2="195" y2="89" stroke="#cbd5e1" stroke-width="1" stroke-dasharray="3,2"/>
+            <line x1="115" y1="70" x2="115" y2="89" stroke="#cbd5e1" stroke-width="1" stroke-dasharray="3,2"/>
+            <line x1="190" y1="58" x2="190" y2="39" stroke="#cbd5e1" stroke-width="1" stroke-dasharray="3,2"/>
+            <!-- Annotations -->
+            <text x="56" y="118" font-size="11" fill="#475569" font-family="Helvetica,Arial,sans-serif">Track — 4px, #e2e8f0</text>
+            <text x="211" y="118" font-size="11" fill="#475569" font-family="Helvetica,Arial,sans-serif">Thumb — 16px, #1852fe</text>
+            <text x="80" y="104" font-size="11" fill="#475569" font-family="Helvetica,Arial,sans-serif" text-anchor="end">Fill</text>
+            <text x="162" y="32" font-size="11" fill="#475569" font-family="Helvetica,Arial,sans-serif" text-anchor="end">Tooltip</text>
+          </svg>
+        </div>
+        <ol style="margin-top:20px;display:flex;flex-direction:column;gap:8px;padding-left:20px;">
+          <li><strong>Track</strong> — 4 px height, pill-shaped, grey (#e2e8f0). Full width.</li>
+          <li><strong>Thumb</strong> — 16 px circle, brand blue (#1852fe), 2 px white border + shadow. Draggable.</li>
+          <li><strong>Fill</strong> — Portion of track left of (single) or between (range) the thumb(s). Brand blue.</li>
+          <li><strong>Tooltip</strong> — Value bubble above thumb, shown while dragging or on hover.</li>
+        </ol>
+      </div>
+
+      <!-- VARIANTS -->
+      <div id="sld-s-variants" class="btn-family-card">
+        <div class="btn-family-title">Variants</div>
+        <p class="btn-family-desc">Single thumb for one value, Range for a min–max selection. Both support marks and step constraints.</p>
+
+        <div class="btn-variant-row" style="margin-top:16px;">
+          <span class="btn-variant-label">Single</span>
+          <div class="btn-variant-sizes" style="display:flex;flex-direction:column;gap:16px;padding:28px 24px;background:var(--color-surface-subtle);border:1px solid var(--color-border-default);border-radius:var(--radius-lg);">
+            <div style="max-width:400px;">
+              <div class="gs-slider">
+                <div class="gs-slider__track-wrap">
+                  <div class="gs-slider__track"><div class="gs-slider__fill" style="width:30%"></div></div>
+                  <input type="range" class="gs-slider__input" min="0" max="100" value="30"
+                    oninput="gsSliderUpdate(this);this.previousElementSibling.querySelector('.gs-slider__fill').style.width=((this.value/100)*100)+'%'"
+                    aria-label="Single slider example" />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="btn-variant-row" style="margin-top:12px;">
+          <span class="btn-variant-label">Range</span>
+          <div class="btn-variant-sizes" style="display:flex;flex-direction:column;gap:16px;padding:28px 24px;background:var(--color-surface-subtle);border:1px solid var(--color-border-default);border-radius:var(--radius-lg);">
+            <div style="max-width:400px;">
+              <div class="gs-slider gs-slider--range">
+                <div class="gs-slider__track-wrap">
+                  <div class="gs-slider__track">
+                    <div class="gs-slider__fill gs-slider__fill--range" style="left:25%;width:45%"></div>
+                  </div>
+                  <div class="gs-slider__tip-lo" style="left:25%">25</div>
+                  <div class="gs-slider__tip-hi" style="left:70%">70</div>
+                  <input type="range" class="gs-slider__input gs-slider__input--lo" min="0" max="100" value="25"
+                    oninput="gsRangeUpdate(this.closest('.gs-slider'))"
+                    onmouseenter="gsSliderShowTip(this)" onmouseleave="if(!event.buttons)gsSliderHideTip(this)"
+                    onmousedown="gsSliderShowTip(this)" ontouchstart="gsSliderShowTip(this)"
+                    onmouseup="gsSliderHideTip(this)" ontouchend="gsSliderHideTip(this)"
+                    aria-label="Range lower" />
+                  <input type="range" class="gs-slider__input gs-slider__input--hi" min="0" max="100" value="70"
+                    oninput="gsRangeUpdate(this.closest('.gs-slider'))"
+                    onmouseenter="gsSliderShowTip(this)" onmouseleave="if(!event.buttons)gsSliderHideTip(this)"
+                    onmousedown="gsSliderShowTip(this)" ontouchstart="gsSliderShowTip(this)"
+                    onmouseup="gsSliderHideTip(this)" ontouchend="gsSliderHideTip(this)"
+                    aria-label="Range upper" />
+                </div>
+                <div class="gs-slider__minmax"><span>0</span><span>100</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="btn-variant-row" style="margin-top:12px;">
+          <span class="btn-variant-label">With marks</span>
+          <div class="btn-variant-sizes" style="display:flex;flex-direction:column;gap:16px;padding:28px 24px;background:var(--color-surface-subtle);border:1px solid var(--color-border-default);border-radius:var(--radius-lg);">
+            <div style="max-width:400px;">
+              <div class="gs-slider">
+                <div class="gs-slider__track-wrap">
+                  <div class="gs-slider__track"><div class="gs-slider__fill" style="width:50%"></div></div>
+                  <input type="range" class="gs-slider__input" min="0" max="100" step="25" value="50"
+                    oninput="gsSliderUpdate(this);this.previousElementSibling.querySelector('.gs-slider__fill').style.width=((this.value/100)*100)+'%'"
+                    aria-label="Stepped slider" />
+                </div>
+                <div class="gs-slider__marks">
+                  <span class="gs-slider__mark gs-slider__mark--active" style="left:0%"><span class="gs-slider__mark-label">0</span></span>
+                  <span class="gs-slider__mark gs-slider__mark--active" style="left:25%"><span class="gs-slider__mark-label">25</span></span>
+                  <span class="gs-slider__mark gs-slider__mark--active" style="left:50%"><span class="gs-slider__mark-label">50</span></span>
+                  <span class="gs-slider__mark" style="left:75%"><span class="gs-slider__mark-label">75</span></span>
+                  <span class="gs-slider__mark" style="left:100%"><span class="gs-slider__mark-label">100</span></span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="btn-variant-row" style="margin-top:12px;">
+          <span class="btn-variant-label">Range + inputs</span>
+          <div class="btn-variant-sizes" style="display:flex;flex-direction:column;gap:16px;padding:28px 24px;background:var(--color-surface-subtle);border:1px solid var(--color-border-default);border-radius:var(--radius-lg);">
+            <div style="max-width:400px;" id="rng-inp-wrap">
+              <div class="gs-slider__header" style="margin-bottom:10px;">
+                <span class="gs-slider__label">Price Range</span>
+                <span class="gs-slider__range-val">$<span id="rif-lo-disp">20</span> – $<span id="rif-hi-disp">75</span></span>
+              </div>
+              <div class="gs-slider gs-slider--range" id="rng-inp-slider">
+                <div class="gs-slider__track-wrap">
+                  <div class="gs-slider__track">
+                    <div class="gs-slider__fill gs-slider__fill--range" style="left:20%;width:55%"></div>
+                  </div>
+                  <div class="gs-slider__tip-lo" style="left:20%">20</div>
+                  <div class="gs-slider__tip-hi" style="left:75%">75</div>
+                  <input type="range" class="gs-slider__input gs-slider__input--lo" min="0" max="100" value="20"
+                    oninput="gsRangeUpdate(this.closest('.gs-slider'));document.getElementById('rif-lo-disp').textContent=Math.round(this.value)"
+                    onmouseenter="gsSliderShowTip(this)" onmouseleave="if(!event.buttons)gsSliderHideTip(this)"
+                    onmousedown="gsSliderShowTip(this)" ontouchstart="gsSliderShowTip(this)"
+                    onmouseup="gsSliderHideTip(this)" ontouchend="gsSliderHideTip(this)"
+                    aria-label="Minimum price" />
+                  <input type="range" class="gs-slider__input gs-slider__input--hi" min="0" max="100" value="75"
+                    oninput="gsRangeUpdate(this.closest('.gs-slider'));document.getElementById('rif-hi-disp').textContent=Math.round(this.value)"
+                    onmouseenter="gsSliderShowTip(this)" onmouseleave="if(!event.buttons)gsSliderHideTip(this)"
+                    onmousedown="gsSliderShowTip(this)" ontouchstart="gsSliderShowTip(this)"
+                    onmouseup="gsSliderHideTip(this)" ontouchend="gsSliderHideTip(this)"
+                    aria-label="Maximum price" />
+                </div>
+                <div class="gs-slider__minmax"><span>$0</span><span>$100</span></div>
+                <div class="gs-slider__inputs-row">
+                  <div class="gs-slider__input-group">
+                    <span class="gs-slider__input-label">Min</span>
+                    <input type="number" class="gs-slider__input-field gs-slider__input-field--lo"
+                      min="0" max="100" value="20"
+                      oninput="gsRangeInputField(document.getElementById('rng-inp-slider'),'lo',this.value);document.getElementById('rif-lo-disp').textContent=Math.round(document.getElementById('rng-inp-slider').querySelector('.gs-slider__input--lo').value)"
+                      aria-label="Minimum value" />
+                  </div>
+                  <span class="gs-slider__inputs-sep">–</span>
+                  <div class="gs-slider__input-group">
+                    <span class="gs-slider__input-label">Max</span>
+                    <input type="number" class="gs-slider__input-field gs-slider__input-field--hi"
+                      min="0" max="100" value="75"
+                      oninput="gsRangeInputField(document.getElementById('rng-inp-slider'),'hi',this.value);document.getElementById('rif-hi-disp').textContent=Math.round(document.getElementById('rng-inp-slider').querySelector('.gs-slider__input--hi').value)"
+                      aria-label="Maximum value" />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="btn-variant-row" style="margin-top:12px;">
+          <span class="btn-variant-label">Disabled</span>
+          <div class="btn-variant-sizes" style="display:flex;flex-direction:column;gap:16px;padding:28px 24px;background:var(--color-surface-subtle);border:1px solid var(--color-border-default);border-radius:var(--radius-lg);">
+            <div style="max-width:400px;">
+              <div class="gs-slider gs-slider--disabled">
+                <div class="gs-slider__track-wrap">
+                  <div class="gs-slider__track"><div class="gs-slider__fill" style="width:60%"></div></div>
+                  <input type="range" class="gs-slider__input" min="0" max="100" value="60" disabled aria-label="Disabled slider" />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- STATES -->
+      <div id="sld-s-states" class="btn-family-card">
+        <div class="btn-family-title">States</div>
+        <div class="btn-states-grid" style="grid-template-columns:repeat(4,1fr);margin-top:16px;">
+          <div class="btn-state-cell">
+            <div style="pointer-events:none;width:120px;">
+              <div class="gs-slider">
+                <div class="gs-slider__track-wrap">
+                  <div class="gs-slider__track"><div class="gs-slider__fill" style="width:40%"></div></div>
+                  <input type="range" class="gs-slider__input" min="0" max="100" value="40" />
+                </div>
+              </div>
+            </div>
+            <span class="btn-state-label">Default</span>
+          </div>
+          <div class="btn-state-cell">
+            <div style="pointer-events:none;width:120px;">
+              <div class="gs-slider">
+                <div class="gs-slider__track-wrap">
+                  <div class="gs-slider__track"><div class="gs-slider__fill" style="width:40%"></div></div>
+                  <div class="gs-slider__tip is-visible" style="left:40%">40</div>
+                  <input type="range" class="gs-slider__input" min="0" max="100" value="40" />
+                </div>
+              </div>
+            </div>
+            <span class="btn-state-label">Hover / tooltip</span>
+          </div>
+          <div class="btn-state-cell">
+            <div style="pointer-events:none;width:120px;">
+              <div class="gs-slider" style="--slider-thumb:20px;">
+                <div class="gs-slider__track-wrap">
+                  <div class="gs-slider__track"><div class="gs-slider__fill" style="width:40%"></div></div>
+                  <input type="range" class="gs-slider__input" min="0" max="100" value="40" />
+                </div>
+              </div>
+            </div>
+            <span class="btn-state-label">Active / drag</span>
+          </div>
+          <div class="btn-state-cell">
+            <div style="pointer-events:none;width:120px;">
+              <div class="gs-slider gs-slider--disabled">
+                <div class="gs-slider__track-wrap">
+                  <div class="gs-slider__track"><div class="gs-slider__fill" style="width:40%"></div></div>
+                  <input type="range" class="gs-slider__input" min="0" max="100" value="40" disabled />
+                </div>
+              </div>
+            </div>
+            <span class="btn-state-label">Disabled</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- INTERACTIONS -->
+      <div id="sld-s-interaction" class="btn-family-card">
+        <div class="btn-family-title">Interactions</div>
+        <table>
+          <thead><tr><th>Trigger</th><th>Behaviour</th></tr></thead>
+          <tbody>
+            <tr class="ds-tr-border"><td>Click on track</td><td>Thumb jumps to clicked position</td></tr>
+            <tr class="ds-tr-border"><td>Drag thumb</td><td>Moves thumb; fill updates live; tooltip shows value</td></tr>
+            <tr class="ds-tr-border"><td><kbd>←</kbd> / <kbd>→</kbd></td><td>Move by one step</td></tr>
+            <tr class="ds-tr-border"><td><kbd>Home</kbd> / <kbd>End</kbd></td><td>Jump to min / max</td></tr>
+            <tr class="ds-tr-border"><td>Range — overlap</td><td>Thumbs cannot cross; minimum 1 step apart</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- ACCESSIBILITY -->
+      <div id="sld-s-a11y" class="btn-family-card">
+        <div class="btn-family-title">Accessibility</div>
+        <p class="btn-family-desc">Native <code>&lt;input type="range"&gt;</code> provides ARIA semantics automatically. Always add a visible or screen-reader label.</p>
+        <table>
+          <thead><tr><th>Attribute</th><th>Element</th><th>Value</th></tr></thead>
+          <tbody>
+            <tr class="ds-tr-border"><td><code>aria-label</code></td><td>input[range]</td><td>Descriptive name (e.g. "Volume")</td></tr>
+            <tr class="ds-tr-border"><td><code>aria-valuemin/max/now</code></td><td>input[range]</td><td>Auto-set by native input</td></tr>
+            <tr class="ds-tr-border"><td><code>aria-disabled</code></td><td>input[range]</td><td>"true" when disabled</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+    <div class="code-tab-qnav">
+      <div class="code-qnav-inner">
+        <p class="code-qnav-title">On This Page</p>
+        <ul class="code-qnav-list">
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('sld-s-overview')">Overview</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('sld-s-anatomy')">Anatomy</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('sld-s-variants')">Variants</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('sld-s-states')">States</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('sld-s-interaction')">Interactions</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('sld-s-a11y')">Accessibility</button></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ CODE TAB ══════════════════════════════════════════════════ -->
+<div id="sld-tab-code" class="btn-tab-pane sld-tab-pane">
+  <div class="code-tab-layout">
+    <div class="code-tab-main">
+
+      <div class="fw-toggle-bar">
+        <button class="fw-toggle-bar-btn active" data-fw="react" onclick="switchFw('sld-tab-code','react')">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="2.5" fill="#61dafb"/><ellipse cx="12" cy="12" rx="10" ry="4.5" stroke="#61dafb" stroke-width="1.5" fill="none"/><ellipse cx="12" cy="12" rx="10" ry="4.5" stroke="#61dafb" stroke-width="1.5" fill="none" transform="rotate(60 12 12)"/><ellipse cx="12" cy="12" rx="10" ry="4.5" stroke="#61dafb" stroke-width="1.5" fill="none" transform="rotate(120 12 12)"/></svg> React
+        </button>
+        <button class="fw-toggle-bar-btn" data-fw="angular" onclick="switchFw('sld-tab-code','angular')">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M12 2L2 6.5l1.5 12.5L12 22l8.5-3L22 6.5 12 2z" fill="#dd0031"/><path d="M12 2v20M12 2L6 17h12L12 2z" fill="none" stroke="#fff" stroke-width="1.2"/></svg> Angular
+        </button>
+      </div>
+
+      <div id="sld-c-overview" class="btn-family-card">
+        <div class="ds-step-row"><span class="ds-step-num">1</span><div class="btn-family-title" style="margin:0;">Overview</div></div>
+        <div class="fw-react"><p class="btn-family-desc">Two exports: <code>Slider</code> (single thumb) and <code>RangeSlider</code> (dual thumb). Built on native <code>&lt;input type="range"&gt;</code> for accessibility. Fill and tooltip are overlaid absolutely.</p></div>
+        <div class="fw-angular" style="display:none;"><p class="btn-family-desc">Use <code>.gs-slider</code> wrapper with <code>.gs-slider__input</code> + <code>.gs-slider__fill</code>. Call <code>gsSliderUpdate(input)</code> on each <code>oninput</code> event to keep the fill in sync.</p></div>
+      </div>
+
+      <div id="sld-c-install" class="btn-family-card">
+        <div class="ds-step-row"><span class="ds-step-num">2</span><div class="btn-family-title" style="margin:0;">Install / Import</div></div>
+        <div class="fw-react">
+          <div class="btn-code-block"><div class="btn-code-head"><span class="btn-code-lang">JSX</span><button class="btn-copy-btn" onclick="copyBtnCode('sld-imp-r',this)">Copy</button></div>
+          <div class="btn-code-body"><pre id="sld-imp-r"><code><span class="c-kw">import</span> { <span class="c-type">Slider</span>, <span class="c-type">RangeSlider</span> } <span class="c-kw">from</span> <span class="c-val">'@pelagos/components/primitives/slider'</span>;</code></pre></div></div>
+        </div>
+        <div class="fw-angular" style="display:none;">
+          <div class="btn-code-block"><div class="btn-code-head"><span class="btn-code-lang">HTML</span><button class="btn-copy-btn" onclick="copyBtnCode('sld-imp-ng',this)">Copy</button></div>
+          <div class="btn-code-body"><pre id="sld-imp-ng"><code><span class="c-cmt">&lt;!-- Single slider --&gt;</span>
+<span class="c-tag">&lt;div</span> <span class="c-attr">class</span>=<span class="c-val">"gs-slider"</span><span class="c-tag">&gt;</span>
+  <span class="c-tag">&lt;div</span> <span class="c-attr">class</span>=<span class="c-val">"gs-slider__track-wrap"</span><span class="c-tag">&gt;</span>
+    <span class="c-tag">&lt;div</span> <span class="c-attr">class</span>=<span class="c-val">"gs-slider__track"</span><span class="c-tag">&gt;</span>
+      <span class="c-tag">&lt;div</span> <span class="c-attr">class</span>=<span class="c-val">"gs-slider__fill"</span> <span class="c-attr">id</span>=<span class="c-val">"my-fill"</span><span class="c-tag">&gt;&lt;/div&gt;</span>
+    <span class="c-tag">&lt;/div&gt;</span>
+    <span class="c-tag">&lt;input</span> <span class="c-attr">type</span>=<span class="c-val">"range"</span> <span class="c-attr">class</span>=<span class="c-val">"gs-slider__input"</span>
+      <span class="c-attr">min</span>=<span class="c-val">"0"</span> <span class="c-attr">max</span>=<span class="c-val">"100"</span> <span class="c-attr">value</span>=<span class="c-val">"30"</span>
+      <span class="c-attr">oninput</span>=<span class="c-val">"gsSliderUpdate(this)"</span>
+      <span class="c-attr">aria-label</span>=<span class="c-val">"Volume"</span><span class="c-tag">/&gt;</span>
+  <span class="c-tag">&lt;/div&gt;</span>
+<span class="c-tag">&lt;/div&gt;</span></code></pre></div></div>
+        </div>
+      </div>
+
+      <div id="sld-c-api" class="btn-family-card">
+        <div class="ds-step-row"><span class="ds-step-num">3</span><div class="btn-family-title" style="margin:0;">API / Props</div></div>
+        <div class="btn-sub-label" style="margin-bottom:8px;">Slider</div>
+        <div class="fw-react">
+          <table>
+            <thead><tr><th>Prop</th><th>Type</th><th>Default</th><th>Description</th></tr></thead>
+            <tbody>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">min / max / step</td><td class="ds-td-code-muted">number</td><td class="ds-td-code-muted">0 / 100 / 1</td><td>Scale bounds and step</td></tr>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">value</td><td class="ds-td-code-muted">number</td><td class="ds-td-code-muted">—</td><td>Controlled value</td></tr>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">defaultValue</td><td class="ds-td-code-muted">number</td><td class="ds-td-code-muted">30</td><td>Uncontrolled initial value</td></tr>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">onChange</td><td class="ds-td-code-muted">(v: number) => void</td><td class="ds-td-code-muted">—</td><td>Called on every change</td></tr>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">disabled</td><td class="ds-td-code-muted">boolean</td><td class="ds-td-code-muted">false</td><td>Disables interaction</td></tr>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">showTooltip</td><td class="ds-td-code-muted">boolean</td><td class="ds-td-code-muted">true</td><td>Show value tooltip while dragging</td></tr>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">marks</td><td class="ds-td-code-muted">&#123;value,label&#125;[]</td><td class="ds-td-code-muted">—</td><td>Step marks along the track</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="fw-angular" style="display:none;">
+          <table>
+            <thead><tr><th>CSS class</th><th>Description</th></tr></thead>
+            <tbody>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">.gs-slider</td><td>Root container</td></tr>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">.gs-slider--range</td><td>Range (dual-thumb) modifier</td></tr>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">.gs-slider--disabled</td><td>Disabled state</td></tr>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">.gs-slider__fill</td><td>Filled portion of track</td></tr>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">.gs-slider__input--lo/hi</td><td>Range slider lower/upper thumb inputs</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="btn-sub-label" style="margin-top:20px;margin-bottom:8px;">RangeSlider</div>
+        <div class="fw-react">
+          <table>
+            <thead><tr><th>Prop</th><th>Type</th><th>Default</th><th>Description</th></tr></thead>
+            <tbody>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">values</td><td class="ds-td-code-muted">[number, number]</td><td class="ds-td-code-muted">—</td><td>Controlled [low, high]</td></tr>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">defaultValues</td><td class="ds-td-code-muted">[number, number]</td><td class="ds-td-code-muted">[20, 80]</td><td>Uncontrolled initial range</td></tr>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">onChange</td><td class="ds-td-code-muted">([lo, hi]) => void</td><td class="ds-td-code-muted">—</td><td>Called on every change</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="fw-angular" style="display:none;"><p class="btn-family-desc">Use <code>gsRangeUpdate(container)</code> on oninput — pass the <code>.gs-slider</code> container. Add <code>.gs-slider__input--lo</code> and <code>.gs-slider__input--hi</code> classes to the two range inputs.</p></div>
+      </div>
+
+      <div id="sld-c-variants" class="btn-family-card">
+        <div class="ds-step-row"><span class="ds-step-num">4</span><div class="btn-family-title" style="margin:0;">Code Examples</div></div>
+        <div class="btn-sub-label" style="margin-bottom:6px;">Single — controlled</div>
+        <div class="fw-react">
+          <div class="btn-code-block"><div class="btn-code-head"><span class="btn-code-lang">JSX</span><button class="btn-copy-btn" onclick="copyBtnCode('sld-ex-r',this)">Copy</button></div>
+          <div class="btn-code-body"><pre id="sld-ex-r"><code><span class="c-kw">const</span> [vol, setVol] = <span class="c-type">useState</span>(40);
+
+<span class="c-tag">&lt;Slider</span>
+  <span class="c-attr">value</span>={vol}
+  <span class="c-attr">onChange</span>={setVol}
+  <span class="c-attr">min</span>={0} <span class="c-attr">max</span>={100}
+  <span class="c-attr">showTooltip</span>
+<span class="c-tag">/&gt;</span>
+
+<span class="c-cmt">// With marks</span>
+<span class="c-tag">&lt;Slider</span>
+  <span class="c-attr">step</span>={25}
+  <span class="c-attr">marks</span>={[&#123;value:0,label:'0'&#125;,&#123;value:50,label:'50'&#125;,&#123;value:100,label:'100'&#125;]}
+<span class="c-tag">/&gt;</span></code></pre></div></div>
+        </div>
+        <div class="fw-angular" style="display:none;">
+          <div class="btn-code-block"><div class="btn-code-head"><span class="btn-code-lang">HTML</span><button class="btn-copy-btn" onclick="copyBtnCode('sld-ex-ng',this)">Copy</button></div>
+          <div class="btn-code-body"><pre id="sld-ex-ng"><code><span class="c-tag">&lt;div</span> <span class="c-attr">class</span>=<span class="c-val">"gs-slider"</span><span class="c-tag">&gt;</span>
+  <span class="c-tag">&lt;div</span> <span class="c-attr">class</span>=<span class="c-val">"gs-slider__track-wrap"</span><span class="c-tag">&gt;</span>
+    <span class="c-tag">&lt;div</span> <span class="c-attr">class</span>=<span class="c-val">"gs-slider__track"</span><span class="c-tag">&gt;</span>
+      <span class="c-tag">&lt;div</span> <span class="c-attr">class</span>=<span class="c-val">"gs-slider__fill"</span> <span class="c-attr">id</span>=<span class="c-val">"fill"</span> <span class="c-attr">style</span>=<span class="c-val">"width:40%"</span><span class="c-tag">&gt;&lt;/div&gt;</span>
+    <span class="c-tag">&lt;/div&gt;</span>
+    <span class="c-tag">&lt;input</span> <span class="c-attr">type</span>=<span class="c-val">"range"</span> <span class="c-attr">class</span>=<span class="c-val">"gs-slider__input"</span>
+      <span class="c-attr">min</span>=<span class="c-val">"0"</span> <span class="c-attr">max</span>=<span class="c-val">"100"</span> <span class="c-attr">value</span>=<span class="c-val">"40"</span>
+      <span class="c-attr">oninput</span>=<span class="c-val">"gsSliderUpdate(this);document.getElementById('fill').style.width=(this.value/100*100)+'%'"</span>
+      <span class="c-attr">aria-label</span>=<span class="c-val">"Volume"</span><span class="c-tag">/&gt;</span>
+  <span class="c-tag">&lt;/div&gt;</span>
+<span class="c-tag">&lt;/div&gt;</span></code></pre></div></div>
+        </div>
+
+        <div class="btn-sub-label" style="margin-top:20px;margin-bottom:6px;">Range slider</div>
+        <div class="fw-react">
+          <div class="btn-code-block"><div class="btn-code-head"><span class="btn-code-lang">JSX</span><button class="btn-copy-btn" onclick="copyBtnCode('sld-range-r',this)">Copy</button></div>
+          <div class="btn-code-body"><pre id="sld-range-r"><code><span class="c-kw">const</span> [range, setRange] = <span class="c-type">useState</span>([20, 80]);
+
+<span class="c-tag">&lt;RangeSlider</span>
+  <span class="c-attr">values</span>={range}
+  <span class="c-attr">onChange</span>={setRange}
+  <span class="c-attr">min</span>={0} <span class="c-attr">max</span>={100}
+<span class="c-tag">/&gt;</span>
+<span class="c-tag">&lt;p</span><span class="c-tag">&gt;</span>${range[0]} – ${range[1]}<span class="c-tag">&lt;/p&gt;</span></code></pre></div></div>
+        </div>
+        <div class="fw-angular" style="display:none;">
+          <div class="btn-code-block"><div class="btn-code-head"><span class="btn-code-lang">HTML</span><button class="btn-copy-btn" onclick="copyBtnCode('sld-range-ng',this)">Copy</button></div>
+          <div class="btn-code-body"><pre id="sld-range-ng"><code><span class="c-tag">&lt;div</span> <span class="c-attr">class</span>=<span class="c-val">"gs-slider gs-slider--range"</span><span class="c-tag">&gt;</span>
+  <span class="c-tag">&lt;div</span> <span class="c-attr">class</span>=<span class="c-val">"gs-slider__track-wrap"</span><span class="c-tag">&gt;</span>
+    <span class="c-tag">&lt;div</span> <span class="c-attr">class</span>=<span class="c-val">"gs-slider__track"</span><span class="c-tag">&gt;</span>
+      <span class="c-tag">&lt;div</span> <span class="c-attr">class</span>=<span class="c-val">"gs-slider__fill gs-slider__fill--range"</span> <span class="c-attr">id</span>=<span class="c-val">"rf"</span><span class="c-tag">&gt;&lt;/div&gt;</span>
+    <span class="c-tag">&lt;/div&gt;</span>
+    <span class="c-tag">&lt;input</span> <span class="c-attr">type</span>=<span class="c-val">"range"</span> <span class="c-attr">class</span>=<span class="c-val">"gs-slider__input gs-slider__input--lo"</span>
+      <span class="c-attr">min</span>=<span class="c-val">"0"</span> <span class="c-attr">max</span>=<span class="c-val">"100"</span> <span class="c-attr">value</span>=<span class="c-val">"20"</span>
+      <span class="c-attr">oninput</span>=<span class="c-val">"gsRangeUpdate(this.closest('.gs-slider'))"</span> <span class="c-attr">aria-label</span>=<span class="c-val">"Min"</span><span class="c-tag">/&gt;</span>
+    <span class="c-tag">&lt;input</span> <span class="c-attr">type</span>=<span class="c-val">"range"</span> <span class="c-attr">class</span>=<span class="c-val">"gs-slider__input gs-slider__input--hi"</span>
+      <span class="c-attr">min</span>=<span class="c-val">"0"</span> <span class="c-attr">max</span>=<span class="c-val">"100"</span> <span class="c-attr">value</span>=<span class="c-val">"80"</span>
+      <span class="c-attr">oninput</span>=<span class="c-val">"gsRangeUpdate(this.closest('.gs-slider'))"</span> <span class="c-attr">aria-label</span>=<span class="c-val">"Max"</span><span class="c-tag">/&gt;</span>
+  <span class="c-tag">&lt;/div&gt;</span>
+<span class="c-tag">&lt;/div&gt;</span></code></pre></div></div>
+        </div>
+      </div>
+
+    </div>
+    <div class="code-tab-qnav">
+      <div class="code-qnav-inner">
+        <p class="code-qnav-title">On This Page</p>
+        <ul class="code-qnav-list">
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('sld-c-overview')">1 · Overview</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('sld-c-install')">2 · Install / Import</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('sld-c-api')">3 · API / Props</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('sld-c-variants')">4 · Examples</button></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ USAGE TAB ════════════════════════════════════════════════ -->
+<div id="sld-tab-usage" class="btn-tab-pane sld-tab-pane">
+  <div class="code-tab-layout">
+    <div class="code-tab-main">
+      <div id="sld-u-when" class="btn-family-card">
+        <div class="btn-family-title">When to Use</div>
+        <ul class="btn-usage-list">
+          <li><strong>Continuous value selection</strong> — volume, brightness, opacity, zoom level where precise keyboard entry is less important than quick adjustment.</li>
+          <li><strong>Range filtering</strong> — price range, date range, vessel tonnage filter — use the Range variant.</li>
+          <li><strong>Visual proportion</strong> — when the relative position matters as much as the exact value (e.g. "roughly 70% load").</li>
+        </ul>
+      </div>
+      <div id="sld-u-when-not" class="btn-family-card">
+        <div class="btn-family-title">When Not to Use</div>
+        <ul class="btn-usage-list">
+          <li><strong>Precise numeric input</strong> — use a <button onclick="navigate('prim-textfields')" class="btn-inline-link">Text Field</button> with type="number" instead.</li>
+          <li><strong>Small discrete lists</strong> — fewer than 5 options → use <button onclick="navigate('prim-radio')" class="btn-inline-link">Radio Buttons</button>.</li>
+          <li><strong>Touch-only tables</strong> — small sliders are difficult to grab on mobile; consider a stepper instead.</li>
+        </ul>
+      </div>
+      <div id="sld-u-refs" class="btn-family-card">
+        <div class="btn-family-title">References</div>
+        <ul class="btn-related-list">
+          <li><a href="https://www.figma.com/design/TOLfBpRePgynqwvDVp6fg3/Design-System?node-id=11866-4068" target="_blank" rel="noopener">Figma — Slider component frame</a></li>
+          <li><a href="https://ant.design/components/slider" target="_blank" rel="noopener">Ant Design — Slider</a></li>
+          <li><a href="https://www.w3.org/WAI/ARIA/apg/patterns/slider/" target="_blank" rel="noopener">ARIA APG — Slider pattern</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="code-tab-qnav">
+      <div class="code-qnav-inner">
+        <p class="code-qnav-title">Quick Access</p>
+        <ul class="code-qnav-list">
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('sld-u-when')">When to Use</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('sld-u-when-not')">When Not to Use</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('sld-u-refs')">References</button></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>

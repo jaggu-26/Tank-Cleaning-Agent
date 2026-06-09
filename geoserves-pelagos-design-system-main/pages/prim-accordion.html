@@ -1,0 +1,1217 @@
+<!-- ═══════════════════════════════════════════════════════════════
+     ACCORDION — Pelagos Design System
+     ═══════════════════════════════════════════════════════════════ -->
+
+<style>
+  /* Accordion demo — Carbon motion: expand 110ms cubic-bezier(0,0,0.38,0.9) · collapse 110ms cubic-bezier(0.2,0,1,0.9) */
+  .gs-ademo-hdr { display:flex; align-items:center; justify-content:space-between; border:none; background:var(--color-surface-default); width:100%; cursor:pointer; text-align:left; padding:16px; gap:16px; transition:background 70ms ease; }
+  .gs-ademo-hdr:hover { background:var(--prim-blue-10, #eef6ff); }
+  .gs-ademo-hdr:focus-visible { outline:2px solid var(--color-brand); outline-offset:-2px; }
+  .gs-ademo-title { font-family:var(--prim-font-primary); font-size:18px; line-height:24px; font-weight:var(--prim-font-weight-semibold); color:var(--prim-navy,#001e4c); }
+  /* Chevron — 180° rotation via JS, transition here. No border-top on body. */
+  .gs-ademo-chevron { flex-shrink:0; width:24px; height:24px; transition:transform 110ms cubic-bezier(0,0,0.38,0.9); color:var(--prim-grey-500); }
+  .gs-ademo-body { overflow:hidden; }
+  .gs-ademo-body-inner { padding:16px; }
+  /* overflow:hidden clips the white button background to the rounded border — prevents border masking */
+  .gs-ademo-item { border:1px solid var(--color-border-default); border-radius:var(--radius-md); margin-bottom:6px; overflow:hidden; background:var(--color-surface-default); }
+  .gs-ademo-item:last-child { margin-bottom:0; }
+  /* Size variant overrides */
+  .gs-ademo-hdr--sm { padding:8px 16px; gap:16px; min-height:40px; }
+  .gs-ademo-hdr--sm .gs-ademo-title { font-size:14px; }
+  .gs-ademo-hdr--md { padding:12px 16px; gap:16px; min-height:48px; }
+  .gs-ademo-hdr--md .gs-ademo-title { font-size:16px; }
+  .gs-ademo-hdr--lg { padding:16px 16px; gap:16px; min-height:56px; }
+  .gs-ademo-hdr--lg .gs-ademo-title { font-size:18px; }
+  /* Compact demo override (states grid, do/dont) — chevron stays 24×24 */
+  .gs-ademo-hdr--compact { padding:10px 12px; gap:12px; }
+  .gs-ademo-hdr--compact .gs-ademo-title { font-size:var(--prim-font-size-sm); }
+  /* ── Header Slots demo ───────────────────────────────────────────────── */
+  .gs-ademo-hdr-row { display:flex; align-items:stretch; width:100%; }
+  .gs-ademo-hdr-trigger { flex:1; display:flex; align-items:center; gap:12px; justify-content:flex-start; border:none; background:var(--color-surface-default); cursor:pointer; text-align:left; padding:16px; font-family:var(--prim-font-primary); font-size:18px; line-height:24px; font-weight:var(--prim-font-weight-semibold); color:var(--prim-navy,#001e4c); transition:background 70ms ease; }
+  .gs-ademo-hdr-trigger:hover { background:var(--prim-blue-10,#eef6ff); }
+  .gs-ademo-hdr-trigger:focus-visible { outline:2px solid var(--color-brand); outline-offset:-2px; }
+  .gs-ademo-left-extra { display:flex; align-items:center; gap:8px; flex-shrink:0; }
+  .gs-ademo-actions { display:flex; align-items:center; gap:8px; padding-right:16px; background:var(--color-surface-default); }
+  .gs-ademo-right-extra { display:flex; align-items:center; gap:6px; }
+  .gs-ademo-chevron-btn { display:flex; align-items:center; justify-content:center; background:none; border:none; cursor:pointer; padding:0; color:var(--prim-grey-500); flex-shrink:0; }
+  .gs-ademo-action-btn { display:inline-flex; align-items:center; height:28px; padding:0 10px; border-radius:var(--radius-sm,4px); border:1px solid var(--color-border-default); background:var(--color-surface-default); font-family:var(--prim-font-primary); font-size:12px; font-weight:500; color:var(--prim-grey-700); cursor:pointer; white-space:nowrap; transition:background 70ms ease,border-color 70ms ease; }
+  .gs-ademo-action-btn:hover { background:var(--prim-grey-50,#f7fafc); border-color:var(--prim-grey-300); }
+  .gs-ademo-action-btn--success { color:var(--color-success,#15803d); border-color:var(--color-success,#15803d); }
+  .gs-ademo-action-btn--success:hover { background:var(--prim-green-10,#f0fdf4); }
+  .gs-ademo-action-btn--warn { color:var(--color-warning,#b45309); border-color:var(--color-warning,#b45309); }
+  .gs-ademo-action-btn--warn:hover { background:var(--prim-yellow-10,#fffbeb); }
+  .gs-ademo-action-btn--danger { color:var(--color-danger,#dc2626); border-color:var(--color-danger,#dc2626); }
+  .gs-ademo-action-btn--danger:hover { background:var(--prim-red-10,#fef2f2); }
+  .gs-ademo-badge { display:inline-flex; align-items:center; height:20px; padding:0 8px; border-radius:10px; font-size:11px; font-weight:600; letter-spacing:0.02em; }
+  .gs-ademo-badge--pending { background:var(--prim-yellow-10,#fffbeb); color:var(--color-warning,#b45309); border:1px solid var(--prim-yellow-200,#fde68a); }
+  .gs-ademo-badge--approved { background:var(--prim-green-10,#f0fdf4); color:var(--color-success,#15803d); border:1px solid var(--prim-green-200,#bbf7d0); }
+  .gs-ademo-badge--info { background:var(--prim-blue-10,#eef6ff); color:var(--color-brand,#1852fe); border:1px solid var(--prim-blue-200,#bfdbfe); }
+  .gs-ademo-author { font-size:12px; color:var(--color-text-secondary); font-weight:400; }
+</style>
+
+<script>
+function gsToggleAccordionSlot(triggerBtn) {
+  var item = triggerBtn.closest('.gs-ademo-item');
+  var body = item.querySelector('.gs-ademo-body');
+  var chevron = item.querySelector('.gs-ademo-chevron');
+  var isOpen = triggerBtn.getAttribute('aria-expanded') === 'true';
+  triggerBtn.setAttribute('aria-expanded', isOpen ? 'false' : 'true');
+  chevron.style.transform = isOpen ? '' : 'rotate(180deg)';
+  if (isOpen) {
+    body.style.height = body.scrollHeight + 'px';
+    body.style.overflow = 'hidden';
+    body.style.transition = 'height 110ms cubic-bezier(0.2,0,1,0.9)';
+    requestAnimationFrame(function() {
+      body.style.height = '0px';
+      body.addEventListener('transitionend', function() {
+        body.style.display = 'none';
+        body.style.height = '';
+        body.style.overflow = '';
+        body.style.transition = '';
+      }, { once: true });
+    });
+  } else {
+    body.style.display = '';
+    body.style.height = '0px';
+    body.style.overflow = 'hidden';
+    body.style.transition = 'height 110ms cubic-bezier(0,0,0.38,0.9)';
+    requestAnimationFrame(function() {
+      body.style.height = body.scrollHeight + 'px';
+      body.addEventListener('transitionend', function() {
+        body.style.height = 'auto';
+        body.style.overflow = '';
+        body.style.transition = '';
+      }, { once: true });
+    });
+  }
+}
+</script>
+
+<!-- BANNER -->
+<div class="page-header">
+  <h1 class="ds-hero-title">Accordion</h1>
+</div>
+
+<!-- TAB BAR -->
+<div class="btn-tab-bar">
+  <button class="btn-tab-btn acc-tab-btn active" data-tab="design" onclick="switchAccordionTab('design')">Design</button>
+  <button class="btn-tab-btn acc-tab-btn" data-tab="code"   onclick="switchAccordionTab('code')">Code</button>
+  <button class="btn-tab-btn acc-tab-btn" data-tab="usage"  onclick="switchAccordionTab('usage')">Usage</button>
+</div>
+
+<!-- ═══ DESIGN TAB ═══════════════════════════════════════════════════ -->
+<div id="acc-tab-design" class="btn-tab-pane acc-tab-pane active">
+  <div class="code-tab-layout">
+    <div class="code-tab-main">
+
+      <!-- OVERVIEW -->
+      <div id="acc-s-overview" class="btn-family-card">
+        <div class="btn-family-title">Overview</div>
+        <p class="btn-family-desc">Accordions are vertically stacked interactive headings that reveal or hide associated content panels. They reduce cognitive load by progressively disclosing information — showing only what the user requests. Pelagos accordions support single (accordion) and multi-open modes, smooth height transitions, and full keyboard navigation. Click any item below to try it.</p>
+
+        <!-- INTERACTIVE ACCORDION DEMO -->
+        <div class="btn-preview-strip" style="padding:28px 24px;background:var(--color-surface-subtle);border:1px solid var(--color-border-default);border-radius:var(--radius-lg);margin-top:16px;">
+          <div style="max-width:540px;width:100%;margin:0 auto;" data-acc-mode="single">
+            <!-- Item 1 — open by default -->
+            <div class="gs-ademo-item">
+              <button class="gs-ademo-hdr" onclick="gsToggleAccordionDemo(this)" aria-expanded="true">
+                <span class="gs-ademo-title">What is Pelagos Design System?</span>
+                <svg class="gs-ademo-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="transform:rotate(180deg);"><path d="M6 10l6 6 6-6"/></svg>
+              </button>
+              <div class="gs-ademo-body">
+                <div class="gs-ademo-body-inner"><p style="font-size:var(--prim-font-size-md);color:var(--color-text-secondary);line-height:var(--prim-line-height-relaxed);">Pelagos is a comprehensive design system for enterprise-grade GeoServes applications — providing tokens, components, and patterns for consistent, accessible interfaces at scale.</p></div>
+              </div>
+            </div>
+            <!-- Item 2 — closed -->
+            <div class="gs-ademo-item">
+              <button class="gs-ademo-hdr" onclick="gsToggleAccordionDemo(this)" aria-expanded="false">
+                <span class="gs-ademo-title">How do I install the component library?</span>
+                <svg class="gs-ademo-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 10l6 6 6-6"/></svg>
+              </button>
+              <div class="gs-ademo-body" style="display:none;">
+                <div class="gs-ademo-body-inner"><p style="font-size:var(--prim-font-size-md);color:var(--color-text-secondary);line-height:var(--prim-line-height-relaxed);">Run <code>npm install @pelagos/react-components</code> or <code>@pelagos/angular-components</code> depending on your framework.</p></div>
+              </div>
+            </div>
+            <!-- Item 3 — closed -->
+            <div class="gs-ademo-item">
+              <button class="gs-ademo-hdr" onclick="gsToggleAccordionDemo(this)" aria-expanded="false">
+                <span class="gs-ademo-title">Is the accordion WCAG 2.1 compliant?</span>
+                <svg class="gs-ademo-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 10l6 6 6-6"/></svg>
+              </button>
+              <div class="gs-ademo-body" style="display:none;">
+                <div class="gs-ademo-body-inner"><p style="font-size:var(--prim-font-size-md);color:var(--color-text-secondary);line-height:var(--prim-line-height-relaxed);">Yes — all components target WCAG 2.1 Level AA. The accordion uses <code>role="button"</code>, <code>aria-expanded</code>, and <code>aria-controls</code> with full keyboard support.</p></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="btn-when-examples" style="margin-top:16px;">
+          <span class="btn-when-example-tag">2 Modes</span>
+          <span class="btn-when-example-tag">3 Sizes</span>
+          <span class="btn-when-example-tag">5 States</span>
+          <span class="btn-when-example-tag">WCAG AA</span>
+        </div>
+      </div>
+
+      <!-- ANATOMY -->
+      <div id="acc-s-anatomy" class="btn-family-card">
+        <div class="btn-family-title">Anatomy</div>
+        <p class="btn-family-desc">Each accordion item is a trigger header paired with a collapsible panel. The trigger is a full-width <code>&lt;button&gt;</code> for maximum tap area and keyboard operability.</p>
+
+        <div style="background:var(--color-surface-subtle);border:1px solid var(--color-border-default);border-radius:var(--radius-lg);padding:32px;display:flex;justify-content:center;margin-top:8px;overflow:auto;">
+          <svg width="580" height="260" viewBox="0 0 580 260" fill="none" xmlns="http://www.w3.org/2000/svg" style="min-width:480px;">
+            <rect x="60" y="40" width="360" height="190" rx="8" stroke="#cbd5e1" stroke-width="1.5" fill="#fff"/>
+            <line x1="60" y1="108" x2="420" y2="108" stroke="#f1f5f9" stroke-width="1.5"/>
+            <rect x="60" y="40" width="360" height="68" rx="8" fill="#eef6ff" opacity="0.8"/>
+            <text x="84" y="80" font-size="13" font-weight="600" fill="#1e293b" font-family="Helvetica,Arial,sans-serif">Accordion item header</text>
+            <g transform="translate(398,70) rotate(90)"><polyline points="-5,4 0,-2 5,4" stroke="#1852fe" stroke-width="2.5" stroke-linecap="round" fill="none"/></g>
+            <rect x="80" y="122" width="280" height="10" rx="3" fill="#e2e8f0"/>
+            <rect x="80" y="140" width="220" height="10" rx="3" fill="#e2e8f0"/>
+            <rect x="80" y="158" width="260" height="10" rx="3" fill="#e2e8f0"/>
+            <rect x="80" y="176" width="180" height="10" rx="3" fill="#e2e8f0"/>
+            <line x1="240" y1="40" x2="240" y2="14" stroke="#cbd5e1" stroke-width="1"/>
+            <line x1="240" y1="14" x2="490" y2="14" stroke="#cbd5e1" stroke-width="1"/>
+            <circle cx="490" cy="14" r="10" fill="#1852fe"/>
+            <text x="490" y="18" font-size="11" font-weight="700" fill="white" text-anchor="middle" font-family="Helvetica,Arial,sans-serif">1</text>
+            <text x="506" y="18" font-size="11" fill="#475569" font-family="Helvetica,Arial,sans-serif">Container</text>
+            <line x1="180" y1="74" x2="28" y2="74" stroke="#cbd5e1" stroke-width="1"/>
+            <circle cx="18" cy="74" r="10" fill="#1852fe"/>
+            <text x="18" y="78" font-size="11" font-weight="700" fill="white" text-anchor="middle" font-family="Helvetica,Arial,sans-serif">2</text>
+            <line x1="410" y1="74" x2="490" y2="74" stroke="#cbd5e1" stroke-width="1"/>
+            <circle cx="490" cy="74" r="10" fill="#1852fe"/>
+            <text x="490" y="78" font-size="11" font-weight="700" fill="white" text-anchor="middle" font-family="Helvetica,Arial,sans-serif">3</text>
+            <text x="506" y="78" font-size="11" fill="#475569" font-family="Helvetica,Arial,sans-serif">Chevron (rotates 90°)</text>
+            <line x1="160" y1="80" x2="160" y2="240" stroke="#cbd5e1" stroke-width="1"/>
+            <line x1="160" y1="240" x2="490" y2="240" stroke="#cbd5e1" stroke-width="1"/>
+            <circle cx="490" cy="240" r="10" fill="#1852fe"/>
+            <text x="490" y="244" font-size="11" font-weight="700" fill="white" text-anchor="middle" font-family="Helvetica,Arial,sans-serif">4</text>
+            <text x="506" y="244" font-size="11" fill="#475569" font-family="Helvetica,Arial,sans-serif">Header label</text>
+            <line x1="240" y1="152" x2="490" y2="152" stroke="#cbd5e1" stroke-width="1"/>
+            <circle cx="490" cy="152" r="10" fill="#1852fe"/>
+            <text x="490" y="156" font-size="11" font-weight="700" fill="white" text-anchor="middle" font-family="Helvetica,Arial,sans-serif">5</text>
+            <text x="506" y="156" font-size="11" fill="#475569" font-family="Helvetica,Arial,sans-serif">Content panel</text>
+          </svg>
+        </div>
+
+        <ol style="margin-top:20px;display:flex;flex-direction:column;gap:8px;padding-left:20px;">
+          <li><strong>Container</strong> — Border: 1px <code>--color-border-default</code>. Radius: <code>--radius-md</code>. Gap between items: <code>--prim-space-2</code> (6px).</li>
+          <li><strong>Header button</strong> — Full-width <code>&lt;button&gt;</code>. Heights: sm 40px · md 48px (default) · lg 56px. Padding: <code>--prim-space-4</code> <code>--prim-space-5</code>.</li>
+          <li><strong>Chevron icon</strong> — 16×16px. Rotates 90° when open. Transition: <code>transform 200ms ease</code>. Colour: <code>--prim-grey-400</code> (closed) → <code>--color-brand</code> (open).</li>
+          <li><strong>Header label</strong> — Font: <code>--prim-font-size-md</code> / <code>--prim-font-weight-semibold</code>. Colour: <code>--prim-grey-700</code> (closed) → <code>--color-brand</code> (open).</li>
+          <li><strong>Content panel</strong> — Collapsible. Padding: <code>--prim-space-3</code> <code>--prim-space-5</code> <code>--prim-space-4</code>. No border-top by default — add via <code>border-top: 1px solid var(--color-border-default)</code> when a visual separator is needed.</li>
+        </ol>
+      </div>
+
+      <!-- VARIANTS -->
+      <div id="acc-s-variants" class="btn-family-card">
+        <div class="btn-family-title">Variants</div>
+        <p class="btn-family-desc">Two behaviour modes and three sizes. All variants are interactive — click any header to expand/collapse.</p>
+
+        <!-- Accordion mode -->
+        <div class="btn-variant-row" style="margin-top:16px;">
+          <span class="btn-variant-label">Accordion<br><small style="font-weight:400;color:var(--color-text-secondary);">Single open</small></span>
+          <div class="btn-variant-sizes" style="flex:1;width:100%;">
+            <div data-acc-mode="single" style="width:100%;">
+              <div class="gs-ademo-item">
+                <button class="gs-ademo-hdr" onclick="gsToggleAccordionDemo(this)" aria-expanded="true">
+                  <span class="gs-ademo-title">Panel A</span>
+                  <svg class="gs-ademo-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="transform:rotate(180deg);"><path d="M6 10l6 6 6-6"/></svg>
+                </button>
+                <div class="gs-ademo-body">
+                  <div class="gs-ademo-body-inner"><p style="font-size:var(--prim-font-size-sm);color:var(--color-text-secondary);line-height:var(--prim-line-height-relaxed);">Only one panel stays open at a time.</p></div>
+                </div>
+              </div>
+              <div class="gs-ademo-item">
+                <button class="gs-ademo-hdr" onclick="gsToggleAccordionDemo(this)" aria-expanded="false">
+                  <span class="gs-ademo-title">Panel B</span>
+                  <svg class="gs-ademo-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 10l6 6 6-6"/></svg>
+                </button>
+                <div class="gs-ademo-body" style="display:none;"><div class="gs-ademo-body-inner"><p style="font-size:var(--prim-font-size-sm);color:var(--color-text-secondary);">Panel B content.</p></div></div>
+              </div>
+              <div class="gs-ademo-item">
+                <button class="gs-ademo-hdr" onclick="gsToggleAccordionDemo(this)" aria-expanded="false">
+                  <span class="gs-ademo-title">Panel C</span>
+                  <svg class="gs-ademo-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 10l6 6 6-6"/></svg>
+                </button>
+                <div class="gs-ademo-body" style="display:none;"><div class="gs-ademo-body-inner"><p style="font-size:var(--prim-font-size-sm);color:var(--color-text-secondary);">Panel C content.</p></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Multi-open mode -->
+        <div class="btn-variant-row" style="margin-top:20px;">
+          <span class="btn-variant-label">Multi-open<br><small style="font-weight:400;color:var(--color-text-secondary);">Multiple panels</small></span>
+          <div class="btn-variant-sizes" style="flex:1;width:100%;">
+            <div style="width:100%;">
+              <div class="gs-ademo-item">
+                <button class="gs-ademo-hdr" onclick="gsToggleAccordionDemo(this)" aria-expanded="true">
+                  <span class="gs-ademo-title">Panel A</span>
+                  <svg class="gs-ademo-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="transform:rotate(180deg);"><path d="M6 10l6 6 6-6"/></svg>
+                </button>
+                <div class="gs-ademo-body"><div class="gs-ademo-body-inner"><p style="font-size:var(--prim-font-size-sm);color:var(--color-text-secondary);">Panel A is open.</p></div></div>
+              </div>
+              <div class="gs-ademo-item">
+                <button class="gs-ademo-hdr" onclick="gsToggleAccordionDemo(this)" aria-expanded="true">
+                  <span class="gs-ademo-title">Panel B</span>
+                  <svg class="gs-ademo-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="transform:rotate(180deg);"><path d="M6 10l6 6 6-6"/></svg>
+                </button>
+                <div class="gs-ademo-body"><div class="gs-ademo-body-inner"><p style="font-size:var(--prim-font-size-sm);color:var(--color-text-secondary);">Panel B is also open simultaneously.</p></div></div>
+              </div>
+              <div class="gs-ademo-item">
+                <button class="gs-ademo-hdr" onclick="gsToggleAccordionDemo(this)" aria-expanded="false">
+                  <span class="gs-ademo-title">Panel C</span>
+                  <svg class="gs-ademo-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 10l6 6 6-6"/></svg>
+                </button>
+                <div class="gs-ademo-body" style="display:none;"><div class="gs-ademo-body-inner"><p style="font-size:var(--prim-font-size-sm);color:var(--color-text-secondary);">Panel C content.</p></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Sizes -->
+        <div class="btn-sub-label" style="margin-top:24px;margin-bottom:12px;">Sizes</div>
+        <div style="display:flex;flex-direction:column;gap:8px;">
+          <div class="gs-ademo-item" style="border-radius:var(--radius-md);">
+            <button class="gs-ademo-hdr gs-ademo-hdr--sm" onclick="gsToggleAccordionDemo(this)" aria-expanded="false" style="min-height:40px;">
+              <span class="gs-ademo-title">Small — 40px</span>
+              <svg class="gs-ademo-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 10l6 6 6-6"/></svg>
+            </button>
+            <div class="gs-ademo-body" style="display:none;"><div class="gs-ademo-body-inner"><p style="font-size:var(--prim-font-size-sm);color:var(--color-text-secondary);">Small content.</p></div></div>
+          </div>
+          <div class="gs-ademo-item" >
+            <button class="gs-ademo-hdr gs-ademo-hdr--md" onclick="gsToggleAccordionDemo(this)" aria-expanded="true" style="min-height:48px;">
+              <span class="gs-ademo-title">Medium (default) — 48px</span>
+              <svg class="gs-ademo-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="transform:rotate(180deg);"><path d="M6 10l6 6 6-6"/></svg>
+            </button>
+            <div class="gs-ademo-body"><div class="gs-ademo-body-inner"><p style="font-size:var(--prim-font-size-sm);color:var(--color-text-secondary);">Medium content.</p></div></div>
+          </div>
+          <div class="gs-ademo-item">
+            <button class="gs-ademo-hdr gs-ademo-hdr--lg" onclick="gsToggleAccordionDemo(this)" aria-expanded="false" style="min-height:56px;">
+              <span class="gs-ademo-title">Large — 56px</span>
+              <svg class="gs-ademo-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 10l6 6 6-6"/></svg>
+            </button>
+            <div class="gs-ademo-body" style="display:none;"><div class="gs-ademo-body-inner"><p style="font-size:var(--prim-font-size-md);color:var(--color-text-secondary);">Large content.</p></div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- HEADER SLOTS -->
+      <div id="acc-s-slots" class="btn-family-card">
+        <div class="btn-family-title">Header Slots</div>
+        <p class="btn-family-desc">Each accordion item can inject content into two zones of the header: <strong>leftExtra</strong> — non-interactive content (status badges, author, metadata) placed after the title inside the toggle zone — and <strong>rightExtra</strong> — interactive content (action buttons) placed outside the toggle button so clicks don't also collapse the panel. Clicking the title zone or the chevron still toggles the panel.</p>
+
+        <div class="btn-preview-strip" style="padding:28px 24px;background:var(--color-surface-subtle);border:1px solid var(--color-border-default);border-radius:var(--radius-lg);margin-top:16px;">
+          <div style="max-width:720px;width:100%;margin:0 auto;">
+
+            <!-- Item 1 — open, pending badge + actions -->
+            <div class="gs-ademo-item" style="margin-bottom:6px;">
+              <div class="gs-ademo-hdr-row">
+                <button class="gs-ademo-hdr-trigger" onclick="gsToggleAccordionSlot(this)" aria-expanded="true">
+                  <span class="gs-ademo-title" style="font-size:var(--prim-font-size-md);">Data Quality Assessment</span>
+                  <span class="gs-ademo-left-extra">
+                    <span class="gs-ademo-badge gs-ademo-badge--pending">Pending Review</span>
+                    <span class="gs-ademo-author">by Sarah Chen</span>
+                  </span>
+                </button>
+                <div class="gs-ademo-actions">
+                  <div class="gs-ademo-right-extra">
+                    <button class="gs-ademo-action-btn" onclick="event.stopPropagation()">Add Comment</button>
+                    <button class="gs-ademo-action-btn gs-ademo-action-btn--success" onclick="event.stopPropagation()">Agree</button>
+                    <button class="gs-ademo-action-btn gs-ademo-action-btn--warn" onclick="event.stopPropagation()">Dispute</button>
+                    <button class="gs-ademo-action-btn gs-ademo-action-btn--danger" onclick="event.stopPropagation()">Delete</button>
+                  </div>
+                  <button class="gs-ademo-chevron-btn" onclick="gsToggleAccordionSlot(this.closest('.gs-ademo-item').querySelector('.gs-ademo-hdr-trigger'))" tabindex="-1" aria-hidden="true">
+                    <svg class="gs-ademo-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:24px;height:24px;transition:transform 110ms cubic-bezier(0,0,0.38,0.9);transform:rotate(180deg);"><path d="M6 10l6 6 6-6"/></svg>
+                  </button>
+                </div>
+              </div>
+              <div class="gs-ademo-body">
+                <div class="gs-ademo-body-inner"><p style="font-size:var(--prim-font-size-sm);color:var(--color-text-secondary);line-height:var(--prim-line-height-relaxed);">Field completeness 94.2% · No null violations detected · 3 schema drift warnings flagged for manual review before sign-off.</p></div>
+              </div>
+            </div>
+
+            <!-- Item 2 — closed, approved badge + actions -->
+            <div class="gs-ademo-item" style="margin-bottom:6px;">
+              <div class="gs-ademo-hdr-row">
+                <button class="gs-ademo-hdr-trigger" onclick="gsToggleAccordionSlot(this)" aria-expanded="false">
+                  <span class="gs-ademo-title" style="font-size:var(--prim-font-size-md);">Pipeline Health Report</span>
+                  <span class="gs-ademo-left-extra">
+                    <span class="gs-ademo-badge gs-ademo-badge--approved">Approved</span>
+                    <span class="gs-ademo-author">by James Park</span>
+                  </span>
+                </button>
+                <div class="gs-ademo-actions">
+                  <div class="gs-ademo-right-extra">
+                    <button class="gs-ademo-action-btn" onclick="event.stopPropagation()">Add Comment</button>
+                    <button class="gs-ademo-action-btn gs-ademo-action-btn--danger" onclick="event.stopPropagation()">Delete</button>
+                  </div>
+                  <button class="gs-ademo-chevron-btn" onclick="gsToggleAccordionSlot(this.closest('.gs-ademo-item').querySelector('.gs-ademo-hdr-trigger'))" tabindex="-1" aria-hidden="true">
+                    <svg class="gs-ademo-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:24px;height:24px;transition:transform 110ms cubic-bezier(0,0,0.38,0.9);"><path d="M6 10l6 6 6-6"/></svg>
+                  </button>
+                </div>
+              </div>
+              <div class="gs-ademo-body" style="display:none;">
+                <div class="gs-ademo-body-inner"><p style="font-size:var(--prim-font-size-sm);color:var(--color-text-secondary);line-height:var(--prim-line-height-relaxed);">All 12 pipeline stages nominal. Avg. latency 340ms. Last run 2026-05-22 04:00 UTC.</p></div>
+              </div>
+            </div>
+
+            <!-- Item 3 — closed, info badge, leftExtra only (no rightExtra) -->
+            <div class="gs-ademo-item">
+              <div class="gs-ademo-hdr-row">
+                <button class="gs-ademo-hdr-trigger" onclick="gsToggleAccordionSlot(this)" aria-expanded="false">
+                  <span class="gs-ademo-title" style="font-size:var(--prim-font-size-md);">Coverage Summary</span>
+                  <span class="gs-ademo-left-extra">
+                    <span class="gs-ademo-badge gs-ademo-badge--info">Draft</span>
+                  </span>
+                </button>
+                <div class="gs-ademo-actions">
+                  <button class="gs-ademo-chevron-btn" onclick="gsToggleAccordionSlot(this.closest('.gs-ademo-item').querySelector('.gs-ademo-hdr-trigger'))" tabindex="-1" aria-hidden="true">
+                    <svg class="gs-ademo-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:24px;height:24px;transition:transform 110ms cubic-bezier(0,0,0.38,0.9);"><path d="M6 10l6 6 6-6"/></svg>
+                  </button>
+                </div>
+              </div>
+              <div class="gs-ademo-body" style="display:none;">
+                <div class="gs-ademo-body-inner"><p style="font-size:var(--prim-font-size-sm);color:var(--color-text-secondary);line-height:var(--prim-line-height-relaxed);">Coverage report pending final validation. Expected completion: 2026-05-24.</p></div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <div style="margin-top:20px;display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+          <div style="padding:16px;background:var(--color-surface-subtle);border:1px solid var(--color-border-default);border-radius:var(--radius-md);">
+            <p style="font-size:var(--prim-font-size-sm);font-weight:var(--prim-font-weight-semibold);color:var(--prim-grey-800);margin:0 0 6px;">leftExtra</p>
+            <p style="font-size:var(--prim-font-size-sm);color:var(--color-text-secondary);margin:0;">Placed inside the toggle button, after the title. Use for read-only metadata: status badges, timestamps, author names. Not suitable for interactive elements — the entire left zone is the toggle target.</p>
+          </div>
+          <div style="padding:16px;background:var(--color-surface-subtle);border:1px solid var(--color-border-default);border-radius:var(--radius-md);">
+            <p style="font-size:var(--prim-font-size-sm);font-weight:var(--prim-font-weight-semibold);color:var(--prim-grey-800);margin:0 0 6px;">rightExtra</p>
+            <p style="font-size:var(--prim-font-size-sm);color:var(--color-text-secondary);margin:0;">Rendered outside the toggle button in a separate actions zone. Use for contextual action buttons (Add Comment, Agree, Delete). Clicks here do not collapse the panel.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- STATES -->
+      <div id="acc-s-states" class="btn-family-card">
+        <div class="btn-family-title">States</div>
+        <p class="btn-family-desc">Five header states. The first two are interactive; hover, focus, and disabled are shown statically for documentation.</p>
+
+        <div class="btn-states-grid" style="grid-template-columns:repeat(5,1fr);">
+          <!-- Default closed — interactive -->
+          <div class="btn-state-cell">
+            <div style="width:100%;">
+              <div class="gs-ademo-item" style="margin-bottom:0;">
+                <button class="gs-ademo-hdr gs-ademo-hdr--compact" onclick="gsToggleAccordionDemo(this)" aria-expanded="false">
+                  <span class="gs-ademo-title" style="font-size:var(--prim-font-size-sm);">Title</span>
+                  <svg class="gs-ademo-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 10l6 6 6-6"/></svg>
+                </button>
+                <div class="gs-ademo-body" style="display:none;"><div class="gs-ademo-body-inner"><p style="font-size:11px;color:var(--color-text-secondary);">Content</p></div></div>
+              </div>
+            </div>
+            <span class="btn-state-label">Default (closed)</span>
+          </div>
+          <!-- Open — interactive -->
+          <div class="btn-state-cell">
+            <div style="width:100%;">
+              <div class="gs-ademo-item" style="margin-bottom:0;">
+                <button class="gs-ademo-hdr gs-ademo-hdr--compact" onclick="gsToggleAccordionDemo(this)" aria-expanded="true">
+                  <span class="gs-ademo-title" style="font-size:var(--prim-font-size-sm)">Title</span>
+                  <svg class="gs-ademo-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="transform:rotate(180deg);"><path d="M6 10l6 6 6-6"/></svg>
+                </button>
+                <div class="gs-ademo-body"><div class="gs-ademo-body-inner"><p style="font-size:11px;color:var(--color-text-secondary);">Content</p></div></div>
+              </div>
+            </div>
+            <span class="btn-state-label">Open</span>
+          </div>
+          <!-- Hover — static (grey, not brand) -->
+          <div class="btn-state-cell">
+            <div style="pointer-events:none;width:100%;">
+              <div style="border:1px solid var(--color-border-default);border-radius:var(--radius-md);background:var(--prim-grey-50,#f7fafc);overflow:hidden;">
+                <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 12px;">
+                  <span style="font-size:var(--prim-font-size-sm);font-weight:var(--prim-font-weight-semibold);color:var(--prim-grey-800);">Title</span>
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="var(--prim-grey-500)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 10l6 6 6-6"/></svg>
+                </div>
+              </div>
+            </div>
+            <span class="btn-state-label">Hover</span>
+          </div>
+          <!-- Focus — static -->
+          <div class="btn-state-cell">
+            <div style="pointer-events:none;width:100%;">
+              <div style="border:1px solid var(--color-border-default);border-radius:var(--radius-md);overflow:hidden;box-shadow:0 0 0 2px var(--color-brand);">
+                <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 12px;">
+                  <span style="font-size:var(--prim-font-size-sm);font-weight:var(--prim-font-weight-semibold);color:var(--prim-grey-700);">Title</span>
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="var(--prim-grey-400)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 10l6 6 6-6"/></svg>
+                </div>
+              </div>
+            </div>
+            <span class="btn-state-label">Focus</span>
+          </div>
+          <!-- Disabled — static -->
+          <div class="btn-state-cell">
+            <div style="pointer-events:none;width:100%;opacity:0.45;">
+              <div style="border:1px solid var(--color-border-subtle);border-radius:var(--radius-md);background:var(--color-surface-subtle);overflow:hidden;">
+                <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 12px;">
+                  <span style="font-size:var(--prim-font-size-sm);font-weight:var(--prim-font-weight-semibold);color:var(--color-text-disabled);">Title</span>
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="var(--color-text-disabled)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 10l6 6 6-6"/></svg>
+                </div>
+              </div>
+            </div>
+            <span class="btn-state-label">Disabled</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- INTERACTIONS -->
+      <div id="acc-s-interaction" class="btn-family-card">
+        <div class="btn-family-title">Interactions</div>
+        <table>
+          <thead><tr><th>Trigger</th><th>Behaviour</th><th>Timing</th></tr></thead>
+          <tbody>
+            <tr class="ds-tr-border"><td>Click / Tap header</td><td>Toggles panel. In accordion mode, closes the previously open panel first.</td><td>200ms ease</td></tr>
+            <tr class="ds-tr-border"><td>Hover header</td><td>Background shifts to <code>--prim-grey-50</code> (#f7fafc). No border change.</td><td>70ms ease</td></tr>
+            <tr class="ds-tr-border"><td><kbd>Enter</kbd> / <kbd>Space</kbd></td><td>Same as click — toggles the focused panel.</td><td>110ms cubic-bezier(0,0,0.38,0.9)</td></tr>
+            <tr class="ds-tr-border"><td><kbd>Tab</kbd></td><td>Moves focus to next accordion header.</td><td>—</td></tr>
+            <tr class="ds-tr-border"><td><kbd>↑</kbd> / <kbd>↓</kbd></td><td>Roving tabindex: moves focus between headers.</td><td>—</td></tr>
+            <tr class="ds-tr-border"><td><kbd>Home</kbd> / <kbd>End</kbd></td><td>Focus to first or last header.</td><td>—</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- ACCESSIBILITY -->
+      <div id="acc-s-a11y" class="btn-family-card">
+        <div class="btn-family-title">Accessibility</div>
+        <div class="btn-sub-label">Semantic Element</div>
+        <p class="btn-family-desc">Each header is a native <code>&lt;button&gt;</code>. The content panel is a <code>&lt;div&gt;</code> toggled via <code>aria-expanded</code> and <code>hidden</code>. No custom roles needed — the pattern follows the ARIA APG Accordion specification exactly.</p>
+
+        <div class="btn-sub-label" style="margin-top:16px;">ARIA Attributes</div>
+        <table>
+          <thead><tr><th>Attribute</th><th>Value</th><th>When to apply</th></tr></thead>
+          <tbody>
+            <tr class="ds-tr-border"><td><code>aria-expanded</code></td><td><code>"true"</code> / <code>"false"</code></td><td>Always on the header button</td></tr>
+            <tr class="ds-tr-border"><td><code>aria-controls</code></td><td>ID of the content panel</td><td>Always on the header button</td></tr>
+            <tr class="ds-tr-border"><td><code>role="region"</code></td><td>—</td><td>On content panel when accordion has ≥ 6 items</td></tr>
+            <tr class="ds-tr-border"><td><code>aria-labelledby</code></td><td>Header button ID</td><td>On content panel when <code>role="region"</code> is used</td></tr>
+            <tr class="ds-tr-border"><td><code>aria-disabled="true"</code></td><td>—</td><td>On disabled header (keeps it focusable)</td></tr>
+          </tbody>
+        </table>
+
+        <div class="btn-sub-label" style="margin-top:16px;">Keyboard Navigation</div>
+        <table>
+          <thead><tr><th>Key</th><th>Action</th></tr></thead>
+          <tbody>
+            <tr class="ds-tr-border"><td><kbd>Tab</kbd></td><td>Move focus through accordion headers</td></tr>
+            <tr class="ds-tr-border"><td><kbd>Shift+Tab</kbd></td><td>Move focus backward</td></tr>
+            <tr class="ds-tr-border"><td><kbd>Enter</kbd> / <kbd>Space</kbd></td><td>Toggle focused panel open/closed</td></tr>
+            <tr class="ds-tr-border"><td><kbd>↑</kbd> / <kbd>↓</kbd></td><td>Navigate between headers</td></tr>
+            <tr class="ds-tr-border"><td><kbd>Home</kbd> / <kbd>End</kbd></td><td>Jump to first / last header</td></tr>
+          </tbody>
+        </table>
+
+        <div class="btn-sub-label" style="margin-top:16px;">Contrast Ratios</div>
+        <table>
+          <thead><tr><th>Element</th><th>Token (Foreground)</th><th>Token (Background)</th><th>Ratio</th><th>WCAG</th></tr></thead>
+          <tbody>
+            <tr class="ds-tr-border"><td>Header (closed)</td><td><code>--prim-grey-700</code></td><td><code>--prim-white</code></td><td>15.8:1</td><td>AA ✓</td></tr>
+            <tr class="ds-tr-border"><td>Header (open)</td><td><code>--prim-grey-800</code></td><td><code>--prim-white</code></td><td>15.8:1</td><td>AA ✓</td></tr>
+            <tr class="ds-tr-border"><td>Content text</td><td><code>--color-text-secondary</code></td><td><code>--prim-white</code></td><td>5.9:1</td><td>AA ✓</td></tr>
+            <tr class="ds-tr-border"><td>Disabled label</td><td><code>--color-text-disabled</code></td><td><code>--color-surface-subtle</code></td><td>3.5:1</td><td>AA (large) ✓</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- RESPONSIVE -->
+      <div id="acc-s-responsive" class="btn-family-card">
+        <div class="btn-family-title">Responsive Behaviour</div>
+        <table>
+          <thead><tr><th>Breakpoint</th><th>Behaviour</th></tr></thead>
+          <tbody>
+            <tr class="ds-tr-border"><td>&gt; 1024px</td><td>Medium size default. Width follows grid column. Multi-column layouts may place accordion in a sidebar.</td></tr>
+            <tr class="ds-tr-border"><td>768px – 1024px</td><td>Same as desktop. Full column width.</td></tr>
+            <tr class="ds-tr-border"><td>&lt; 768px</td><td>Full viewport width. Touch targets remain ≥ 44px. Content padding reduced to <code>--prim-space-3</code>.</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- DO / DON'T -->
+      <div id="acc-s-dosdonts" class="btn-family-card">
+        <div class="btn-family-title">Do / Don't</div>
+        <div class="btn-dos-donts">
+          <div class="btn-do-card">
+            <div class="btn-do-header">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>Do
+            </div>
+            <ul>
+              <li>
+                <div class="btn-do-example">
+                  <div class="gs-ademo-item" style="margin-bottom:0;" data-acc-mode="single">
+                    <button class="gs-ademo-hdr gs-ademo-hdr--compact" onclick="gsToggleAccordionDemo(this)" aria-expanded="true">
+                      <span class="gs-ademo-title" style="font-size:var(--prim-font-size-sm)">Billing &amp; Payments</span>
+                      <svg class="gs-ademo-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="transform:rotate(180deg);"><path d="M6 10l6 6 6-6"/></svg>
+                    </button>
+                    <div class="gs-ademo-body">
+                      <div class="gs-ademo-body-inner"><p style="font-size:11px;color:var(--color-text-secondary);line-height:1.5;">Payment methods, invoices, billing address.</p></div>
+                    </div>
+                  </div>
+                </div>
+                <p>Use concise, descriptive header labels so users can decide whether to open a panel from the title alone.</p>
+              </li>
+            </ul>
+          </div>
+          <div class="btn-dont-card">
+            <div class="btn-dont-header">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>Don't
+            </div>
+            <ul>
+              <li>
+                <div class="btn-dont-example" style="pointer-events:none;">
+                  <div style="border:1px solid var(--prim-red-200);border-radius:var(--radius-md);background:var(--prim-red-10);overflow:hidden;">
+                    <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 14px;">
+                      <span style="font-size:var(--prim-font-size-sm);font-weight:var(--prim-font-weight-semibold);color:var(--color-danger);">Section 1</span>
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="var(--color-danger)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 10l6 6 6-6"/></svg>
+                    </div>
+                  </div>
+                </div>
+                <p>Don't use vague labels like "Section 1" — users must open every panel to find what they need.</p>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- RELATED -->
+      <div id="acc-s-related" class="btn-family-card">
+        <div class="btn-family-title">Related Components</div>
+        <ul class="btn-related-list">
+          <li><button class="btn-inline-link" onclick="navigate('nav-tabs')">Tabs</button> — Use when sections are equally important and users benefit from seeing all headings at once.</li>
+          <li><button class="btn-inline-link" onclick="navigate('panel-slideout')">Slide-out Panel</button> — Use for supplementary detail over main content without navigating away.</li>
+          <li><button class="btn-inline-link" onclick="navigate('panel-modals')">Modal</button> — Use when the user must read and act before continuing.</li>
+        </ul>
+      </div>
+
+    </div>
+
+    <div class="code-tab-qnav">
+      <div class="code-qnav-inner">
+        <p class="code-qnav-title">On This Page</p>
+        <ul class="code-qnav-list">
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('acc-s-overview')">Overview</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('acc-s-anatomy')">Anatomy</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('acc-s-variants')">Variants</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('acc-s-slots')">Header Slots</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('acc-s-states')">States</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('acc-s-interaction')">Interactions</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('acc-s-a11y')">Accessibility</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('acc-s-responsive')">Responsive</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('acc-s-dosdonts')">Do / Don't</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('acc-s-related')">Related</button></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ CODE TAB ═══════════════════════════════════════════════════════ -->
+<div id="acc-tab-code" class="btn-tab-pane acc-tab-pane">
+  <div class="code-tab-layout">
+    <div class="code-tab-main">
+
+      <div class="fw-toggle-bar">
+        <button class="fw-toggle-bar-btn active" data-fw="react" onclick="switchFw('acc-tab-code','react')">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="2.5" fill="#61dafb"/><ellipse cx="12" cy="12" rx="10" ry="4.5" stroke="#61dafb" stroke-width="1.5" fill="none"/><ellipse cx="12" cy="12" rx="10" ry="4.5" stroke="#61dafb" stroke-width="1.5" fill="none" transform="rotate(60 12 12)"/><ellipse cx="12" cy="12" rx="10" ry="4.5" stroke="#61dafb" stroke-width="1.5" fill="none" transform="rotate(120 12 12)"/></svg>
+          React
+        </button>
+        <button class="fw-toggle-bar-btn" data-fw="angular" onclick="switchFw('acc-tab-code','angular')">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M12 2L2 6.5l1.5 12.5L12 22l8.5-3L22 6.5 12 2z" fill="#dd0031"/><path d="M12 2v20M12 2L6 17h12L12 2z" fill="none" stroke="#fff" stroke-width="1.2"/></svg>
+          Angular
+        </button>
+      </div>
+
+      <div id="acc-c-overview" class="btn-family-card">
+        <div class="ds-step-row"><span class="ds-step-num">1</span><div class="btn-family-title" style="margin:0;">Overview</div></div>
+        <div class="fw-react"><p class="btn-family-desc"><code>Accordion</code> wraps Ant Design's <code>Collapse</code> — all behaviour (keyboard, animation, aria) is delegated to AntD. Pass an <code>items</code> array of <code>ItemType</code> objects; add <code>accordion</code> for single-open mode. Supports controlled (<code>activeKey</code>) and uncontrolled (<code>defaultActiveKey</code>) usage. All AntD Collapse props pass through via <code>...rest</code>.</p></div>
+        <div class="fw-angular" style="display:none;"><p class="btn-family-desc">Use <code>&lt;gs-accordion&gt;</code> with an <code>[items]</code> array — each entry configures one <code>nz-collapse-panel</code> via ng-zorro. Add <code>[accordion]="true"</code> for single-open mode. Rich panel bodies are supported via <code>contentTemplate: TemplateRef</code>.</p></div>
+      </div>
+
+      <div id="acc-c-install" class="btn-family-card">
+        <div class="ds-step-row"><span class="ds-step-num">2</span><div class="btn-family-title" style="margin:0;">Install / Setup</div></div>
+        <div class="fw-react">
+          <div class="btn-code-block"><div class="btn-code-head"><span class="btn-code-lang">bash</span><button class="btn-copy-btn" onclick="copyBtnCode('acc-install-react',this)">Copy</button></div>
+          <div class="btn-code-body"><pre id="acc-install-react"><code>npm install @pelagos/react-components</code></pre></div></div>
+        </div>
+        <div class="fw-angular" style="display:none;">
+          <div class="btn-code-block"><div class="btn-code-head"><span class="btn-code-lang">bash</span><button class="btn-copy-btn" onclick="copyBtnCode('acc-install-ng',this)">Copy</button></div>
+          <div class="btn-code-body"><pre id="acc-install-ng"><code>npm install @pelagos/angular-components</code></pre></div></div>
+        </div>
+      </div>
+
+      <div id="acc-c-imports" class="btn-family-card">
+        <div class="ds-step-row"><span class="ds-step-num">3</span><div class="btn-family-title" style="margin:0;">Import</div></div>
+        <div class="fw-react">
+          <div class="btn-code-block"><div class="btn-code-head"><span class="btn-code-lang">JSX</span><button class="btn-copy-btn" onclick="copyBtnCode('acc-import-react',this)">Copy</button></div>
+          <div class="btn-code-body"><pre id="acc-import-react"><code><span class="c-kw">import</span> { <span class="c-type">Accordion</span> } <span class="c-kw">from</span> <span class="c-val">'@pelagos/components/primitives/accordion'</span>;</code></pre></div></div>
+        </div>
+        <div class="fw-angular" style="display:none;">
+          <div class="btn-code-block"><div class="btn-code-head"><span class="btn-code-lang">TS</span><button class="btn-copy-btn" onclick="copyBtnCode('acc-import-ng',this)">Copy</button></div>
+          <div class="btn-code-body"><pre id="acc-import-ng"><code><span class="c-cmt">// NgModule app</span>
+<span class="c-kw">import</span> { <span class="c-type">AccordionModule</span> } <span class="c-kw">from</span> <span class="c-val">'@pelagos/components/primitives/accordion'</span>;
+
+<span class="c-cmt">// Standalone component</span>
+<span class="c-kw">import</span> { <span class="c-type">AccordionComponent</span> } <span class="c-kw">from</span> <span class="c-val">'@pelagos/components/primitives/accordion'</span>;
+
+<span class="c-cmt">// Type for items array</span>
+<span class="c-kw">import type</span> { <span class="c-type">AccordionItem</span> } <span class="c-kw">from</span> <span class="c-val">'@pelagos/components/primitives/accordion'</span>;</code></pre></div></div>
+        </div>
+      </div>
+
+      <div id="acc-c-api" class="btn-family-card">
+        <div class="ds-step-row"><span class="ds-step-num">4</span><div class="btn-family-title" style="margin:0;">API / Props</div></div>
+        <div class="btn-sub-label" style="margin-bottom:8px;">Accordion</div>
+        <div class="fw-react">
+          <table>
+            <thead><tr><th>Prop</th><th>Type</th><th>Default</th><th>Maps to AntD</th><th>Notes</th></tr></thead>
+            <tbody>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">size</td><td class="ds-td-code-muted">'sm' | 'md' | 'lg'</td><td class="ds-td-code-muted">'md'</td><td class="ds-td-code-muted">size</td><td class="ds-td-value">sm=40px · md=48px · lg=56px (collapsed header)</td></tr>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">accordion</td><td class="ds-td-code-muted">boolean</td><td class="ds-td-code-muted">false</td><td class="ds-td-code-muted">accordion</td><td class="ds-td-value">Single-open mode</td></tr>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">items</td><td class="ds-td-code-muted">ItemType[]</td><td class="ds-td-code-muted">—</td><td class="ds-td-code-muted">items</td><td class="ds-td-value">AntD ItemType array — see table below</td></tr>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">defaultActiveKey</td><td class="ds-td-code-muted">string[] | string | number[] | number</td><td class="ds-td-code-muted">—</td><td class="ds-td-code-muted">defaultActiveKey</td><td class="ds-td-value">Uncontrolled initial open panels</td></tr>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">activeKey</td><td class="ds-td-code-muted">string[] | string | number[] | number</td><td class="ds-td-code-muted">—</td><td class="ds-td-code-muted">activeKey</td><td class="ds-td-value">Controlled open panels</td></tr>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">onChange</td><td class="ds-td-code-muted">(keys) =&gt; void</td><td class="ds-td-code-muted">—</td><td class="ds-td-code-muted">onChange</td><td class="ds-td-value">Fires when active panels change</td></tr>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">ref</td><td class="ds-td-code-muted">React.Ref</td><td class="ds-td-code-muted">—</td><td class="ds-td-code-muted">forwarded</td><td class="ds-td-value">React.forwardRef — passed to AntD Collapse</td></tr>
+            </tbody>
+          </table>
+          <p class="btn-family-desc" style="margin-top:8px;font-size:12px;">All other AntD Collapse props (<code>bordered</code>, <code>ghost</code>, <code>collapsible</code>, <code>destroyOnHidden</code>, <code>classNames</code>, <code>styles</code> …) pass through via <code>...rest</code>.</p>
+        </div>
+        <div class="fw-angular" style="display:none;">
+          <table>
+            <thead><tr><th>Input / Output</th><th>Type</th><th>Default</th><th>Required</th><th>Description</th></tr></thead>
+            <tbody>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">[items]</td><td class="ds-td-code-muted">AccordionItem[]</td><td class="ds-td-code-muted">[]</td><td>No</td><td class="ds-td-value">Panel data array — each entry renders one panel</td></tr>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">[accordion]</td><td class="ds-td-code-muted">boolean</td><td class="ds-td-code-muted">false</td><td>No</td><td class="ds-td-value">Single-open mode — maps to <code>[nzAccordion]</code></td></tr>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">[bordered]</td><td class="ds-td-code-muted">boolean</td><td class="ds-td-code-muted">true</td><td>No</td><td class="ds-td-value">Border around the collapse block</td></tr>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">[size]</td><td class="ds-td-code-muted">'sm' | 'md' | 'lg'</td><td class="ds-td-code-muted">'md'</td><td>No</td><td class="ds-td-value">Collapsed header height: sm=40px · md=48px · lg=56px</td></tr>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">(panelChange)</td><td class="ds-td-code-muted">{ key: string | number; active: boolean }</td><td class="ds-td-code-muted">—</td><td>No</td><td class="ds-td-value">Fires when a panel opens or closes</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="btn-sub-label" style="margin-top:20px;margin-bottom:8px;">ItemType (items array shape)</div>
+        <div class="fw-react">
+          <table>
+            <thead><tr><th>Property</th><th>Type</th><th>Notes</th></tr></thead>
+            <tbody>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">key</td><td class="ds-td-code-muted">string | number</td><td class="ds-td-value">Required — unique panel identifier</td></tr>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">label</td><td class="ds-td-code-muted">ReactNode</td><td class="ds-td-value">Panel header content</td></tr>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">children</td><td class="ds-td-code-muted">ReactNode</td><td class="ds-td-value">Panel body content</td></tr>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">extra</td><td class="ds-td-code-muted">ReactNode</td><td class="ds-td-value">Extra element in header corner</td></tr>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">collapsible</td><td class="ds-td-code-muted">'header' | 'icon' | 'disabled'</td><td class="ds-td-value"><code>'disabled'</code> disables toggling this panel</td></tr>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">showArrow</td><td class="ds-td-code-muted">boolean</td><td class="ds-td-value">Hide chevron when <code>false</code></td></tr>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">forceRender</td><td class="ds-td-code-muted">boolean</td><td class="ds-td-value">Render body even when collapsed</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="fw-angular" style="display:none;">
+          <table>
+            <thead><tr><th>Property</th><th>Type</th><th>Description</th></tr></thead>
+            <tbody>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">key</td><td class="ds-td-code-muted">string | number</td><td class="ds-td-value">Unique panel identifier</td></tr>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">label</td><td class="ds-td-code-muted">string</td><td class="ds-td-value">Panel header text</td></tr>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">content</td><td class="ds-td-code-muted">string</td><td class="ds-td-value">Plain-text panel body</td></tr>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">contentTemplate</td><td class="ds-td-code-muted">TemplateRef&lt;void&gt;</td><td class="ds-td-value">Rich body — takes priority over <code>content</code></td></tr>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">extra</td><td class="ds-td-code-muted">TemplateRef&lt;void&gt;</td><td class="ds-td-value">Extra content in header corner</td></tr>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">disabled</td><td class="ds-td-code-muted">boolean</td><td class="ds-td-value">Prevents the panel from toggling</td></tr>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">showArrow</td><td class="ds-td-code-muted">boolean</td><td class="ds-td-value">Hides chevron when <code>false</code></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div id="acc-c-variants" class="btn-family-card">
+        <div class="ds-step-row"><span class="ds-step-num">5</span><div class="btn-family-title" style="margin:0;">Variants</div></div>
+        <div class="fw-react">
+          <div class="btn-code-block"><div class="btn-code-head"><span class="btn-code-lang">JSX</span><button class="btn-copy-btn" onclick="copyBtnCode('acc-variants-react',this)">Copy</button></div>
+          <div class="btn-code-body"><pre id="acc-variants-react"><code><span class="c-kw">const</span> panels = [
+  { key: <span class="c-val">'1'</span>, label: <span class="c-val">'Panel A'</span>, children: <span class="c-val">'Content A.'</span> },
+  { key: <span class="c-val">'2'</span>, label: <span class="c-val">'Panel B'</span>, children: <span class="c-val">'Content B.'</span> },
+  { key: <span class="c-val">'3'</span>, label: <span class="c-val">'Panel C'</span>, children: <span class="c-val">'Content C.'</span> },
+];
+
+<span class="c-cmt">// Multi-open (default) — all panels can be open simultaneously</span>
+&lt;<span class="c-tag">Accordion</span> <span class="c-attr">items</span>={panels} /&gt;
+
+<span class="c-cmt">// Accordion mode — single-open, one panel at a time</span>
+&lt;<span class="c-tag">Accordion</span> <span class="c-attr">items</span>={panels} <span class="c-attr">accordion</span> /&gt;
+
+<span class="c-cmt">// Sizes: sm=40px · md=48px (default) · lg=56px collapsed header</span>
+&lt;<span class="c-tag">Accordion</span> <span class="c-attr">items</span>={panels} <span class="c-attr">size</span>=<span class="c-val">"sm"</span> /&gt;
+&lt;<span class="c-tag">Accordion</span> <span class="c-attr">items</span>={panels} <span class="c-attr">size</span>=<span class="c-val">"md"</span> /&gt;
+&lt;<span class="c-tag">Accordion</span> <span class="c-attr">items</span>={panels} <span class="c-attr">size</span>=<span class="c-val">"lg"</span> /&gt;
+
+<span class="c-cmt">// Disable specific panel via collapsible: 'disabled'</span>
+&lt;<span class="c-tag">Accordion</span> <span class="c-attr">items</span>={[
+  { key: <span class="c-val">'1'</span>, label: <span class="c-val">'Active'</span>,   children: <span class="c-val">'Content.'</span> },
+  { key: <span class="c-val">'2'</span>, label: <span class="c-val">'Disabled'</span>, children: <span class="c-val">'Locked.'</span>, collapsible: <span class="c-val">'disabled'</span> },
+]} /&gt;
+
+<span class="c-cmt">// Extra content in header corner (e.g. action buttons)</span>
+&lt;<span class="c-tag">Accordion</span> <span class="c-attr">items</span>={[{
+  key: <span class="c-val">'1'</span>,
+  label: <span class="c-val">'Data Quality Assessment'</span>,
+  children: <span class="c-val">'Assessment details.'</span>,
+  extra: &lt;<span class="c-tag">button</span> <span class="c-attr">onClick</span>={e =&gt; e.stopPropagation()}&gt;Add Comment&lt;/<span class="c-tag">button</span>&gt;,
+}]} /&gt;
+
+<span class="c-cmt">// Borderless / ghost</span>
+&lt;<span class="c-tag">Accordion</span> <span class="c-attr">items</span>={panels} <span class="c-attr">bordered</span>={<span class="c-kw">false</span>} /&gt;
+&lt;<span class="c-tag">Accordion</span> <span class="c-attr">items</span>={panels} <span class="c-attr">ghost</span> /&gt;</code></pre></div></div>
+        </div>
+        <div class="fw-angular" style="display:none;">
+          <div class="btn-code-block"><div class="btn-code-head"><span class="btn-code-lang">HTML</span><button class="btn-copy-btn" onclick="copyBtnCode('acc-variants-ng',this)">Copy</button></div>
+          <div class="btn-code-body"><pre id="acc-variants-ng"><code><span class="c-cmt">// Component class</span>
+<span class="c-kw">import type</span> { <span class="c-type">AccordionItem</span> } <span class="c-kw">from</span> <span class="c-val">'@pelagos/components/primitives/accordion'</span>;
+
+panels: <span class="c-type">AccordionItem</span>[] = [
+  { key: <span class="c-val">'1'</span>, label: <span class="c-val">'Panel A'</span>, content: <span class="c-val">'Content A.'</span> },
+  { key: <span class="c-val">'2'</span>, label: <span class="c-val">'Panel B'</span>, content: <span class="c-val">'Content B.'</span> },
+  { key: <span class="c-val">'3'</span>, label: <span class="c-val">'Panel C'</span>, content: <span class="c-val">'Content C.'</span> },
+];</code></pre>
+          <div class="btn-code-block" style="margin-top:12px;"><div class="btn-code-head"><span class="btn-code-lang">HTML</span><button class="btn-copy-btn" onclick="copyBtnCode('acc-variants-ng-html',this)">Copy</button></div>
+          <div class="btn-code-body"><pre id="acc-variants-ng-html"><code><span class="c-cmt">&lt;!-- Multi-open (default) --&gt;</span>
+&lt;<span class="c-tag">gs-accordion</span> [<span class="c-attr">items</span>]=<span class="c-val">"panels"</span> /&gt;
+
+<span class="c-cmt">&lt;!-- Accordion mode (single-open) --&gt;</span>
+&lt;<span class="c-tag">gs-accordion</span> [<span class="c-attr">items</span>]=<span class="c-val">"panels"</span> [<span class="c-attr">accordion</span>]=<span class="c-val">"true"</span> /&gt;
+
+<span class="c-cmt">&lt;!-- Sizes --&gt;</span>
+&lt;<span class="c-tag">gs-accordion</span> [<span class="c-attr">items</span>]=<span class="c-val">"panels"</span> <span class="c-attr">size</span>=<span class="c-val">"sm"</span> /&gt;
+&lt;<span class="c-tag">gs-accordion</span> [<span class="c-attr">items</span>]=<span class="c-val">"panels"</span> <span class="c-attr">size</span>=<span class="c-val">"lg"</span> /&gt;
+
+<span class="c-cmt">&lt;!-- Listen for panel change events --&gt;</span>
+&lt;<span class="c-tag">gs-accordion</span> [<span class="c-attr">items</span>]=<span class="c-val">"panels"</span> (<span class="c-attr">panelChange</span>)=<span class="c-val">"onPanelChange($event)"</span> /&gt;
+
+<span class="c-cmt">&lt;!-- Rich body via TemplateRef --&gt;</span>
+&lt;<span class="c-tag">ng-template</span> #richBody&gt;
+  &lt;<span class="c-tag">p</span>&gt;Custom &lt;<span class="c-tag">strong</span>&gt;HTML&lt;/<span class="c-tag">strong</span>&gt; panel content.&lt;/<span class="c-tag">p</span>&gt;
+&lt;/<span class="c-tag">ng-template</span>&gt;
+&lt;<span class="c-tag">gs-accordion</span> [<span class="c-attr">items</span>]=<span class="c-val">"[{ key: '1', label: 'Panel', contentTemplate: richBody }]"</span> /&gt;</code></pre></div></div></div></div>
+        </div>
+      </div>
+
+      <div id="acc-c-states" class="btn-family-card">
+        <div class="ds-step-row"><span class="ds-step-num">6</span><div class="btn-family-title" style="margin:0;">States</div></div>
+        <div class="fw-react">
+          <div class="btn-code-block"><div class="btn-code-head"><span class="btn-code-lang">JSX</span><button class="btn-copy-btn" onclick="copyBtnCode('acc-states-react',this)">Copy</button></div>
+          <div class="btn-code-body"><pre id="acc-states-react"><code><span class="c-kw">const</span> [activeKey, setActiveKey] = useState&lt;<span class="c-type">string</span>&gt;(<span class="c-val">'1'</span>);
+
+&lt;<span class="c-tag">Accordion</span>
+  <span class="c-attr">accordion</span>
+  <span class="c-attr">activeKey</span>={activeKey}
+  <span class="c-attr">onChange</span>={(k) =&gt; setActiveKey(k <span class="c-kw">as</span> <span class="c-type">string</span>)}
+  <span class="c-attr">items</span>={[
+    { key: <span class="c-val">'1'</span>, label: <span class="c-val">'Active Panel'</span>,   children: <span class="c-val">'Open content.'</span> },
+    { key: <span class="c-val">'2'</span>, label: <span class="c-val">'Disabled Panel'</span>, children: <span class="c-val">'Locked.'</span>, collapsible: <span class="c-val">'disabled'</span> },
+    { key: <span class="c-val">'3'</span>, label: <span class="c-val">'Closed Panel'</span>,   children: <span class="c-val">'Can be opened.'</span> },
+  ]}
+/&gt;</code></pre></div></div>
+        </div>
+        <div class="fw-angular" style="display:none;">
+          <div class="btn-code-block"><div class="btn-code-head"><span class="btn-code-lang">TS</span><button class="btn-copy-btn" onclick="copyBtnCode('acc-states-ng',this)">Copy</button></div>
+          <div class="btn-code-body"><pre id="acc-states-ng"><code><span class="c-cmt">// Component class</span>
+panels: <span class="c-type">AccordionItem</span>[] = [
+  { key: <span class="c-val">'1'</span>, label: <span class="c-val">'Active Panel'</span>,   content: <span class="c-val">'Open content.'</span> },
+  { key: <span class="c-val">'2'</span>, label: <span class="c-val">'Disabled Panel'</span>, content: <span class="c-val">'Locked.'</span>,       disabled: <span class="c-kw">true</span> },
+  { key: <span class="c-val">'3'</span>, label: <span class="c-val">'Closed Panel'</span>,   content: <span class="c-val">'Can be opened.'</span> },
+];
+
+onPanelChange(e: { key: <span class="c-type">string</span> | <span class="c-type">number</span>; active: <span class="c-type">boolean</span> }): <span class="c-kw">void</span> {
+  console.log(<span class="c-val">`Panel ${e.key} → ${e.active ? 'open' : 'closed'}`</span>);
+}</code></pre>
+          <div class="btn-code-block" style="margin-top:12px;"><div class="btn-code-head"><span class="btn-code-lang">HTML</span><button class="btn-copy-btn" onclick="copyBtnCode('acc-states-ng-html',this)">Copy</button></div>
+          <div class="btn-code-body"><pre id="acc-states-ng-html"><code>&lt;<span class="c-tag">gs-accordion</span>
+  [<span class="c-attr">items</span>]=<span class="c-val">"panels"</span>
+  [<span class="c-attr">accordion</span>]=<span class="c-val">"true"</span>
+  (<span class="c-attr">panelChange</span>)=<span class="c-val">"onPanelChange($event)"</span>
+/&gt;</code></pre></div></div></div></div>
+        </div>
+      </div>
+
+      <div id="acc-c-a11y" class="btn-family-card">
+        <div class="ds-step-row"><span class="ds-step-num">7</span><div class="btn-family-title" style="margin:0;">Accessibility</div></div>
+        <div class="fw-react">
+          <div class="btn-code-block"><div class="btn-code-head"><span class="btn-code-lang">HTML</span><button class="btn-copy-btn" onclick="copyBtnCode('acc-a11y-react',this)">Copy</button></div>
+          <div class="btn-code-body"><pre id="acc-a11y-react"><code><span class="c-cmt">&lt;!-- Generated output --&gt;</span>
+&lt;<span class="c-tag">button</span>
+  <span class="c-attr">aria-expanded</span>=<span class="c-val">"true"</span>
+  <span class="c-attr">aria-controls</span>=<span class="c-val">"panel-1"</span>
+  <span class="c-attr">id</span>=<span class="c-val">"header-1"</span>
+&gt;Panel A&lt;/<span class="c-tag">button</span>&gt;
+&lt;<span class="c-tag">div</span>
+  <span class="c-attr">id</span>=<span class="c-val">"panel-1"</span>
+  <span class="c-attr">role</span>=<span class="c-val">"region"</span>
+  <span class="c-attr">aria-labelledby</span>=<span class="c-val">"header-1"</span>
+&gt;Content A&lt;/<span class="c-tag">div</span>&gt;</code></pre></div></div>
+        </div>
+        <div class="fw-angular" style="display:none;"><p class="btn-family-desc">All ARIA attributes auto-generated. No manual configuration needed.</p></div>
+      </div>
+
+      <div id="acc-c-files" class="btn-family-card">
+        <div class="ds-step-row"><span class="ds-step-num">8</span><div class="btn-family-title" style="margin:0;">File Structure</div></div>
+        <div class="fw-react">
+          <div class="btn-code-block"><div class="btn-code-head"><span class="btn-code-lang">tree</span><button class="btn-copy-btn" onclick="copyBtnCode('acc-files-react',this)">Copy</button></div>
+          <div class="btn-code-body"><pre id="acc-files-react"><code>components/primitives/accordion/
+├── Accordion.jsx              <span class="c-cmt">← React wrapper (AntD Collapse + ConfigProvider)</span>
+├── accordionTheme.js          <span class="c-cmt">← Token map; imports globalTokens from pelagosTheme.js</span>
+├── Accordion.component.ts     <span class="c-cmt">← Angular standalone component</span>
+├── Accordion.component.html   <span class="c-cmt">← Angular template (nz-collapse)</span>
+├── AccordionModule.ts         <span class="c-cmt">← NgModule wrapper for backward compat</span>
+├── Accordion.scss             <span class="c-cmt">← Structural layout only (zero hardcoded colours)</span>
+├── index.ts                   <span class="c-cmt">← Barrel export</span>
+└── README.md</code></pre></div></div>
+        </div>
+        <div class="fw-angular" style="display:none;">
+          <div class="btn-code-block"><div class="btn-code-head"><span class="btn-code-lang">tree</span><button class="btn-copy-btn" onclick="copyBtnCode('acc-files-ng',this)">Copy</button></div>
+          <div class="btn-code-body"><pre id="acc-files-ng"><code>components/primitives/accordion/
+├── Accordion.jsx              <span class="c-cmt">← React wrapper (AntD Collapse + ConfigProvider)</span>
+├── accordionTheme.js          <span class="c-cmt">← Token map; imports globalTokens from pelagosTheme.js</span>
+├── Accordion.component.ts     <span class="c-cmt">← Angular standalone component</span>
+├── Accordion.component.html   <span class="c-cmt">← Angular template (nz-collapse)</span>
+├── AccordionModule.ts         <span class="c-cmt">← NgModule wrapper for backward compat</span>
+├── Accordion.scss             <span class="c-cmt">← Structural layout only (zero hardcoded colours)</span>
+├── index.ts                   <span class="c-cmt">← Barrel export</span>
+└── README.md</code></pre></div></div>
+        </div>
+      </div>
+
+
+      <div id="acc-c-token-table" class="btn-family-card">
+        <div class="ds-step-row"><span class="ds-step-num">9</span><div class="btn-family-title" style="margin:0;">Tokens</div></div>
+        <p class="btn-family-desc">Token overrides live in <code>accordionTheme.js</code>. Global tokens are imported from <code>pelagosTheme.js</code> — never redeclared. Accordion-specific overrides only:</p>
+        <div class="btn-code-block"><div class="btn-code-head"><span class="btn-code-lang">JS</span><button class="btn-copy-btn" onclick="copyBtnCode('acc-token-src',this)">Copy</button></div>
+        <div class="btn-code-body"><pre id="acc-token-src"><code><span class="c-kw">import</span> { globalTokens } <span class="c-kw">from</span> <span class="c-val">'../../../pelagosTheme.js'</span>;
+
+<span class="c-kw">const</span> accordionComponentTokens = {
+  headerBg:       <span class="c-val">'#ffffff'</span>,    <span class="c-cmt">// --prim-white / --color-surface-default</span>
+  contentBg:      <span class="c-val">'#ffffff'</span>,    <span class="c-cmt">// --prim-white / --color-surface-default</span>
+  contentPadding: <span class="c-val">'16px 16px'</span>,  <span class="c-cmt">// --prim-space-4</span>
+};
+
+<span class="c-kw">export const</span> accordionTheme = {
+  token: {
+    ...globalTokens,
+    colorTextHeading: <span class="c-val">'#001e4c'</span>,  <span class="c-cmt">// --prim-blue-900 (Figma: --primary/navy)</span>
+  },
+  components: {
+    <span class="c-type">Collapse</span>: accordionComponentTokens,
+  },
+};
+
+<span class="c-kw">export const</span> getAccordionTheme = () =&gt; accordionTheme;</code></pre></div></div>
+        <table style="margin-top:16px;">
+          <thead><tr><th>Token</th><th>Value</th><th>Foundation token</th></tr></thead>
+          <tbody>
+            <tr class="ds-tr-border"><td class="ds-td-code-primary">headerBg</td><td class="ds-td-code-muted">#ffffff</td><td class="ds-td-value"><code>--prim-white</code> / <code>--color-surface-default</code></td></tr>
+            <tr class="ds-tr-border"><td class="ds-td-code-primary">contentBg</td><td class="ds-td-code-muted">#ffffff</td><td class="ds-td-value"><code>--prim-white</code> / <code>--color-surface-default</code></td></tr>
+            <tr class="ds-tr-border"><td class="ds-td-code-primary">contentPadding</td><td class="ds-td-code-muted">'16px 16px'</td><td class="ds-td-value"><code>--prim-space-4</code></td></tr>
+            <tr class="ds-tr-border"><td class="ds-td-code-primary">colorTextHeading</td><td class="ds-td-code-muted">#001e4c</td><td class="ds-td-value"><code>--prim-blue-900</code> (Figma: --primary/navy)</td></tr>
+          </tbody>
+        </table>
+        <p class="btn-family-desc" style="margin-top:12px;font-size:12px;">Checked background and border → <code>colorPrimary: #1852FE</code> from <code>globalTokens</code>. Border radius → <code>borderRadius: 4</code> (<code>--prim-radius-sm</code>) from <code>globalTokens</code>.</p>
+      </div>
+
+      <div id="acc-c-scss" class="btn-family-card">
+        <div class="ds-step-row"><span class="ds-step-num">10</span><div class="btn-family-title" style="margin:0;">SCSS</div></div>
+        <p class="btn-family-desc">AntD handles all visual styling (colours, borders, backgrounds, hover/focus states) via the ConfigProvider token overrides in <code>accordionTheme.js</code>. The SCSS file is structural only — zero hardcoded colour values.</p>
+        <div class="btn-code-block"><div class="btn-code-head"><span class="btn-code-lang">SCSS</span><button class="btn-copy-btn" onclick="copyBtnCode('acc-scss-src',this)">Copy</button></div>
+        <div class="btn-code-body"><pre id="acc-scss-src"><code><span class="c-cmt">/* ── Chevron rotation ─────────────────────────────────────────────────── */</span>
+<span class="c-cmt">// accordion__chevron          — default (collapsed): points down</span>
+<span class="c-cmt">// accordion__chevron--active  — expanded: rotated 180° (points up)</span>
+
+.accordion__chevron {
+  display:     block;
+  flex-shrink: 0;
+  transition:  transform 200ms cubic-bezier(0.645, 0.045, 0.355, 1);
+}
+
+.accordion__chevron--active {
+  transform: rotate(180deg);
+}
+
+<span class="c-cmt">/* ── Angular host element ─────────────────────────────────────────────── */</span>
+
+.gs-accordion-host {
+  display: block;
+}</code></pre></div></div>
+        <div style="background:var(--prim-blue-10,#eef6ff);border:1px solid var(--prim-blue-100,#bedbfe);border-radius:var(--radius-sm,4px);padding:12px 14px;margin-top:12px;font-size:13px;">
+          <strong style="color:var(--prim-blue-900,#001e4c);">Structural-only rule</strong><br>
+          <span style="color:var(--color-text-secondary);">✅ Allowed: <code>display</code>, <code>flex</code>, <code>gap</code>, <code>position</code>, <code>overflow</code>, <code>z-index</code>, <code>cursor</code>, <code>transition</code> (non-colour), <code>transform</code><br>
+          ❌ Forbidden: <code>color</code>, <code>background</code>, <code>border-color</code>, <code>box-shadow</code>, <code>outline-color</code>, any hardcoded hex value</span>
+        </div>
+      </div>
+
+      <div id="acc-c-patterns" class="btn-family-card">
+        <div class="ds-step-row"><span class="ds-step-num">11</span><div class="btn-family-title" style="margin:0;">Usage Patterns</div></div>
+        <div class="fw-react">
+          <div class="btn-code-block"><div class="btn-code-head"><span class="btn-code-lang">JSX</span><button class="btn-copy-btn" onclick="copyBtnCode('acc-patterns-react',this)">Copy</button></div>
+          <div class="btn-code-body"><pre id="acc-patterns-react"><code><span class="c-cmt">// Data-driven FAQ list — items array, accordion mode</span>
+<span class="c-kw">const</span> faqs = [
+  { key: <span class="c-val">'1'</span>, label: <span class="c-val">'What is Pelagos?'</span>,  children: <span class="c-val">'A GeoServes design system.'</span> },
+  { key: <span class="c-val">'2'</span>, label: <span class="c-val">'How do I install?'</span>, children: <span class="c-val">'npm install @pelagos/components'</span> },
+];
+
+&lt;<span class="c-tag">Accordion</span> <span class="c-attr">items</span>={faqs} <span class="c-attr">accordion</span> /&gt;
+
+<span class="c-cmt">// Controlled — track open panel with useState</span>
+<span class="c-kw">const</span> [activeKey, setActiveKey] = useState&lt;<span class="c-type">string</span>&gt;(<span class="c-val">'1'</span>);
+
+&lt;<span class="c-tag">Accordion</span>
+  <span class="c-attr">accordion</span>
+  <span class="c-attr">items</span>={faqs}
+  <span class="c-attr">activeKey</span>={activeKey}
+  <span class="c-attr">onChange</span>={(k) =&gt; setActiveKey(k <span class="c-kw">as</span> <span class="c-type">string</span>)}
+/&gt;
+
+<span class="c-cmt">// Filter sidebar — sm size, multi-open</span>
+&lt;<span class="c-tag">Accordion</span> <span class="c-attr">items</span>={filterGroups} <span class="c-attr">size</span>=<span class="c-val">"sm"</span> <span class="c-attr">defaultActiveKey</span>={[<span class="c-val">'status'</span>, <span class="c-val">'date'</span>]} /&gt;</code></pre></div></div>
+        </div>
+        <div class="fw-angular" style="display:none;">
+          <div class="btn-code-block"><div class="btn-code-head"><span class="btn-code-lang">HTML</span><button class="btn-copy-btn" onclick="copyBtnCode('acc-patterns-ng',this)">Copy</button></div>
+          <div class="btn-code-body"><pre id="acc-patterns-ng"><code><span class="c-cmt">// Component class</span>
+faqs: <span class="c-type">AccordionItem</span>[] = [
+  { key: <span class="c-val">'1'</span>, label: <span class="c-val">'What is Pelagos?'</span>,  content: <span class="c-val">'A GeoServes design system.'</span> },
+  { key: <span class="c-val">'2'</span>, label: <span class="c-val">'How do I install?'</span>, content: <span class="c-val">'npm install @pelagos/components'</span> },
+];
+
+onPanelChange(e: { key: <span class="c-type">string</span> | <span class="c-type">number</span>; active: <span class="c-type">boolean</span> }): <span class="c-kw">void</span> {
+  console.log(<span class="c-val">`Panel ${e.key} → ${e.active ? 'open' : 'closed'}`</span>);
+}</code></pre>
+          <div class="btn-code-block" style="margin-top:12px;"><div class="btn-code-head"><span class="btn-code-lang">HTML</span><button class="btn-copy-btn" onclick="copyBtnCode('acc-patterns-ng-html',this)">Copy</button></div>
+          <div class="btn-code-body"><pre id="acc-patterns-ng-html"><code>&lt;<span class="c-tag">gs-accordion</span>
+  [<span class="c-attr">items</span>]=<span class="c-val">"faqs"</span>
+  [<span class="c-attr">accordion</span>]=<span class="c-val">"true"</span>
+  (<span class="c-attr">panelChange</span>)=<span class="c-val">"onPanelChange($event)"</span>
+/&gt;</code></pre></div></div></div></div>
+        </div>
+      </div>
+
+      <div id="acc-c-tokens" class="btn-family-card">
+        <div class="ds-step-row"><span class="ds-step-num">12</span><div class="btn-family-title" style="margin:0;">Theming</div></div>
+        <div class="fw-react">
+          <div class="btn-code-block"><div class="btn-code-head"><span class="btn-code-lang">SCSS</span><button class="btn-copy-btn" onclick="copyBtnCode('acc-tokens-react',this)">Copy</button></div>
+          <div class="btn-code-body"><pre id="acc-tokens-react"><code><span class="c-kw">import</span> { <span class="c-type">ConfigProvider</span> } <span class="c-kw">from</span> <span class="c-val">'antd'</span>;
+<span class="c-kw">import</span> { getAccordionTheme } <span class="c-kw">from</span> <span class="c-val">'@pelagos/components/primitives/accordion'</span>;
+
+<span class="c-kw">const</span> baseTheme = getAccordionTheme();
+
+&lt;<span class="c-tag">ConfigProvider</span>
+  <span class="c-attr">theme</span>={{
+    ...baseTheme,
+    components: {
+      ...baseTheme.components,
+      <span class="c-type">Collapse</span>: {
+        ...baseTheme.components.Collapse,
+        headerBg:       <span class="c-val">'#f8fafc'</span>,  <span class="c-cmt">// custom header background</span>
+        contentPadding: <span class="c-val">'24px'</span>,     <span class="c-cmt">// larger content padding</span>
+      },
+    },
+  }}
+&gt;
+  &lt;<span class="c-tag">Accordion</span> <span class="c-attr">items</span>={panels} /&gt;
+&lt;/<span class="c-tag">ConfigProvider</span>&gt;</code></pre></div></div>
+        </div>
+        <div class="fw-angular" style="display:none;">
+          <div class="btn-code-block"><div class="btn-code-head"><span class="btn-code-lang">TS</span><button class="btn-copy-btn" onclick="copyBtnCode('acc-theming-ng',this)">Copy</button></div>
+          <div class="btn-code-body"><pre id="acc-theming-ng"><code><span class="c-kw">import</span> { <span class="c-type">NZ_CONFIG</span>, <span class="c-type">NzConfig</span> } <span class="c-kw">from</span> <span class="c-val">'ng-zorro-antd/core/config'</span>;
+<span class="c-kw">import</span> { getAccordionTheme } <span class="c-kw">from</span> <span class="c-val">'@pelagos/components/primitives/accordion'</span>;
+
+<span class="c-kw">const</span> theme = getAccordionTheme();
+
+bootstrapApplication(<span class="c-type">AppComponent</span>, {
+  providers: [
+    { provide: <span class="c-type">NZ_CONFIG</span>, useValue: { theme } <span class="c-kw">as</span> <span class="c-type">NzConfig</span> },
+  ],
+});</code></pre></div></div>
+        </div>
+      </div>
+
+      <div id="acc-c-example" class="btn-family-card">
+        <div class="ds-step-row"><span class="ds-step-num">13</span><div class="btn-family-title" style="margin:0;">Full Example</div></div>
+        <div class="fw-react">
+          <div class="btn-code-block"><div class="btn-code-head"><span class="btn-code-lang">JSX</span><button class="btn-copy-btn" onclick="copyBtnCode('acc-example-react',this)">Copy</button></div>
+          <div class="btn-code-body"><pre id="acc-example-react"><code><span class="c-kw">import</span> { useState } <span class="c-kw">from</span> <span class="c-val">'react'</span>;
+<span class="c-kw">import</span> { <span class="c-type">Accordion</span> } <span class="c-kw">from</span> <span class="c-val">'@pelagos/components/primitives/accordion'</span>;
+
+<span class="c-kw">const</span> panels = [
+  {
+    key: <span class="c-val">'1'</span>,
+    label: <span class="c-val">'What is Pelagos Design System?'</span>,
+    children: <span class="c-val">'A comprehensive design system for GeoServe applications.'</span>,
+  },
+  {
+    key: <span class="c-val">'2'</span>,
+    label: <span class="c-val">'How do I install?'</span>,
+    children: <span class="c-val">'Run: npm install @pelagos/components'</span>,
+  },
+  {
+    key: <span class="c-val">'3'</span>,
+    label: <span class="c-val">'Coming soon'</span>,
+    children: <span class="c-val">'Not yet available.'</span>,
+    collapsible: <span class="c-val">'disabled'</span>,
+  },
+];
+
+<span class="c-kw">export function</span> <span class="c-type">FAQSection</span>() {
+  <span class="c-kw">const</span> [activeKey, setActiveKey] = useState&lt;<span class="c-type">string</span>&gt;(<span class="c-val">'1'</span>);
+
+  <span class="c-kw">return</span> (
+    &lt;<span class="c-tag">Accordion</span>
+      <span class="c-attr">accordion</span>
+      <span class="c-attr">activeKey</span>={activeKey}
+      <span class="c-attr">onChange</span>={(k) =&gt; setActiveKey(k <span class="c-kw">as</span> <span class="c-type">string</span>)}
+      <span class="c-attr">size</span>=<span class="c-val">"md"</span>
+      <span class="c-attr">items</span>={panels}
+    /&gt;
+  );
+}</code></pre></div></div>
+        </div>
+        <div class="fw-angular" style="display:none;">
+          <div class="btn-code-block"><div class="btn-code-head"><span class="btn-code-lang">HTML</span><button class="btn-copy-btn" onclick="copyBtnCode('acc-example-ng',this)">Copy</button></div>
+          <div class="btn-code-body"><pre id="acc-example-ng"><code><span class="c-kw">import</span> { <span class="c-type">Component</span> }     <span class="c-kw">from</span> <span class="c-val">'@angular/core'</span>;
+<span class="c-kw">import</span> { <span class="c-type">AccordionComponent</span> } <span class="c-kw">from</span> <span class="c-val">'@pelagos/components/primitives/accordion'</span>;
+<span class="c-kw">import type</span> { <span class="c-type">AccordionItem</span> } <span class="c-kw">from</span> <span class="c-val">'@pelagos/components/primitives/accordion'</span>;
+
+<span class="c-attr">@Component</span>({
+  selector:   <span class="c-val">'app-faq'</span>,
+  standalone: <span class="c-kw">true</span>,
+  imports:    [<span class="c-type">AccordionComponent</span>],
+  template: <span class="c-val">`
+    &lt;gs-accordion
+      [items]="panels"
+      [accordion]="true"
+      size="md"
+      (panelChange)="onPanelChange($event)"
+    /&gt;
+  `</span>,
+})
+<span class="c-kw">export class</span> <span class="c-type">FAQComponent</span> {
+  panels: <span class="c-type">AccordionItem</span>[] = [
+    { key: <span class="c-val">'1'</span>, label: <span class="c-val">'What is Pelagos?'</span>,  content: <span class="c-val">'A GeoServe design system.'</span>     },
+    { key: <span class="c-val">'2'</span>, label: <span class="c-val">'How do I install?'</span>, content: <span class="c-val">'npm install @pelagos/components'</span> },
+    { key: <span class="c-val">'3'</span>, label: <span class="c-val">'Coming soon'</span>,       content: <span class="c-val">'Not available.'</span>, disabled: <span class="c-kw">true</span>   },
+  ];
+
+  onPanelChange(e: { key: <span class="c-type">string</span> | <span class="c-type">number</span>; active: <span class="c-type">boolean</span> }): <span class="c-kw">void</span> {
+    console.log(<span class="c-val">`Panel ${e.key} → ${e.active ? 'open' : 'closed'}`</span>);
+  }
+}</code></pre></div></div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="code-tab-qnav">
+      <div class="code-qnav-inner">
+        <p class="code-qnav-title">On This Page</p>
+        <ul class="code-qnav-list">
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('acc-c-overview')">1 · Overview</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('acc-c-install')">2 · Install</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('acc-c-imports')">3 · Import</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('acc-c-api')">4 · API / Props</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('acc-c-variants')">5 · Variants</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('acc-c-states')">6 · States</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('acc-c-a11y')">7 · Accessibility</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('acc-c-files')">8 · File Structure</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('acc-c-token-table')">9 · Tokens</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('acc-c-scss')">10 · SCSS</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('acc-c-patterns')">11 · Usage Patterns</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('acc-c-tokens')">12 · Theming</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('acc-c-example')">13 · Full Example</button></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ USAGE TAB ═══════════════════════════════════════════════════════ -->
+<div id="acc-tab-usage" class="btn-tab-pane acc-tab-pane">
+  <div class="code-tab-layout">
+    <div class="code-tab-main">
+
+      <div id="acc-u-when" class="btn-family-card">
+        <div class="btn-family-title">When to Use</div>
+        <ul class="btn-usage-list">
+          <li><strong>Progressive disclosure of dense content</strong> — Many sections most users don't need simultaneously; accordion hides non-critical content behind scannable headers.</li>
+          <li><strong>FAQ and help pages</strong> — Users scan questions and open only what's relevant, avoiding a wall of text.</li>
+          <li><strong>Settings panels grouped by category</strong> — Users jump directly to Account, Notifications, or Billing.</li>
+          <li><strong>Long forms with logical sections</strong> — Reduce visual overwhelm by grouping fields into collapsible sections.</li>
+          <li><strong>Sidebar filter groups</strong> — Keep filter panels compact without sacrificing accessibility.</li>
+        </ul>
+      </div>
+
+      <div id="acc-u-when-not" class="btn-family-card">
+        <div class="btn-family-title">When Not to Use</div>
+        <ul class="btn-usage-list">
+          <li><strong>Equally important sections</strong> — Use <button onclick="navigate('nav-tabs')" class="btn-inline-link">Tabs</button> instead. Accordions imply secondary content; tabs present sections as peers.</li>
+          <li><strong>Only 1–2 sections</strong> — A single collapsible offers no navigation benefit. Show the content directly.</li>
+          <li><strong>Cross-section comparison needed</strong> — Use a table or side-by-side layout instead.</li>
+          <li><strong>Critical always-visible content</strong> — Never hide required form fields or error messages inside an accordion.</li>
+        </ul>
+      </div>
+
+      <div id="acc-u-best" class="btn-family-card">
+        <div class="btn-family-title">Best Practices</div>
+        <ul class="btn-usage-list">
+          <li><strong>Write descriptive header labels</strong> — The header is all users see when collapsed. Labels must be self-explanatory.</li>
+          <li><strong>Default-open the most important panel</strong> — Use <code>defaultActiveKey</code> for the panel most users need first.</li>
+          <li><strong>Keep content focused per panel</strong> — Each panel should cover one coherent topic.</li>
+          <li><strong>Limit nesting to one level</strong> — Accordions inside accordions create confusing interactions.</li>
+          <li><strong>Consistent header typography</strong> — All headers in one accordion should use the same font size and weight (<code>--prim-font-size-md</code> / <code>--prim-font-weight-semibold</code>).</li>
+        </ul>
+      </div>
+
+      <div id="acc-u-patterns" class="btn-family-card">
+        <div class="btn-family-title">Patterns</div>
+        <ul class="btn-usage-list">
+          <li><strong>FAQ Pattern</strong> — <code>accordion</code> mode (single-open), no default active key, equal weight across questions.</li>
+          <li><strong>Settings Sections</strong> — Multi-open mode, default-open the primary section (e.g., "Profile").</li>
+          <li><strong>Filter Sidebar</strong> — <code>size="sm"</code>, multi-open so users can filter across multiple categories at once.</li>
+          <li><strong>Step-by-step Form</strong> — Disable future steps until current step is valid; open next step programmatically on completion.</li>
+        </ul>
+      </div>
+
+      <div id="acc-u-mistakes" class="btn-family-card">
+        <div class="btn-family-title">Anti-patterns</div>
+        <ul class="btn-usage-list">
+          <li><strong>❌ Hiding required fields</strong> — Collapsed required fields cause submission errors users can't find.<br><strong>✅ Fix:</strong> Auto-open the section containing an error after attempted submission.</li>
+          <li><strong>❌ Nested accordions</strong> — Two-level collapse interactions are hard to keyboard-navigate.<br><strong>✅ Fix:</strong> Flatten the hierarchy using indented list items or a tree component.</li>
+          <li><strong>❌ Vague labels</strong> — "Section 1" provides no navigation cue.<br><strong>✅ Fix:</strong> Use specific labels: "Billing &amp; Payments", "Notification Preferences".</li>
+          <li><strong>❌ Single-item accordion</strong> — One collapsible has no navigation benefit.<br><strong>✅ Fix:</strong> Use a simple show/hide button or display content directly.</li>
+        </ul>
+      </div>
+
+      <div id="acc-u-refs" class="btn-family-card">
+        <div class="btn-family-title">References</div>
+        <ul class="btn-related-list">
+          <li><a href="https://www.figma.com/design/TOLfBpRePgynqwvDVp6fg3/Design-System?node-id=370-930" target="_blank" rel="noopener">Figma — Accordion component frame</a></li>
+          <li><a href="https://ant.design/components/collapse#collapse-demo-accordion" target="_blank" rel="noopener">Ant Design — Collapse / Accordion reference</a></li>
+          <li><a href="https://www.w3.org/WAI/ARIA/apg/patterns/accordion/" target="_blank" rel="noopener">ARIA Authoring Practices — Accordion Pattern</a></li>
+          <li><a href="https://www.w3.org/WAI/WCAG21/Understanding/keyboard.html" target="_blank" rel="noopener">WCAG 2.1 — 2.1.1 Keyboard</a></li>
+          <li><a href="https://www.nngroup.com/articles/accordions-complex-content/" target="_blank" rel="noopener">Nielsen Norman Group — Accordions Are Not Always the Answer</a></li>
+        </ul>
+      </div>
+
+    </div>
+
+    <div class="code-tab-qnav">
+      <div class="code-qnav-inner">
+        <p class="code-qnav-title">On This Page</p>
+        <ul class="code-qnav-list">
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('acc-u-when')">When to Use</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('acc-u-when-not')">When Not to Use</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('acc-u-best')">Best Practices</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('acc-u-patterns')">Patterns</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('acc-u-mistakes')">Anti-patterns</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('acc-u-refs')">References</button></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>

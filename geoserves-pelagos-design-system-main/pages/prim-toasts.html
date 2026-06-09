@@ -1,0 +1,652 @@
+<!-- ═══════════════════════════════════════════════════════════════
+     TOASTS — Pelagos Design System
+     shadow-md · padding 16px (--prim-space-4) · gap 8px (--prim-space-2)
+     ═══════════════════════════════════════════════════════════════ -->
+
+<div class="page-header"><h1 class="ds-hero-title">Toasts</h1></div>
+
+<div class="btn-tab-bar">
+  <button class="btn-tab-btn toast-tab-btn active" data-tab="design"  onclick="switchToastTab('design')">Design</button>
+  <button class="btn-tab-btn toast-tab-btn"        data-tab="code"    onclick="switchToastTab('code')">Code</button>
+  <button class="btn-tab-btn toast-tab-btn"        data-tab="usage"   onclick="switchToastTab('usage')">Usage</button>
+</div>
+
+<!-- ═══ DESIGN TAB ═══════════════════════════════════════════════ -->
+<div id="toast-tab-design" class="btn-tab-pane toast-tab-pane active">
+  <div class="code-tab-layout">
+    <div class="code-tab-main">
+
+      <!-- OVERVIEW -->
+      <div id="toast-s-overview" class="btn-family-card">
+        <div class="btn-family-title">Overview</div>
+        <p class="btn-family-desc">Toasts are lightweight, non-blocking feedback messages that appear temporarily to inform users about the outcome of an action or system event. They grab attention briefly without interrupting workflow. 7 variants · <code>--shadow-md</code> · 16 px padding · 4 s auto-dismiss.</p>
+        <div class="btn-preview-strip" style="display:flex;flex-direction:column;gap:12px;padding:28px 24px;background:var(--color-surface-subtle);border:1px solid var(--color-border-default);border-radius:var(--radius-lg);margin-top:16px;">
+          <div class="toast-demo toast--success">
+            <span class="toast__icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" fill="var(--prim-green-700)"/><path d="M7.5 12.5l3 3 6-6" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+            <div class="toast__content"><span class="toast__title">Changes saved</span><span class="toast__desc">Your voyage record was updated successfully.</span></div>
+          </div>
+          <div class="toast-demo toast--error">
+            <span class="toast__icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" fill="var(--prim-red-600)"/><path d="M15 9l-6 6M9 9l6 6" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg></span>
+            <div class="toast__content"><span class="toast__title">Sync failed</span><span class="toast__desc">AIS feed unreachable. Please retry.</span></div>
+          </div>
+          <div class="toast-demo toast--warning">
+            <span class="toast__icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z" fill="var(--prim-orange-600)"/><line x1="12" y1="9" x2="12" y2="13" stroke="#fff" stroke-width="2" stroke-linecap="round"/><circle cx="12" cy="17" r="1" fill="#fff"/></svg></span>
+            <div class="toast__content"><span class="toast__title">Session expiring</span><span class="toast__desc">You will be signed out in 5 minutes.</span></div>
+          </div>
+        </div>
+        <div class="btn-when-examples" style="margin-top:16px;">
+          <span class="btn-when-example-tag">7 Variants</span>
+          <span class="btn-when-example-tag">shadow-md</span>
+          <span class="btn-when-example-tag">4 s auto-dismiss</span>
+          <span class="btn-when-example-tag">Stackable</span>
+          <span class="btn-when-example-tag">WCAG AA</span>
+        </div>
+      </div>
+
+      <!-- ANATOMY -->
+      <div id="toast-s-anatomy" class="btn-family-card">
+        <div class="btn-family-title">Anatomy</div>
+        <p class="btn-family-desc">Anatomy of a single toast. Dismiss button only appears on neutral and loading variants.</p>
+
+        <div style="margin-top:16px;display:flex;justify-content:center;">
+          <svg width="480" height="120" viewBox="0 0 480 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <!-- Toast background -->
+            <rect x="8" y="20" width="464" height="80" rx="8" fill="white" stroke="var(--prim-grey-200)" stroke-width="1"/>
+            <rect x="8" y="20" width="464" height="80" rx="8" fill="var(--prim-green-10)" stroke="var(--prim-green-200)" stroke-width="0.5"/>
+
+            <!-- Icon area (circle placeholder) -->
+            <circle cx="52" cy="60" r="12" fill="var(--prim-green-700)"/>
+            <path d="M46.5 60.5l3 3 6-6" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+
+            <!-- Title text -->
+            <text x="84" y="55" font-family="system-ui, sans-serif" font-weight="600" font-size="13" fill="var(--prim-green-700)">Changes saved</text>
+
+            <!-- Desc text -->
+            <text x="84" y="73" font-family="system-ui, sans-serif" font-weight="400" font-size="12" fill="var(--prim-green-700)" opacity="0.75">Your voyage record was updated successfully.</text>
+
+            <!-- Dismiss button (X) -->
+            <rect x="432" y="48" width="24" height="24" rx="4" fill="var(--prim-grey-50)" stroke="var(--prim-grey-200)" stroke-width="0.5"/>
+            <path d="M440 54l8 8M448 54l-8 8" stroke="var(--prim-grey-500)" stroke-width="2" stroke-linecap="round"/>
+
+            <!-- Callout 1 — Icon -->
+            <circle cx="52" cy="20" r="9" fill="var(--prim-grey-700)"/>
+            <text x="52" y="24" text-anchor="middle" font-family="system-ui, sans-serif" font-weight="700" font-size="10" fill="white">1</text>
+            <line x1="52" y1="29" x2="52" y2="42" stroke="var(--prim-grey-400)" stroke-width="1" stroke-dasharray="2 2"/>
+
+            <!-- Callout 2 — Title -->
+            <circle cx="155" cy="12" r="9" fill="var(--prim-grey-700)"/>
+            <text x="155" y="16" text-anchor="middle" font-family="system-ui, sans-serif" font-weight="700" font-size="10" fill="white">2</text>
+            <line x1="155" y1="21" x2="155" y2="44" stroke="var(--prim-grey-400)" stroke-width="1" stroke-dasharray="2 2"/>
+
+            <!-- Callout 3 — Description -->
+            <circle cx="240" cy="108" r="9" fill="var(--prim-grey-700)"/>
+            <text x="240" y="112" text-anchor="middle" font-family="system-ui, sans-serif" font-weight="700" font-size="10" fill="white">3</text>
+            <line x1="240" y1="99" x2="240" y2="77" stroke="var(--prim-grey-400)" stroke-width="1" stroke-dasharray="2 2"/>
+
+            <!-- Callout 4 — Dismiss -->
+            <circle cx="444" cy="20" r="9" fill="var(--prim-grey-700)"/>
+            <text x="444" y="24" text-anchor="middle" font-family="system-ui, sans-serif" font-weight="700" font-size="10" fill="white">4</text>
+            <line x1="444" y1="29" x2="444" y2="46" stroke="var(--prim-grey-400)" stroke-width="1" stroke-dasharray="2 2"/>
+          </svg>
+        </div>
+
+        <ol style="margin-top:16px;padding-left:20px;display:flex;flex-direction:column;gap:6px;font-size:14px;color:var(--prim-grey-700);line-height:1.6;">
+          <li><strong>Icon</strong> — 24×24 semantic SVG indicating the toast variant.</li>
+          <li><strong>Title</strong> — SemiBold 14px, concise action outcome label.</li>
+          <li><strong>Description</strong> — Regular 14px, optional supporting detail.</li>
+          <li><strong>Dismiss</strong> — ✕ button, shown on neutral and loading variants only.</li>
+        </ol>
+      </div>
+
+      <!-- USE CASES -->
+      <div id="toast-s-usecases" class="btn-family-card">
+        <div class="btn-family-title">Variants</div>
+        <p class="btn-family-desc">7 semantic variants. Padding: <code>var(--prim-space-4)</code> (16 px). Text gap: <code>var(--prim-space-2)</code> (8 px). Shadow: <code>var(--shadow-md)</code>.</p>
+
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:16px;">
+          <div>
+            <div class="btn-sub-label" style="margin-bottom:8px;">Success</div>
+            <div class="toast-demo toast--success">
+              <span class="toast__icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" fill="var(--prim-green-700)"/><path d="M7.5 12.5l3 3 6-6" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+              <div class="toast__content"><span class="toast__title">Successfully saved</span><span class="toast__desc">Your changes were saved.</span></div>
+            </div>
+          </div>
+          <div>
+            <div class="btn-sub-label" style="margin-bottom:8px;">Error</div>
+            <div class="toast-demo toast--error">
+              <span class="toast__icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" fill="var(--prim-red-600)"/><path d="M15 9l-6 6M9 9l6 6" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg></span>
+              <div class="toast__content"><span class="toast__title">That did not work</span><span class="toast__desc">Could not save changes.</span></div>
+            </div>
+          </div>
+          <div>
+            <div class="btn-sub-label" style="margin-bottom:8px;">Warning</div>
+            <div class="toast-demo toast--warning">
+              <span class="toast__icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z" fill="var(--prim-orange-600)"/><line x1="12" y1="9" x2="12" y2="13" stroke="#fff" stroke-width="2" stroke-linecap="round"/><circle cx="12" cy="17" r="1" fill="#fff"/></svg></span>
+              <div class="toast__content"><span class="toast__title">Session expired</span><span class="toast__desc">Please sign in again.</span></div>
+            </div>
+          </div>
+          <div>
+            <div class="btn-sub-label" style="margin-bottom:8px;">Notification</div>
+            <div class="toast-demo toast--notification">
+              <span class="toast__icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 0 1-3.46 0" stroke="var(--prim-blue-900)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+              <div class="toast__content"><span class="toast__title">3 new alerts</span><span class="toast__desc">Alert details in one line message.</span></div>
+            </div>
+          </div>
+          <div>
+            <div class="btn-sub-label" style="margin-bottom:8px;">Neutral + dismiss</div>
+            <div class="toast-demo toast--neutral">
+              <span class="toast__icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><polyline points="3 6 5 6 21 6" stroke="var(--prim-grey-400)" stroke-width="2" stroke-linecap="round"/><path d="M19 6l-1 14H6L5 6" stroke="var(--prim-grey-400)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M10 11v6M14 11v6" stroke="var(--prim-grey-400)" stroke-width="2" stroke-linecap="round"/></svg></span>
+              <div class="toast__content"><span class="toast__title">Items Deleted</span><span class="toast__desc">Items deleted successfully.</span></div>
+              <button class="toast__dismiss" aria-label="Dismiss" onclick="this.closest('.toast-demo').style.opacity='0.4'">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+              </button>
+            </div>
+          </div>
+          <div>
+            <div class="btn-sub-label" style="margin-bottom:8px;">Loading + Blank</div>
+            <div style="display:flex;flex-direction:column;gap:8px;">
+              <div class="toast-demo toast--loading">
+                <span class="toast__icon"><svg class="toast__spinner" width="24" height="24" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="var(--prim-grey-100)" stroke-width="3"/><path d="M12 3a9 9 0 0 1 9 9" stroke="var(--prim-grey-700)" stroke-width="3" stroke-linecap="round"/></svg></span>
+                <div class="toast__content"><span class="toast__title">Loading…</span></div>
+              </div>
+              <div class="toast-demo toast--blank">
+                <div class="toast__content"><span class="toast__title">Hello world</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- STACKED TOASTS -->
+      <div id="toast-s-stacked" class="btn-family-card">
+        <div class="btn-family-title">Stacked Toasts</div>
+        <p class="btn-family-desc">When multiple toasts are queued, earlier ones stack behind the newest as a collapsed group — showing 2 back-cards at reduced scale and opacity. Click the front toast to expand the stack.</p>
+
+        <div style="display:flex;justify-content:center;padding:56px 24px;background:var(--color-surface-subtle);border:1px solid var(--color-border-default);border-radius:var(--radius-lg);margin-top:12px;">
+          <div class="toast-stack-collapsed">
+            <div class="toast-demo toast--warning toast-stack__back2">
+              <span class="toast__icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z" fill="var(--prim-orange-600)"/><line x1="12" y1="9" x2="12" y2="13" stroke="#fff" stroke-width="2" stroke-linecap="round"/><circle cx="12" cy="17" r="1" fill="#fff"/></svg></span>
+              <div class="toast__content"><span class="toast__title">Oldest</span><span class="toast__desc">Session expired on security purpose</span></div>
+            </div>
+            <div class="toast-demo toast--warning toast-stack__back1">
+              <span class="toast__icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z" fill="var(--prim-orange-600)"/><line x1="12" y1="9" x2="12" y2="13" stroke="#fff" stroke-width="2" stroke-linecap="round"/><circle cx="12" cy="17" r="1" fill="#fff"/></svg></span>
+              <div class="toast__content"><span class="toast__title">Previous</span><span class="toast__desc">Session expired on security purpose</span></div>
+            </div>
+            <div class="toast-demo toast--warning toast-stack__front">
+              <span class="toast__icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z" fill="var(--prim-orange-600)"/><line x1="12" y1="9" x2="12" y2="13" stroke="#fff" stroke-width="2" stroke-linecap="round"/><circle cx="12" cy="17" r="1" fill="#fff"/></svg></span>
+              <div class="toast__content"><span class="toast__title">Newest</span><span class="toast__desc">Session expired on security purpose</span></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="btn-sub-label" style="margin-top:20px;margin-bottom:8px;">Expanded stack (3 separate toasts)</div>
+        <div style="display:flex;flex-direction:column;gap:8px;background:var(--color-surface-subtle);border:1px solid var(--color-border-default);border-radius:var(--radius-lg);padding:20px;">
+          <div class="toast-demo toast--warning"><span class="toast__icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z" fill="var(--prim-orange-600)"/><line x1="12" y1="9" x2="12" y2="13" stroke="#fff" stroke-width="2" stroke-linecap="round"/><circle cx="12" cy="17" r="1" fill="#fff"/></svg></span><div class="toast__content"><span class="toast__title">Newest</span><span class="toast__desc">Session expired on security purpose</span></div></div>
+          <div class="toast-demo toast--warning"><span class="toast__icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z" fill="var(--prim-orange-600)"/><line x1="12" y1="9" x2="12" y2="13" stroke="#fff" stroke-width="2" stroke-linecap="round"/><circle cx="12" cy="17" r="1" fill="#fff"/></svg></span><div class="toast__content"><span class="toast__title">Previous</span><span class="toast__desc">Session expired on security purpose</span></div></div>
+          <div class="toast-demo toast--warning"><span class="toast__icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z" fill="var(--prim-orange-600)"/><line x1="12" y1="9" x2="12" y2="13" stroke="#fff" stroke-width="2" stroke-linecap="round"/><circle cx="12" cy="17" r="1" fill="#fff"/></svg></span><div class="toast__content"><span class="toast__title">Oldest</span><span class="toast__desc">Session expired on security purpose</span></div></div>
+        </div>
+      </div>
+
+      <!-- LIVE DEMO -->
+      <div id="toast-s-demo" class="btn-family-card">
+        <div class="btn-family-title">Live Demo</div>
+        <p class="btn-family-desc">Trigger real toasts — appear 48 px from top-center, animate in with spring easing, auto-dismiss after 4 s.</p>
+        <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:4px;">
+          <button class="gs-btn gs-btn-secondary gs-btn-sm" onclick="toastDemo('success')">Success</button>
+          <button class="gs-btn gs-btn-secondary gs-btn-sm" onclick="toastDemo('error')">Error</button>
+          <button class="gs-btn gs-btn-secondary gs-btn-sm" onclick="toastDemo('warning')">Warning</button>
+          <button class="gs-btn gs-btn-secondary gs-btn-sm" onclick="toastDemo('notification')">Notification</button>
+          <button class="gs-btn gs-btn-secondary gs-btn-sm" onclick="toastDemo('neutral')">Neutral</button>
+          <button class="gs-btn gs-btn-secondary gs-btn-sm" onclick="toastDemo('loading')">Loading</button>
+          <button class="gs-btn gs-btn-secondary gs-btn-sm" onclick="toastDemo('blank')">Blank</button>
+          <button class="gs-btn gs-btn-primary   gs-btn-sm" onclick="toastDemoStack()">Stack 3</button>
+        </div>
+      </div>
+
+      <!-- STATES -->
+      <div id="toast-s-states" class="btn-family-card">
+        <div class="btn-family-title">States</div>
+        <div class="btn-states-grid" style="grid-template-columns:repeat(3,1fr);margin-top:16px;">
+
+          <div class="btn-state-cell">
+            <div class="toast-demo toast--success" style="pointer-events:none;width:220px;">
+              <span class="toast__icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" fill="var(--prim-green-700)"/><path d="M7.5 12.5l3 3 6-6" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+              <div class="toast__content"><span class="toast__title">Changes saved</span><span class="toast__desc">Updated successfully.</span></div>
+            </div>
+            <span class="btn-state-label">Default</span>
+          </div>
+
+          <div class="btn-state-cell">
+            <div class="toast-demo toast--neutral" style="pointer-events:none;width:220px;">
+              <span class="toast__icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><polyline points="3 6 5 6 21 6" stroke="var(--prim-grey-400)" stroke-width="2" stroke-linecap="round"/><path d="M19 6l-1 14H6L5 6" stroke="var(--prim-grey-400)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M10 11v6M14 11v6" stroke="var(--prim-grey-400)" stroke-width="2" stroke-linecap="round"/></svg></span>
+              <div class="toast__content"><span class="toast__title">Items Deleted</span></div>
+              <button class="toast__dismiss" aria-label="Dismiss notification" style="color:var(--prim-grey-700);background:var(--prim-grey-50);">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+              </button>
+            </div>
+            <span class="btn-state-label">Hover (dismiss visible)</span>
+          </div>
+
+          <div class="btn-state-cell">
+            <div class="toast-demo toast--success" style="opacity:0.3;transform:translateY(-8px);transition:all 300ms;pointer-events:none;width:220px;">
+              <span class="toast__icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" fill="var(--prim-green-700)"/><path d="M7.5 12.5l3 3 6-6" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+              <div class="toast__content"><span class="toast__title">Changes saved</span><span class="toast__desc">Updated successfully.</span></div>
+            </div>
+            <span class="btn-state-label">Dismissed</span>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- INTERACTIONS -->
+      <div id="toast-s-interaction" class="btn-family-card">
+        <div class="btn-family-title">Interactions</div>
+        <table>
+          <thead><tr><th>Trigger</th><th>Behaviour</th></tr></thead>
+          <tbody>
+            <tr class="ds-tr-border"><td class="ds-td-code-primary">Auto-dismiss timer</td><td>Fades out after 4 s (duration:0 disables)</td></tr>
+            <tr class="ds-tr-border"><td class="ds-td-code-primary">Click ✕ dismiss</td><td>Immediately triggers exit animation</td></tr>
+            <tr class="ds-tr-border"><td class="ds-td-code-primary">New toast arrives</td><td>Stacks above previous; max 3 visible</td></tr>
+            <tr class="ds-tr-border"><td class="ds-td-code-primary">Hover over toast</td><td>Pauses auto-dismiss timer (loading variant)</td></tr>
+            <tr class="ds-tr-border"><td class="ds-td-code-primary">Keyboard Esc</td><td>Dismisses the front-most toast</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- ACCESSIBILITY -->
+      <div id="toast-s-a11y" class="btn-family-card">
+        <div class="btn-family-title">Accessibility</div>
+        <p class="btn-family-desc">Toasts use <code>role="status"</code> for non-critical messages and <code>role="alert"</code> for errors, ensuring screen readers announce them without interrupting current focus.</p>
+        <table style="margin-top:16px;">
+          <thead><tr><th>Attribute</th><th>Element</th><th>Value</th></tr></thead>
+          <tbody>
+            <tr class="ds-tr-border"><td class="ds-td-code-primary">role="status"</td><td class="ds-td-code-muted">.toast-live</td><td>Success, warning, notification, neutral, blank</td></tr>
+            <tr class="ds-tr-border"><td class="ds-td-code-primary">role="alert"</td><td class="ds-td-code-muted">.toast-live</td><td>Error variant only (assertive)</td></tr>
+            <tr class="ds-tr-border"><td class="ds-td-code-primary">aria-live="polite"</td><td class="ds-td-code-muted">#toast-live-container</td><td>Announces new toasts</td></tr>
+            <tr class="ds-tr-border"><td class="ds-td-code-primary">aria-label</td><td class="ds-td-code-muted">dismiss button</td><td>"Dismiss notification"</td></tr>
+            <tr class="ds-tr-border"><td class="ds-td-code-primary">aria-atomic="true"</td><td class="ds-td-code-muted">.toast-live</td><td>Reads full toast content</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+    </div><!-- /code-tab-main -->
+
+    <div class="code-tab-qnav">
+      <div class="code-qnav-inner">
+        <p class="code-qnav-title">On This Page</p>
+        <ul class="code-qnav-list">
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('toast-s-overview')">Overview</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('toast-s-anatomy')">Anatomy</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('toast-s-usecases')">Variants</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('toast-s-stacked')">Stacked</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('toast-s-demo')">Live Demo</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('toast-s-states')">States</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('toast-s-interaction')">Interactions</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('toast-s-a11y')">Accessibility</button></li>
+        </ul>
+      </div>
+    </div>
+  </div><!-- /code-tab-layout -->
+</div><!-- /design tab -->
+
+<!-- ═══ CODE TAB ══════════════════════════════════════════════════ -->
+<div id="toast-tab-code" class="btn-tab-pane toast-tab-pane">
+  <div class="code-tab-layout">
+    <div class="code-tab-main">
+
+      <div class="fw-toggle-bar">
+        <button class="fw-toggle-bar-btn active" data-fw="react" onclick="switchFw('toast-tab-code','react')">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="2.5" fill="#61dafb"/><ellipse cx="12" cy="12" rx="10" ry="4.5" stroke="#61dafb" stroke-width="1.5" fill="none"/><ellipse cx="12" cy="12" rx="10" ry="4.5" stroke="#61dafb" stroke-width="1.5" fill="none" transform="rotate(60 12 12)"/><ellipse cx="12" cy="12" rx="10" ry="4.5" stroke="#61dafb" stroke-width="1.5" fill="none" transform="rotate(120 12 12)"/></svg>
+          React
+        </button>
+        <button class="fw-toggle-bar-btn" data-fw="angular" onclick="switchFw('toast-tab-code','angular')">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M12 2L2 6.5l1.5 12.5L12 22l8.5-3L22 6.5 12 2z" fill="#dd0031"/><path d="M12 2v20M12 2L6 17h12L12 2z" fill="none" stroke="#fff" stroke-width="1.2"/></svg>
+          Angular / HTML
+        </button>
+      </div>
+
+      <!-- 1 · Overview -->
+      <div id="toast-c-overview" class="btn-family-card">
+        <div class="ds-step-row"><span class="ds-step-num">1</span><div class="btn-family-title" style="margin:0;">Overview</div></div>
+        <div class="fw-react"><p class="btn-family-desc">Wrap your app in <code>&lt;ToastProvider&gt;</code> then call <code>useToast()</code> anywhere inside to trigger any variant.</p></div>
+        <div class="fw-angular" style="display:none;"><p class="btn-family-desc">Use the global <code>gsToastShow(variant, title, desc, duration)</code> function from <code>script.js</code>. The toast container (<code>#toast-live-container</code>) is already fixed-positioned.</p></div>
+      </div>
+
+      <!-- 2 · Setup -->
+      <div id="toast-c-setup" class="btn-family-card">
+        <div class="ds-step-row"><span class="ds-step-num">2</span><div class="btn-family-title" style="margin:0;">Setup</div></div>
+        <div class="fw-react">
+          <div class="btn-code-block"><div class="btn-code-head"><span class="btn-code-lang">JSX</span><button class="btn-copy-btn" onclick="copyBtnCode('t-setup-r',this)">Copy</button></div>
+          <div class="btn-code-body"><pre id="t-setup-r"><code><span class="c-cmt">// 1 — Wrap app</span>
+<span class="c-kw">import</span> { <span class="c-type">ToastProvider</span> } <span class="c-kw">from</span> <span class="c-val">'@pelagos/components/primitives/toast'</span>;
+
+<span class="c-tag">&lt;ToastProvider</span> <span class="c-attr">duration</span>={4000}<span class="c-tag">&gt;</span>
+  <span class="c-tag">&lt;App /&gt;</span>
+<span class="c-tag">&lt;/ToastProvider&gt;</span>
+
+<span class="c-cmt">// 2 — Call anywhere inside</span>
+<span class="c-kw">import</span> { <span class="c-type">useToast</span> } <span class="c-kw">from</span> <span class="c-val">'@pelagos/components/primitives/toast'</span>;
+<span class="c-kw">const</span> { toast } = <span class="c-type">useToast</span>();
+
+toast.success({ title: <span class="c-val">'Saved'</span>, desc: <span class="c-val">'Changes saved successfully'</span> });
+toast.error({ title: <span class="c-val">'Failed'</span>, desc: <span class="c-val">'Could not save changes'</span> });
+toast.warning({ title: <span class="c-val">'Session expired'</span>, desc: <span class="c-val">'Please sign in again'</span> });
+toast.notification({ title: <span class="c-val">'3 new alerts'</span>, desc: <span class="c-val">'Tap to view'</span> });
+toast.neutral({ title: <span class="c-val">'Deleted'</span>, desc: <span class="c-val">'Item removed'</span>, dismissible: true });
+toast.loading({ title: <span class="c-val">'Saving…'</span> });  <span class="c-cmt">// duration:0 — manual dismiss</span>
+toast.blank({ title: <span class="c-val">'Hello world'</span> });
+
+<span class="c-cmt">// Manual dismiss</span>
+<span class="c-kw">const</span> id = toast.success({ title: <span class="c-val">'Uploading…'</span>, duration: 0 });
+toast.dismiss(id);</code></pre></div></div>
+        </div>
+        <div class="fw-angular" style="display:none;">
+          <div class="btn-code-block"><div class="btn-code-head"><span class="btn-code-lang">JS</span><button class="btn-copy-btn" onclick="copyBtnCode('t-setup-ng',this)">Copy</button></div>
+          <div class="btn-code-body"><pre id="t-setup-ng"><code><span class="c-cmt">// Trigger from any script — uses global from script.js</span>
+toastDemo(<span class="c-val">'success'</span>);     <span class="c-cmt">// 'success'|'error'|'warning'|'notification'|'neutral'|'loading'|'blank'</span>
+toastDemo(<span class="c-val">'error'</span>);
+toastDemoStack();       <span class="c-cmt">// fires 3 toasts in sequence</span></code></pre></div></div>
+        </div>
+      </div>
+
+      <!-- 3 · API -->
+      <div id="toast-c-api" class="btn-family-card">
+        <div class="ds-step-row"><span class="ds-step-num">3</span><div class="btn-family-title" style="margin:0;">API / Props</div></div>
+        <div class="fw-react">
+          <table>
+            <thead><tr><th>Prop</th><th>Type</th><th>Default</th><th>Description</th></tr></thead>
+            <tbody>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">variant</td><td class="ds-td-code-muted">string</td><td class="ds-td-code-muted">'blank'</td><td>blank · loading · success · error · warning · notification · neutral</td></tr>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">title</td><td class="ds-td-code-muted">string</td><td class="ds-td-code-muted">—</td><td>Bold heading (SemiBold 14px)</td></tr>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">desc</td><td class="ds-td-code-muted">string</td><td class="ds-td-code-muted">—</td><td>Secondary body line (Regular 14px, gap: <code>var(--prim-space-2)</code>)</td></tr>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">duration</td><td class="ds-td-code-muted">number</td><td class="ds-td-code-muted">4000</td><td>Auto-dismiss ms. 0 = persist until manually dismissed.</td></tr>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">dismissible</td><td class="ds-td-code-muted">boolean</td><td class="ds-td-code-muted">false</td><td>Show ✕ button (always true for neutral/loading)</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="fw-angular" style="display:none;">
+          <table>
+            <thead><tr><th>Token</th><th>Value</th><th>Usage</th></tr></thead>
+            <tbody>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">--shadow-md</td><td class="ds-td-code-muted">0 4px 16px rgba(0,0,0,.10)</td><td>Toast box shadow</td></tr>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">--prim-space-4</td><td class="ds-td-code-muted">16px</td><td>Padding inside toast</td></tr>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">--prim-space-2</td><td class="ds-td-code-muted">8px</td><td>Gap between title and desc</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- 4 · File Structure -->
+      <div id="toast-c-files" class="btn-family-card">
+        <div class="ds-step-row"><span class="ds-step-num">4</span><div class="btn-family-title" style="margin:0;">File Structure</div></div>
+        <div class="fw-react">
+          <div class="btn-code-block"><div class="btn-code-head"><span class="btn-code-lang">tree</span></div>
+          <div class="btn-code-body"><pre><code>components/primitives/toast/
+├── Toast.jsx      <span class="c-cmt"># ToastProvider, useToast, toast.* methods</span>
+├── Toast.scss     <span class="c-cmt"># .toast-live variants + animations</span>
+└── README.md</code></pre></div></div>
+        </div>
+        <div class="fw-angular" style="display:none;">
+          <div class="btn-code-block"><div class="btn-code-head"><span class="btn-code-lang">tree</span></div>
+          <div class="btn-code-body"><pre><code>pages/prim-toasts.html   <span class="c-cmt"># this page</span>
+styles.css               <span class="c-cmt"># .toast-live, .toast-demo — global classes</span>
+script.js                <span class="c-cmt"># toastDemo(), toastDemoStack() — global functions</span></code></pre></div></div>
+        </div>
+      </div>
+
+      <!-- 5 · Design Tokens -->
+      <div id="toast-c-tokens" class="btn-family-card">
+        <div class="ds-step-row"><span class="ds-step-num">5</span><div class="btn-family-title" style="margin:0;">Design Tokens</div></div>
+        <div class="fw-react">
+          <table>
+            <thead><tr><th>Token</th><th>Value</th><th>Usage</th></tr></thead>
+            <tbody>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">--shadow-md</td><td class="ds-td-code-muted">0 4px 16px rgba(0,0,0,.10)</td><td>Toast box-shadow</td></tr>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">--prim-space-4</td><td class="ds-td-code-muted">16px</td><td>Padding inside toast</td></tr>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">--prim-space-2</td><td class="ds-td-code-muted">8px</td><td>Gap between title and desc</td></tr>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">--prim-green-10</td><td class="ds-td-code-muted">#f0fdf4</td><td>Success background</td></tr>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">--prim-red-50</td><td class="ds-td-code-muted">#fef2f2</td><td>Error background</td></tr>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">--prim-orange-50</td><td class="ds-td-code-muted">#fff7ed</td><td>Warning background</td></tr>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">--prim-blue-50</td><td class="ds-td-code-muted">#eff6ff</td><td>Notification background</td></tr>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">--prim-font-primary</td><td class="ds-td-code-muted">Gilroy, system-ui…</td><td>All toast text</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="fw-angular" style="display:none;">
+          <table>
+            <thead><tr><th>Token</th><th>Value</th><th>Usage</th></tr></thead>
+            <tbody>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">--shadow-md</td><td class="ds-td-code-muted">0 4px 16px rgba(0,0,0,.10)</td><td>Toast box-shadow</td></tr>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">--prim-space-4</td><td class="ds-td-code-muted">16px</td><td>Padding inside toast</td></tr>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">--prim-space-2</td><td class="ds-td-code-muted">8px</td><td>Gap between title and desc</td></tr>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">--prim-green-10</td><td class="ds-td-code-muted">#f0fdf4</td><td>Success background</td></tr>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">--prim-red-50</td><td class="ds-td-code-muted">#fef2f2</td><td>Error background</td></tr>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">--prim-orange-50</td><td class="ds-td-code-muted">#fff7ed</td><td>Warning background</td></tr>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">--prim-blue-50</td><td class="ds-td-code-muted">#eff6ff</td><td>Notification background</td></tr>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">--prim-font-primary</td><td class="ds-td-code-muted">Gilroy, system-ui…</td><td>All toast text</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- 6 · Accessibility -->
+      <div id="toast-c-a11y" class="btn-family-card">
+        <div class="ds-step-row"><span class="ds-step-num">6</span><div class="btn-family-title" style="margin:0;">Accessibility</div></div>
+        <div class="fw-react">
+          <div class="btn-code-block"><div class="btn-code-head"><span class="btn-code-lang">JSX</span><button class="btn-copy-btn" onclick="copyBtnCode('t-a11y-r',this)">Copy</button></div>
+          <div class="btn-code-body"><pre id="t-a11y-r"><code><span class="c-cmt">// Error toasts use role="alert" (assertive)</span>
+toast.error({ title: <span class="c-val">'Upload failed'</span>, role: <span class="c-val">'alert'</span> });
+
+<span class="c-cmt">// All others use role="status" (polite, default)</span>
+toast.success({ title: <span class="c-val">'Saved'</span> });
+
+<span class="c-cmt">// Loading: dismiss programmatically</span>
+<span class="c-kw">const</span> id = toast.loading({ title: <span class="c-val">'Uploading…'</span> });
+<span class="c-cmt">// ... when done:</span>
+toast.dismiss(id);
+toast.success({ title: <span class="c-val">'Upload complete'</span> });</code></pre></div></div>
+        </div>
+        <div class="fw-angular" style="display:none;">
+          <div class="btn-code-block"><div class="btn-code-head"><span class="btn-code-lang">JS</span><button class="btn-copy-btn" onclick="copyBtnCode('t-a11y-ng',this)">Copy</button></div>
+          <div class="btn-code-body"><pre id="t-a11y-ng"><code><span class="c-cmt">// Container uses aria-live="polite" — screen readers announce new toasts</span>
+<span class="c-cmt">// Error toasts automatically switch to role="alert"</span>
+gsToastShow(<span class="c-val">'error'</span>, <span class="c-val">'Upload failed'</span>, <span class="c-val">'Retry or contact support'</span>, 4000);</code></pre></div></div>
+        </div>
+      </div>
+
+    </div><!-- /code-tab-main -->
+
+    <div class="code-tab-qnav">
+      <div class="code-qnav-inner">
+        <p class="code-qnav-title">On This Page</p>
+        <ul class="code-qnav-list">
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('toast-c-overview')">1 · Overview</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('toast-c-setup')">2 · Setup</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('toast-c-api')">3 · API / Props</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('toast-c-files')">4 · File Structure</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('toast-c-tokens')">5 · Tokens</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('toast-c-a11y')">6 · Accessibility</button></li>
+        </ul>
+      </div>
+    </div>
+  </div><!-- /code-tab-layout -->
+</div><!-- /code tab -->
+
+<!-- ═══ USAGE TAB ════════════════════════════════════════════════ -->
+<div id="toast-tab-usage" class="btn-tab-pane toast-tab-pane">
+  <div class="code-tab-layout">
+    <div class="code-tab-main">
+
+      <div id="toast-u-when" class="btn-family-card">
+        <div class="btn-family-title">When to Use Each Variant</div>
+        <table>
+          <thead><tr><th>Variant</th><th>When to use</th><th>Auto-dismiss</th></tr></thead>
+          <tbody>
+            <tr class="ds-tr-border"><td><strong>Success</strong></td><td>Action completed — form saved, item created, upload done</td><td>Yes · 4 s</td></tr>
+            <tr class="ds-tr-border"><td><strong>Error</strong></td><td>Action failed — network error, validation failure</td><td>Yes · 4 s</td></tr>
+            <tr class="ds-tr-border"><td><strong>Warning</strong></td><td>Session timeout, access issue, non-blocking risk</td><td>Yes · 4 s</td></tr>
+            <tr class="ds-tr-border"><td><strong>Notification</strong></td><td>New alerts, background activity, async events</td><td>Yes · 4 s</td></tr>
+            <tr class="ds-tr-border"><td><strong>Neutral</strong></td><td>Reversible action (delete, archive) — always show dismiss</td><td>Yes · ✕</td></tr>
+            <tr class="ds-tr-border"><td><strong>Loading</strong></td><td>Ongoing operation — dismiss programmatically when done</td><td>No</td></tr>
+            <tr class="ds-tr-border"><td><strong>Blank</strong></td><td>Custom / one-off messages without semantic meaning</td><td>Yes · 4 s</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div id="toast-u-best" class="btn-family-card">
+        <div class="btn-family-title">Best Practices</div>
+        <ul class="btn-usage-list">
+          <li><strong>One toast per action</strong> — avoid stacking too many at once. Max 3 visible at a time.</li>
+          <li><strong>Keep text short</strong> — title under 5 words; description under 20. Toasts are transient.</li>
+          <li><strong>Use semantic variants</strong> — don't use success for warnings or neutral for errors.</li>
+          <li><strong>Provide dismiss on neutral/loading</strong> — users need a way to manually clear these.</li>
+        </ul>
+      </div>
+
+      <div id="toast-u-donts" class="btn-family-card">
+        <div class="btn-family-title">Do / Don't</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;">
+          <div class="btn-do-card">
+            <div class="btn-do-header"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>Do</div>
+            <ul style="padding-left:18px;display:flex;flex-direction:column;gap:8px;font-size:14px;color:var(--prim-grey-600);line-height:1.6;margin-top:8px;">
+              <li>Keep titles under 5 words</li>
+              <li>Use one toast per user action</li>
+              <li>Use semantic variants consistently</li>
+              <li>Provide dismiss on neutral/loading</li>
+            </ul>
+          </div>
+          <div class="btn-dont-card">
+            <div class="btn-dont-header"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>Don't</div>
+            <ul style="padding-left:18px;display:flex;flex-direction:column;gap:8px;font-size:14px;color:var(--prim-grey-600);line-height:1.6;margin-top:8px;">
+              <li>Don't put critical info in auto-dismissing toasts</li>
+              <li>Don't stack more than 3–4 toasts at once</li>
+              <li>Don't use toasts for destructive confirmations — use a modal</li>
+              <li>Don't use multi-paragraph descriptions</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div id="toast-u-refs" class="btn-family-card">
+        <div class="btn-family-title">References</div>
+        <ul class="btn-related-list">
+          <li><a href="https://ant.design/components/message" target="_blank" rel="noopener">Ant Design — Message / Toast</a></li>
+          <li><a href="https://react-hot-toast.com" target="_blank" rel="noopener">react-hot-toast — Animation reference</a></li>
+          <li><a href="https://www.w3.org/WAI/ARIA/apg/patterns/alert/" target="_blank" rel="noopener">ARIA APG — Alert pattern</a></li>
+          <li><a href="https://www.w3.org/WAI/WCAG21/Understanding/status-messages.html" target="_blank" rel="noopener">WCAG 2.1 — 4.1.3 Status Messages</a></li>
+        </ul>
+      </div>
+
+    </div><!-- /code-tab-main -->
+
+    <div class="code-tab-qnav">
+      <div class="code-qnav-inner">
+        <p class="code-qnav-title">On This Page</p>
+        <ul class="code-qnav-list">
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('toast-u-when')">When to Use</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('toast-u-best')">Best Practices</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('toast-u-donts')">Do / Don't</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('toast-u-refs')">References</button></li>
+        </ul>
+      </div>
+    </div>
+  </div><!-- /code-tab-layout -->
+</div><!-- /usage tab -->
+
+<!-- ── Live toast container ──────────────────────────────────────────────── -->
+<div id="toast-live-container" aria-label="Notifications" role="region"></div>
+
+<!-- ── Toast styles ──────────────────────────────────────────────────────── -->
+<style>
+  /* ── Static demo tiles (.toast-demo) ────────────────────────────────────── */
+  .toast-demo {
+    display: flex; align-items: center;
+    gap: var(--prim-space-4);              /* 16px */
+    padding: var(--prim-space-4);          /* 16px */
+    border-radius: 8px; width: 100%;
+    border: 1px solid var(--prim-grey-100);
+    background: var(--prim-white);
+    box-shadow: var(--shadow-md);          /* --shadow-md */
+    font-family: var(--prim-font-primary); font-size: 14px; line-height: 20px;
+    transition: opacity 300ms ease;
+  }
+  .toast-demo.toast--success      { background: var(--prim-green-10);  border: 0.5px solid var(--prim-green-200); }
+  .toast-demo.toast--error        { background: var(--prim-red-50);    border-color: var(--prim-red-100); }
+  .toast-demo.toast--warning      { background: var(--prim-orange-50); border-color: var(--prim-orange-100); }
+  .toast-demo.toast--notification { background: var(--prim-blue-50);   border-color: var(--prim-blue-100); }
+  .toast-demo .toast__icon { flex-shrink:0; width:24px; height:24px; display:flex; align-items:center; justify-content:center; }
+  .toast-demo .toast__content { flex:1 0 0; min-width:0; display:flex; flex-direction:column; gap:var(--prim-space-2); } /* 8px */
+  .toast-demo .toast__title { font-weight:600; font-size:14px; line-height:20px; }
+  .toast-demo .toast__desc  { font-weight:400; font-size:14px; line-height:20px; }
+  .toast-demo.toast--success      .toast__title, .toast-demo.toast--success      .toast__desc { color: var(--prim-green-700); }
+  .toast-demo.toast--error        .toast__title, .toast-demo.toast--error        .toast__desc { color: var(--prim-red-600); }
+  .toast-demo.toast--warning      .toast__title, .toast-demo.toast--warning      .toast__desc { color: var(--prim-orange-600); }
+  .toast-demo.toast--notification .toast__title, .toast-demo.toast--notification .toast__desc { color: var(--prim-blue-900); }
+  .toast-demo.toast--neutral      .toast__title { color: var(--prim-grey-700); }
+  .toast-demo.toast--neutral      .toast__desc  { color: var(--prim-grey-400); }
+  .toast-demo.toast--blank        .toast__title, .toast-demo.toast--loading     .toast__title { color: var(--prim-grey-700); }
+  .toast-demo .toast__dismiss {
+    flex-shrink:0; width:24px; height:24px; display:flex; align-items:center; justify-content:center;
+    background:none; border:none; cursor:pointer; color:var(--prim-grey-400); border-radius:4px; padding:0;
+    transition: color 150ms ease, background 150ms ease;
+  }
+  .toast-demo .toast__dismiss:hover { color:var(--prim-grey-700); background:var(--prim-grey-50); }
+
+  /* Spinner */
+  .toast__spinner { animation: toast-spin 900ms linear infinite; display:block; }
+  @keyframes toast-spin { to { transform:rotate(360deg); } }
+
+  /* ── Card stack ──────────────────────────────────────────────────────────── */
+  .toast-stack-collapsed { position:relative; width:450px; height:80px; }
+  .toast-stack-collapsed .toast-demo { position:absolute; width:100%; }
+  .toast-stack__front { z-index:3; top:0; transform:scale(1); box-shadow:0 2px 8px rgba(0,0,0,0.18); }
+  .toast-stack__back1 { z-index:2; top:8px; transform:scale(0.96); transform-origin:bottom center; opacity:0.8; filter:brightness(0.97); }
+  .toast-stack__back2 { z-index:1; top:16px; transform:scale(0.92); transform-origin:bottom center; opacity:0.6; filter:brightness(0.94); }
+
+  /* ── Live toast container ────────────────────────────────────────────────── */
+  #toast-live-container {
+    position:fixed; top:48px; left:50%; transform:translateX(-50%);
+    z-index:9999; display:flex; flex-direction:column; align-items:center;
+    gap:8px; pointer-events:none; width:max-content; max-width:calc(100vw - 32px);
+  }
+
+  /* ── Live toast item (.toast-live) ──────────────────────────────────────── */
+  .toast-live {
+    display:flex; align-items:center;
+    gap: var(--prim-space-4);             /* 16px */
+    padding: var(--prim-space-4);         /* 16px */
+    border-radius:8px; width:450px; max-width:100%;
+    border:1px solid var(--prim-grey-100);
+    background:var(--prim-white);
+    box-shadow: var(--shadow-md);         /* --shadow-md */
+    font-family:var(--prim-font-primary); font-size:14px; line-height:20px;
+    pointer-events:auto; animation:toast-enter 280ms cubic-bezier(0.4,0,0.2,1) both;
+  }
+  .toast-live.is-exiting { animation:toast-exit 220ms cubic-bezier(0.4,0,1,1) both; }
+  .toast-live.toast--success      { background:var(--prim-green-10);  border:0.5px solid var(--prim-green-200); }
+  .toast-live.toast--error        { background:var(--prim-red-50);    border-color:var(--prim-red-100); }
+  .toast-live.toast--warning      { background:var(--prim-orange-50); border-color:var(--prim-orange-100); }
+  .toast-live.toast--notification { background:var(--prim-blue-50);   border-color:var(--prim-blue-100); }
+  .toast-live .toast__icon { flex-shrink:0; width:24px; height:24px; display:flex; align-items:center; justify-content:center; }
+  .toast-live .toast__content { flex:1 0 0; min-width:0; display:flex; flex-direction:column; gap:var(--prim-space-2); } /* 8px */
+  .toast-live .toast__title { font-weight:600; font-size:14px; line-height:20px; }
+  .toast-live .toast__desc  { font-weight:400; font-size:14px; line-height:20px; }
+  .toast-live.toast--success      .toast__title, .toast-live.toast--success      .toast__desc { color:var(--prim-green-700); }
+  .toast-live.toast--error        .toast__title, .toast-live.toast--error        .toast__desc { color:var(--prim-red-600); }
+  .toast-live.toast--warning      .toast__title, .toast-live.toast--warning      .toast__desc { color:var(--prim-orange-600); }
+  .toast-live.toast--notification .toast__title, .toast-live.toast--notification .toast__desc { color:var(--prim-blue-900); }
+  .toast-live.toast--neutral      .toast__title { color:var(--prim-grey-700); }
+  .toast-live.toast--neutral      .toast__desc  { color:var(--prim-grey-400); }
+  .toast-live.toast--blank        .toast__title, .toast-live.toast--loading     .toast__title { color:var(--prim-grey-700); }
+  .toast-live .toast__dismiss {
+    flex-shrink:0; width:24px; height:24px; display:flex; align-items:center; justify-content:center;
+    background:none; border:none; cursor:pointer; color:var(--prim-grey-400); border-radius:4px; padding:0;
+    transition:color 150ms ease, background 150ms ease;
+  }
+  .toast-live .toast__dismiss:hover { color:var(--prim-grey-700); background:var(--prim-grey-50); }
+
+  .ds-swatch { display:inline-block; width:12px; height:12px; border-radius:3px; vertical-align:middle; margin-right:6px; }
+
+  @keyframes toast-enter { from{opacity:0;transform:translateY(-20px)} to{opacity:1;transform:translateY(0)} }
+  @keyframes toast-exit  { from{opacity:1;transform:translateY(0);max-height:80px;margin-bottom:0} to{opacity:0;transform:translateY(-16px);max-height:0;margin-bottom:-8px} }
+</style>

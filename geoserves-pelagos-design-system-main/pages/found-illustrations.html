@@ -1,0 +1,596 @@
+<!-- ═══════════════════════════════════════════════════════════════
+     ILLUSTRATIONS — Pelagos Design System
+     ═══════════════════════════════════════════════════════════════ -->
+<style>
+/* ── Illustration page layout ──────────────────────────────────── */
+.ill-toolbar {
+  display:flex; align-items:center; gap:12px; flex-wrap:wrap;
+  padding:20px 48px; border-bottom:1px solid var(--color-border-default);
+  background:var(--color-surface-default);
+  position:sticky; top:56px; z-index:90;
+}
+.ill-search-wrap {
+  position:relative; flex:1; max-width:320px;
+}
+.ill-search-wrap svg {
+  position:absolute; left:10px; top:50%; transform:translateY(-50%);
+  color:var(--color-text-secondary); pointer-events:none;
+}
+#ill-search-input {
+  width:100%; height:36px; border:1px solid var(--color-border-default);
+  border-radius:var(--radius-md); padding:0 12px 0 34px;
+  font-family:var(--prim-font-primary); font-size:var(--prim-font-size-sm);
+  color:var(--color-text-default); background:var(--color-surface-default);
+  outline:none; transition:border-color .15s;
+}
+#ill-search-input:focus { border-color:var(--color-brand); box-shadow:0 0 0 3px rgba(24,82,254,.15); }
+
+/* Category filter pills */
+.ill-cats { display:flex; gap:6px; flex-shrink:0; }
+.ill-cat-btn {
+  height:32px; padding:0 14px; border:1px solid var(--color-border-default);
+  border-radius:var(--radius-full); font-family:var(--prim-font-primary);
+  font-size:var(--prim-font-size-sm); font-weight:var(--prim-font-weight-semibold);
+  color:var(--color-text-secondary); background:var(--color-surface-default);
+  cursor:pointer; transition:all .15s ease; white-space:nowrap;
+}
+.ill-cat-btn:hover { border-color:var(--color-brand); color:var(--color-brand); background:var(--color-brand-subtle); }
+.ill-cat-btn.active { border-color:var(--color-brand); color:var(--color-brand); background:var(--color-brand-subtle); }
+
+/* Count badge */
+.ill-count {
+  margin-left:auto; font-size:var(--prim-font-size-sm);
+  color:var(--color-text-secondary);
+}
+
+/* Section header */
+.ill-section { padding:32px 48px 0; }
+.ill-section-title {
+  font-family:var(--prim-font-primary); font-size:var(--prim-font-size-sm);
+  font-weight:var(--prim-font-weight-bold); color:var(--color-text-secondary);
+  text-transform:uppercase; letter-spacing:.07em; margin-bottom:4px;
+}
+.ill-section-desc {
+  font-size:var(--prim-font-size-sm); color:var(--color-text-secondary);
+  margin-bottom:20px; line-height:1.6;
+}
+
+/* Card grid */
+.ill-grid {
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(180px,1fr));
+  gap:16px; padding-bottom:40px;
+}
+
+/* Illustration card */
+.ill-card {
+  border:1px solid var(--color-border-default);
+  border-radius:var(--radius-lg);
+  background:var(--color-surface-default);
+  overflow:hidden;
+  transition:box-shadow .15s ease, border-color .15s ease;
+}
+.ill-card:hover {
+  border-color:var(--color-brand-border, #c7d2fe);
+  box-shadow:var(--prim-shadow-md);
+}
+.ill-card-preview {
+  background:var(--color-surface-default);  /* white by default */
+  display:flex; align-items:center; justify-content:center;
+  padding:24px; aspect-ratio:1;
+  border-bottom:1px solid var(--color-border-default);
+}
+/* Empty state illustrations: light grey bg matches their typical in-app context */
+.ill-card[data-cat="empty"] .ill-card-preview {
+  background:var(--prim-grey-50);
+}
+.ill-card-preview img {
+  width:100%; height:100%; object-fit:contain; display:block;
+}
+.ill-card-body { padding:12px 14px 14px; }
+.ill-card-name {
+  font-family:var(--prim-font-primary);
+  font-size:var(--prim-font-size-sm);
+  font-weight:var(--prim-font-weight-semibold);
+  color:var(--color-text-default);
+  margin-bottom:2px;
+  white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+}
+.ill-card-token {
+  font-size:var(--prim-font-size-xs);
+  color:var(--color-text-secondary);
+  font-family:var(--prim-font-mono, monospace);
+  margin-bottom:10px;
+  white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+}
+.ill-card-actions { display:flex; gap:6px; }
+.ill-dl-btn {
+  flex:1; height:28px; border:1px solid var(--color-border-default);
+  border-radius:var(--radius-sm); font-family:var(--prim-font-primary);
+  font-size:11px; font-weight:700; color:var(--color-text-secondary);
+  background:var(--color-surface-default); cursor:pointer;
+  display:flex; align-items:center; justify-content:center; gap:4px;
+  transition:all .12s ease;
+}
+.ill-dl-btn:hover { border-color:var(--color-brand); color:var(--color-brand); background:var(--color-brand-subtle); }
+.ill-dl-btn svg { flex-shrink:0; }
+
+/* Placeholder card (missing asset) */
+.ill-card-placeholder .ill-card-preview {
+  background:repeating-linear-gradient(
+    45deg, var(--prim-grey-50), var(--prim-grey-50) 4px,
+    var(--prim-grey-100) 4px, var(--prim-grey-100) 8px
+  );
+}
+</style>
+
+<!-- BANNER -->
+<div class="page-header">
+  <h1 class="ds-hero-title">Illustrations</h1>
+</div>
+
+<!-- INTRO -->
+<div style="padding:24px 48px 0;">
+  <p style="font-size:var(--prim-font-size-md);color:var(--color-text-secondary);line-height:1.75;margin:0;max-width:100%;">
+    Pelagos illustrations communicate context, empty states, and feedback moments without relying on text alone. All illustrations are production-ready SVGs — download as SVG for web use or PNG for documents and emails.
+  </p>
+</div>
+
+<!-- TOOLBAR: search + category filter -->
+<div class="ill-toolbar">
+  <div class="ill-search-wrap">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+    <input id="ill-search-input" type="text" placeholder="Search illustrations…"
+      oninput="gsIllFilter()" autocomplete="off"/>
+  </div>
+  <div class="ill-cats">
+    <button class="ill-cat-btn active" data-cat="all" onclick="gsIllSetCat(this,'all')">All <span style="font-weight:400;opacity:.7;">24</span></button>
+    <button class="ill-cat-btn" data-cat="content" onclick="gsIllSetCat(this,'content')">Content <span style="font-weight:400;opacity:.7;">13</span></button>
+    <button class="ill-cat-btn" data-cat="empty" onclick="gsIllSetCat(this,'empty')">Empty States <span style="font-weight:400;opacity:.7;">7</span></button>
+    <button class="ill-cat-btn" data-cat="misc" onclick="gsIllSetCat(this,'misc')">Misc <span style="font-weight:400;opacity:.7;">4</span></button>
+  </div>
+</div>
+
+<!-- ════ CONTENT ILLUSTRATIONS ════════════════════════════════════ -->
+<div class="ill-section" data-section="content" id="ill-sec-content">
+  <div class="ill-section-title">Content Illustrations</div>
+  <p class="ill-section-desc">Action-oriented illustrations used inside modals, drawers, confirmation dialogs, and onboarding flows to reinforce a specific user task or outcome.</p>
+
+  <div class="ill-grid">
+
+    <!-- img-sent -->
+    <div class="ill-card" data-name="img-sent sent" data-cat="content">
+      <div class="ill-card-preview">
+        <img src="Assets/illustrations/img-sent.svg" alt="Sent illustration" loading="lazy"/>
+      </div>
+      <div class="ill-card-body">
+        <div class="ill-card-name">Sent</div>
+        <div class="ill-card-token">img-sent</div>
+        <div class="ill-card-actions">
+          <button class="ill-dl-btn" onclick="gsIllDownloadSVG('Assets/illustrations/img-sent.svg','img-sent')" title="Download SVG">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            SVG
+          </button>
+          <button class="ill-dl-btn" onclick="gsIllDownloadPNG('Assets/illustrations/img-sent.svg','img-sent',800)" title="Download PNG">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            PNG
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- img-calendar -->
+    <div class="ill-card" data-name="img-calendar calendar" data-cat="content">
+      <div class="ill-card-preview">
+        <img src="Assets/illustrations/img-calendar.svg" alt="Calendar illustration" loading="lazy"/>
+      </div>
+      <div class="ill-card-body">
+        <div class="ill-card-name">Calendar</div>
+        <div class="ill-card-token">img-calendar</div>
+        <div class="ill-card-actions">
+          <button class="ill-dl-btn" onclick="gsIllDownloadSVG('Assets/illustrations/img-calendar.svg','img-calendar')">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>SVG
+          </button>
+          <button class="ill-dl-btn" onclick="gsIllDownloadPNG('Assets/illustrations/img-calendar.svg','img-calendar',800)">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>PNG
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- img-delete -->
+    <div class="ill-card" data-name="img-delete delete" data-cat="content">
+      <div class="ill-card-preview">
+        <img src="Assets/illustrations/img-delete.svg" alt="Delete illustration" loading="lazy"/>
+      </div>
+      <div class="ill-card-body">
+        <div class="ill-card-name">Delete</div>
+        <div class="ill-card-token">img-delete</div>
+        <div class="ill-card-actions">
+          <button class="ill-dl-btn" onclick="gsIllDownloadSVG('Assets/illustrations/img-delete.svg','img-delete')"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>SVG</button>
+          <button class="ill-dl-btn" onclick="gsIllDownloadPNG('Assets/illustrations/img-delete.svg','img-delete',800)"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>PNG</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- img-submit-portcall -->
+    <div class="ill-card" data-name="img-submit-portcall submit portcall" data-cat="content">
+      <div class="ill-card-preview">
+        <img src="Assets/illustrations/img-submit-portcall.svg" alt="Submit portcall illustration" loading="lazy"/>
+      </div>
+      <div class="ill-card-body">
+        <div class="ill-card-name">Submit Portcall</div>
+        <div class="ill-card-token">img-submit-portcall</div>
+        <div class="ill-card-actions">
+          <button class="ill-dl-btn" onclick="gsIllDownloadSVG('Assets/illustrations/img-submit-portcall.svg','img-submit-portcall')"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>SVG</button>
+          <button class="ill-dl-btn" onclick="gsIllDownloadPNG('Assets/illustrations/img-submit-portcall.svg','img-submit-portcall',800)"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>PNG</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- img-no-authorisation -->
+    <div class="ill-card" data-name="img-no-authorisation no authorisation access" data-cat="content">
+      <div class="ill-card-preview">
+        <img src="Assets/illustrations/img-no-authorisation.svg" alt="No authorisation illustration" loading="lazy"/>
+      </div>
+      <div class="ill-card-body">
+        <div class="ill-card-name">No Authorisation</div>
+        <div class="ill-card-token">img-no-authorisation</div>
+        <div class="ill-card-actions">
+          <button class="ill-dl-btn" onclick="gsIllDownloadSVG('Assets/illustrations/img-no-authorisation.svg','img-no-authorisation')"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>SVG</button>
+          <button class="ill-dl-btn" onclick="gsIllDownloadPNG('Assets/illustrations/img-no-authorisation.svg','img-no-authorisation',800)"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>PNG</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- img-folder-closed -->
+    <div class="ill-card" data-name="img-folder-closed folder closed" data-cat="content">
+      <div class="ill-card-preview">
+        <img src="Assets/illustrations/img-folder-closed.svg" alt="Folder closed illustration" loading="lazy"/>
+      </div>
+      <div class="ill-card-body">
+        <div class="ill-card-name">Folder Closed</div>
+        <div class="ill-card-token">img-folder-closed</div>
+        <div class="ill-card-actions">
+          <button class="ill-dl-btn" onclick="gsIllDownloadSVG('Assets/illustrations/img-folder-closed.svg','img-folder-closed')"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>SVG</button>
+          <button class="ill-dl-btn" onclick="gsIllDownloadPNG('Assets/illustrations/img-folder-closed.svg','img-folder-closed',800)"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>PNG</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- img-folder-opened -->
+    <div class="ill-card" data-name="img-folder-opened folder opened" data-cat="content">
+      <div class="ill-card-preview">
+        <img src="Assets/illustrations/img-folder-opened.svg" alt="Folder opened illustration" loading="lazy"/>
+      </div>
+      <div class="ill-card-body">
+        <div class="ill-card-name">Folder Opened</div>
+        <div class="ill-card-token">img-folder-opened</div>
+        <div class="ill-card-actions">
+          <button class="ill-dl-btn" onclick="gsIllDownloadSVG('Assets/illustrations/img-folder-opened.svg','img-folder-opened')"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>SVG</button>
+          <button class="ill-dl-btn" onclick="gsIllDownloadPNG('Assets/illustrations/img-folder-opened.svg','img-folder-opened',800)"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>PNG</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- img-edit -->
+    <div class="ill-card" data-name="img-edit edit" data-cat="content">
+      <div class="ill-card-preview">
+        <img src="Assets/illustrations/img-edit.svg" alt="Edit illustration" loading="lazy"/>
+      </div>
+      <div class="ill-card-body">
+        <div class="ill-card-name">Edit</div>
+        <div class="ill-card-token">img-edit</div>
+        <div class="ill-card-actions">
+          <button class="ill-dl-btn" onclick="gsIllDownloadSVG('Assets/illustrations/img-edit.svg','img-edit')"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>SVG</button>
+          <button class="ill-dl-btn" onclick="gsIllDownloadPNG('Assets/illustrations/img-edit.svg','img-edit',800)"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>PNG</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- img-restore -->
+    <div class="ill-card" data-name="img-restore restore" data-cat="content">
+      <div class="ill-card-preview">
+        <img src="Assets/illustrations/img-restore.svg" alt="Restore illustration" loading="lazy"/>
+      </div>
+      <div class="ill-card-body">
+        <div class="ill-card-name">Restore</div>
+        <div class="ill-card-token">img-restore</div>
+        <div class="ill-card-actions">
+          <button class="ill-dl-btn" onclick="gsIllDownloadSVG('Assets/illustrations/img-restore.svg','img-restore')"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>SVG</button>
+          <button class="ill-dl-btn" onclick="gsIllDownloadPNG('Assets/illustrations/img-restore.svg','img-restore',800)"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>PNG</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- img-unassign-user -->
+    <div class="ill-card" data-name="img-unassign-user unassign user" data-cat="content">
+      <div class="ill-card-preview">
+        <img src="Assets/illustrations/img-unassign-user.svg" alt="Unassign user illustration" loading="lazy"/>
+      </div>
+      <div class="ill-card-body">
+        <div class="ill-card-name">Unassign User</div>
+        <div class="ill-card-token">img-unassign-user</div>
+        <div class="ill-card-actions">
+          <button class="ill-dl-btn" onclick="gsIllDownloadSVG('Assets/illustrations/img-unassign-user.svg','img-unassign-user')"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>SVG</button>
+          <button class="ill-dl-btn" onclick="gsIllDownloadPNG('Assets/illustrations/img-unassign-user.svg','img-unassign-user',800)"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>PNG</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- img-assign-user -->
+    <div class="ill-card" data-name="img-assign-user assign user" data-cat="content">
+      <div class="ill-card-preview">
+        <img src="Assets/illustrations/img-assign-user.svg" alt="Assign user illustration" loading="lazy"/>
+      </div>
+      <div class="ill-card-body">
+        <div class="ill-card-name">Assign User</div>
+        <div class="ill-card-token">img-assign-user</div>
+        <div class="ill-card-actions">
+          <button class="ill-dl-btn" onclick="gsIllDownloadSVG('Assets/illustrations/img-assign-user.svg','img-assign-user')"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>SVG</button>
+          <button class="ill-dl-btn" onclick="gsIllDownloadPNG('Assets/illustrations/img-assign-user.svg','img-assign-user',800)"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>PNG</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- img-warning -->
+    <div class="ill-card" data-name="img-warning warning" data-cat="content">
+      <div class="ill-card-preview">
+        <img src="Assets/illustrations/img-warning.svg" alt="Warning illustration" loading="lazy"/>
+      </div>
+      <div class="ill-card-body">
+        <div class="ill-card-name">Warning</div>
+        <div class="ill-card-token">img-warning</div>
+        <div class="ill-card-actions">
+          <button class="ill-dl-btn" onclick="gsIllDownloadSVG('Assets/illustrations/img-warning.svg','img-warning')"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>SVG</button>
+          <button class="ill-dl-btn" onclick="gsIllDownloadPNG('Assets/illustrations/img-warning.svg','img-warning',800)"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>PNG</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- img-success -->
+    <div class="ill-card" data-name="img-success success" data-cat="content">
+      <div class="ill-card-preview">
+        <img src="Assets/illustrations/img-success.svg" alt="Success illustration" loading="lazy"/>
+      </div>
+      <div class="ill-card-body">
+        <div class="ill-card-name">Success</div>
+        <div class="ill-card-token">img-success</div>
+        <div class="ill-card-actions">
+          <button class="ill-dl-btn" onclick="gsIllDownloadSVG('Assets/illustrations/img-success.svg','img-success')"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>SVG</button>
+          <button class="ill-dl-btn" onclick="gsIllDownloadPNG('Assets/illustrations/img-success.svg','img-success',800)"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>PNG</button>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /ill-grid content -->
+</div><!-- /ill-section content -->
+
+
+<!-- ════ EMPTY STATES & UI ════════════════════════════════════════ -->
+<div class="ill-section" data-section="empty" id="ill-sec-empty">
+  <div class="ill-section-title">Empty States &amp; UI</div>
+  <p class="ill-section-desc">Used in zero-data views, filtered results with no matches, and feature areas that haven't been set up yet. Pair with a heading and a call-to-action button.</p>
+
+  <div class="ill-grid">
+
+    <!-- img-empty-faq -->
+    <div class="ill-card" data-name="img-empty-faq faq empty" data-cat="empty">
+      <div class="ill-card-preview">
+        <img src="Assets/illustrations/img-empty-faq.svg" alt="Empty FAQ illustration" loading="lazy"/>
+      </div>
+      <div class="ill-card-body">
+        <div class="ill-card-name">Empty FAQ</div>
+        <div class="ill-card-token">img-empty-faq</div>
+        <div class="ill-card-actions">
+          <button class="ill-dl-btn" onclick="gsIllDownloadSVG('Assets/illustrations/img-empty-faq.svg','img-empty-faq')"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>SVG</button>
+          <button class="ill-dl-btn" onclick="gsIllDownloadPNG('Assets/illustrations/img-empty-faq.svg','img-empty-faq',800)"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>PNG</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- img-empty-nothing-here -->
+    <div class="ill-card" data-name="img-empty-nothing-here nothing here empty" data-cat="empty">
+      <div class="ill-card-preview">
+        <img src="Assets/illustrations/img-empty-nothing-here.svg" alt="Nothing here illustration" loading="lazy"/>
+      </div>
+      <div class="ill-card-body">
+        <div class="ill-card-name">Nothing Here</div>
+        <div class="ill-card-token">img-empty-nothing-here</div>
+        <div class="ill-card-actions">
+          <button class="ill-dl-btn" onclick="gsIllDownloadSVG('Assets/illustrations/img-empty-nothing-here.svg','img-empty-nothing-here')"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>SVG</button>
+          <button class="ill-dl-btn" onclick="gsIllDownloadPNG('Assets/illustrations/img-empty-nothing-here.svg','img-empty-nothing-here',800)"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>PNG</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- img-empty-no-search -->
+    <div class="ill-card" data-name="img-empty-no-search no search results empty" data-cat="empty">
+      <div class="ill-card-preview">
+        <img src="Assets/illustrations/img-empty-no-search.svg" alt="No search results illustration" loading="lazy"/>
+      </div>
+      <div class="ill-card-body">
+        <div class="ill-card-name">No Search Results</div>
+        <div class="ill-card-token">img-empty-no-search</div>
+        <div class="ill-card-actions">
+          <button class="ill-dl-btn" onclick="gsIllDownloadSVG('Assets/illustrations/img-empty-no-search.svg','img-empty-no-search')"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>SVG</button>
+          <button class="ill-dl-btn" onclick="gsIllDownloadPNG('Assets/illustrations/img-empty-no-search.svg','img-empty-no-search',800)"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>PNG</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- img-empty-file-not-found -->
+    <div class="ill-card" data-name="img-empty-file-not-found file not found 404" data-cat="empty">
+      <div class="ill-card-preview">
+        <img src="Assets/illustrations/img-empty-file-not-found.svg" alt="File not found illustration" loading="lazy"/>
+      </div>
+      <div class="ill-card-body">
+        <div class="ill-card-name">File Not Found</div>
+        <div class="ill-card-token">img-empty-file-not-found</div>
+        <div class="ill-card-actions">
+          <button class="ill-dl-btn" onclick="gsIllDownloadSVG('Assets/illustrations/img-empty-file-not-found.svg','img-empty-file-not-found')"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>SVG</button>
+          <button class="ill-dl-btn" onclick="gsIllDownloadPNG('Assets/illustrations/img-empty-file-not-found.svg','img-empty-file-not-found',800)"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>PNG</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- img-empty-sent -->
+    <div class="ill-card" data-name="img-empty-sent sent empty" data-cat="empty">
+      <div class="ill-card-preview">
+        <img src="Assets/illustrations/img-empty-sent.svg" alt="Empty sent illustration" loading="lazy"/>
+      </div>
+      <div class="ill-card-body">
+        <div class="ill-card-name">Empty Sent</div>
+        <div class="ill-card-token">img-empty-sent</div>
+        <div class="ill-card-actions">
+          <button class="ill-dl-btn" onclick="gsIllDownloadSVG('Assets/illustrations/img-empty-sent.svg','img-empty-sent')"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>SVG</button>
+          <button class="ill-dl-btn" onclick="gsIllDownloadPNG('Assets/illustrations/img-empty-sent.svg','img-empty-sent',800)"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>PNG</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- img-empty-deleted -->
+    <div class="ill-card" data-name="img-empty-deleted deleted empty" data-cat="empty">
+      <div class="ill-card-preview">
+        <img src="Assets/illustrations/img-empty-deleted.svg" alt="Empty deleted illustration" loading="lazy"/>
+      </div>
+      <div class="ill-card-body">
+        <div class="ill-card-name">Empty Deleted</div>
+        <div class="ill-card-token">img-empty-deleted</div>
+        <div class="ill-card-actions">
+          <button class="ill-dl-btn" onclick="gsIllDownloadSVG('Assets/illustrations/img-empty-deleted.svg','img-empty-deleted')"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>SVG</button>
+          <button class="ill-dl-btn" onclick="gsIllDownloadPNG('Assets/illustrations/img-empty-deleted.svg','img-empty-deleted',800)"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>PNG</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- img-empty-notification -->
+    <div class="ill-card" data-name="img-empty-notification notification empty" data-cat="empty">
+      <div class="ill-card-preview">
+        <img src="Assets/illustrations/img-empty-notification.svg" alt="Empty notification illustration" loading="lazy"/>
+      </div>
+      <div class="ill-card-body">
+        <div class="ill-card-name">Empty Notification</div>
+        <div class="ill-card-token">img-empty-notification</div>
+        <div class="ill-card-actions">
+          <button class="ill-dl-btn" onclick="gsIllDownloadSVG('Assets/illustrations/img-empty-notification.svg','img-empty-notification')"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>SVG</button>
+          <button class="ill-dl-btn" onclick="gsIllDownloadPNG('Assets/illustrations/img-empty-notification.svg','img-empty-notification',800)"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>PNG</button>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /ill-grid empty -->
+</div><!-- /ill-section empty -->
+
+
+<!-- ════ MISC ═════════════════════════════════════════════════════ -->
+<div class="ill-section" data-section="misc" id="ill-sec-misc">
+  <div class="ill-section-title">Misc</div>
+  <p class="ill-section-desc">Celebratory, brand, and contextual illustrations that don't fit a specific workflow — used in onboarding, landing panels, and global success moments.</p>
+
+  <div class="ill-grid">
+
+    <!-- img-system -->
+    <div class="ill-card" data-name="img-system system" data-cat="misc">
+      <div class="ill-card-preview">
+        <img src="Assets/illustrations/img-system.svg" alt="System illustration" loading="lazy"/>
+      </div>
+      <div class="ill-card-body">
+        <div class="ill-card-name">System</div>
+        <div class="ill-card-token">img-system</div>
+        <div class="ill-card-actions">
+          <button class="ill-dl-btn" onclick="gsIllDownloadSVG('Assets/illustrations/img-system.svg','img-system')"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>SVG</button>
+          <button class="ill-dl-btn" onclick="gsIllDownloadPNG('Assets/illustrations/img-system.svg','img-system',800)"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>PNG</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- img-happy-people (SVG asset to be added) -->
+    <div class="ill-card ill-card-placeholder" data-name="img-happy-people happy people" data-cat="misc">
+      <div class="ill-card-preview" style="flex-direction:column;gap:8px;">
+        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="var(--prim-grey-300)" stroke-width="1.5" stroke-linecap="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+        <span style="font-size:10px;color:var(--color-text-secondary);text-align:center;">Add img-happy-people.svg<br>to Assets/illustrations/</span>
+      </div>
+      <div class="ill-card-body">
+        <div class="ill-card-name">Happy People</div>
+        <div class="ill-card-token">img-happy-people</div>
+        <div class="ill-card-actions">
+          <button class="ill-dl-btn" style="opacity:.4;cursor:not-allowed;" disabled>
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>SVG
+          </button>
+          <button class="ill-dl-btn" style="opacity:.4;cursor:not-allowed;" disabled>
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>PNG
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- img-good-job -->
+    <div class="ill-card" data-name="img-good-job good job" data-cat="misc">
+      <div class="ill-card-preview">
+        <img src="Assets/illustrations/img-good-job.svg" alt="Good job illustration" loading="lazy"/>
+      </div>
+      <div class="ill-card-body">
+        <div class="ill-card-name">Good Job</div>
+        <div class="ill-card-token">img-good-job</div>
+        <div class="ill-card-actions">
+          <button class="ill-dl-btn" onclick="gsIllDownloadSVG('Assets/illustrations/img-good-job.svg','img-good-job')"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>SVG</button>
+          <button class="ill-dl-btn" onclick="gsIllDownloadPNG('Assets/illustrations/img-good-job.svg','img-good-job',800)"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>PNG</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- img-vessel -->
+    <div class="ill-card" data-name="img-vessel vessel ship" data-cat="misc">
+      <div class="ill-card-preview">
+        <img src="Assets/illustrations/img-vessel.svg" alt="Vessel illustration" loading="lazy"/>
+      </div>
+      <div class="ill-card-body">
+        <div class="ill-card-name">Vessel</div>
+        <div class="ill-card-token">img-vessel</div>
+        <div class="ill-card-actions">
+          <button class="ill-dl-btn" onclick="gsIllDownloadSVG('Assets/illustrations/img-vessel.svg','img-vessel')"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>SVG</button>
+          <button class="ill-dl-btn" onclick="gsIllDownloadPNG('Assets/illustrations/img-vessel.svg','img-vessel',800)"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>PNG</button>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /ill-grid misc -->
+</div><!-- /ill-section misc -->
+
+<!-- Usage guidelines -->
+<div style="padding:32px 48px 48px;">
+  <div style="background:var(--color-surface-subtle);border:1px solid var(--color-border-default);border-radius:var(--radius-lg);padding:28px 32px;max-width:800px;">
+    <div style="font-size:var(--prim-font-size-md);font-weight:var(--prim-font-weight-bold);color:var(--color-text-default);margin-bottom:16px;">Usage Guidelines</div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:20px;">
+      <div>
+        <div style="font-size:var(--prim-font-size-sm);font-weight:var(--prim-font-weight-semibold);color:var(--color-text-default);margin-bottom:6px;">📐 Sizing</div>
+        <p style="font-size:var(--prim-font-size-sm);color:var(--color-text-secondary);line-height:1.65;margin:0;">Render illustrations between 160–480px. Never scale below 120px — fine details become unreadable. Maintain 1:1 aspect ratio at all times.</p>
+      </div>
+      <div>
+        <div style="font-size:var(--prim-font-size-sm);font-weight:var(--prim-font-weight-semibold);color:var(--color-text-default);margin-bottom:6px;">🎨 Colour</div>
+        <p style="font-size:var(--prim-font-size-sm);color:var(--color-text-secondary);line-height:1.65;margin:0;">Do not recolour illustrations. They reference the Pelagos palette internally. Placing them on white or light-grey (<code style="font-size:11px;background:var(--prim-grey-100);padding:1px 4px;border-radius:3px;">--prim-grey-50</code>) backgrounds works best.</p>
+      </div>
+      <div>
+        <div style="font-size:var(--prim-font-size-sm);font-weight:var(--prim-font-weight-semibold);color:var(--color-text-default);margin-bottom:6px;">📝 Accessibility</div>
+        <p style="font-size:var(--prim-font-size-sm);color:var(--color-text-secondary);line-height:1.65;margin:0;">Always add a descriptive <code style="font-size:11px;background:var(--prim-grey-100);padding:1px 4px;border-radius:3px;">alt</code> attribute. Use <code style="font-size:11px;background:var(--prim-grey-100);padding:1px 4px;border-radius:3px;">aria-hidden="true"</code> if the adjacent heading already conveys the meaning.</p>
+      </div>
+      <div>
+        <div style="font-size:var(--prim-font-size-sm);font-weight:var(--prim-font-weight-semibold);color:var(--color-text-default);margin-bottom:6px;">💾 File format</div>
+        <p style="font-size:var(--prim-font-size-sm);color:var(--color-text-secondary);line-height:1.65;margin:0;">Use <strong>SVG</strong> for web (scales perfectly, small file size). Use <strong>PNG at 2×</strong> (1600px) for documents, presentations, and email clients that can't render SVG.</p>
+      </div>
+    </div>
+    <div style="margin-top:20px;padding-top:16px;border-top:1px solid var(--color-border-default);">
+      <div style="font-size:var(--prim-font-size-sm);font-weight:var(--prim-font-weight-semibold);color:var(--color-text-default);margin-bottom:8px;">In code</div>
+      <div style="background:var(--color-surface-default);border:1px solid var(--color-border-default);border-radius:var(--radius-md);padding:14px 16px;font-family:var(--prim-font-mono,monospace);font-size:12px;color:var(--color-text-secondary);line-height:1.7;">
+        <span style="color:#64748b;">&lt;!-- SVG via img tag --&gt;</span><br>
+        &lt;<span style="color:#1852fe;">img</span> <span style="color:#475569;">src</span>=<span style="color:#16a34a;">"Assets/illustrations/img-sent.svg"</span><br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#475569;">alt</span>=<span style="color:#16a34a;">"Confirmation that the message was sent"</span><br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#475569;">width</span>=<span style="color:#16a34a;">"240"</span> <span style="color:#475569;">height</span>=<span style="color:#16a34a;">"240"</span> /&gt;<br><br>
+        <span style="color:#64748b;">&lt;!-- React component --&gt;</span><br>
+        <span style="color:#16a34a;">import</span> <span style="color:#1852fe;">{ ReactComponent as SentIllustration }</span> <span style="color:#16a34a;">from</span> <span style="color:#b45309;">'@pelagos/illustrations/img-sent.svg'</span>;<br>
+        &lt;<span style="color:#1852fe;">SentIllustration</span> <span style="color:#475569;">width</span>=<span style="color:#b45309;">{240}</span> <span style="color:#475569;">height</span>=<span style="color:#b45309;">{240}</span> <span style="color:#475569;">aria-label</span>=<span style="color:#b45309;">"Sent"</span> /&gt;
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,105 @@
+// ─────────────────────────────────────────────────────────────────────────────
+// Pelagos Tooltip — primitives/tooltip/Tooltip.scss
+// Figma: node-id=6209-492 · Arrow: Ant Design rotated-square pattern
+//
+// Arrow: 8×8px ::before element with background:inherit + rotate(45deg)
+//   The half inside tooltip = invisible (same bg)
+//   The protruding half = arrow tip
+//   filter:drop-shadow on .gs-tt wraps body+arrow as one shape
+//
+// Tokens:
+//   --prim-blue-900   #001e4c   dark bg
+//   --prim-grey-800   #1e293b   light text
+//   --color-text-secondary      muted fallback
+// ─────────────────────────────────────────────────────────────────────────────
+
+.gs-tt-wrap { position: relative; display: inline-flex; }
+
+.gs-tt {
+  position:       absolute;
+  z-index:        9999;
+  max-width:      240px;
+  padding:        6px 10px;
+  border-radius:  6px;
+  font-family:    var(--prim-font-primary);
+  font-size:      12px;
+  font-weight:    var(--prim-font-weight-semibold);
+  line-height:    16px;
+  white-space:    nowrap;
+  pointer-events: none;
+  opacity:        0;
+  visibility:     hidden;
+  transition:     opacity 120ms ease, visibility 120ms ease;
+
+  // ── Themes ────────────────────────────────────────────────────────────────
+  &--dark {
+    background: var(--prim-blue-900, #001e4c);
+    color:      #ffffff;
+    filter:     drop-shadow(0 3px 8px rgba(0, 0, 0, 0.25));
+  }
+
+  &--light {
+    background: #ffffff;
+    color:      var(--prim-grey-800, #1e293b);
+    filter:     drop-shadow(0 2px 8px rgba(0, 0, 0, 0.13));
+  }
+
+  // ── Visible state ─────────────────────────────────────────────────────────
+  &.is-visible { opacity: 1; visibility: visible; }
+
+  // ── Placements ────────────────────────────────────────────────────────────
+  &--top    { bottom: calc(100% + 10px); left: 50%; transform: translateX(-50%); }
+  &--bottom { top:    calc(100% + 10px); left: 50%; transform: translateX(-50%); }
+  &--left   { right:  calc(100% + 10px); top:  50%; transform: translateY(-50%); }
+  &--right  { left:   calc(100% + 10px); top:  50%; transform: translateY(-50%); }
+
+  // ── Entrance animations — Ant Design spring curve ─────────────────────────
+  &--top.is-visible    { animation: tt-in-top    160ms cubic-bezier(0.23, 1, 0.32, 1) both; }
+  &--bottom.is-visible { animation: tt-in-bottom 160ms cubic-bezier(0.23, 1, 0.32, 1) both; }
+  &--left.is-visible   { animation: tt-in-left   160ms cubic-bezier(0.23, 1, 0.32, 1) both; }
+  &--right.is-visible  { animation: tt-in-right  160ms cubic-bezier(0.23, 1, 0.32, 1) both; }
+
+  // ── Arrow — Ant Design rotated-square pattern ─────────────────────────────
+  // background:inherit → matches dark or light theme automatically
+  // filter:drop-shadow on parent wraps the arrow too
+  &--arrow::before {
+    content:    '';
+    position:   absolute;
+    width:      8px;
+    height:     8px;
+    background: inherit;
+    transform:  rotate(45deg);
+  }
+
+  // placement=top    → tooltip above  → arrow at BOTTOM, points ↓
+  &--arrow.gs-tt--top::before    { bottom: -4px; left: 50%; margin-left: -4px; border-radius: 0 0 2px 0; }
+  // placement=bottom → tooltip below → arrow at TOP, points ↑
+  &--arrow.gs-tt--bottom::before { top:    -4px; left: 50%; margin-left: -4px; border-radius: 2px 0 0 0; }
+  // placement=left   → tooltip left  → arrow at RIGHT, points →
+  &--arrow.gs-tt--left::before   { right:  -4px; top:  50%; margin-top:  -4px; border-radius: 0 2px 0 0; }
+  // placement=right  → tooltip right → arrow at LEFT, points ←
+  &--arrow.gs-tt--right::before  { left:   -4px; top:  50%; margin-top:  -4px; border-radius: 0 0 0 2px; }
+}
+
+// ── Keyframes ────────────────────────────────────────────────────────────────
+@keyframes tt-in-top    { from { opacity:0; transform: translateX(-50%) translateY( 6px); } to { opacity:1; transform: translateX(-50%) translateY(0); } }
+@keyframes tt-in-bottom { from { opacity:0; transform: translateX(-50%) translateY(-6px); } to { opacity:1; transform: translateX(-50%) translateY(0); } }
+@keyframes tt-in-left   { from { opacity:0; transform: translateY(-50%) translateX( 6px); } to { opacity:1; transform: translateY(-50%) translateX(0); } }
+@keyframes tt-in-right  { from { opacity:0; transform: translateY(-50%) translateX(-6px); } to { opacity:1; transform: translateY(-50%) translateX(0); } }
+
+// ── Legacy class (backward compat) ───────────────────────────────────────────
+.tooltip-wrap { position: relative; display: inline-flex; }
+.tooltip {
+  position: absolute; z-index: 9999; max-width: 240px;
+  padding: 6px 10px; border-radius: 6px;
+  background: var(--prim-blue-900, #001e4c); color: #fff;
+  font-family: var(--prim-font-primary); font-size: 12px;
+  font-weight: var(--prim-font-weight-semibold); line-height: 16px;
+  white-space: nowrap; pointer-events: none;
+  filter: drop-shadow(0 3px 8px rgba(0,0,0,0.25));
+
+  &--top    { bottom: calc(100% + 10px); left: 50%; transform: translateX(-50%); }
+  &--bottom { top:    calc(100% + 10px); left: 50%; transform: translateX(-50%); }
+  &--left   { right:  calc(100% + 10px); top:  50%; transform: translateY(-50%); }
+  &--right  { left:   calc(100% + 10px); top:  50%; transform: translateY(-50%); }
+}

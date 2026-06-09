@@ -1,0 +1,985 @@
+<!-- ═══════════════════════════════════════════════════════════════
+     SEGMENTED BUTTON — Pelagos Design System
+     ═══════════════════════════════════════════════════════════════ -->
+
+<style>
+  /* ── Group track ─────────────────────────────── */
+  .gs-seggroup {
+    display: inline-flex;
+    align-items: center;
+    background: var(--prim-grey-50, #f1f5f9);
+    border-radius: var(--radius-md, 8px);
+    padding: 4px;
+    gap: 2px;                         /* 2px between every segment */
+    position: relative;               /* needed for pill absolute positioning */
+  }
+
+  /* ── Sliding pill — animates between segments ── */
+  .gs-seg-pill {
+    position: absolute;
+    border-radius: var(--radius-sm, 4px);
+    background: var(--color-brand, #1852fe);
+    pointer-events: none;
+    z-index: 0;
+    /* Smooth slide matching tab ink-bar pattern */
+    transition:
+      left   220ms cubic-bezier(0.4, 0, 0.2, 1),
+      top    220ms cubic-bezier(0.4, 0, 0.2, 1),
+      width  220ms cubic-bezier(0.4, 0, 0.2, 1),
+      height 220ms cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 1px 4px rgba(24, 82, 254, 0.25);
+  }
+
+  /* ── Individual segment ──────────────────────── */
+  .gs-segdemo-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    border: none;
+    background: transparent;          /* pill provides selected background */
+    border-radius: var(--radius-sm, 4px);
+    cursor: pointer;
+    font-family: var(--prim-font-primary);
+    font-size: var(--prim-font-size-md, 14px);
+    font-weight: var(--prim-font-weight-semibold, 600);
+    line-height: 20px;
+    white-space: nowrap;
+    color: var(--prim-grey-600, #334154);
+    transition: color 180ms ease, background 120ms ease;
+    user-select: none;
+    position: relative;               /* sit above the pill */
+    z-index: 1;
+  }
+  .gs-segdemo-btn:focus-visible {
+    outline: 2px solid var(--color-brand, #1852fe);
+    outline-offset: 1px;
+  }
+
+  /* Sizes */
+  .gs-segdemo-btn--sm  { padding: 4px 12px;  font-size: var(--prim-font-size-sm, 12px); }
+  .gs-segdemo-btn--md  { padding: 8px 16px;  }
+  .gs-segdemo-btn--lg  { padding: 12px 24px; font-size: var(--prim-font-size-lg, 16px); }
+
+  /* Hover — only when NOT selected; appears on top of pill thanks to z-index:1 */
+  .gs-segdemo-btn:hover:not([aria-selected="true"]) {
+    background: var(--prim-grey-100, #e2e8f0);
+  }
+
+  /* ── SELECTED state — pill handles background; only text/icon color here ── */
+  .gs-segdemo-btn[aria-selected="true"] {
+    color: var(--prim-white, #ffffff);
+  }
+  .gs-segdemo-btn[aria-selected="true"] .gs-segdemo-icon svg {
+    filter: brightness(0) invert(1);
+  }
+  .gs-segdemo-btn[aria-selected="true"] .gs-segdemo-badge {
+    background: rgba(255, 255, 255, 0.25);
+    color: var(--prim-white, #ffffff);
+  }
+
+  /* Icon */
+  .gs-segdemo-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 16px;
+    height: 16px;
+    flex-shrink: 0;
+  }
+  .gs-segdemo-icon svg { width: 16px; height: 16px; }
+
+  /* Badge */
+  .gs-segdemo-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 20px;
+    height: 20px;
+    border-radius: var(--radius-full, 9999px);
+    background: var(--prim-grey-100, #e2e8f0);
+    color: var(--prim-grey-500, #475569);
+    font-size: var(--prim-font-size-xs, 11px);
+    font-weight: var(--prim-font-weight-semibold, 600);
+    padding: 0 5px;
+    flex-shrink: 0;
+    transition: background 0.15s ease, color 0.15s ease;
+  }
+
+  /* Disabled group */
+  .gs-seggroup[aria-disabled="true"] {
+    opacity: 0.45;
+    pointer-events: none;
+  }
+</style>
+
+<!-- BANNER -->
+<div class="page-header">
+  <h1 class="ds-hero-title">Segmented Button</h1>
+</div>
+
+<!-- TAB BAR -->
+<div class="btn-tab-bar">
+  <button class="btn-tab-btn seg-tab-btn active" data-tab="design" onclick="switchSegmentedTab('design')">Design</button>
+  <button class="btn-tab-btn seg-tab-btn" data-tab="code"   onclick="switchSegmentedTab('code')">Code</button>
+  <button class="btn-tab-btn seg-tab-btn" data-tab="usage"  onclick="switchSegmentedTab('usage')">Usage</button>
+</div>
+
+<!-- ═══ DESIGN TAB ═══════════════════════════════════════════════════ -->
+<div id="seg-tab-design" class="btn-tab-pane seg-tab-pane active">
+  <div class="code-tab-layout">
+    <div class="code-tab-main">
+
+      <!-- OVERVIEW -->
+      <div id="seg-s-overview" class="btn-family-card">
+        <div class="btn-family-title">Overview</div>
+        <p class="btn-family-desc">Segmented Buttons group 2–3 mutually exclusive options into a compact inline strip. A grey/50 pill track contains individual segments that become brand-blue when selected. Unlike radio buttons, all options are always visible — ideal for view switchers, filter groups, or mode selectors. Click any segment below to try it.</p>
+
+        <div class="btn-preview-strip" style="padding:32px 28px;background:var(--color-surface-subtle);border:1px solid var(--color-border-default);border-radius:var(--radius-lg);margin-top:16px;display:flex;flex-direction:column;gap:28px;align-items:flex-start;">
+
+          <!-- 3-segment icons + label -->
+          <div>
+            <div style="font-size:var(--prim-font-size-xs);color:var(--color-text-secondary);margin-bottom:10px;font-weight:var(--prim-font-weight-semibold);text-transform:uppercase;letter-spacing:.06em;">3 Segments · Icons + Label</div>
+            <div class="gs-seggroup">
+              <button class="gs-segdemo-btn gs-segdemo-btn--md" role="option" aria-selected="true" onclick="gsSelectSegment(this)">
+                <span class="gs-segdemo-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg></span>
+                <span class="gs-segdemo-label">Grid</span>
+              </button>
+              <button class="gs-segdemo-btn gs-segdemo-btn--md" role="option" aria-selected="false" onclick="gsSelectSegment(this)">
+                <span class="gs-segdemo-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg></span>
+                <span class="gs-segdemo-label">List</span>
+              </button>
+              <button class="gs-segdemo-btn gs-segdemo-btn--md" role="option" aria-selected="false" onclick="gsSelectSegment(this)">
+                <span class="gs-segdemo-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/></svg></span>
+                <span class="gs-segdemo-label">Table</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- 3-segment label only -->
+          <div>
+            <div style="font-size:var(--prim-font-size-xs);color:var(--color-text-secondary);margin-bottom:10px;font-weight:var(--prim-font-weight-semibold);text-transform:uppercase;letter-spacing:.06em;">3 Segments · Label Only</div>
+            <div class="gs-seggroup">
+              <button class="gs-segdemo-btn gs-segdemo-btn--md" role="option" aria-selected="false" onclick="gsSelectSegment(this)">
+                <span class="gs-segdemo-label">Day</span>
+              </button>
+              <button class="gs-segdemo-btn gs-segdemo-btn--md" role="option" aria-selected="true" onclick="gsSelectSegment(this)">
+                <span class="gs-segdemo-label">Week</span>
+              </button>
+              <button class="gs-segdemo-btn gs-segdemo-btn--md" role="option" aria-selected="false" onclick="gsSelectSegment(this)">
+                <span class="gs-segdemo-label">Month</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- 2-segment label + badge -->
+          <div>
+            <div style="font-size:var(--prim-font-size-xs);color:var(--color-text-secondary);margin-bottom:10px;font-weight:var(--prim-font-weight-semibold);text-transform:uppercase;letter-spacing:.06em;">2 Segments · Label + Badge</div>
+            <div class="gs-seggroup">
+              <button class="gs-segdemo-btn gs-segdemo-btn--md" role="option" aria-selected="true" onclick="gsSelectSegment(this)">
+                <span class="gs-segdemo-label">Active</span>
+                <span class="gs-segdemo-badge">4</span>
+              </button>
+              <button class="gs-segdemo-btn gs-segdemo-btn--md" role="option" aria-selected="false" onclick="gsSelectSegment(this)">
+                <span class="gs-segdemo-label">Archived</span>
+                <span class="gs-segdemo-badge">12</span>
+              </button>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="btn-when-examples" style="margin-top:16px;">
+          <span class="btn-when-example-tag">3 Sizes</span>
+          <span class="btn-when-example-tag">3 States</span>
+          <span class="btn-when-example-tag">2–3 Segments</span>
+          <span class="btn-when-example-tag">WCAG AA</span>
+        </div>
+      </div>
+
+      <!-- ANATOMY -->
+      <div id="seg-s-anatomy" class="btn-family-card">
+        <div class="btn-family-title">Anatomy</div>
+        <p class="btn-family-desc">A Segmented Button group is a grey/50 track enclosing two or more segment buttons. Each segment may include a leading icon, label, count badge, and trailing icon — in any combination.</p>
+
+        <div style="background:var(--color-surface-subtle);border:1px solid var(--color-border-default);border-radius:var(--radius-lg);padding:32px;display:flex;justify-content:center;margin-top:8px;overflow:auto;">
+          <svg width="600" height="200" viewBox="0 0 600 200" fill="none" xmlns="http://www.w3.org/2000/svg" style="min-width:520px;">
+            <!-- Track -->
+            <rect x="40" y="72" width="362" height="56" rx="8" fill="#f1f5f9"/>
+            <!-- Segment 1 selected -->
+            <rect x="44" y="76" width="118" height="48" rx="4" fill="#1852fe"/>
+            <!-- Segment 2 (2px gap) -->
+            <rect x="164" y="76" width="118" height="48" rx="4" fill="transparent"/>
+            <!-- Segment 3 (2px gap) -->
+            <rect x="284" y="76" width="114" height="48" rx="4" fill="transparent"/>
+
+            <!-- Seg1 content -->
+            <rect x="60" y="92" width="14" height="14" rx="2" fill="white" opacity="0.8"/>
+            <text x="82" y="103" font-size="13" font-weight="600" fill="white" font-family="Helvetica,Arial,sans-serif">Label</text>
+            <!-- Seg2 content -->
+            <rect x="180" y="92" width="14" height="14" rx="2" fill="#334154" opacity="0.6"/>
+            <text x="202" y="103" font-size="13" font-weight="600" fill="#334154" font-family="Helvetica,Arial,sans-serif">Label</text>
+            <rect x="256" y="90" width="18" height="18" rx="9" fill="#e2e8f0"/>
+            <text x="265" y="102" font-size="10" font-weight="700" fill="#475569" text-anchor="middle" font-family="Helvetica,Arial,sans-serif">2</text>
+            <!-- Seg3 content -->
+            <text x="320" y="103" font-size="13" font-weight="600" fill="#334154" font-family="Helvetica,Arial,sans-serif">Label</text>
+
+            <!-- 2px gap indicator -->
+            <line x1="162" y1="64" x2="162" y2="72" stroke="#94a3b8" stroke-width="1"/>
+            <line x1="162" y1="64" x2="166" y2="64" stroke="#94a3b8" stroke-width="1"/>
+            <text x="164" y="61" font-size="9" fill="#94a3b8" text-anchor="middle" font-family="Helvetica,Arial,sans-serif">2px</text>
+
+            <!-- Annotations -->
+            <line x1="221" y1="72" x2="221" y2="28" stroke="#cbd5e1" stroke-width="1"/>
+            <line x1="221" y1="28" x2="500" y2="28" stroke="#cbd5e1" stroke-width="1"/>
+            <circle cx="500" cy="28" r="10" fill="#1852fe"/>
+            <text x="500" y="32" font-size="11" font-weight="700" fill="white" text-anchor="middle" font-family="Helvetica,Arial,sans-serif">1</text>
+            <text x="516" y="32" font-size="11" fill="#475569" font-family="Helvetica,Arial,sans-serif">Group track (grey/50, 4px pad)</text>
+
+            <line x1="104" y1="76" x2="104" y2="46" stroke="#cbd5e1" stroke-width="1"/>
+            <line x1="104" y1="46" x2="20" y2="46" stroke="#cbd5e1" stroke-width="1"/>
+            <circle cx="18" cy="46" r="10" fill="#1852fe"/>
+            <text x="18" y="50" font-size="11" font-weight="700" fill="white" text-anchor="middle" font-family="Helvetica,Arial,sans-serif">2</text>
+            <text x="0" y="36" font-size="10" fill="#475569" font-family="Helvetica,Arial,sans-serif" text-anchor="start">Selected</text>
+
+            <line x1="67" y1="128" x2="67" y2="170" stroke="#cbd5e1" stroke-width="1"/>
+            <line x1="67" y1="170" x2="500" y2="170" stroke="#cbd5e1" stroke-width="1"/>
+            <circle cx="500" cy="170" r="10" fill="#1852fe"/>
+            <text x="500" y="174" font-size="11" font-weight="700" fill="white" text-anchor="middle" font-family="Helvetica,Arial,sans-serif">3</text>
+            <text x="516" y="174" font-size="11" fill="#475569" font-family="Helvetica,Arial,sans-serif">Icon (16×16, optional)</text>
+
+            <line x1="100" y1="100" x2="100" y2="148" stroke="#cbd5e1" stroke-width="1"/>
+            <line x1="100" y1="148" x2="500" y2="148" stroke="#cbd5e1" stroke-width="1"/>
+            <circle cx="500" cy="148" r="10" fill="#1852fe"/>
+            <text x="500" y="152" font-size="11" font-weight="700" fill="white" text-anchor="middle" font-family="Helvetica,Arial,sans-serif">4</text>
+            <text x="516" y="152" font-size="11" fill="#475569" font-family="Helvetica,Arial,sans-serif">Label (required)</text>
+
+            <line x1="265" y1="99" x2="265" y2="126" stroke="#cbd5e1" stroke-width="1"/>
+            <circle cx="265" cy="136" r="10" fill="#1852fe"/>
+            <text x="265" y="140" font-size="11" font-weight="700" fill="white" text-anchor="middle" font-family="Helvetica,Arial,sans-serif">5</text>
+            <text x="240" y="155" font-size="10" fill="#475569" font-family="Helvetica,Arial,sans-serif" text-anchor="middle">Badge (optional)</text>
+          </svg>
+        </div>
+
+        <ol style="margin-top:20px;display:flex;flex-direction:column;gap:8px;padding-left:20px;">
+          <li><strong>Group track</strong> — Background: <code>--prim-grey-50</code>. Padding: 4px. Radius: <code>--radius-md</code>. Gap between segments: <strong>2px</strong>.</li>
+          <li><strong>Segment (selected)</strong> — Background: <code>--color-brand</code>. Text: <code>--prim-white</code>. Radius: <code>--radius-sm</code>. Transition: 150ms ease.</li>
+          <li><strong>Icon</strong> — Optional 16×16px SVG. Inherits text colour (white on selected, <code>--prim-grey-600</code> on default) via CSS <code>currentColor</code>.</li>
+          <li><strong>Label</strong> — Required. Font: <code>--prim-font-weight-semibold</code> / 14px. Colour driven by parent segment state.</li>
+          <li><strong>Badge</strong> — Optional count chip. 20px height, <code>--radius-full</code>. Background: <code>--prim-grey-100</code> → 25% white (selected). Font: <code>--prim-font-size-xs</code>.</li>
+        </ol>
+      </div>
+
+      <!-- VARIANTS -->
+      <div id="seg-s-variants" class="btn-family-card">
+        <div class="btn-family-title">Variants</div>
+        <p class="btn-family-desc">Three sizes and four content configurations. All demos are interactive — click any segment to select it.</p>
+
+        <!-- Sizes -->
+        <div class="btn-sub-label" style="margin-bottom:12px;">Sizes</div>
+
+        <div class="btn-variant-row" style="margin-bottom:16px;">
+          <span class="btn-variant-label">Small<br><small style="font-weight:400;color:var(--color-text-secondary);">pad 4/12px</small></span>
+          <div class="btn-variant-sizes">
+            <div class="gs-seggroup">
+              <button class="gs-segdemo-btn gs-segdemo-btn--sm" role="option" aria-selected="true" onclick="gsSelectSegment(this)">Option 1</button>
+              <button class="gs-segdemo-btn gs-segdemo-btn--sm" role="option" aria-selected="false" onclick="gsSelectSegment(this)">Option 2</button>
+              <button class="gs-segdemo-btn gs-segdemo-btn--sm" role="option" aria-selected="false" onclick="gsSelectSegment(this)">Option 3</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="btn-variant-row" style="margin-bottom:16px;">
+          <span class="btn-variant-label">Medium<br><small style="font-weight:400;color:var(--color-text-secondary);">pad 8/16px · default</small></span>
+          <div class="btn-variant-sizes">
+            <div class="gs-seggroup">
+              <button class="gs-segdemo-btn gs-segdemo-btn--md" role="option" aria-selected="true" onclick="gsSelectSegment(this)">Option 1</button>
+              <button class="gs-segdemo-btn gs-segdemo-btn--md" role="option" aria-selected="false" onclick="gsSelectSegment(this)">Option 2</button>
+              <button class="gs-segdemo-btn gs-segdemo-btn--md" role="option" aria-selected="false" onclick="gsSelectSegment(this)">Option 3</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="btn-variant-row" style="margin-bottom:24px;">
+          <span class="btn-variant-label">Large<br><small style="font-weight:400;color:var(--color-text-secondary);">pad 12/24px</small></span>
+          <div class="btn-variant-sizes">
+            <div class="gs-seggroup">
+              <button class="gs-segdemo-btn gs-segdemo-btn--lg" role="option" aria-selected="true" onclick="gsSelectSegment(this)">Option 1</button>
+              <button class="gs-segdemo-btn gs-segdemo-btn--lg" role="option" aria-selected="false" onclick="gsSelectSegment(this)">Option 2</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Content configs -->
+        <div class="btn-sub-label" style="margin-bottom:12px;">Content Configurations</div>
+        <div style="display:flex;flex-direction:column;gap:14px;">
+
+          <div style="display:flex;align-items:center;gap:16px;">
+            <span style="font-size:var(--prim-font-size-sm);color:var(--color-text-secondary);min-width:110px;">Label only</span>
+            <div class="gs-seggroup">
+              <button class="gs-segdemo-btn gs-segdemo-btn--md" role="option" aria-selected="true" onclick="gsSelectSegment(this)">Map</button>
+              <button class="gs-segdemo-btn gs-segdemo-btn--md" role="option" aria-selected="false" onclick="gsSelectSegment(this)">Satellite</button>
+            </div>
+          </div>
+
+          <div style="display:flex;align-items:center;gap:16px;">
+            <span style="font-size:var(--prim-font-size-sm);color:var(--color-text-secondary);min-width:110px;">Icon + label</span>
+            <div class="gs-seggroup">
+              <button class="gs-segdemo-btn gs-segdemo-btn--md" role="option" aria-selected="true" onclick="gsSelectSegment(this)">
+                <span class="gs-segdemo-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg></span>
+                Light
+              </button>
+              <button class="gs-segdemo-btn gs-segdemo-btn--md" role="option" aria-selected="false" onclick="gsSelectSegment(this)">
+                <span class="gs-segdemo-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg></span>
+                Dark
+              </button>
+            </div>
+          </div>
+
+          <div style="display:flex;align-items:center;gap:16px;">
+            <span style="font-size:var(--prim-font-size-sm);color:var(--color-text-secondary);min-width:110px;">Label + badge</span>
+            <div class="gs-seggroup">
+              <button class="gs-segdemo-btn gs-segdemo-btn--md" role="option" aria-selected="false" onclick="gsSelectSegment(this)">
+                Inbox <span class="gs-segdemo-badge">3</span>
+              </button>
+              <button class="gs-segdemo-btn gs-segdemo-btn--md" role="option" aria-selected="true" onclick="gsSelectSegment(this)">
+                Sent <span class="gs-segdemo-badge">7</span>
+              </button>
+              <button class="gs-segdemo-btn gs-segdemo-btn--md" role="option" aria-selected="false" onclick="gsSelectSegment(this)">
+                Draft <span class="gs-segdemo-badge">1</span>
+              </button>
+            </div>
+          </div>
+
+          <div style="display:flex;align-items:center;gap:16px;">
+            <span style="font-size:var(--prim-font-size-sm);color:var(--color-text-secondary);min-width:110px;">Icon only</span>
+            <div class="gs-seggroup">
+              <button class="gs-segdemo-btn gs-segdemo-btn--md" role="option" aria-selected="true" aria-label="Grid view" onclick="gsSelectSegment(this)">
+                <span class="gs-segdemo-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg></span>
+              </button>
+              <button class="gs-segdemo-btn gs-segdemo-btn--md" role="option" aria-selected="false" aria-label="List view" onclick="gsSelectSegment(this)">
+                <span class="gs-segdemo-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg></span>
+              </button>
+              <button class="gs-segdemo-btn gs-segdemo-btn--md" role="option" aria-selected="false" aria-label="Table view" onclick="gsSelectSegment(this)">
+                <span class="gs-segdemo-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/></svg></span>
+              </button>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- STATES -->
+      <div id="seg-s-states" class="btn-family-card">
+        <div class="btn-family-title">States</div>
+        <p class="btn-family-desc">Three per-segment states. The interactive group below shows all three; hover, focus, and disabled are also shown statically.</p>
+
+        <!-- Live 3-state demo -->
+        <div style="margin-bottom:20px;">
+          <div class="gs-seggroup">
+            <button class="gs-segdemo-btn gs-segdemo-btn--md" role="option" aria-selected="false" onclick="gsSelectSegment(this)">Default</button>
+            <button class="gs-segdemo-btn gs-segdemo-btn--md" role="option" aria-selected="true"  onclick="gsSelectSegment(this)">Selected</button>
+            <button class="gs-segdemo-btn gs-segdemo-btn--md" role="option" aria-selected="false" onclick="gsSelectSegment(this)">Default</button>
+          </div>
+        </div>
+
+        <div class="btn-states-grid" style="grid-template-columns:repeat(4,1fr);">
+          <!-- Default -->
+          <div class="btn-state-cell">
+            <div style="pointer-events:none;">
+              <div class="gs-seggroup">
+                <button class="gs-segdemo-btn gs-segdemo-btn--md" aria-selected="false">Label</button>
+              </div>
+            </div>
+            <span class="btn-state-label">Default</span>
+          </div>
+          <!-- Hover -->
+          <div class="btn-state-cell">
+            <div style="pointer-events:none;">
+              <div class="gs-seggroup">
+                <button class="gs-segdemo-btn gs-segdemo-btn--md" aria-selected="false" style="background:var(--prim-grey-100);">Label</button>
+              </div>
+            </div>
+            <span class="btn-state-label">Hover</span>
+          </div>
+          <!-- Selected -->
+          <div class="btn-state-cell">
+            <div style="pointer-events:none;">
+              <div class="gs-seggroup">
+                <button class="gs-segdemo-btn gs-segdemo-btn--md" aria-selected="true">Label</button>
+              </div>
+            </div>
+            <span class="btn-state-label">Selected</span>
+          </div>
+          <!-- Disabled group -->
+          <div class="btn-state-cell">
+            <div style="pointer-events:none;">
+              <div class="gs-seggroup" aria-disabled="true">
+                <button class="gs-segdemo-btn gs-segdemo-btn--md" aria-selected="true" aria-disabled="true">Label</button>
+                <button class="gs-segdemo-btn gs-segdemo-btn--md" aria-selected="false" aria-disabled="true">Label</button>
+              </div>
+            </div>
+            <span class="btn-state-label">Disabled</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- INTERACTIONS -->
+      <div id="seg-s-interaction" class="btn-family-card">
+        <div class="btn-family-title">Interactions</div>
+        <table>
+          <thead><tr><th>Trigger</th><th>Behaviour</th><th>Timing</th></tr></thead>
+          <tbody>
+            <tr class="ds-tr-border"><td>Click / Tap segment</td><td>Deselects all siblings; selects clicked segment (brand-blue fill). Fires <code>onChange</code>.</td><td>150ms ease</td></tr>
+            <tr class="ds-tr-border"><td>Hover segment</td><td>Background shifts to <code>--prim-grey-100</code>. No change if already selected.</td><td>120ms ease</td></tr>
+            <tr class="ds-tr-border"><td><kbd>Tab</kbd></td><td>Focus enters group; lands on the currently selected segment (roving tabindex).</td><td>—</td></tr>
+            <tr class="ds-tr-border"><td><kbd>←</kbd> / <kbd>→</kbd></td><td>Moves selection left or right within the group (wraps at ends).</td><td>150ms ease</td></tr>
+            <tr class="ds-tr-border"><td><kbd>Space</kbd> / <kbd>Enter</kbd></td><td>Selects the focused segment.</td><td>—</td></tr>
+            <tr class="ds-tr-border"><td><kbd>Home</kbd> / <kbd>End</kbd></td><td>Selects first or last segment.</td><td>—</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- ACCESSIBILITY -->
+      <div id="seg-s-a11y" class="btn-family-card">
+        <div class="btn-family-title">Accessibility</div>
+        <div class="btn-sub-label">Semantic Pattern</div>
+        <p class="btn-family-desc">The group uses <code>role="group"</code> + <code>aria-label</code>. Each segment is a <code>&lt;button role="option"&gt;</code> with <code>aria-selected</code>. Only the active segment has <code>tabindex="0"</code> (roving tabindex) — giving the whole group a single Tab stop.</p>
+
+        <div class="btn-sub-label" style="margin-top:16px;">ARIA Attributes</div>
+        <table>
+          <thead><tr><th>Element</th><th>Attribute</th><th>Value</th></tr></thead>
+          <tbody>
+            <tr class="ds-tr-border"><td>Group container</td><td><code>role="group"</code></td><td>—</td></tr>
+            <tr class="ds-tr-border"><td>Group container</td><td><code>aria-label</code></td><td>e.g. <code>"View mode"</code></td></tr>
+            <tr class="ds-tr-border"><td>Segment button</td><td><code>role="option"</code></td><td>—</td></tr>
+            <tr class="ds-tr-border"><td>Segment button</td><td><code>aria-selected</code></td><td><code>"true"</code> / <code>"false"</code></td></tr>
+            <tr class="ds-tr-border"><td>Icon-only segment</td><td><code>aria-label</code></td><td>e.g. <code>"Grid view"</code></td></tr>
+            <tr class="ds-tr-border"><td>Disabled segment</td><td><code>aria-disabled="true"</code></td><td>keeps it focusable unlike <code>disabled</code></td></tr>
+          </tbody>
+        </table>
+
+        <div class="btn-sub-label" style="margin-top:16px;">Keyboard Navigation</div>
+        <table>
+          <thead><tr><th>Key</th><th>Action</th></tr></thead>
+          <tbody>
+            <tr class="ds-tr-border"><td><kbd>Tab</kbd></td><td>Enter group — lands on selected segment</td></tr>
+            <tr class="ds-tr-border"><td><kbd>←</kbd> / <kbd>→</kbd></td><td>Navigate and select previous/next</td></tr>
+            <tr class="ds-tr-border"><td><kbd>Home</kbd> / <kbd>End</kbd></td><td>First / last segment</td></tr>
+            <tr class="ds-tr-border"><td><kbd>Shift+Tab</kbd></td><td>Exit group backward</td></tr>
+          </tbody>
+        </table>
+
+        <div class="btn-sub-label" style="margin-top:16px;">Contrast Ratios</div>
+        <table>
+          <thead><tr><th>State</th><th>Text token</th><th>Background token</th><th>Ratio</th><th>WCAG</th></tr></thead>
+          <tbody>
+            <tr class="ds-tr-border"><td>Default</td><td><code>--prim-grey-600</code></td><td><code>--prim-grey-50</code></td><td>9.4:1</td><td>AA ✓</td></tr>
+            <tr class="ds-tr-border"><td>Hover</td><td><code>--prim-grey-600</code></td><td><code>--prim-grey-100</code></td><td>7.1:1</td><td>AA ✓</td></tr>
+            <tr class="ds-tr-border"><td>Selected</td><td><code>--prim-white</code></td><td><code>--color-brand</code></td><td>4.8:1</td><td>AA ✓</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- RESPONSIVE -->
+      <div id="seg-s-responsive" class="btn-family-card">
+        <div class="btn-family-title">Responsive Behaviour</div>
+        <table>
+          <thead><tr><th>Breakpoint</th><th>Behaviour</th></tr></thead>
+          <tbody>
+            <tr class="ds-tr-border"><td>&gt; 1024px</td><td>Inline display, medium size default. Segments expand to fit label width.</td></tr>
+            <tr class="ds-tr-border"><td>768px – 1024px</td><td>Same as desktop. Consider icon-only if total width is constrained.</td></tr>
+            <tr class="ds-tr-border"><td>&lt; 768px</td><td>Use <code>block</code> prop: segments share equal width filling the container. Use small size or icon-only in tight toolbars.</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- DO / DON'T -->
+      <div id="seg-s-dosdonts" class="btn-family-card">
+        <div class="btn-family-title">Do / Don't</div>
+        <div class="btn-dos-donts">
+          <div class="btn-do-card">
+            <div class="btn-do-header">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>Do
+            </div>
+            <ul>
+              <li>
+                <div class="btn-do-example">
+                  <div class="gs-seggroup">
+                    <button class="gs-segdemo-btn gs-segdemo-btn--md" role="option" aria-selected="true" onclick="gsSelectSegment(this)">
+                      <span class="gs-segdemo-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg></span>
+                      Grid
+                    </button>
+                    <button class="gs-segdemo-btn gs-segdemo-btn--md" role="option" aria-selected="false" onclick="gsSelectSegment(this)">
+                      <span class="gs-segdemo-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg></span>
+                      List
+                    </button>
+                  </div>
+                </div>
+                <p>Keep 2–3 segments. Pair icons with concise labels so every option is scannable at a glance.</p>
+              </li>
+            </ul>
+          </div>
+          <div class="btn-dont-card">
+            <div class="btn-dont-header">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>Don't
+            </div>
+            <ul>
+              <li>
+                <div class="btn-dont-example" style="pointer-events:none;">
+                  <div class="gs-seggroup" style="opacity:0.7;">
+                    <button class="gs-segdemo-btn gs-segdemo-btn--sm" aria-selected="true">Jan</button>
+                    <button class="gs-segdemo-btn gs-segdemo-btn--sm" aria-selected="false">Feb</button>
+                    <button class="gs-segdemo-btn gs-segdemo-btn--sm" aria-selected="false">Mar</button>
+                    <button class="gs-segdemo-btn gs-segdemo-btn--sm" aria-selected="false">Apr</button>
+                    <button class="gs-segdemo-btn gs-segdemo-btn--sm" aria-selected="false">May</button>
+                    <button class="gs-segdemo-btn gs-segdemo-btn--sm" aria-selected="false">Jun</button>
+                  </div>
+                </div>
+                <p>Don't exceed 3 segments. For more options use a Dropdown or Tab bar instead.</p>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- RELATED -->
+      <div id="seg-s-related" class="btn-family-card">
+        <div class="btn-family-title">Related Components</div>
+        <ul class="btn-related-list">
+          <li><button class="btn-inline-link" onclick="navigate('nav-tabs')">Tabs</button> — Use when switching between full content panes rather than toggling a compact view mode.</li>
+          <li><button class="btn-inline-link" onclick="navigate('prim-radio')">Radio Button</button> — Use in forms when one choice must be submitted. Segmented Buttons are instant-apply.</li>
+          <li><button class="btn-inline-link" onclick="navigate('prim-toggles')">Switch</button> — Use for a single on/off binary setting.</li>
+          <li><button class="btn-inline-link" onclick="navigate('prim-dropdowns')">Dropdown</button> — Use when more than 3 options are available or screen space is limited.</li>
+        </ul>
+      </div>
+
+    </div>
+
+    <div class="code-tab-qnav">
+      <div class="code-qnav-inner">
+        <p class="code-qnav-title">On This Page</p>
+        <ul class="code-qnav-list">
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('seg-s-overview')">Overview</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('seg-s-anatomy')">Anatomy</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('seg-s-variants')">Variants</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('seg-s-states')">States</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('seg-s-interaction')">Interactions</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('seg-s-a11y')">Accessibility</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('seg-s-responsive')">Responsive</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('seg-s-dosdonts')">Do / Don't</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('seg-s-related')">Related</button></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ CODE TAB ═══════════════════════════════════════════════════════ -->
+<div id="seg-tab-code" class="btn-tab-pane seg-tab-pane">
+  <div class="code-tab-layout">
+    <div class="code-tab-main">
+
+      <div class="fw-toggle-bar">
+        <button class="fw-toggle-bar-btn active" data-fw="react" onclick="switchFw('seg-tab-code','react')">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="2.5" fill="#61dafb"/><ellipse cx="12" cy="12" rx="10" ry="4.5" stroke="#61dafb" stroke-width="1.5" fill="none"/><ellipse cx="12" cy="12" rx="10" ry="4.5" stroke="#61dafb" stroke-width="1.5" fill="none" transform="rotate(60 12 12)"/><ellipse cx="12" cy="12" rx="10" ry="4.5" stroke="#61dafb" stroke-width="1.5" fill="none" transform="rotate(120 12 12)"/></svg>
+          React
+        </button>
+        <button class="fw-toggle-bar-btn" data-fw="angular" onclick="switchFw('seg-tab-code','angular')">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M12 2L2 6.5l1.5 12.5L12 22l8.5-3L22 6.5 12 2z" fill="#dd0031"/><path d="M12 2v20M12 2L6 17h12L12 2z" fill="none" stroke="#fff" stroke-width="1.2"/></svg>
+          Angular
+        </button>
+      </div>
+
+      <div id="seg-c-overview" class="btn-family-card">
+        <div class="ds-step-row"><span class="ds-step-num">1</span><div class="btn-family-title" style="margin:0;">Overview</div></div>
+        <div class="fw-react"><p class="btn-family-desc"><code>&lt;Segmented&gt;</code> accepts an <code>options</code> array and a controlled <code>value</code>. Each option can be a string or an object with <code>label</code>, <code>value</code>, <code>icon</code>, <code>badge</code>, and <code>disabled</code>.</p></div>
+        <div class="fw-angular" style="display:none;"><p class="btn-family-desc"><code>&lt;gs-segmented&gt;</code> accepts <code>[options]</code> and <code>[(value)]</code>. Each option supports <code>label</code>, <code>value</code>, <code>icon</code>, <code>badge</code>, <code>disabled</code>.</p></div>
+      </div>
+
+      <div id="seg-c-install" class="btn-family-card">
+        <div class="ds-step-row"><span class="ds-step-num">2</span><div class="btn-family-title" style="margin:0;">Install / Setup</div></div>
+        <div class="fw-react">
+          <div class="btn-code-block"><div class="btn-code-head"><span class="btn-code-lang">bash</span><button class="btn-copy-btn" onclick="copyBtnCode('seg-install-react',this)">Copy</button></div>
+          <div class="btn-code-body"><pre id="seg-install-react"><code>npm install @pelagos/react-components</code></pre></div></div>
+        </div>
+        <div class="fw-angular" style="display:none;">
+          <div class="btn-code-block"><div class="btn-code-head"><span class="btn-code-lang">bash</span><button class="btn-copy-btn" onclick="copyBtnCode('seg-install-ng',this)">Copy</button></div>
+          <div class="btn-code-body"><pre id="seg-install-ng"><code>npm install @pelagos/angular-components</code></pre></div></div>
+        </div>
+      </div>
+
+      <div id="seg-c-imports" class="btn-family-card">
+        <div class="ds-step-row"><span class="ds-step-num">3</span><div class="btn-family-title" style="margin:0;">Import</div></div>
+        <div class="fw-react">
+          <div class="btn-code-block"><div class="btn-code-head"><span class="btn-code-lang">JSX</span><button class="btn-copy-btn" onclick="copyBtnCode('seg-import-react',this)">Copy</button></div>
+          <div class="btn-code-body"><pre id="seg-import-react"><code><span class="c-kw">import</span> { <span class="c-type">Segmented</span> } <span class="c-kw">from</span> <span class="c-val">'@pelagos/react-components'</span>;</code></pre></div></div>
+        </div>
+        <div class="fw-angular" style="display:none;">
+          <div class="btn-code-block"><div class="btn-code-head"><span class="btn-code-lang">TS</span><button class="btn-copy-btn" onclick="copyBtnCode('seg-import-ng',this)">Copy</button></div>
+          <div class="btn-code-body"><pre id="seg-import-ng"><code><span class="c-kw">import</span> { <span class="c-type">SegmentedModule</span> } <span class="c-kw">from</span> <span class="c-val">'@pelagos/angular-components'</span>;</code></pre></div></div>
+        </div>
+      </div>
+
+      <div id="seg-c-api" class="btn-family-card">
+        <div class="ds-step-row"><span class="ds-step-num">4</span><div class="btn-family-title" style="margin:0;">API / Props</div></div>
+        <div class="fw-react">
+          <table>
+            <thead><tr><th>Prop</th><th>Type</th><th>Default</th><th>Required</th><th>Description</th></tr></thead>
+            <tbody>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">options</td><td class="ds-td-code-muted">SegmentedOption[]</td><td class="ds-td-code-muted">—</td><td>Yes</td><td class="ds-td-value">Array of segment definitions</td></tr>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">value</td><td class="ds-td-code-muted">string</td><td class="ds-td-code-muted">—</td><td>No</td><td class="ds-td-value">Controlled selected value</td></tr>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">defaultValue</td><td class="ds-td-code-muted">string</td><td class="ds-td-code-muted">options[0].value</td><td>No</td><td class="ds-td-value">Initial value (uncontrolled)</td></tr>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">onChange</td><td class="ds-td-code-muted">(value: string) =&gt; void</td><td class="ds-td-code-muted">—</td><td>No</td><td class="ds-td-value">Fires when selection changes</td></tr>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">size</td><td class="ds-td-code-muted">'sm' | 'md' | 'lg'</td><td class="ds-td-code-muted">'md'</td><td>No</td><td class="ds-td-value">Segment padding — sm 4/12px · md 8/16px · lg 12/24px</td></tr>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">disabled</td><td class="ds-td-code-muted">boolean</td><td class="ds-td-code-muted">false</td><td>No</td><td class="ds-td-value">Disables the entire group</td></tr>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">block</td><td class="ds-td-code-muted">boolean</td><td class="ds-td-code-muted">false</td><td>No</td><td class="ds-td-value">Segments fill container width equally</td></tr>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">aria-label</td><td class="ds-td-code-muted">string</td><td class="ds-td-code-muted">—</td><td>Yes</td><td class="ds-td-value">Group label for screen readers, e.g. <code>"View mode"</code></td></tr>
+            </tbody>
+          </table>
+          <div class="btn-sub-label" style="margin-top:20px;margin-bottom:8px;">SegmentedOption</div>
+          <div class="btn-code-block"><div class="btn-code-head"><span class="btn-code-lang">TS</span><button class="btn-copy-btn" onclick="copyBtnCode('seg-type',this)">Copy</button></div>
+          <div class="btn-code-body"><pre id="seg-type"><code><span class="c-kw">interface</span> <span class="c-type">SegmentedOption</span> {
+  value:     <span class="c-type">string</span>;
+  label?:    <span class="c-type">ReactNode</span>;
+  icon?:     <span class="c-type">ReactNode</span>;       <span class="c-cmt">// 16×16 leading icon</span>
+  badge?:    <span class="c-type">number | string</span>;  <span class="c-cmt">// count badge</span>
+  disabled?: <span class="c-type">boolean</span>;
+}</code></pre></div></div>
+        </div>
+        <div class="fw-angular" style="display:none;">
+          <table>
+            <thead><tr><th>Input</th><th>Type</th><th>Default</th><th>Required</th><th>Description</th></tr></thead>
+            <tbody>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">[options]</td><td class="ds-td-code-muted">SegmentedOption[]</td><td class="ds-td-code-muted">—</td><td>Yes</td><td class="ds-td-value">Segment definitions</td></tr>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">[(value)]</td><td class="ds-td-code-muted">string</td><td class="ds-td-code-muted">—</td><td>No</td><td class="ds-td-value">Two-way binding</td></tr>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">[size]</td><td class="ds-td-code-muted">'sm' | 'md' | 'lg'</td><td class="ds-td-code-muted">'md'</td><td>No</td><td class="ds-td-value">Segment padding</td></tr>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">[disabled]</td><td class="ds-td-code-muted">boolean</td><td class="ds-td-code-muted">false</td><td>No</td><td class="ds-td-value">Disable entire group</td></tr>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">[block]</td><td class="ds-td-code-muted">boolean</td><td class="ds-td-code-muted">false</td><td>No</td><td class="ds-td-value">Equal-width fill</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div id="seg-c-variants" class="btn-family-card">
+        <div class="ds-step-row"><span class="ds-step-num">5</span><div class="btn-family-title" style="margin:0;">Variants</div></div>
+        <div class="fw-react">
+          <div class="btn-code-block"><div class="btn-code-head"><span class="btn-code-lang">JSX</span><button class="btn-copy-btn" onclick="copyBtnCode('seg-variants-react',this)">Copy</button></div>
+          <div class="btn-code-body"><pre id="seg-variants-react"><code><span class="c-cmt">// Label only</span>
+&lt;<span class="c-tag">Segmented</span>
+  <span class="c-attr">aria-label</span>=<span class="c-val">"Time range"</span>
+  <span class="c-attr">options</span>={[<span class="c-val">'Day'</span>, <span class="c-val">'Week'</span>, <span class="c-val">'Month'</span>]}
+  <span class="c-attr">defaultValue</span>=<span class="c-val">"Week"</span>
+  <span class="c-attr">onChange</span>={(v) =&gt; console.log(v)}
+/&gt;
+
+<span class="c-cmt">// Icons + labels</span>
+&lt;<span class="c-tag">Segmented</span>
+  <span class="c-attr">aria-label</span>=<span class="c-val">"View mode"</span>
+  <span class="c-attr">options</span>={[
+    { value: <span class="c-val">'grid'</span>,  label: <span class="c-val">'Grid'</span>,  icon: &lt;<span class="c-tag">GridIcon</span> /&gt; },
+    { value: <span class="c-val">'list'</span>,  label: <span class="c-val">'List'</span>,  icon: &lt;<span class="c-tag">ListIcon</span> /&gt; },
+    { value: <span class="c-val">'table'</span>, label: <span class="c-val">'Table'</span>, icon: &lt;<span class="c-tag">TableIcon</span> /&gt; },
+  ]}
+  <span class="c-attr">defaultValue</span>=<span class="c-val">"grid"</span>
+/&gt;
+
+<span class="c-cmt">// With badge counts</span>
+&lt;<span class="c-tag">Segmented</span>
+  <span class="c-attr">aria-label</span>=<span class="c-val">"Filter"</span>
+  <span class="c-attr">options</span>={[
+    { value: <span class="c-val">'active'</span>,   label: <span class="c-val">'Active'</span>,   badge: activeCount   },
+    { value: <span class="c-val">'archived'</span>, label: <span class="c-val">'Archived'</span>, badge: archivedCount },
+  ]}
+  <span class="c-attr">value</span>={filter}
+  <span class="c-attr">onChange</span>={setFilter}
+/&gt;
+
+<span class="c-cmt">// Sizes</span>
+&lt;<span class="c-tag">Segmented</span> <span class="c-attr">size</span>=<span class="c-val">"sm"</span> <span class="c-attr">aria-label</span>=<span class="c-val">"..."</span> <span class="c-attr">options</span>={[...]} /&gt;
+&lt;<span class="c-tag">Segmented</span> <span class="c-attr">size</span>=<span class="c-val">"lg"</span> <span class="c-attr">aria-label</span>=<span class="c-val">"..."</span> <span class="c-attr">options</span>={[...]} /&gt;</code></pre></div></div>
+        </div>
+        <div class="fw-angular" style="display:none;">
+          <div class="btn-code-block"><div class="btn-code-head"><span class="btn-code-lang">HTML</span><button class="btn-copy-btn" onclick="copyBtnCode('seg-variants-ng',this)">Copy</button></div>
+          <div class="btn-code-body"><pre id="seg-variants-ng"><code>&lt;<span class="c-tag">gs-segmented</span>
+  [<span class="c-attr">options</span>]=<span class="c-val">"viewOptions"</span>
+  [(value)]=<span class="c-val">"selectedView"</span>
+  <span class="c-attr">aria-label</span>=<span class="c-val">"View mode"</span>
+&gt;&lt;/<span class="c-tag">gs-segmented</span>&gt;</code></pre></div></div>
+        </div>
+      </div>
+
+      <div id="seg-c-states" class="btn-family-card">
+        <div class="ds-step-row"><span class="ds-step-num">6</span><div class="btn-family-title" style="margin:0;">States</div></div>
+        <div class="fw-react">
+          <div class="btn-code-block"><div class="btn-code-head"><span class="btn-code-lang">JSX</span><button class="btn-copy-btn" onclick="copyBtnCode('seg-states-react',this)">Copy</button></div>
+          <div class="btn-code-body"><pre id="seg-states-react"><code><span class="c-cmt">// Controlled</span>
+<span class="c-kw">const</span> [view, setView] = useState(<span class="c-val">'grid'</span>);
+
+&lt;<span class="c-tag">Segmented</span>
+  <span class="c-attr">aria-label</span>=<span class="c-val">"View mode"</span>
+  <span class="c-attr">options</span>={[
+    { value: <span class="c-val">'grid'</span>, label: <span class="c-val">'Grid'</span> },
+    { value: <span class="c-val">'list'</span>, label: <span class="c-val">'List'</span>, disabled: <span class="c-kw">true</span> },
+  ]}
+  <span class="c-attr">value</span>={view}
+  <span class="c-attr">onChange</span>={setView}
+/&gt;
+
+<span class="c-cmt">// Entire group disabled</span>
+&lt;<span class="c-tag">Segmented</span>
+  <span class="c-attr">disabled</span>
+  <span class="c-attr">aria-label</span>=<span class="c-val">"View mode"</span>
+  <span class="c-attr">options</span>={[<span class="c-val">'Grid'</span>, <span class="c-val">'List'</span>]}
+  <span class="c-attr">defaultValue</span>=<span class="c-val">"Grid"</span>
+/&gt;</code></pre></div></div>
+        </div>
+        <div class="fw-angular" style="display:none;">
+          <div class="btn-code-block"><div class="btn-code-head"><span class="btn-code-lang">TS</span><button class="btn-copy-btn" onclick="copyBtnCode('seg-states-ng',this)">Copy</button></div>
+          <div class="btn-code-body"><pre id="seg-states-ng"><code>selectedView = <span class="c-val">'grid'</span>;
+viewOptions = [
+  { value: <span class="c-val">'grid'</span>, label: <span class="c-val">'Grid'</span> },
+  { value: <span class="c-val">'list'</span>, label: <span class="c-val">'List'</span>, disabled: <span class="c-kw">true</span> },
+];</code></pre></div></div>
+        </div>
+      </div>
+
+      <div id="seg-c-a11y" class="btn-family-card">
+        <div class="ds-step-row"><span class="ds-step-num">7</span><div class="btn-family-title" style="margin:0;">Accessibility</div></div>
+        <div class="fw-react">
+          <div class="btn-code-block"><div class="btn-code-head"><span class="btn-code-lang">HTML</span><button class="btn-copy-btn" onclick="copyBtnCode('seg-a11y',this)">Copy</button></div>
+          <div class="btn-code-body"><pre id="seg-a11y"><code><span class="c-cmt">&lt;!-- Generated output --&gt;</span>
+&lt;<span class="c-tag">div</span> <span class="c-attr">role</span>=<span class="c-val">"group"</span> <span class="c-attr">aria-label</span>=<span class="c-val">"View mode"</span>&gt;
+  &lt;<span class="c-tag">button</span> <span class="c-attr">role</span>=<span class="c-val">"option"</span> <span class="c-attr">aria-selected</span>=<span class="c-val">"true"</span>  <span class="c-attr">tabindex</span>=<span class="c-val">"0"</span>&gt;Grid&lt;/<span class="c-tag">button</span>&gt;
+  &lt;<span class="c-tag">button</span> <span class="c-attr">role</span>=<span class="c-val">"option"</span> <span class="c-attr">aria-selected</span>=<span class="c-val">"false"</span> <span class="c-attr">tabindex</span>=<span class="c-val">"-1"</span>&gt;List&lt;/<span class="c-tag">button</span>&gt;
+  &lt;<span class="c-tag">button</span> <span class="c-attr">role</span>=<span class="c-val">"option"</span> <span class="c-attr">aria-selected</span>=<span class="c-val">"false"</span> <span class="c-attr">tabindex</span>=<span class="c-val">"-1"</span>&gt;Table&lt;/<span class="c-tag">button</span>&gt;
+&lt;/<span class="c-tag">div</span>&gt;</code></pre></div></div>
+        </div>
+        <div class="fw-angular" style="display:none;"><p class="btn-family-desc">All ARIA roles, labels, and roving tabindex are handled automatically by the component.</p></div>
+      </div>
+
+      <div id="seg-c-files" class="btn-family-card">
+        <div class="ds-step-row"><span class="ds-step-num">8</span><div class="btn-family-title" style="margin:0;">File Structure</div></div>
+        <div class="fw-react">
+          <div class="btn-code-block"><div class="btn-code-head"><span class="btn-code-lang">tree</span><button class="btn-copy-btn" onclick="copyBtnCode('seg-files-react',this)">Copy</button></div>
+          <div class="btn-code-body"><pre id="seg-files-react"><code>src/components/Segmented/
+├── Segmented.tsx
+├── Segmented.module.scss
+├── Segmented.types.ts
+└── index.ts</code></pre></div></div>
+        </div>
+        <div class="fw-angular" style="display:none;">
+          <div class="btn-code-block"><div class="btn-code-head"><span class="btn-code-lang">tree</span><button class="btn-copy-btn" onclick="copyBtnCode('seg-files-ng',this)">Copy</button></div>
+          <div class="btn-code-body"><pre id="seg-files-ng"><code>src/lib/segmented/
+├── segmented.component.ts
+├── segmented.module.ts
+└── segmented.component.scss</code></pre></div></div>
+        </div>
+      </div>
+
+      <div id="seg-c-patterns" class="btn-family-card">
+        <div class="ds-step-row"><span class="ds-step-num">9</span><div class="btn-family-title" style="margin:0;">Usage Patterns</div></div>
+        <div class="fw-react">
+          <div class="btn-code-block"><div class="btn-code-head"><span class="btn-code-lang">JSX</span><button class="btn-copy-btn" onclick="copyBtnCode('seg-patterns-react',this)">Copy</button></div>
+          <div class="btn-code-body"><pre id="seg-patterns-react"><code><span class="c-cmt">// View-switcher — most common pattern</span>
+<span class="c-kw">function</span> <span class="c-type">DataViewSwitcher</span>() {
+  <span class="c-kw">const</span> [view, setView] = useState(<span class="c-val">'grid'</span>);
+  <span class="c-kw">return</span> (
+    &lt;<span class="c-tag">div</span>&gt;
+      &lt;<span class="c-tag">Segmented</span>
+        <span class="c-attr">aria-label</span>=<span class="c-val">"Data view"</span>
+        <span class="c-attr">value</span>={view}
+        <span class="c-attr">onChange</span>={setView}
+        <span class="c-attr">options</span>={[
+          { value: <span class="c-val">'grid'</span>,  label: <span class="c-val">'Grid'</span>,  icon: &lt;<span class="c-tag">GridIcon</span>  size={16} /&gt; },
+          { value: <span class="c-val">'list'</span>,  label: <span class="c-val">'List'</span>,  icon: &lt;<span class="c-tag">ListIcon</span>  size={16} /&gt; },
+          { value: <span class="c-val">'table'</span>, label: <span class="c-val">'Table'</span>, icon: &lt;<span class="c-tag">TableIcon</span> size={16} /&gt; },
+        ]}
+      /&gt;
+      {view === <span class="c-val">'grid'</span>  &amp;&amp; &lt;<span class="c-tag">GridPanel</span>  /&gt;}
+      {view === <span class="c-val">'list'</span>  &amp;&amp; &lt;<span class="c-tag">ListPanel</span>  /&gt;}
+      {view === <span class="c-val">'table'</span> &amp;&amp; &lt;<span class="c-tag">TablePanel</span> /&gt;}
+    &lt;/<span class="c-tag">div</span>&gt;
+  );
+}</code></pre></div></div>
+        </div>
+        <div class="fw-angular" style="display:none;">
+          <div class="btn-code-block"><div class="btn-code-head"><span class="btn-code-lang">HTML</span><button class="btn-copy-btn" onclick="copyBtnCode('seg-patterns-ng',this)">Copy</button></div>
+          <div class="btn-code-body"><pre id="seg-patterns-ng"><code>&lt;<span class="c-tag">gs-segmented</span>
+  [<span class="c-attr">options</span>]=<span class="c-val">"viewOptions"</span>
+  [(value)]=<span class="c-val">"view"</span>
+  <span class="c-attr">aria-label</span>=<span class="c-val">"Data view"</span>
+&gt;&lt;/<span class="c-tag">gs-segmented</span>&gt;
+&lt;<span class="c-tag">app-grid-panel</span>  *ngIf=<span class="c-val">"view==='grid'"</span> /&gt;
+&lt;<span class="c-tag">app-list-panel</span>  *ngIf=<span class="c-val">"view==='list'"</span> /&gt;
+&lt;<span class="c-tag">app-table-panel</span> *ngIf=<span class="c-val">"view==='table'"</span> /&gt;</code></pre></div></div>
+        </div>
+      </div>
+
+      <div id="seg-c-tokens" class="btn-family-card">
+        <div class="ds-step-row"><span class="ds-step-num">10</span><div class="btn-family-title" style="margin:0;">Theming</div></div>
+        <div class="fw-react">
+          <div class="btn-code-block"><div class="btn-code-head"><span class="btn-code-lang">SCSS</span><button class="btn-copy-btn" onclick="copyBtnCode('seg-tokens',this)">Copy</button></div>
+          <div class="btn-code-body"><pre id="seg-tokens"><code>:root {
+  <span class="c-attr">--seg-track-bg</span>:      <span class="c-val">var(--prim-grey-50)</span>;              <span class="c-cmt">/* #f1f5f9 */</span>
+  <span class="c-attr">--seg-track-pad</span>:     <span class="c-val">4px</span>;
+  <span class="c-attr">--seg-gap</span>:           <span class="c-val">2px</span>;                             <span class="c-cmt">/* between segments */</span>
+  <span class="c-attr">--seg-track-radius</span>:  <span class="c-val">var(--radius-md)</span>;                 <span class="c-cmt">/* 8px */</span>
+  <span class="c-attr">--seg-item-radius</span>:   <span class="c-val">var(--radius-sm)</span>;                 <span class="c-cmt">/* 4px */</span>
+  <span class="c-attr">--seg-hover-bg</span>:      <span class="c-val">var(--prim-grey-100)</span>;             <span class="c-cmt">/* #e2e8f0 */</span>
+  <span class="c-attr">--seg-active-bg</span>:     <span class="c-val">var(--color-brand)</span>;               <span class="c-cmt">/* #1852fe */</span>
+  <span class="c-attr">--seg-label-default</span>: <span class="c-val">var(--prim-grey-600)</span>;             <span class="c-cmt">/* #334154 */</span>
+  <span class="c-attr">--seg-label-active</span>:  <span class="c-val">var(--prim-white)</span>;                <span class="c-cmt">/* #ffffff */</span>
+  <span class="c-attr">--seg-font</span>:          <span class="c-val">var(--prim-font-primary)</span>;
+  <span class="c-attr">--seg-font-size</span>:     <span class="c-val">var(--prim-font-size-md)</span>;         <span class="c-cmt">/* 14px */</span>
+  <span class="c-attr">--seg-font-weight</span>:   <span class="c-val">var(--prim-font-weight-semibold)</span>; <span class="c-cmt">/* 600 */</span>
+  <span class="c-attr">--seg-transition</span>:    <span class="c-val">150ms ease</span>;
+}</code></pre></div></div>
+        </div>
+        <div class="fw-angular" style="display:none;"><p class="btn-family-desc">Same CSS custom properties apply globally. Override in your app's root stylesheet.</p></div>
+      </div>
+
+      <div id="seg-c-example" class="btn-family-card">
+        <div class="ds-step-row"><span class="ds-step-num">11</span><div class="btn-family-title" style="margin:0;">Full Example</div></div>
+        <div class="fw-react">
+          <div class="btn-code-block"><div class="btn-code-head"><span class="btn-code-lang">JSX</span><button class="btn-copy-btn" onclick="copyBtnCode('seg-example-react',this)">Copy</button></div>
+          <div class="btn-code-body"><pre id="seg-example-react"><code><span class="c-kw">import</span> { useState } <span class="c-kw">from</span> <span class="c-val">'react'</span>;
+<span class="c-kw">import</span> { <span class="c-type">Segmented</span> } <span class="c-kw">from</span> <span class="c-val">'@pelagos/react-components'</span>;
+
+<span class="c-kw">export function</span> <span class="c-type">MapToolbar</span>() {
+  <span class="c-kw">const</span> [view, setView] = useState(<span class="c-val">'map'</span>);
+
+  <span class="c-kw">return</span> (
+    &lt;<span class="c-tag">Segmented</span>
+      <span class="c-attr">aria-label</span>=<span class="c-val">"Map view"</span>
+      <span class="c-attr">size</span>=<span class="c-val">"md"</span>
+      <span class="c-attr">value</span>={view}
+      <span class="c-attr">onChange</span>={setView}
+      <span class="c-attr">options</span>={[
+        { value: <span class="c-val">'map'</span>,       label: <span class="c-val">'Map'</span>       },
+        { value: <span class="c-val">'satellite'</span>, label: <span class="c-val">'Satellite'</span> },
+        { value: <span class="c-val">'terrain'</span>,
+          label: <span class="c-val">'Terrain'</span>,
+          disabled: !hasTerrain },
+      ]}
+    /&gt;
+  );
+}</code></pre></div></div>
+        </div>
+        <div class="fw-angular" style="display:none;">
+          <div class="btn-code-block"><div class="btn-code-head"><span class="btn-code-lang">HTML</span><button class="btn-copy-btn" onclick="copyBtnCode('seg-example-ng',this)">Copy</button></div>
+          <div class="btn-code-body"><pre id="seg-example-ng"><code>&lt;<span class="c-tag">gs-segmented</span>
+  <span class="c-attr">aria-label</span>=<span class="c-val">"Map view"</span>
+  [<span class="c-attr">options</span>]=<span class="c-val">"mapOptions"</span>
+  [(value)]=<span class="c-val">"mapView"</span>
+&gt;&lt;/<span class="c-tag">gs-segmented</span>&gt;</code></pre></div></div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="code-tab-qnav">
+      <div class="code-qnav-inner">
+        <p class="code-qnav-title">On This Page</p>
+        <ul class="code-qnav-list">
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('seg-c-overview')">1 · Overview</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('seg-c-install')">2 · Install</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('seg-c-imports')">3 · Import</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('seg-c-api')">4 · API / Props</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('seg-c-variants')">5 · Variants</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('seg-c-states')">6 · States</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('seg-c-a11y')">7 · Accessibility</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('seg-c-files')">8 · File Structure</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('seg-c-patterns')">9 · Usage Patterns</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('seg-c-tokens')">10 · Theming</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('seg-c-example')">11 · Full Example</button></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ USAGE TAB ═══════════════════════════════════════════════════════ -->
+<div id="seg-tab-usage" class="btn-tab-pane seg-tab-pane">
+  <div class="code-tab-layout">
+    <div class="code-tab-main">
+
+      <div id="seg-u-when" class="btn-family-card">
+        <div class="btn-family-title">When to Use</div>
+        <ul class="btn-usage-list">
+          <li><strong>View mode switcher</strong> — Grid / List / Table, Map / Satellite. All options are always visible — no dropdown needed.</li>
+          <li><strong>Time-range selector</strong> — Day / Week / Month in analytics dashboards. Compact alternative to a Dropdown when options are ≤ 3.</li>
+          <li><strong>Filter strip with counts</strong> — Active / Archived tabs with badge counts above a data table.</li>
+          <li><strong>Binary mode toggle</strong> — Light / Dark, Metric / Imperial. More discoverable than a Switch when both labels should be visible simultaneously.</li>
+        </ul>
+      </div>
+
+      <div id="seg-u-when-not" class="btn-family-card">
+        <div class="btn-family-title">When Not to Use</div>
+        <ul class="btn-usage-list">
+          <li><strong>More than 3 options</strong> — Use <button onclick="navigate('prim-dropdowns')" class="btn-inline-link">Dropdown</button>. The strip becomes too wide.</li>
+          <li><strong>Full-page navigation</strong> — Use <button onclick="navigate('nav-tabs')" class="btn-inline-link">Tabs</button>. Segmented Buttons change a view inline; Tabs replace entire sections.</li>
+          <li><strong>Form submissions</strong> — Use <button onclick="navigate('prim-radio')" class="btn-inline-link">Radio Buttons</button>. Segmented Buttons are instant-apply; radios require submit.</li>
+          <li><strong>Single on/off</strong> — Use <button onclick="navigate('prim-toggles')" class="btn-inline-link">Switch</button> for a binary setting.</li>
+        </ul>
+      </div>
+
+      <div id="seg-u-best" class="btn-family-card">
+        <div class="btn-family-title">Best Practices</div>
+        <ul class="btn-usage-list">
+          <li><strong>Keep to 2–3 segments</strong> — Beyond 3 use a Dropdown or Tab bar.</li>
+          <li><strong>Always start with one selected</strong> — Never render a group with nothing active; pre-select the most common option.</li>
+          <li><strong>Use consistent content type</strong> — Don't mix icon-only and label-only in the same group.</li>
+          <li><strong>Add aria-label on icon-only segments</strong> — Screen readers need text to identify the action.</li>
+          <li><strong>Provide group aria-label</strong> — Describes what the control selects, e.g. <code>"View mode"</code>.</li>
+        </ul>
+      </div>
+
+      <div id="seg-u-patterns" class="btn-family-card">
+        <div class="btn-family-title">Patterns</div>
+        <ul class="btn-usage-list">
+          <li><strong>View Switcher</strong> — Top-right of a data panel. Connect <code>onChange</code> to conditionally render the view component.</li>
+          <li><strong>Filter Strip</strong> — Pair with badge counts updated reactively as data changes.</li>
+          <li><strong>Responsive Degradation</strong> — Below 640px: switch from label+icon to icon-only by conditionally omitting the <code>label</code> prop.</li>
+          <li><strong>Toolbar Group</strong> — Use <code>size="sm"</code> icon-only segments in compact toolbars with 8px margins from neighbouring items.</li>
+        </ul>
+      </div>
+
+      <div id="seg-u-mistakes" class="btn-family-card">
+        <div class="btn-family-title">Anti-patterns</div>
+        <ul class="btn-usage-list">
+          <li><strong>❌ 4+ segments</strong> — Overflow on small screens.<br><strong>✅ Fix:</strong> Collapse to a Dropdown when options exceed 3.</li>
+          <li><strong>❌ No pre-selected option</strong> — Ambiguous state on load.<br><strong>✅ Fix:</strong> Always set <code>defaultValue</code> or <code>value</code> to a valid option.</li>
+          <li><strong>❌ Icon-only without aria-label</strong> — Screen reader users hear only "button".<br><strong>✅ Fix:</strong> Add <code>aria-label="Grid view"</code> to each icon-only segment.</li>
+          <li><strong>❌ Using for page routing</strong> — Clicking must not change the URL.<br><strong>✅ Fix:</strong> Use Tabs or Nav for routing-level navigation.</li>
+        </ul>
+      </div>
+
+      <div id="seg-u-refs" class="btn-family-card">
+        <div class="btn-family-title">References</div>
+        <ul class="btn-related-list">
+          <li><a href="https://www.figma.com/design/TOLfBpRePgynqwvDVp6fg3/Design-System?node-id=9181-18583" target="_blank" rel="noopener">Figma — Segmented Button group</a></li>
+          <li><a href="https://www.figma.com/design/TOLfBpRePgynqwvDVp6fg3/Design-System?node-id=10103-790" target="_blank" rel="noopener">Figma — Segmented Button states</a></li>
+          <li><a href="https://ant.design/components/segmented" target="_blank" rel="noopener">Ant Design — Segmented reference</a></li>
+          <li><a href="https://www.w3.org/WAI/ARIA/apg/patterns/listbox/" target="_blank" rel="noopener">ARIA APG — Listbox (single-select) pattern</a></li>
+          <li><a href="https://www.w3.org/WAI/WCAG21/Understanding/name-role-value.html" target="_blank" rel="noopener">WCAG 2.1 — 4.1.2 Name, Role, Value</a></li>
+        </ul>
+      </div>
+
+    </div>
+
+    <div class="code-tab-qnav">
+      <div class="code-qnav-inner">
+        <p class="code-qnav-title">On This Page</p>
+        <ul class="code-qnav-list">
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('seg-u-when')">When to Use</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('seg-u-when-not')">When Not to Use</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('seg-u-best')">Best Practices</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('seg-u-patterns')">Patterns</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('seg-u-mistakes')">Anti-patterns</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('seg-u-refs')">References</button></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>

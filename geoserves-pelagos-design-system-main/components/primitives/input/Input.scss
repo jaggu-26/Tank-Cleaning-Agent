@@ -1,0 +1,85 @@
+/**
+ * Pelagos Input (Text Field) Styles
+ * components/primitives/input/Input.scss
+ */
+
+.input-field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--prim-space-1);
+
+  &__label {
+    font-size: var(--tf-label-size, 12px);
+    font-weight: var(--tf-label-weight, var(--prim-font-weight-semibold));
+    color: var(--tf-label-color, var(--prim-grey-600));
+    line-height: var(--prim-line-height-tight);
+  }
+
+  &__required { color: var(--tf-required-color, var(--color-danger)); }
+
+  &__control {
+    position: relative;
+    display: flex;
+    align-items: center;
+  }
+
+  &__input {
+    width: 100%;
+    font-family: var(--prim-font-primary);
+    font-size: var(--tf-font-size, var(--prim-font-size-md));
+    color: var(--tf-text-value, var(--prim-grey-800));
+    background: var(--tf-bg, var(--color-surface-default));
+    border: var(--tf-border-width, 1px) solid var(--tf-border-default, var(--prim-grey-200));
+    border-radius: var(--tf-radius, var(--radius-sm));
+    padding: 0 var(--tf-padding-x, 12px);
+    transition: border-color 120ms ease, box-shadow 120ms ease;
+    outline: none;
+    appearance: none;
+
+    &::placeholder { color: var(--tf-text-placeholder, var(--prim-grey-400)); }
+
+    &:hover:not(:disabled):not(:read-only) { border-color: var(--tf-border-hover, var(--prim-grey-300)); }
+
+    &:focus { border-color: var(--tf-border-focus, var(--prim-blue-500)); box-shadow: var(--tf-focus-ring); }
+
+    &:disabled {
+      background: var(--tf-bg-disabled, var(--prim-grey-50));
+      color: var(--tf-text-disabled, var(--prim-grey-300));
+      cursor: not-allowed;
+    }
+  }
+
+  /* Sizes */
+  &--lg .input-field__input { height: var(--tf-height-lg, 40px); }
+  &--sm .input-field__input { height: var(--tf-height-sm, 32px); }
+
+  /* With icons */
+  &:has(.input-field__icon--left)  .input-field__input { padding-left: 36px; }
+  &:has(.input-field__icon--right) .input-field__input { padding-right: 36px; }
+
+  &__icon {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    color: var(--tf-icon-color, var(--prim-grey-300));
+    pointer-events: none;
+
+    &--left  { left: 10px; }
+    &--right { right: 10px; }
+  }
+
+  /* Error state */
+  &--error .input-field__input {
+    border-color: var(--tf-border-error, var(--color-danger));
+    &:focus { box-shadow: var(--tf-focus-ring-error); }
+  }
+
+  &__helper {
+    font-size: var(--tf-help-size, 12px);
+    color: var(--tf-help-color, var(--prim-grey-500));
+    line-height: var(--prim-line-height-normal);
+    margin: 0;
+
+    &--error { color: var(--tf-help-error, var(--color-danger-hover)); }
+  }
+}

@@ -1,0 +1,1595 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Geonix – GeoOne AI</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    @font-face{font-family:'Gilroy';src:url('fonts/Gilroy-Regular.ttf') format('truetype');font-weight:400;font-display:swap}
+    @font-face{font-family:'Gilroy';src:url('fonts/Gilroy-Medium.ttf') format('truetype');font-weight:500;font-display:swap}
+    @font-face{font-family:'Gilroy';src:url('fonts/Gilroy-SemiBold.ttf') format('truetype');font-weight:600;font-display:swap}
+    @font-face{font-family:'Gilroy';src:url('fonts/Gilroy-Bold.ttf') format('truetype');font-weight:700;font-display:swap}
+    @font-face{font-family:'Gilroy';src:url('fonts/Gilroy-ExtraBold.ttf') format('truetype');font-weight:800;font-display:swap}
+
+    :root {
+      --marine:#1852FE; --marine-hover:#1242d4;
+      --teal:#0CA678; --teal-light:#d1fae5;
+      --navy:#001E4C;
+      --grey-900:#030712; --grey-800:#10172a; --grey-700:#1e293b;
+      --grey-600:#334154; --grey-500:#475569; --grey-400:#64748b;
+      --grey-300:#94a3b8; --grey-200:#cbd5e1; --grey-100:#e2e8f0;
+      --grey-50:#f1f5f9; --grey-10:#f7fafc;
+      --blue-10:#eef6ff; --blue-50:#dbeafe; --blue-100:#bedbfe;
+      --white:#ffffff; --danger:#dc2625;
+      --font:'Gilroy','Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;
+      --r-sm:4px; --r-md:8px; --r-lg:12px; --r-xl:16px; --r-full:9999px;
+    }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:var(--font);background:#fff;color:var(--grey-900);display:flex;height:100vh;overflow:hidden}
+
+    /* ── NAV RAIL ── */
+    .nav-rail{width:220px;background:#fff;display:flex;flex-direction:column;height:100vh;flex-shrink:0;border-right:1px solid var(--grey-100);overflow:hidden;transition:width 220ms ease}
+    .nav-rail.collapsed{width:52px}
+    .sidebar-logo{height:56px;padding:0 14px;display:flex;align-items:center;gap:10px;flex-shrink:0;border-bottom:1px solid var(--grey-100);overflow:hidden}
+    .sidebar-logo-text{flex:1;overflow:hidden;white-space:nowrap}
+    .nav-rail.collapsed .sidebar-logo-text{opacity:0;width:0;pointer-events:none}
+    .sidebar-logo-name{font-size:14px;font-weight:600;color:var(--grey-900);letter-spacing:-0.2px}
+    .sidebar-logo-sub{font-size:10px;color:var(--grey-400)}
+    .nav-collapse-btn{border:none;background:transparent;flex-shrink:0;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--grey-500);border-radius:var(--r-sm);padding:4px;transition:background 120ms,color 120ms}
+    .nav-collapse-btn:hover{background:var(--grey-10);color:var(--grey-900)}
+    .collapse-chevron{width:15px;height:15px;display:block}
+    .collapse-hamburger{width:18px;height:18px;display:none}
+    .nav-rail.collapsed .collapse-chevron{display:none}
+    .nav-rail.collapsed .collapse-hamburger{display:block}
+    .nav-rail.collapsed .sidebar-logo{padding:0;justify-content:center}
+    .nav-rail.collapsed .sidebar-logo-icon{display:none}
+    .nav-rail.collapsed .sidebar-logo .nav-collapse-btn{width:52px;height:56px;border-radius:0;padding:0}
+    .sidebar-nav{flex:1;overflow-y:auto;padding:8px 0;scrollbar-width:none}
+    .sidebar-nav::-webkit-scrollbar{display:none}
+    .nav-item{display:flex;align-items:center;gap:10px;padding:9px 12px 9px 13px;font-size:13.5px;font-family:var(--font);color:var(--grey-500);cursor:pointer;transition:background 120ms,color 120ms;text-decoration:none;border-left:3px solid transparent;white-space:nowrap;overflow:hidden}
+    .nav-item:hover{background:var(--grey-10);color:var(--grey-900)}
+    .nav-item.active{background:var(--blue-10);color:var(--marine);border-left-color:var(--marine)}
+    .nav-item svg{width:20px;height:20px;flex-shrink:0}
+    .nav-item-label{flex:1;overflow:hidden}
+    .nav-rail.collapsed .nav-item{justify-content:center;padding:10px;border-left:3px solid transparent!important}
+    .nav-rail.collapsed .nav-item.active{background:var(--blue-10)}
+    .nav-rail.collapsed .nav-item-label{opacity:0;width:0;overflow:hidden}
+    .sidebar-footer{flex-shrink:0;padding:10px 0;border-top:1px solid var(--grey-100)}
+    .sidebar-user{display:flex;align-items:center;gap:10px;padding:8px 14px;cursor:pointer;overflow:hidden;white-space:nowrap;transition:background 120ms}
+    .sidebar-user:hover{background:var(--grey-10)}
+    .nav-rail.collapsed .sidebar-user{justify-content:center;padding:10px}
+    .nav-avatar{width:28px;height:28px;border-radius:var(--r-full);background:var(--marine);display:flex;align-items:center;justify-content:center;color:#fff;font-size:11px;font-weight:600;flex-shrink:0}
+    .sidebar-user-info{flex:1;overflow:hidden}
+    .nav-rail.collapsed .sidebar-user-info{opacity:0;width:0}
+    .sidebar-user-name{font-size:13px;font-weight:600;color:var(--grey-900)}
+    .sidebar-user-role{font-size:11px;color:var(--grey-400);margin-top:1px}
+
+    /* ── VIEWS ── */
+    .main{flex:1;display:flex;flex-direction:column;overflow:hidden}
+    .view{display:none;flex:1;flex-direction:column;overflow:hidden}
+    .view.active{display:flex}
+
+    /* ── TOP BAR ── */
+    .topbar{height:52px;background:#fff;border-bottom:1px solid var(--grey-100);display:flex;align-items:center;padding:0 20px;gap:10px;flex-shrink:0}
+    .topbar-title{font-size:15px;font-weight:600;color:var(--grey-900);flex:1}
+    .topbar-icon{width:28px;height:28px;border-radius:var(--r-sm);display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--grey-400);border:none;background:transparent;transition:background 120ms,color 120ms}
+    .topbar-icon:hover{background:var(--grey-10);color:var(--grey-900)}
+    .topbar-icon svg{width:16px;height:16px}
+
+    /* ════════════════════════════════
+       VIEW 1: MAIN (CHAT INTERFACE)
+    ════════════════════════════════ */
+    .chat-scroll{flex:1;overflow-y:auto;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:48px 20% 32px;scrollbar-width:thin;scrollbar-color:var(--grey-200) transparent}
+    .chat-scroll::-webkit-scrollbar{width:4px}
+    .chat-scroll::-webkit-scrollbar-thumb{background:var(--grey-200);border-radius:99px}
+    @media(max-width:900px){.chat-scroll{padding:48px 5% 32px}}
+    .chat-hero{display:flex;flex-direction:column;align-items:center;width:100%;max-width:680px;margin-bottom:48px}
+    .sparkle-icon{width:44px;height:44px;margin-bottom:18px;animation:sparkle-pulse 3s ease-in-out infinite}
+    @keyframes sparkle-pulse{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.1);opacity:.85}}
+    .chat-greeting{font-size:34px;font-weight:700;color:var(--grey-900);text-align:center;line-height:1.15;letter-spacing:-.5px;margin-bottom:6px}
+    .chat-sub{font-size:20px;font-weight:400;color:var(--grey-500);text-align:center;line-height:1.4;margin-bottom:28px;letter-spacing:-.1px}
+
+    /* Input bar */
+    .input-bar{width:100%;background:var(--grey-50);border-radius:var(--r-full);display:flex;align-items:center;gap:8px;padding:6px 6px 6px 16px;border:1px solid transparent;transition:border-color 150ms,box-shadow 150ms}
+    .input-bar:focus-within{border-color:var(--blue-100);box-shadow:0 0 0 3px rgba(24,82,254,.08);background:#fff}
+    .input-plus{width:28px;height:28px;border-radius:var(--r-full);border:none;background:transparent;cursor:pointer;color:var(--grey-400);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:20px;line-height:1;transition:color 120ms,background 120ms}
+    .input-plus:hover{color:var(--grey-900);background:var(--grey-100)}
+    .input-field{flex:1;background:transparent;border:none;outline:none;font-family:var(--font);font-size:14px;color:var(--grey-900)}
+    .input-field::placeholder{color:var(--grey-400)}
+    .input-send{width:36px;height:36px;border-radius:var(--r-full);background:var(--marine);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;color:#fff;transition:background 120ms,transform 100ms}
+    .input-send:hover{background:var(--marine-hover)}
+    .input-send:active{transform:scale(.95)}
+    .input-send svg{width:16px;height:16px}
+
+    /* Agents section */
+    .agents-section{width:100%;max-width:920px}
+    .agents-section-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
+    .agents-label{font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--grey-400)}
+    .btn-create-new{height:32px;padding:0 14px;border-radius:var(--r-md);border:1.5px solid var(--grey-100);background:#fff;color:var(--grey-600);font-family:var(--font);font-size:13px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:6px;transition:border-color 120ms,color 120ms,background 120ms}
+    .btn-create-new:hover{border-color:var(--marine);color:var(--marine);background:var(--blue-10)}
+    .agents-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+    .agent-card{display:flex;align-items:flex-start;gap:12px;padding:16px;border-radius:14px;border:1px solid var(--grey-100);background:#fff;cursor:pointer;text-decoration:none;color:inherit;transition:box-shadow 150ms,border-color 150ms,transform 150ms}
+    .agent-card:hover{border-color:var(--grey-200);box-shadow:0 4px 18px rgba(0,0,0,.07);transform:translateY(-1px)}
+    .agent-avatar{width:36px;height:36px;border-radius:var(--r-full);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:#fff}
+    .agent-avatar svg{width:18px;height:18px}
+    .agent-body{flex:1;min-width:0}
+    .agent-name{font-size:13.5px;font-weight:700;color:var(--grey-900);margin-bottom:4px;line-height:1.3}
+    .agent-desc{font-size:11.5px;color:var(--grey-400);line-height:1.55;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+
+    /* ════════════════════════════════
+       VIEW 2: CREATE LANDING
+    ════════════════════════════════ */
+    .create-landing-body{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:32px;background:#fff}
+    .landing-avatar{width:110px;height:110px;border-radius:var(--r-full);background:var(--marine);display:flex;align-items:center;justify-content:center;margin-bottom:28px;box-shadow:0 8px 32px rgba(24,82,254,.3)}
+    .landing-avatar svg{width:64px;height:64px}
+    .landing-title{font-size:32px;font-weight:700;color:var(--grey-900);text-align:center;margin-bottom:6px}
+    .landing-sub{font-size:28px;font-weight:400;color:var(--grey-700);text-align:center;margin-bottom:36px}
+    .landing-sub span{color:var(--marine);font-weight:700}
+    .landing-ctas{display:flex;gap:14px}
+    .btn-primary-lg{height:48px;padding:0 28px;border-radius:var(--r-md);background:var(--marine);color:#fff;border:none;cursor:pointer;font-family:var(--font);font-size:15px;font-weight:600;display:flex;align-items:center;gap:8px;transition:background 150ms}
+    .btn-primary-lg:hover{background:var(--marine-hover)}
+    .btn-outline-lg{height:48px;padding:0 28px;border-radius:var(--r-md);background:#fff;color:var(--marine);border:1.5px solid var(--blue-100);cursor:pointer;font-family:var(--font);font-size:15px;font-weight:600;display:flex;align-items:center;gap:8px;transition:background 150ms,border-color 150ms}
+    .btn-outline-lg:hover{background:var(--blue-10);border-color:var(--marine)}
+
+    /* ════════════════════════════════
+       VIEW 3: WIZARD
+    ════════════════════════════════ */
+    .wizard-wrap{flex:1;display:flex;overflow:hidden}
+
+    /* Left dark panel */
+    .wiz-left{width:320px;background:var(--navy);display:flex;flex-direction:column;flex-shrink:0;overflow-y:auto;scrollbar-width:none}
+    .wiz-left::-webkit-scrollbar{display:none}
+    .wiz-back{display:flex;align-items:center;gap:10px;padding:24px 24px 18px;background:none;border:none;cursor:pointer;color:#fff;font-family:var(--font);font-size:20px;font-weight:700;text-align:left}
+    .wiz-back svg{width:20px;height:20px;opacity:.7;flex-shrink:0}
+    .wiz-back:hover svg{opacity:1}
+    .stepper{padding:0 24px 32px;display:flex;flex-direction:column}
+    .step-row{display:flex;align-items:flex-start;gap:14px;cursor:pointer}
+    .step-row:hover .step-name{opacity:.85}
+    .step-track{display:flex;flex-direction:column;align-items:center;flex-shrink:0}
+    .step-circle{width:26px;height:26px;border-radius:50%;border:2px solid rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;color:rgba(255,255,255,.3);transition:all 200ms}
+    .step-line{width:2px;height:28px;background:rgba(255,255,255,.1);margin:3px 0;transition:background 200ms}
+    .step-info{padding-top:3px;padding-bottom:26px}
+    .step-name{font-size:13px;font-weight:600;color:rgba(255,255,255,.32);transition:color 200ms;margin-bottom:2px}
+    .step-sub{font-size:11px;color:rgba(255,255,255,.25);transition:color 200ms;line-height:1.4}
+    /* Done */
+    .step-row.done .step-circle{background:var(--teal);border-color:var(--teal);color:#fff}
+    .step-row.done .step-line{background:var(--teal)}
+    .step-row.done .step-name{color:var(--teal)}
+    .step-row.done .step-sub{color:rgba(12,166,120,.65)}
+    /* Active — WHITE */
+    .step-row.active .step-circle{border-color:#fff;color:#fff}
+    .step-row.active .step-name{color:#fff;font-weight:700}
+    .step-row.active .step-sub{color:rgba(255,255,255,.6)}
+
+    /* Right content */
+    .wiz-right{flex:1;display:flex;flex-direction:column;background:var(--grey-10);overflow:hidden}
+    .step1-card{background:#fff;border-radius:var(--r-lg);border:1px solid var(--grey-100);box-shadow:0 2px 12px rgba(0,0,0,.06);overflow:hidden}
+    .step1-card-header{padding:24px 24px 20px;border-bottom:1px solid var(--grey-100)}
+    .step1-body{display:flex;min-height:420px}
+    /* True 50/50 split */
+    .step1-left{flex:1;padding:18px 16px;overflow-y:auto;display:flex;flex-direction:column;gap:10px;border-right:1px solid var(--grey-100);scrollbar-width:thin;scrollbar-color:var(--grey-200) transparent}
+    .step1-left::-webkit-scrollbar{width:4px}
+    .step1-left::-webkit-scrollbar-thumb{background:var(--grey-200);border-radius:99px}
+    .step1-right{flex:1;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;background:#fafbff}
+    .skills-section-label{font-size:15px;font-weight:600;color:var(--grey-900);padding-bottom:12px}
+
+    /* ── STEP 2: Apps — matches step 1 card style ── */
+    .step2-card{background:#fff;border-radius:var(--r-lg);border:1px solid var(--grey-100);box-shadow:0 2px 12px rgba(0,0,0,.06);overflow:hidden}
+    .step2-body{display:flex;min-height:420px}
+    .step2-left{flex:1;padding:18px 16px;overflow-y:auto;display:flex;flex-direction:column;gap:0;border-right:1px solid var(--grey-100);scrollbar-width:thin;scrollbar-color:var(--grey-200) transparent}
+    .step2-left::-webkit-scrollbar{width:4px}
+    .step2-left::-webkit-scrollbar-thumb{background:var(--grey-200);border-radius:99px}
+    .step2-right{flex:1;background:#fafbff;flex-shrink:0;display:flex;align-items:center;justify-content:center;padding:24px}
+
+    /* App rows — borderless, blue hover, no item dividers */
+    .app-section-label{font-size:11px;font-weight:600;color:var(--grey-400);text-transform:uppercase;letter-spacing:.08em;margin:14px 0 2px;padding-bottom:0}
+    .apps-dotted-sep{border:none;border-top:1.5px dashed var(--grey-200);margin:10px 0}
+    .app-row{display:flex;align-items:center;gap:12px;padding:9px 12px;border-radius:var(--r-md);background:transparent;transition:background 120ms;cursor:pointer;margin-bottom:4px}
+    .app-row:last-child{margin-bottom:0}
+    .app-row:hover{background:#EEF6FF}
+    .app-row.connected{background:#EEF6FF;border:1px solid #D9E8FF}
+    .app-checkbox{flex-shrink:0;display:flex;align-items:center;justify-content:center;width:24px;height:24px;pointer-events:none}
+    .app-name{flex:1;font-size:15px;font-weight:400;color:var(--grey-900)}
+    .app-sub{font-size:12px;color:var(--grey-400);margin-top:1px}
+
+    /* Dotted dividers — global */
+    .dotted-sep{border:none;border-top:1.5px dashed var(--grey-200);margin:12px 0}
+
+    /* Orbit — 2x scale */
+    .orbit-wrap{position:relative;width:380px;height:380px}
+    .orbit-center{position:absolute;top:50%;left:50%;width:64px;height:64px;border-radius:50%;background:var(--marine);transform:translate(-50%,-50%);display:flex;align-items:center;justify-content:center;color:#fff;font-size:26px;animation:vis-breathe 3s ease-in-out infinite}
+    .orbit-ring{position:absolute;top:50%;left:50%;border-radius:50%;border:1.5px dashed rgba(24,82,254,.15);transform:translate(-50%,-50%)}
+    .orbit-node{position:absolute;width:44px;height:44px;border-radius:50%;background:#fff;box-shadow:0 2px 10px rgba(0,0,0,.1);display:flex;align-items:center;justify-content:center;font-size:20px;transition:box-shadow 200ms,transform 200ms}
+    .orbit-node.connected{box-shadow:0 2px 14px rgba(12,166,120,.3);transform:scale(1.08)}
+
+    /* AI Team card (training page) */
+    .ai-team-card{background:linear-gradient(135deg,#0f0c29 0%,#1852FE 60%,#302b63 100%);border-radius:var(--r-lg);padding:20px;margin-bottom:20px;color:#fff}
+    .ai-team-title{font-size:13px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;opacity:.7;margin-bottom:14px}
+    .ai-team-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:10px}
+    .ai-team-item{display:flex;flex-direction:column;align-items:center;gap:6px;padding:10px 6px;background:rgba(255,255,255,.12);border-radius:12px;border:1px solid rgba(255,255,255,.15)}
+    .ai-team-icon{font-size:22px;line-height:1}
+    .ai-team-label{font-size:9.5px;font-weight:600;color:rgba(255,255,255,.85);text-align:center;line-height:1.3}
+
+    /* ── STEPS 3&4: full width ── */
+    .step-full{flex:1;overflow-y:auto;padding:24px;scrollbar-width:thin;scrollbar-color:var(--grey-200) transparent}
+    .step-full::-webkit-scrollbar{width:4px}
+    .step-full::-webkit-scrollbar-thumb{background:var(--grey-200);border-radius:99px}
+    .step-card{background:#fff;border-radius:var(--r-lg);border:1px solid var(--grey-100);box-shadow:0 2px 12px rgba(0,0,0,.06);padding:24px}
+
+    /* Function 3-col grid */
+    .fn-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:16px}
+    .fn-card{display:flex;flex-direction:column;gap:8px;padding:16px;border-radius:var(--r-md);border:1px solid var(--grey-100);background:#fff;transition:border-color 150ms,box-shadow 150ms}
+    .fn-card:hover{border-color:var(--grey-200);box-shadow:0 2px 8px rgba(0,0,0,.06)}
+    .fn-card-icon{width:36px;height:36px;border-radius:var(--r-md);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+    .fn-card-name{font-size:13px;font-weight:600;color:var(--grey-900);line-height:1.3}
+    .fn-card-desc{font-size:11.5px;color:var(--grey-400);line-height:1.5;flex:1}
+    .fn-card-footer{display:flex;align-items:center;justify-content:space-between;margin-top:4px}
+    .fn-toggle{width:36px;height:20px;border-radius:var(--r-full);background:var(--grey-200);border:none;cursor:pointer;position:relative;transition:background 150ms;flex-shrink:0}
+    .fn-toggle.on{background:var(--teal)}
+    .fn-toggle::after{content:'';position:absolute;width:14px;height:14px;border-radius:50%;background:#fff;top:3px;left:3px;transition:transform 150ms}
+    .fn-toggle.on::after{transform:translateX(16px)}
+
+    /* ── STEP 5: Tasks — full width card ── */
+    .tasks-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+    .task-card{display:flex;gap:14px;padding:16px;border-radius:var(--r-lg);border:1.5px solid var(--grey-100);background:#fff;cursor:pointer;transition:border-color 150ms,box-shadow 150ms}
+    .task-card:hover{border-color:var(--grey-200);box-shadow:0 2px 8px rgba(0,0,0,.06)}
+    .task-card.sel{border-color:var(--marine);background:#EEF6FF}
+    .task-title{font-size:15px;font-weight:600;color:var(--grey-900);margin-bottom:5px;letter-spacing:-.1px}
+    .task-desc{font-size:13px;color:var(--grey-500);line-height:1.55;margin-bottom:8px}
+    .task-sched{display:inline-block;font-size:11px;font-weight:600;color:var(--grey-600);background:var(--grey-50);border-radius:var(--r-sm);padding:3px 9px}
+
+    /* Shared form elements — iOS font hierarchy */
+    .field-label{font-size:13px;font-weight:600;color:var(--grey-600);margin-bottom:6px;display:flex;gap:4px;letter-spacing:.1px}
+    .field-req{color:var(--danger)}
+    .wiz-input{width:100%;height:44px;border:1px solid var(--grey-200);border-radius:var(--r-md);padding:0 14px;font-family:var(--font);font-size:17px;color:var(--grey-900);background:#fff;outline:none;transition:border-color 150ms,box-shadow 150ms}
+    .wiz-input::placeholder{color:var(--grey-300);font-size:17px}
+    .wiz-input:focus{border-color:var(--marine);box-shadow:0 0 0 3px rgba(24,82,254,.1)}
+    .section-title{font-size:22px;font-weight:700;color:var(--grey-900);margin-bottom:6px;letter-spacing:-.3px}
+    .section-sub{font-size:15px;color:var(--grey-500);line-height:1.6;margin-bottom:20px}
+
+    /* Search input */
+    .search-wrap{position:relative;margin-bottom:12px}
+    .search-icon{position:absolute;left:11px;top:50%;transform:translateY(-50%);color:var(--grey-400);display:flex;pointer-events:none}
+    .search-icon svg{width:14px;height:14px}
+    .search-input{width:100%;height:36px;border:1px solid var(--grey-100);border-radius:var(--r-md);padding:0 12px 0 32px;font-family:var(--font);font-size:13px;color:var(--grey-900);background:#fff;outline:none;transition:border-color 150ms}
+    .search-input:focus{border-color:var(--marine)}
+
+    /* Skills list — borderless, blue hover, iOS-style hierarchy */
+    .skills-list{display:flex;flex-direction:column;gap:2px}
+    .skill-row{display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:var(--r-md);background:transparent;transition:background 120ms;cursor:pointer;border:none}
+    .skill-row:hover{background:#EEF6FF}
+    .skill-row.selected{background:#EEF6FF}
+    .skill-icon{width:32px;height:32px;border-radius:var(--r-md);display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
+    .skill-row-name{flex:1;font-size:15px;font-weight:400;color:var(--grey-900);letter-spacing:-.1px}
+    .skill-checkbox{flex-shrink:0;display:flex;align-items:center;justify-content:center;width:24px;height:24px;pointer-events:none}
+
+    /* Skills validation bar */
+    .skills-min-hint{font-size:12px;color:var(--grey-400);text-align:center;padding:8px 0 4px;display:none}
+    .skills-min-hint.show{display:block}
+
+    /* Skills illustration — vertical icon-above chips, close to center */
+    .skill-vis{position:relative;width:100%;height:100%;min-height:300px}
+    .vis-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:60px;height:60px;border-radius:var(--r-full);background:var(--marine);display:flex;align-items:center;justify-content:center;color:#fff;font-size:24px;z-index:2;animation:vis-breathe 3s ease-in-out infinite}
+    @keyframes vis-breathe{
+      0%,100%{box-shadow:0 0 0 0 rgba(24,82,254,.45),0 4px 20px rgba(24,82,254,.3);transform:translate(-50%,-50%) scale(1)}
+      50%{box-shadow:0 0 0 12px rgba(24,82,254,.08),0 4px 28px rgba(24,82,254,.5);transform:translate(-50%,-50%) scale(1.06)}
+    }
+    .vis-chip{position:absolute;display:flex;flex-direction:column;align-items:center;gap:5px;padding:9px 10px 7px;border-radius:12px;background:#fff;box-shadow:0 2px 10px rgba(0,0,0,.10);border:1px solid rgba(0,0,0,.04);width:76px;text-align:center;z-index:1;pointer-events:none;transition:opacity 250ms ease,transform 250ms ease}
+    .vis-chip.off{opacity:.12;transform:scale(.82) translateY(4px)}
+    .vis-chip.on{opacity:1;transform:scale(1) translateY(0)}
+    .vis-chip-icon{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
+    .vis-chip-label{font-size:10px;font-weight:600;color:var(--grey-700);line-height:1.3;word-break:break-word}
+
+    /* Apps section — old rules removed (new rules above) */
+    .app-icon{width:32px;height:32px;border-radius:var(--r-sm);display:flex;align-items:center;justify-content:center;font-size:18px;background:var(--grey-50);flex-shrink:0}
+
+    /* Upload zone */
+    .upload-zone{border:2px dashed var(--grey-200);border-radius:var(--r-lg);padding:40px 32px;display:flex;flex-direction:column;align-items:center;gap:10px;cursor:pointer;transition:border-color 150ms,background 150ms;text-align:center;margin-bottom:16px}
+    .upload-zone:hover{border-color:var(--marine);background:var(--blue-10)}
+    .upload-icon{width:44px;height:44px;border-radius:var(--r-full);background:var(--blue-10);display:flex;align-items:center;justify-content:center;color:var(--marine)}
+    .upload-icon svg{width:22px;height:22px}
+    .upload-title{font-size:14px;font-weight:600;color:var(--grey-900)}
+    .upload-hint{font-size:12px;color:var(--grey-400)}
+    .doc-list{display:flex;flex-direction:column;gap:8px}
+    .doc-item{display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:var(--r-md);border:1px solid var(--grey-100);background:#fff}
+    .doc-icon{width:30px;height:30px;background:var(--blue-10);border-radius:var(--r-sm);display:flex;align-items:center;justify-content:center;color:var(--marine);flex-shrink:0}
+    .doc-icon svg{width:16px;height:16px}
+    .doc-name{flex:1;font-size:13px;font-weight:500;color:var(--grey-900)}
+    .doc-size{font-size:11px;color:var(--grey-400)}
+
+    /* Function items */
+    .fn-item{display:flex;align-items:center;gap:12px;padding:14px;border-radius:var(--r-md);border:1px solid var(--grey-100);background:#fff;margin-bottom:8px}
+    .fn-icon{width:34px;height:34px;border-radius:var(--r-md);display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0}
+    .fn-info{flex:1}
+    .fn-name{font-size:13.5px;font-weight:600;color:var(--grey-900);margin-bottom:2px}
+    .fn-desc{font-size:12px;color:var(--grey-400);line-height:1.5}
+    .fn-toggle{width:40px;height:22px;border-radius:var(--r-full);background:var(--grey-200);border:none;cursor:pointer;position:relative;transition:background 150ms;flex-shrink:0}
+    .fn-toggle.on{background:var(--teal)}
+    .fn-toggle::after{content:'';position:absolute;width:16px;height:16px;border-radius:50%;background:#fff;top:3px;left:3px;transition:transform 150ms}
+    .fn-toggle.on::after{transform:translateX(18px)}
+
+    /* Task cards */
+    .task-card{display:flex;gap:14px;padding:16px;border-radius:var(--r-lg);border:1.5px solid var(--grey-100);background:#fff;cursor:pointer;margin-bottom:10px;transition:border-color 150ms}
+    .task-card:hover{border-color:var(--grey-200)}
+    .task-card.sel{border-color:var(--marine);background:var(--blue-10)}
+    .task-radio{width:18px;height:18px;border-radius:50%;border:2px solid var(--grey-200);flex-shrink:0;margin-top:2px;display:flex;align-items:center;justify-content:center;transition:border-color 150ms}
+    .task-card.sel .task-radio{border-color:var(--marine)}
+    .task-dot{width:8px;height:8px;border-radius:50%;background:var(--marine);display:none}
+    .task-card.sel .task-dot{display:block}
+    .task-title{font-size:13.5px;font-weight:600;color:var(--grey-900);margin-bottom:5px}
+    .task-desc{font-size:12px;color:var(--grey-500);line-height:1.6;margin-bottom:8px}
+    .task-sched{display:inline-block;font-size:11px;font-weight:600;color:var(--grey-600);background:var(--grey-50);border-radius:var(--r-sm);padding:3px 9px}
+    .prompt-bar{display:flex;align-items:center;gap:10px;padding:8px 12px;border:1.5px solid var(--grey-100);border-radius:var(--r-full);background:#fff;transition:border-color 150ms}
+    .prompt-bar:focus-within{border-color:var(--marine)}
+    .prompt-plus{width:28px;height:28px;border-radius:var(--r-full);border:1.5px solid var(--grey-200);background:transparent;cursor:pointer;color:var(--grey-400);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;transition:all 120ms}
+    .prompt-plus:hover{border-color:var(--marine);color:var(--marine)}
+    .prompt-input{flex:1;border:none;outline:none;font-family:var(--font);font-size:14px;color:var(--grey-900);background:transparent}
+    .prompt-input::placeholder{color:var(--grey-400)}
+    .prompt-send{width:32px;height:32px;border-radius:var(--r-full);background:var(--grey-50);border:none;cursor:pointer;color:var(--grey-400);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all 120ms}
+    .prompt-send:hover{background:var(--marine);color:#fff}
+    .prompt-send svg{width:14px;height:14px}
+
+    .btn-skip{height:38px;padding:0 20px;border-radius:var(--r-md);border:1px solid var(--grey-100);background:#fff;color:var(--grey-600);font-family:var(--font);font-size:14px;font-weight:600;cursor:pointer;transition:background 120ms}
+    .btn-skip:hover{background:var(--grey-50)}
+    .btn-next{height:38px;padding:0 24px;border-radius:var(--r-md);border:none;background:var(--marine);color:#fff;font-family:var(--font);font-size:14px;font-weight:600;cursor:pointer;transition:background 120ms}
+    .btn-next:hover{background:var(--marine-hover)}
+
+    /* ════════════════════════════════
+       VIEW 4: TANK CLEANING CHAT VIEW (light)
+    ════════════════════════════════ */
+    .tcd-view{flex:1;display:flex;flex-direction:column;overflow:hidden;background:#F7FAFC}
+
+    /* Topbar */
+    .tcd-topbar{height:52px;background:#fff;border-bottom:1px solid #E2E8F0;display:flex;align-items:center;padding:0 20px;gap:12px;flex-shrink:0}
+    .tcd-back{width:32px;height:32px;border-radius:50%;border:1px solid #E2E8F0;background:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;color:#64748B;transition:background 120ms;flex-shrink:0}
+    .tcd-back:hover{background:#F1F5F9;color:#0F172A}
+    .tcd-back svg{width:15px;height:15px}
+    .tcd-topbar-info{flex:1}
+    .tcd-topbar-title{font-size:14px;font-weight:700;color:#0F172A;line-height:1.2}
+    .tcd-topbar-sub{font-size:11px;color:#94A3B8;margin-top:1px}
+    .tcd-await{display:inline-flex;align-items:center;gap:4px;background:#FEF9C3;color:#854D0E;font-size:10px;font-weight:700;border-radius:6px;padding:3px 10px;border:1px solid #FDE68A;white-space:nowrap}
+
+    /* Scrollable chat body — centered column */
+    .tcd-scroll{flex:1;overflow-y:auto;padding:20px 0 8px;scrollbar-width:thin;scrollbar-color:#E2E8F0 transparent;display:flex;flex-direction:column;align-items:center}
+    .tcd-scroll::-webkit-scrollbar{width:4px}
+    .tcd-scroll::-webkit-scrollbar-thumb{background:#E2E8F0;border-radius:99px}
+    .tcd-inner{width:100%;max-width:640px;padding:0 20px;display:flex;flex-direction:column;gap:12px}
+
+    /* Agent message bubble row */
+    .tcd-msg-row{display:flex;align-items:flex-start;gap:10px}
+    .tcd-avatar{width:32px;height:32px;border-radius:50%;background:#0CA678;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0}
+    .tcd-bubble{background:#fff;border:1px solid #E2E8F0;border-radius:4px 16px 16px 16px;padding:12px 14px;font-size:13px;color:#334154;line-height:1.55;max-width:100%;box-shadow:0 1px 3px rgba(0,0,0,.06)}
+
+    /* Card sections inside bubble */
+    .tcd-section{background:#fff;border:1px solid #E2E8F0;border-radius:12px;overflow:hidden;margin-top:2px;box-shadow:0 1px 4px rgba(0,0,0,.05)}
+    .tcd-section-label{font-size:10px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:#94A3B8;padding:12px 14px 8px}
+
+    /* Steps */
+    .tcd-steps{display:flex;flex-direction:column}
+    .tcd-step{display:flex;gap:10px;padding:12px 14px;border-top:1px solid #F1F5F9}
+    .tcd-step:first-child{border-top:none}
+    .tcd-step-num{width:22px;height:22px;border-radius:50%;background:#DBEAFE;color:#1D40AF;font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+    .tcd-step-num.green{background:#D3F3DF;color:#147638}
+    .tcd-step-body{flex:1;min-width:0}
+    .tcd-step-name{font-size:12px;font-weight:700;color:#0F172A;margin-bottom:3px}
+    .tcd-step-detail{font-size:11.5px;color:#475569;line-height:1.6;margin-bottom:2px}
+    .tcd-step-detail strong{color:#1E293B;font-weight:600}
+    .tcd-step-note{font-size:11px;color:#B45309;margin-bottom:6px}
+    .tcd-step-note strong{font-weight:700}
+    .tcd-view-btn{display:inline-flex;align-items:center;gap:5px;background:#fff;border:1px solid #E2E8F0;border-radius:7px;padding:5px 11px;font-size:11px;font-weight:600;color:#334154;cursor:pointer;font-family:inherit;transition:background 120ms,border-color 120ms;margin-top:6px}
+    .tcd-view-btn:hover{background:#F1F5F9;border-color:#CBD5E1;color:#0F172A}
+
+    /* Tank grid */
+    .tcd-tank-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin:8px 0}
+    .tcd-tank-card{background:#F7FAFC;border:1px solid #E2E8F0;border-radius:8px;padding:10px 12px}
+    .tcd-tank-name{font-size:11.5px;font-weight:700;color:#0F172A;margin-bottom:3px}
+    .tcd-tank-cargo{font-size:11px;color:#64748B;margin-bottom:2px}
+    .tcd-tank-cargo strong{color:#334154;font-weight:600}
+    .tcd-tank-sub{font-size:10px;color:#94A3B8}
+    .tcd-method-badge{display:inline-flex;align-items:center;font-size:11px;font-weight:700;border-radius:6px;padding:3px 9px;margin:5px 0 3px}
+    .tcd-method-badge.green{background:#D3F3DF;color:#147638}
+    .tcd-method-badge.amber{background:#FEF9C3;color:#854D0E}
+    .tcd-tank-method-detail{font-size:10.5px;color:#94A3B8}
+
+    /* Email section */
+    .tcd-email-header{display:flex;align-items:center;justify-content:space-between;padding:12px 14px 8px}
+    .tcd-email-label{font-size:10px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:#94A3B8}
+    .tcd-email-edit{display:inline-flex;align-items:center;gap:4px;background:#fff;border:1px solid #E2E8F0;border-radius:6px;padding:4px 10px;font-size:11px;font-weight:600;color:#475569;cursor:pointer;font-family:inherit;transition:background 120ms}
+    .tcd-email-edit:hover{background:#F1F5F9;color:#0F172A}
+    .tcd-email-card{margin:0 14px 14px;background:#fff;border:1px solid #E2E8F0;border-radius:8px;padding:13px}
+    .tcd-email-meta{font-size:12px;color:#475569;line-height:1.9;border-bottom:1px solid #F1F5F9;padding-bottom:10px;margin-bottom:10px}
+    .tcd-email-meta strong{color:#1E293B;font-weight:600}
+    .tcd-email-body{font-size:13px;color:#475569;line-height:1.65}
+    .tcd-email-body strong{color:#1E293B;font-weight:600}
+    .tcd-email-wordcount{font-size:11px;color:#94A3B8;font-style:italic;margin-top:8px}
+
+    /* Chat input area + action popover */
+    .tcd-input-area{flex-shrink:0;padding:10px 16px 14px;background:#fff;border-top:1px solid #E2E8F0}
+    .tcd-action-popover{display:flex;align-items:center;gap:7px;margin-bottom:10px;flex-wrap:wrap}
+    .tcd-pop-label{font-size:11px;color:#94A3B8;font-weight:500;margin-right:2px;white-space:nowrap}
+    .tcd-pop-btn{display:inline-flex;align-items:center;gap:5px;height:32px;padding:0 13px;border-radius:999px;font-family:inherit;font-size:12px;font-weight:600;cursor:pointer;transition:background 120ms,border-color 120ms,transform 100ms;white-space:nowrap}
+    .tcd-pop-btn:active{transform:scale(.97)}
+    .tcd-pop-approve{background:#22C55E;color:#fff;border:none}
+    .tcd-pop-approve:hover{background:#16A34A}
+    .tcd-pop-edit{background:#fff;color:#475569;border:1px solid #E2E8F0}
+    .tcd-pop-edit:hover{background:#F7FAFC;border-color:#CBD5E1;color:#0F172A}
+    .tcd-pop-reject{background:#fff;color:#EF4444;border:1px solid #FECACA}
+    .tcd-pop-reject:hover{background:#FEF1F2}
+    .tcd-pop-from{margin-left:auto;font-size:10.5px;color:#CBD5E1;white-space:nowrap}
+    .tcd-chat-row{display:flex;align-items:center;gap:8px;background:#F7FAFC;border:1px solid #E2E8F0;border-radius:999px;padding:6px 6px 6px 16px;transition:border-color 150ms,box-shadow 150ms}
+    .tcd-chat-row:focus-within{border-color:#BFDBFE;box-shadow:0 0 0 3px rgba(59,130,246,.08);background:#fff}
+    .tcd-chat-input{flex:1;border:none;outline:none;background:transparent;font-family:inherit;font-size:13.5px;color:#1E293B}
+    .tcd-chat-input::placeholder{color:#94A3B8}
+    .tcd-chat-send{width:34px;height:34px;border-radius:50%;background:#E2E8F0;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;color:#94A3B8;transition:background 150ms,color 150ms}
+    .tcd-chat-send.on{background:#1852FE;color:#fff}
+    .tcd-chat-send svg{width:14px;height:14px}
+
+    /* ════════════════════════════════
+       SUCCESS OVERLAY
+    ════════════════════════════════ */
+    .success-overlay{position:fixed;inset:0;z-index:200;background:rgba(255,255,255,.97);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:20px;opacity:0;pointer-events:none;transition:opacity 300ms}
+    .success-overlay.show{opacity:1;pointer-events:all}
+    .success-ring{width:90px;height:90px;border-radius:50%;background:var(--teal);display:flex;align-items:center;justify-content:center;animation:success-pop 400ms cubic-bezier(0,.5,.2,1.4) forwards;transform:scale(0)}
+    .success-ring svg{width:44px;height:44px;stroke:#fff;stroke-width:3}
+    @keyframes success-pop{0%{transform:scale(0)}60%{transform:scale(1.15)}100%{transform:scale(1)}}
+    .success-title{font-size:24px;font-weight:700;color:var(--grey-900);animation:fade-up 300ms 200ms ease forwards;opacity:0;transform:translateY(8px)}
+    .success-sub{font-size:14px;color:var(--grey-500);animation:fade-up 300ms 350ms ease forwards;opacity:0;transform:translateY(8px)}
+    @keyframes fade-up{to{opacity:1;transform:translateY(0)}}
+
+    /* Confetti dots */
+    .confetti-wrap{position:fixed;inset:0;pointer-events:none;overflow:hidden;z-index:199}
+    .dot{position:absolute;width:8px;height:8px;border-radius:2px;animation:fall linear forwards}
+    @keyframes fall{0%{transform:translateY(-20px) rotate(0deg);opacity:1}100%{transform:translateY(100vh) rotate(720deg);opacity:0}}
+
+    /* ════════════════════════════════
+       VIEW 5: CP & VO AGENT CHAT VIEW (light)
+    ════════════════════════════════ */
+    .cpvo-view{flex:1;display:flex;flex-direction:column;overflow:hidden;background:#F7FAFC}
+    .cpvo-topbar{height:52px;background:#fff;border-bottom:1px solid #E2E8F0;display:flex;align-items:center;padding:0 20px;gap:12px;flex-shrink:0}
+    .cpvo-back{width:32px;height:32px;border-radius:50%;border:1px solid #E2E8F0;background:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;color:#64748B;transition:background 120ms;flex-shrink:0}
+    .cpvo-back:hover{background:#F1F5F9;color:#0F172A}
+    .cpvo-back svg{width:15px;height:15px}
+    .cpvo-topbar-info{flex:1}
+    .cpvo-topbar-title{font-size:14px;font-weight:700;color:#0F172A;line-height:1.2}
+    .cpvo-topbar-sub{font-size:11px;color:#94A3B8;margin-top:1px}
+
+    .cpvo-scroll{flex:1;overflow-y:auto;padding:20px 0 8px;scrollbar-width:thin;scrollbar-color:#E2E8F0 transparent;display:flex;flex-direction:column;align-items:center}
+    .cpvo-scroll::-webkit-scrollbar{width:4px}
+    .cpvo-scroll::-webkit-scrollbar-thumb{background:#E2E8F0;border-radius:99px}
+    .cpvo-inner{width:100%;max-width:640px;padding:0 20px;display:flex;flex-direction:column;gap:14px}
+
+    .cpvo-msg-row{display:flex;align-items:flex-start;gap:10px}
+    .cpvo-avatar{width:32px;height:32px;border-radius:50%;background:#4F46E5;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0;color:#fff}
+    .cpvo-avatar svg{width:16px;height:16px}
+    .cpvo-bubble{background:#fff;border:1px solid #E2E8F0;border-radius:4px 16px 16px 16px;padding:12px 14px;font-size:13px;color:#334154;line-height:1.55;max-width:100%;box-shadow:0 1px 3px rgba(0,0,0,.06)}
+
+    /* Upload Card */
+    .cpvo-upload-card{background:#fff;border:1px solid #E2E8F0;border-radius:12px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.05);margin-top:2px}
+    .cpvo-upload-zone{border:2px dashed #CBD5E1;border-radius:12px;padding:32px;text-align:center;margin:16px;transition:border-color 150ms,background 150ms;cursor:pointer}
+    .cpvo-upload-zone:hover{border-color:#4F46E5;background:#F5F3FF}
+    .cpvo-upload-icon{width:48px;height:48px;border-radius:50%;background:#EDE9FE;display:flex;align-items:center;justify-content:center;margin:0 auto 12px;color:#4F46E5}
+    .cpvo-upload-icon svg{width:22px;height:22px}
+    .cpvo-upload-title{font-size:14px;font-weight:600;color:#0F172A;margin-bottom:4px}
+    .cpvo-upload-hint{font-size:12px;color:#94A3B8;margin-bottom:16px}
+    .cpvo-upload-actions{display:flex;align-items:center;gap:12px;justify-content:center;flex-wrap:wrap}
+    .cpvo-browse-btn{height:36px;padding:0 18px;border-radius:8px;background:#fff;border:1.5px solid #E2E8F0;font-family:inherit;font-size:13px;font-weight:600;color:#334154;cursor:pointer;transition:border-color 120ms,background 120ms}
+    .cpvo-browse-btn:hover{border-color:#CBD5E1;background:#F7FAFC}
+    .cpvo-upload-or{font-size:12px;color:#CBD5E1}
+    .cpvo-email-hint{font-size:12px;color:#94A3B8}
+    .cpvo-filename{display:none;font-size:12px;font-weight:600;color:#4F46E5;margin-top:10px;display:none}
+    .cpvo-start-area{padding:0 16px 16px;display:flex;align-items:center;gap:10px}
+    .cpvo-start-btn{height:40px;flex:1;border-radius:10px;border:none;background:#4F46E5;color:#fff;font-family:inherit;font-size:14px;font-weight:600;cursor:pointer;transition:background 150ms,opacity 150ms;display:flex;align-items:center;justify-content:center;gap:7px;opacity:0.5}
+    .cpvo-start-btn:not(:disabled):hover{background:#3730A3}
+    .cpvo-start-btn:disabled{cursor:not-allowed}
+
+    /* Processing Card */
+    .cpvo-processing-card{background:#fff;border:1px solid #E2E8F0;border-radius:12px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.05);margin-top:2px;padding:18px 18px 12px}
+    .cpvo-proc-label{font-size:10px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#94A3B8;margin-bottom:14px}
+    .cpvo-proc-steps{display:flex;flex-direction:column;gap:0}
+    .cpvo-proc-step{display:flex;gap:12px;align-items:flex-start;padding:10px 0;border-bottom:1px solid #F1F5F9}
+    .cpvo-proc-step:last-child{border-bottom:none}
+    .cpvo-proc-num{width:24px;height:24px;border-radius:50%;background:#E2E8F0;color:#94A3B8;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;transition:background 300ms,color 300ms}
+    .cpvo-proc-step.done .cpvo-proc-num{background:#22C55E;color:#fff}
+    .cpvo-proc-step.processing .cpvo-proc-num{background:#4F46E5;color:#fff;animation:cpvo-pulse 1s ease-in-out infinite}
+    @keyframes cpvo-pulse{0%,100%{box-shadow:0 0 0 0 rgba(79,70,229,0.45)}50%{box-shadow:0 0 0 6px rgba(79,70,229,0)}}
+    .cpvo-proc-text{font-size:12.5px;color:#64748B;line-height:1.5;padding-top:3px}
+    .cpvo-proc-step.done .cpvo-proc-text{color:#0F172A;font-weight:500}
+    .cpvo-proc-step.processing .cpvo-proc-text{color:#4F46E5}
+
+    /* Success Card */
+    .cpvo-success-card{background:#fff;border:1px solid #D3F3DF;border-radius:12px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.05);margin-top:2px;padding:28px 20px;text-align:center}
+    .cpvo-success-icon{width:56px;height:56px;border-radius:50%;background:#D3F3DF;display:flex;align-items:center;justify-content:center;margin:0 auto 14px;font-size:24px}
+    .cpvo-success-title{font-size:15px;font-weight:700;color:#0F172A;margin-bottom:6px}
+    .cpvo-success-sub{font-size:13px;color:#64748B;line-height:1.55;margin-bottom:18px}
+    .cpvo-success-btn{display:inline-flex;align-items:center;gap:6px;height:40px;padding:0 22px;border-radius:10px;background:#4F46E5;color:#fff;border:none;font-family:inherit;font-size:13.5px;font-weight:600;cursor:pointer;text-decoration:none;transition:background 150ms}
+    .cpvo-success-btn:hover{background:#3730A3}
+
+    /* Wizard panels */
+    .wiz-panel{display:none;flex:1;flex-direction:column;overflow:hidden}
+    .wiz-panel.active{display:flex}
+    .step1-scroll{flex:1;overflow-y:auto;padding:24px;scrollbar-width:thin;scrollbar-color:var(--grey-200) transparent}
+    .step1-scroll::-webkit-scrollbar{width:4px}
+    .step1-scroll::-webkit-scrollbar-thumb{background:var(--grey-200);border-radius:99px}
+    .step2-scroll{flex:1;overflow-y:auto;padding:24px;scrollbar-width:thin;scrollbar-color:var(--grey-200) transparent}
+    .step2-scroll::-webkit-scrollbar{width:4px}
+    .step2-scroll::-webkit-scrollbar-thumb{background:var(--grey-200);border-radius:99px}
+    .step5-scroll{flex:1;overflow-y:auto;padding:24px;scrollbar-width:thin;scrollbar-color:var(--grey-200) transparent}
+    .step5-scroll::-webkit-scrollbar{width:4px}
+    .step5-scroll::-webkit-scrollbar-thumb{background:var(--grey-200);border-radius:99px}
+    .wiz-footer{padding:12px 24px;background:#fff;border-top:1px solid var(--grey-100);display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
+    .wiz-save-note{font-size:12px;color:var(--grey-400)}
+    .wiz-footer-btns{display:flex;gap:10px}
+  </style>
+</head>
+<body>
+
+<!-- NAV (always collapsed) -->
+<nav class="nav-rail collapsed" id="navRail">
+  <div class="sidebar-logo">
+    <div class="sidebar-logo-icon" style="width:22px;height:22px;flex-shrink:0">
+      <svg width="22" height="22" viewBox="0 0 32 32" fill="none"><path d="M10.75 9.5H13.25C13.94 9.5 14.5 10.06 14.5 10.75V13.25C14.5 13.94 13.94 14.5 13.25 14.5H10.75C10.06 14.5 9.5 13.94 9.5 13.25V10.75C9.5 10.06 10.06 9.5 10.75 9.5Z" fill="#1852FE" stroke="#1852FE"/><path d="M18.75 9.5H21.25C21.94 9.5 22.5 10.06 22.5 10.75V13.25C22.5 13.94 21.94 14.5 21.25 14.5H18.75C18.06 14.5 17.5 13.94 17.5 13.25V10.75C17.5 10.06 18.06 9.5 18.75 9.5Z" fill="#1852FE" stroke="#1852FE"/><path d="M10.75 17.5H13.25C13.94 17.5 14.5 18.06 14.5 18.75V21.25C14.5 21.94 13.94 22.5 13.25 22.5H10.75C10.06 22.5 9.5 21.94 9.5 21.25V18.75C9.5 18.06 10.06 17.5 10.75 17.5Z" fill="#1852FE" stroke="#1852FE"/><path d="M18.75 17.5H21.25C21.94 17.5 22.5 18.06 22.5 18.75V21.25C22.5 21.94 21.94 22.5 21.25 22.5H18.75C18.06 22.5 17.5 21.94 17.5 21.25V18.75C17.5 18.06 18.06 17.5 18.75 17.5Z" fill="#1852FE" stroke="#1852FE"/></svg>
+    </div>
+    <div class="sidebar-logo-text"><div class="sidebar-logo-name">GeoOne</div><div class="sidebar-logo-sub">Maritime Platform</div></div>
+    <button class="nav-collapse-btn"><svg class="collapse-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 18l-6-6 6-6"/></svg><svg class="collapse-hamburger" viewBox="0 0 24 24" fill="none"><path d="M4 12H20M4 6.75H20M4 17.25H20" stroke="black" stroke-width="2" stroke-linecap="round"/></svg></button>
+  </div>
+  <div class="sidebar-nav">
+    <a href="index.html" class="nav-item"><svg viewBox="0 0 32 32" fill="none"><path d="M10.75 9.5H13.25C13.94 9.5 14.5 10.06 14.5 10.75V13.25C14.5 13.94 13.94 14.5 13.25 14.5H10.75C10.06 14.5 9.5 13.94 9.5 13.25V10.75C9.5 10.06 10.06 9.5 10.75 9.5Z" fill="#212121" stroke="black"/><path d="M18.75 9.5H21.25C21.94 9.5 22.5 10.06 22.5 10.75V13.25C22.5 13.94 21.94 14.5 21.25 14.5H18.75C18.06 14.5 17.5 13.94 17.5 13.25V10.75C17.5 10.06 18.06 9.5 18.75 9.5Z" fill="#212121" stroke="black"/><path d="M10.75 17.5H13.25C13.94 17.5 14.5 18.06 14.5 18.75V21.25C14.5 21.94 13.94 22.5 13.25 22.5H10.75C10.06 22.5 9.5 21.94 9.5 21.25V18.75C9.5 18.06 10.06 17.5 10.75 17.5Z" fill="#212121" stroke="black"/><path d="M18.75 17.5H21.25C21.94 17.5 22.5 18.06 22.5 18.75V21.25C22.5 21.94 21.94 22.5 21.25 22.5H18.75C18.06 22.5 17.5 21.94 17.5 21.25V18.75C17.5 18.06 18.06 17.5 18.75 17.5Z" fill="#212121" stroke="black"/></svg><span class="nav-item-label">Dashboard</span></a>
+    <a href="vessel.html" class="nav-item"><svg viewBox="0 0 32 32" fill="none"><g clip-path="url(#nv)"><path d="M22.47 20.75a.5.5 0 01.36.22l.07.07.15.13c.1.08.28.2.52.34.5.27 1.3.62 2.48.85l-.3 1.47c-1.33-.27-2.27-.67-2.9-1.02a4.3 4.3 0 01-.41-.28c-1.06.98-2.25 1.21-3.34 1.01a3.8 3.8 0 01-2.2-1.38l.14-.14c.64-.18 1.2-.33 1.62-.38.37.24.81.44 1.27.52.74.13 1.6-.03 2.42-1.02l.05-.05a.5.5 0 01.37-.15zM19.68 9c.34 0 .61.3.61.67v1.55h1.41c.78 0 1.41.7 1.41 1.55v3.21l2.34.99c.69.29 1.05 1.1.85 1.87l-.45 1.77a2.4 2.4 0 00-.68-.68 1.6 1.6 0 00-2.27.71c-.08.1-.16.2-.25.28-.36.33-.81.51-1.28.51-.29 0-.57-.07-.83-.2.01-.02.06-.04.15-.05 1-.5 1-2.5.5-3-.62-.62-.86-.64-.93-1.08l.89-.38c.14-.06.3-.06.43 0l1.01.43V12.77c0-.12-.09-.23-.2-.23h-2.15v-.55c-.05-1.11-1.43-1.96-2.49-1.99V9.67c0-.37.27-.67.6-.67h1.58z" fill="#212121"/><path d="M12.33 8.5h2.34c.08 0 .2.08.2.25V11h2.14c.6 0 1.14.53 1.14 1.25v4.03c0 .17-.12.28-.2.28-.08 0-.2-.11-.2-.28V12.25c0-.38-.3-.75-.74-.75H9.98c-.43 0-.74.37-.74.75v4.03c0 .17-.12.28-.2.28-.09 0-.21-.11-.21-.28V12.25c0-.72.54-1.25 1.15-1.25h2.14V8.75c0-.17.12-.25.21-.25z" fill="#212121" stroke="black"/><path d="M13.44 14.51l5.42 2.17c.55.22.87.87.7 1.52l-.37 1.38c-.76-.9-1.49-1.27-2.29-1.27h-.001c-.78 0-1.51.37-2 1l-.002.002c-.55.54-.96.69-1.38.69-.53 0-1.04-.25-1.39-.7v-.001c-.5-.63-1.23-1-2.07-1h-.018c-.77.038-1.47.41-1.94 1.01l-.63-1.11c-.18-.66.14-1.3.69-1.52l5.29-2.17z" fill="#212121" stroke="black"/><path d="M20.28 23.5c-1.26 0-2.46-.49-3.38-1.37-2.07 1.85-4.92 1.76-6.79.001-.93.88-2.12 1.37-3.38 1.37-.42 0-.73-.34-.73-.75s.32-.75.7-.75c1.12 0 2.15-.52 2.85-1.42.34-.26.53-.27.74-.27.2.1.33.27.33.27 1.32 1.68 3.68 1.9 5.26.48.46-.49.8-.76 1-.76h.002c.21 0 .54.27.54.27.71.91 1.79 1.42 2.86 1.42.39 0 .7.34.7.75s-.31.75-.7.75h-.025z" fill="#212121"/></g><defs><clipPath id="nv"><rect width="18" height="18" fill="white" transform="translate(7 7)"/></clipPath></defs></svg><span class="nav-item-label">Vessel 360</span></a>
+    <a href="geonix.html" class="nav-item active"><svg viewBox="0 0 32 32" fill="none"><g clip-path="url(#ng)"><path d="M6.45 13.24s1.35.37 1.95.97c.6.6.97 1.95.97 1.95.28.56 1.2.56 1.47 0 0 0 .37-1.35.97-1.95.6-.6 1.95-.97 1.95-.97.28-.14.46-.43.46-.74 0-.31-.18-.6-.46-.74 0 0-1.35-.37-1.95-.97-.6-.6-.97-1.95-.97-1.95-.14-.28-.43-.46-.74-.46-.31 0-.6.18-.74.46 0 0-.37 1.35-.97 1.95-.6.6-1.95.97-1.95.97-.28.14-.46.43-.46.74 0 .31.18.6.46.74z" fill="#1852FE"/><path d="M14.43 9.29l.84.42.42.84c.12.24.51.24.63 0l.42-.84.84-.42c.12-.06.19-.18.19-.31 0-.13-.07-.25-.19-.31l-.84-.42-.42-.84a.38.38 0 00-.63 0l-.42.84-.84.42c-.12.06-.19.18-.19.31 0 .13.07.25.19.31z" fill="#1852FE"/><path d="M12.66 19.53s2.3.55 3.34 1.53c.99.94 1.68 3.07 1.68 3.07.48.88 2.05.88 2.53 0 0 0 .68-2.13 1.67-3.07 1.04-.99 3.34-1.53 3.34-1.53.48-.22.78-.67.78-1.16 0-.49-.3-.94-.78-1.16 0 0-2.3-.55-3.34-1.53-.99-.94-1.68-3.07-1.68-3.07a1.08 1.08 0 00-1.94 0s-.68 2.13-1.67 3.07c-1.04.99-3.34 1.53-3.34 1.53-.48.22-.78.67-.78 1.16 0 .49.3.94.78 1.16z" fill="#1852FE"/></g><defs><clipPath id="ng"><rect width="20" height="17.58" fill="white" transform="translate(26 24.79) rotate(-180)"/></clipPath></defs></svg><span class="nav-item-label">Geonix</span></a>
+  </div>
+  <div class="sidebar-footer">
+    <div class="sidebar-user"><div class="nav-avatar">V</div><div class="sidebar-user-info"><div class="sidebar-user-name">Vishnu</div><div class="sidebar-user-role">Fleet Manager</div></div></div>
+  </div>
+</nav>
+
+<main class="main">
+
+  <!-- ══════════════════════════════════
+       VIEW 1: CHAT INTERFACE (default)
+  ══════════════════════════════════ -->
+  <div class="view active" id="viewMain">
+    <div class="topbar">
+      <span class="topbar-title">Geonix</span>
+      <button class="topbar-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg></button>
+    </div>
+    <div class="chat-scroll">
+      <div class="chat-hero">
+        <svg class="sparkle-icon" viewBox="0 0 32 32" fill="none"><g clip-path="url(#hs)"><path d="M6.45 13.24s1.35.37 1.95.97c.6.6.97 1.95.97 1.95.28.56 1.2.56 1.47 0 0 0 .37-1.35.97-1.95.6-.6 1.95-.97 1.95-.97.28-.14.46-.43.46-.74 0-.31-.18-.6-.46-.74 0 0-1.35-.37-1.95-.97-.6-.6-.97-1.95-.97-1.95-.14-.28-.43-.46-.74-.46-.31 0-.6.18-.74.46 0 0-.37 1.35-.97 1.95-.6.6-1.95.97-1.95.97-.28.14-.46.43-.46.74 0 .31.18.6.46.74z" fill="#1852FE"/><path d="M14.43 9.29l.84.42.42.84c.12.24.51.24.63 0l.42-.84.84-.42c.12-.06.19-.18.19-.31 0-.13-.07-.25-.19-.31l-.84-.42-.42-.84a.38.38 0 00-.63 0l-.42.84-.84.42c-.12.06-.19.18-.19.31 0 .13.07.25.19.31z" fill="#1852FE"/><path d="M12.66 19.53s2.3.55 3.34 1.53c.99.94 1.68 3.07 1.68 3.07.48.88 2.05.88 2.53 0 0 0 .68-2.13 1.67-3.07 1.04-.99 3.34-1.53 3.34-1.53.48-.22.78-.67.78-1.16 0-.49-.3-.94-.78-1.16 0 0-2.3-.55-3.34-1.53-.99-.94-1.68-3.07-1.68-3.07a1.08 1.08 0 00-1.94 0s-.68 2.13-1.67 3.07c-1.04.99-3.34 1.53-3.34 1.53-.48.22-.78.67-.78 1.16 0 .49.3.94.78 1.16z" fill="#1852FE"/></g><defs><clipPath id="hs"><rect width="20" height="17.58" fill="white" transform="translate(26 24.79) rotate(-180)"/></clipPath></defs></svg>
+        <h1 class="chat-greeting" id="greeting">Good Morning! Vishnu</h1>
+        <p class="chat-sub">What can I help with today?</p>
+        <div class="input-bar">
+          <button class="input-plus">+</button>
+          <input class="input-field" type="text" placeholder="Ask a question" id="chatInput"/>
+          <button class="input-send" onclick="handleSend()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 19V5M5 12l7-7 7 7" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+        </div>
+      </div>
+      <div class="agents-section">
+        <div class="agents-section-header">
+          <span class="agents-label">Talk to an Agent</span>
+          <button class="btn-create-new" onclick="showCreateLanding()">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            Create new Agent
+          </button>
+        </div>
+        <div class="agents-grid" id="agentsGrid"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════
+       VIEW 2: CREATE AGENT LANDING
+  ══════════════════════════════════ -->
+  <div class="view" id="viewLanding">
+    <div class="topbar">
+      <button class="topbar-icon" onclick="showMain()" style="margin-right:4px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 12H5M12 5l-7 7 7 7"/></svg></button>
+      <span class="topbar-title">Create Agent</span>
+    </div>
+    <div class="create-landing-body">
+      <div class="landing-avatar">
+        <svg viewBox="0 0 64 64" fill="none"><circle cx="24" cy="22" r="10" fill="rgba(255,255,255,0.9)"/><circle cx="40" cy="22" r="10" fill="rgba(255,255,255,0.7)"/><path d="M8 50c0-10 7-16 16-16h8c9 0 16 6 16 16" fill="rgba(255,255,255,0.9)"/><path d="M38 37c6 0 10 4 10 10" stroke="rgba(255,255,255,0.7)" stroke-width="2" fill="none"/><circle cx="50" cy="14" r="6" fill="rgba(255,255,255,0.95)"/><path d="M50 10v4l2 2" stroke="#1852FE" stroke-width="1.5" stroke-linecap="round"/></svg>
+      </div>
+      <h1 class="landing-title">welcome back! Vishnu</h1>
+      <p class="landing-sub">Let's Create New <span>Agents</span></p>
+      <div class="landing-ctas">
+        <button class="btn-primary-lg" onclick="showWizard()">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          Create from prompt
+        </button>
+        <button class="btn-outline-lg">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          Upload Document
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════
+       VIEW 3: WIZARD
+  ══════════════════════════════════ -->
+  <div class="view" id="viewWizard">
+    <div class="wizard-wrap">
+
+      <!-- Left stepper -->
+      <div class="wiz-left">
+        <button class="wiz-back" onclick="showCreateLanding()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+          Create Agent
+        </button>
+        <div class="stepper" id="stepperList"></div>
+      </div>
+
+      <!-- Right panels -->
+      <div class="wiz-right">
+
+        <!-- Panel 0: Name + Skills -->
+        <div class="wiz-panel active" id="wp0">
+          <div class="step1-scroll">
+            <div class="step1-card">
+              <div class="step1-card-header">
+                <div class="section-title" style="margin-bottom:16px">Create New Agent</div>
+                <div class="field-label">Agent Name <span class="field-req">*</span></div>
+                <input class="wiz-input" id="agentNameInput" placeholder="Name" oninput="onNameChange(this.value)"/>
+              </div>
+              <div class="step1-body">
+                <div class="step1-left">
+                  <div class="skills-section-label">What skills should the agent have?</div>
+                  <div class="search-wrap" style="margin-bottom:0">
+                    <span class="search-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></span>
+                    <input class="search-input" id="skillSearch" placeholder="Search skills…" oninput="filterSkills(this.value)"/>
+                  </div>
+                  <div class="skills-list" id="skillsList"></div>
+                  <div class="skills-min-hint" id="skillsHint">Select at least 3 skills to continue</div>
+                </div>
+                <div class="step1-right">
+                  <div class="skill-vis" id="skillVis"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="wiz-footer">
+            <span class="wiz-save-note">Last autosaved on 30 Nov 2025, 1:03 PM</span>
+            <div class="wiz-footer-btns"><button class="btn-skip" onclick="skipStep()">Skip</button><button class="btn-next" onclick="nextStep()">Next</button></div>
+          </div>
+        </div>
+
+        <!-- Panel 1: Connect Apps -->
+        <div class="wiz-panel" id="wp1">
+          <div class="step2-scroll">
+            <div class="step2-card">
+              <div class="step1-card-header">
+                <div class="section-title" style="margin-bottom:16px">Connect Apps</div>
+                <div class="search-wrap" style="margin-bottom:0">
+                  <span class="search-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></span>
+                  <input class="search-input" id="appSearch" placeholder="Search 81 apps…" oninput="filterApps(this.value)"/>
+                </div>
+              </div>
+              <div class="step2-body">
+                <div class="step2-left">
+                  <div id="connectedAppsSection">
+                    <div class="app-section-label">Connected</div>
+                    <div id="connectedAppsList"></div>
+                    <hr class="apps-dotted-sep">
+                  </div>
+                  <div class="app-section-label">All apps</div>
+                  <div id="allAppsList"></div>
+                </div>
+                <div class="step2-right">
+                  <div class="orbit-wrap">
+                    <div class="orbit-ring" style="width:320px;height:320px"></div>
+                    <div class="orbit-ring" style="width:200px;height:200px"></div>
+                    <div class="orbit-center">✦</div>
+                    <div id="orbitNodes"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="wiz-footer">
+            <span class="wiz-save-note">Last autosaved on 30 Nov 2025, 1:03 PM</span>
+            <div class="wiz-footer-btns"><button class="btn-skip" onclick="skipStep()">Skip</button><button class="btn-next" onclick="nextStep()">Next</button></div>
+          </div>
+        </div>
+
+        <!-- Panel 2: Training -->
+        <div class="wiz-panel" id="wp2">
+          <div style="flex:1;display:flex;flex-direction:column;overflow:hidden">
+            <div class="step-full">
+              <div id="aiTeamCardSlot"></div>
+              <div class="section-title">Give Agent Training</div>
+              <p class="section-sub">Upload SOP documents, manuals, or policy files so the agent learns your operational standards.</p>
+              <div class="upload-zone" onclick="triggerUpload()">
+                <div class="upload-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg></div>
+                <div class="upload-title">Upload training files</div>
+                <div class="upload-hint">PDF, DOCX, TXT — up to 50 MB · Drop here or click to browse</div>
+              </div>
+              <div class="doc-list" id="docList">
+                <div class="doc-item"><div class="doc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/></svg></div><span class="doc-name">Vessel_SOP_v3.pdf</span><span class="doc-size">2.4 MB</span></div>
+                <div class="doc-item"><div class="doc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/></svg></div><span class="doc-name">Bunker_Manual_2024.pdf</span><span class="doc-size">1.1 MB</span></div>
+              </div>
+            </div>
+          </div>
+          <div class="wiz-footer">
+            <span class="wiz-save-note">Last autosaved on 30 Nov 2025, 1:03 PM</span>
+            <div class="wiz-footer-btns"><button class="btn-skip" onclick="skipStep()">Skip</button><button class="btn-next" onclick="nextStep()">Next</button></div>
+          </div>
+        </div>
+
+        <!-- Panel 3: Functions -->
+        <div class="wiz-panel" id="wp3">
+          <div class="step-full">
+            <div class="step-card">
+              <div class="section-title" style="margin-bottom:4px">Configure Functions</div>
+              <p class="section-sub" style="margin-bottom:0">Enable live functions this agent can perform autonomously.</p>
+              <div class="fn-grid">
+                <div class="fn-card"><div class="fn-card-icon" style="background:#fce7f3">📧</div><div class="fn-card-name">Live Email Parsing</div><div class="fn-card-desc">Monitor inbox and parse incoming maritime documents automatically.</div><div class="fn-card-footer"><button class="fn-toggle on" onclick="this.classList.toggle('on');updateFnSub()"></button></div></div>
+                <div class="fn-card"><div class="fn-card-icon" style="background:#eff6ff">✍️</div><div class="fn-card-name">Draft Response</div><div class="fn-card-desc">Generate email drafts based on parsed content and agent context.</div><div class="fn-card-footer"><button class="fn-toggle on" onclick="this.classList.toggle('on');updateFnSub()"></button></div></div>
+                <div class="fn-card"><div class="fn-card-icon" style="background:#f0f9ff">📊</div><div class="fn-card-name">Report Generation</div><div class="fn-card-desc">Create structured reports from vessel and voyage data.</div><div class="fn-card-footer"><button class="fn-toggle" onclick="this.classList.toggle('on');updateFnSub()"></button></div></div>
+                <div class="fn-card"><div class="fn-card-icon" style="background:#f0fdf9">🔔</div><div class="fn-card-name">Smart Alerts</div><div class="fn-card-desc">Send notifications when key thresholds or events are triggered.</div><div class="fn-card-footer"><button class="fn-toggle" onclick="this.classList.toggle('on');updateFnSub()"></button></div></div>
+                <div class="fn-card"><div class="fn-card-icon" style="background:#fef3c7">🗓</div><div class="fn-card-name">Schedule Tasks</div><div class="fn-card-desc">Auto-schedule recurring agent tasks based on triggers and time rules.</div><div class="fn-card-footer"><button class="fn-toggle" onclick="this.classList.toggle('on');updateFnSub()"></button></div></div>
+                <div class="fn-card"><div class="fn-card-icon" style="background:#f5f3ff">📁</div><div class="fn-card-name">Document Export</div><div class="fn-card-desc">Export parsed content and reports to PDF, DOCX, or Google Drive.</div><div class="fn-card-footer"><button class="fn-toggle" onclick="this.classList.toggle('on');updateFnSub()"></button></div></div>
+              </div>
+              <div style="margin-top:14px;text-align:center">
+                <button onclick="this.parentElement.nextElementSibling.style.display='block';this.style.display='none'" style="font-size:13px;font-weight:600;color:var(--marine);background:none;border:none;cursor:pointer;padding:6px 12px;border-radius:var(--r-md);transition:background 120ms" onmouseover="this.style.background='#EEF6FF'" onmouseout="this.style.background='none'">+ More configure functions</button>
+              </div>
+              <div style="display:none">
+                <div class="fn-grid" style="margin-top:12px">
+                  <div class="fn-card"><div class="fn-card-icon" style="background:#d1fae5">🌐</div><div class="fn-card-name">Web Search</div><div class="fn-card-desc">Search the web for real-time maritime news, port updates, and market data.</div><div class="fn-card-footer"><button class="fn-toggle" onclick="this.classList.toggle('on');updateFnSub()"></button></div></div>
+                  <div class="fn-card"><div class="fn-card-icon" style="background:#fce7f3">🔗</div><div class="fn-card-name">API Integrations</div><div class="fn-card-desc">Connect to external maritime APIs for live vessel tracking and data feeds.</div><div class="fn-card-footer"><button class="fn-toggle" onclick="this.classList.toggle('on');updateFnSub()"></button></div></div>
+                  <div class="fn-card"><div class="fn-card-icon" style="background:#e0f2fe">💼</div><div class="fn-card-name">Teams Notifications</div><div class="fn-card-desc">Push key alerts and summaries directly to your Microsoft Teams channels.</div><div class="fn-card-footer"><button class="fn-toggle" onclick="this.classList.toggle('on');updateFnSub()"></button></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="wiz-footer">
+            <span class="wiz-save-note">Last autosaved on 30 Nov 2025, 1:03 PM</span>
+            <div class="wiz-footer-btns"><button class="btn-skip" onclick="skipStep()">Skip</button><button class="btn-next" onclick="nextStep()">Next</button></div>
+          </div>
+        </div>
+
+        <!-- Panel 4: Assign Task -->
+        <div class="wiz-panel" id="wp4">
+          <div class="step5-scroll">
+            <div class="step-card">
+              <div class="section-title" style="margin-bottom:4px">Give Agent a first recurring task</div>
+              <p class="section-sub" style="margin-bottom:16px">Choose a preset task or write your own custom prompt for the agent to run on a schedule.</p>
+              <div class="tasks-grid">
+                <div class="task-card sel" onclick="selectTask(this)">
+                  <div class="task-radio"><div class="task-dot"></div></div>
+                  <div style="flex:1"><div class="task-title">Daily Voyage Summary</div><div class="task-desc">Compile a daily summary of all active voyages including ETA, port status, TCE performance, and any alerts that need attention. Highlight vessels at risk of delay and bunker deviations.</div><span class="task-sched">Every day at 8am</span></div>
+                </div>
+                <div class="task-card" onclick="selectTask(this)">
+                  <div class="task-radio"><div class="task-dot"></div></div>
+                  <div style="flex:1"><div class="task-title">Weekly Bunker Report</div><div class="task-desc">Generate a weekly fuel consumption and cost analysis across the fleet, comparing actual vs. estimated spend per vessel. Include efficiency scores and optimisation recommendations.</div><span class="task-sched">Every Monday at 9am</span></div>
+                </div>
+                <div class="task-card" onclick="selectTask(this)">
+                  <div class="task-radio"><div class="task-dot"></div></div>
+                  <div style="flex:1"><div class="task-title">Port Call Briefing</div><div class="task-desc">Prepare a pre-arrival briefing for each port call covering berth availability, agent contacts, cargo readiness, customs documentation, and estimated port costs.</div><span class="task-sched">24 hrs before each ETA</span></div>
+                </div>
+                <div class="task-card" onclick="selectTask(this)">
+                  <div class="task-radio"><div class="task-dot"></div></div>
+                  <div style="flex:1"><div class="task-title">TCE Performance Alert</div><div class="task-desc">Monitor TCE performance across the fleet and trigger alerts when any vessel's actual TCE falls more than 10% below the estimated benchmark. Include root cause notes.</div><span class="task-sched">Real-time monitoring</span></div>
+                </div>
+              </div>
+              <div style="margin-top:16px">
+                <div class="prompt-bar">
+                  <button class="prompt-plus">+</button>
+                  <input class="prompt-input" placeholder="Write a custom prompt for your agent…"/>
+                  <button class="prompt-send"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 19V5M5 12l7-7 7 7" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="wiz-footer">
+            <span class="wiz-save-note">Last autosaved on 30 Nov 2025, 1:03 PM</span>
+            <div class="wiz-footer-btns"><button class="btn-skip" onclick="skipStep()">Skip</button><button class="btn-next" onclick="saveAgent()" style="background:#0CA678">Save Agent</button></div>
+          </div>
+        </div>
+
+      </div><!-- /wiz-right -->
+    </div><!-- /wizard-wrap -->
+  </div><!-- /viewWizard -->
+
+  <!-- ══════════════════════════════════
+       VIEW 4: TANK CLEANING CHAT VIEW
+  ══════════════════════════════════ -->
+  <div class="view" id="viewTCD">
+    <div class="tcd-view">
+
+      <!-- Topbar -->
+      <div class="tcd-topbar">
+        <button class="tcd-back" onclick="closeAgentChat()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+        </button>
+        <div class="tcd-topbar-info">
+          <div class="tcd-topbar-title">Tank Cleaning Agent · MT Seagull Pioneer</div>
+          <div class="tcd-topbar-sub">Voyage 2024-087 · GeoClean AI</div>
+        </div>
+        <span class="tcd-await">⏳ Awaiting approval</span>
+      </div>
+
+      <!-- Chat scroll -->
+      <div class="tcd-scroll">
+        <div class="tcd-inner">
+
+          <!-- Agent greeting bubble -->
+          <div class="tcd-msg-row">
+            <div class="tcd-avatar">🧹</div>
+            <div class="tcd-bubble">I've completed the tank cleaning determination for <strong>Voyage 2024-087</strong>. Here's how I arrived at the procedure — please review before approving.</div>
+          </div>
+
+          <!-- Determination chain card -->
+          <div class="tcd-msg-row">
+            <div class="tcd-avatar" style="opacity:0;pointer-events:none">🧹</div>
+            <div style="flex:1">
+              <div class="tcd-section">
+                <div class="tcd-section-label">How the agent determined this</div>
+                <div class="tcd-steps">
+
+                  <!-- Step 1 -->
+                  <div class="tcd-step">
+                    <div class="tcd-step-num">1</div>
+                    <div class="tcd-step-body">
+                      <div class="tcd-step-name">Email parsed</div>
+                      <div class="tcd-step-detail">Vessel identified as <strong>MT Seagull Pioneer (IMO 9741023)</strong> from voyage ref VYG-2024-087</div>
+                      <div class="tcd-step-detail">Next cargo extracted: <strong>"ULSD"</strong> → resolved to Ultra Low Sulphur Diesel, sulphur ≤10ppm</div>
+                      <div class="tcd-step-detail" style="color:#CBD5E1;font-size:10.5px;margin-top:5px;">Source: voyage_order_email_087.eml</div>
+                      <button class="tcd-view-btn">View original email ↗</button>
+                    </div>
+                  </div>
+
+                  <!-- Step 2 -->
+                  <div class="tcd-step">
+                    <div class="tcd-step-num">2</div>
+                    <div class="tcd-step-body">
+                      <div class="tcd-step-name">Previous cargo retrieved</div>
+                      <div class="tcd-step-note">Sorted by <strong>discharge date</strong> (not voyage code — vessel code changed Dec 2023)</div>
+                      <div class="tcd-tank-grid">
+                        <div class="tcd-tank-card">
+                          <div class="tcd-tank-name">Centre tanks (1C, 2C, 3C)</div>
+                          <div class="tcd-tank-cargo">Previous: <strong>Gasoil (500ppm)</strong></div>
+                          <div class="tcd-tank-sub">VYG-2024-081 · discharged 14 Apr</div>
+                        </div>
+                        <div class="tcd-tank-card">
+                          <div class="tcd-tank-name">Wing tanks (1P, 1S, 2P, 2S)</div>
+                          <div class="tcd-tank-cargo">Previous: <strong>Jet A-1</strong></div>
+                          <div class="tcd-tank-sub">VYG-2024-081 · discharged 14 Apr</div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Step 3 -->
+                  <div class="tcd-step">
+                    <div class="tcd-step-num green">3</div>
+                    <div class="tcd-step-body">
+                      <div class="tcd-step-name">Guide lookup</div>
+                      <div class="tcd-step-detail">Used: <strong>Shell Guide (default)</strong> — combination found, no cascade required</div>
+                      <div class="tcd-step-detail">Match: Previous <strong>Gasoil 500ppm</strong> → Next <strong>ULSD 10ppm</strong> · Section 4.2.1</div>
+                      <div class="tcd-step-detail">Match: Previous <strong>Jet A-1</strong> → Next <strong>ULSD 10ppm</strong> · Section 4.1.8</div>
+                      <button class="tcd-view-btn">View guide sections ↗</button>
+                    </div>
+                  </div>
+
+                  <!-- Step 4 -->
+                  <div class="tcd-step">
+                    <div class="tcd-step-num green">4</div>
+                    <div class="tcd-step-body">
+                      <div class="tcd-step-name">Procedure determined</div>
+                      <div class="tcd-tank-grid">
+                        <div class="tcd-tank-card">
+                          <div class="tcd-tank-name">Centre tanks (1C, 2C, 3C)</div>
+                          <div class="tcd-method-badge green">Hot wash</div>
+                          <div class="tcd-tank-method-detail">60°C · 2h recirculation · no chemicals</div>
+                        </div>
+                        <div class="tcd-tank-card">
+                          <div class="tcd-tank-name">Wing tanks (1P, 1S, 2P, 2S)</div>
+                          <div class="tcd-method-badge amber">Rinse + cold wash</div>
+                          <div class="tcd-tank-method-detail">Ambient · 3h · verify no surfactant residue</div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Draft email card -->
+          <div class="tcd-msg-row">
+            <div class="tcd-avatar" style="opacity:0;pointer-events:none">🧹</div>
+            <div style="flex:1">
+              <div class="tcd-section">
+                <div class="tcd-email-header">
+                  <div class="tcd-email-label">Draft email to master</div>
+                  <button class="tcd-email-edit">Edit ↗</button>
+                </div>
+                <div class="tcd-email-card">
+                  <div class="tcd-email-meta">
+                    <strong>To:</strong> master@seagullpioneer.com &nbsp;·&nbsp; <strong>CC:</strong> ops@geovoy.com<br>
+                    <strong>Subject:</strong> Tank Cleaning Instructions — MT Seagull Pioneer / Voyage 2024-087
+                  </div>
+                  <div class="tcd-email-body">
+                    Dear Captain,<br><br>
+                    Please find below the tank cleaning instructions for your next cargo of <strong>Ultra Low Sulphur Diesel (ULSD, 10ppm)</strong>…
+                  </div>
+                  <div class="tcd-email-wordcount">— full email · 312 words —</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div style="height:8px"></div>
+        </div>
+      </div>
+
+      <!-- Chat input + action popover -->
+      <div class="tcd-input-area">
+        <!-- Action chips floating above input -->
+        <div class="tcd-action-popover">
+          <span class="tcd-pop-label">Ready to action —</span>
+          <button class="tcd-pop-btn tcd-pop-approve" onclick="tcdApprove()">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+            Approve &amp; send
+          </button>
+          <button class="tcd-pop-btn tcd-pop-edit">Edit determination</button>
+          <button class="tcd-pop-btn tcd-pop-reject">Reject</button>
+          <span class="tcd-pop-from">Sent from: j.kowalski@geovoy.com</span>
+        </div>
+        <!-- Chat field -->
+        <div class="tcd-chat-row">
+          <input class="tcd-chat-input" id="tcdChatInput" type="text" placeholder="Ask a question or add a note…" oninput="tcdToggleSend()" onkeydown="if(event.key==='Enter')tcdSend()"/>
+          <button class="tcd-chat-send" id="tcdSendBtn" onclick="tcdSend()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 19V5M5 12l7-7 7 7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════
+       VIEW 5: CP & VO AGENT CHAT VIEW
+  ══════════════════════════════════ -->
+  <div class="view" id="viewCPVO">
+    <div class="cpvo-view">
+
+      <!-- Topbar -->
+      <div class="cpvo-topbar">
+        <button class="cpvo-back" onclick="closeCPVOChat()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+        </button>
+        <div class="cpvo-topbar-info">
+          <div class="cpvo-topbar-title">CP &amp; VO Agent</div>
+          <div class="cpvo-topbar-sub">STI CLAPHAM · Voyage 20260514</div>
+        </div>
+      </div>
+
+      <!-- Chat scroll -->
+      <div class="cpvo-scroll">
+        <div class="cpvo-inner">
+
+          <!-- Agent greeting bubble -->
+          <div class="cpvo-msg-row">
+            <div class="cpvo-avatar">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8l-6-6zm-1 1.5L18.5 9H13V3.5zM6 20V4h5v7h7v9H6z"/></svg>
+            </div>
+            <div class="cpvo-bubble">
+              I can parse your Charter Party and extract all key commercial terms, generate master sailing instructions, and route clauses to the relevant agents. Upload the CP document to get started.
+            </div>
+          </div>
+
+          <!-- Upload / Processing / Success cards -->
+          <div class="cpvo-msg-row">
+            <div class="cpvo-avatar" style="opacity:0;pointer-events:none">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8l-6-6z"/></svg>
+            </div>
+            <div style="flex:1">
+
+              <!-- Upload Zone -->
+              <div class="cpvo-upload-card" id="cpvoUploadCard">
+                <div class="cpvo-upload-zone" onclick="cpvoHandleUpload()">
+                  <div class="cpvo-upload-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><polyline points="9 15 12 12 15 15"/></svg>
+                  </div>
+                  <div class="cpvo-upload-title">Drag &amp; drop CP here</div>
+                  <div class="cpvo-upload-hint">Accepts PDF and DOCX</div>
+                  <div class="cpvo-upload-actions">
+                    <button class="cpvo-browse-btn" id="cpvoBrowseBtn" onclick="event.stopPropagation();cpvoHandleUpload()">Browse file</button>
+                    <span class="cpvo-upload-or">or</span>
+                    <span class="cpvo-email-hint">Forward to <strong>agent@geoserve.com</strong></span>
+                  </div>
+                  <div id="cpvoFileName" class="cpvo-filename" style="display:none"></div>
+                </div>
+                <div class="cpvo-start-area">
+                  <button class="cpvo-start-btn" id="cpvoStartBtn" disabled onclick="cpvoSimulateProcessing()">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                    Start processing →
+                  </button>
+                </div>
+              </div>
+
+              <!-- Processing Card (hidden initially) -->
+              <div class="cpvo-processing-card" id="cpvoProcessingCard" style="display:none">
+                <div class="cpvo-proc-label">Processing your Charter Party…</div>
+                <div class="cpvo-proc-steps">
+                  <div class="cpvo-proc-step" id="cpvoStep1">
+                    <div class="cpvo-proc-num">1</div>
+                    <div class="cpvo-proc-text">Waiting…</div>
+                  </div>
+                  <div class="cpvo-proc-step" id="cpvoStep2">
+                    <div class="cpvo-proc-num">2</div>
+                    <div class="cpvo-proc-text">Waiting…</div>
+                  </div>
+                  <div class="cpvo-proc-step" id="cpvoStep3">
+                    <div class="cpvo-proc-num">3</div>
+                    <div class="cpvo-proc-text">Waiting…</div>
+                  </div>
+                  <div class="cpvo-proc-step" id="cpvoStep4">
+                    <div class="cpvo-proc-num">4</div>
+                    <div class="cpvo-proc-text">Waiting…</div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Success Card (hidden initially) -->
+              <div class="cpvo-success-card" id="cpvoSuccessCard" style="display:none">
+                <div class="cpvo-success-icon">✅</div>
+                <div class="cpvo-success-title">2 action cards ready on Vessel 360</div>
+                <div class="cpvo-success-sub">Your Charter Party has been fully processed. Master sailing instructions are awaiting approval, and the CP summary is ready to review.</div>
+                <a class="cpvo-success-btn" href="vessel.html">Go to Vessel 360 →</a>
+              </div>
+
+            </div>
+          </div>
+
+          <div style="height:8px"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<!-- SUCCESS OVERLAY -->
+<div class="success-overlay" id="successOverlay">
+  <div class="confetti-wrap" id="confettiWrap"></div>
+  <div class="success-ring"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+  <div class="success-title">Agent Created!</div>
+  <div class="success-sub" id="successSub">Your agent is ready and has been added to Geonix.</div>
+</div>
+
+<script>
+/* ──────────────────────────────────────────
+   DATA
+────────────────────────────────────────── */
+var SKILLS = [
+  {id:'estimate-costs',  name:'Estimate Costs',    emoji:'🧠', bg:'#fce7f3', color:'#EC4899'},
+  {id:'recurring-tasks', name:'Recurring Tasks',   emoji:'🕐', bg:'#d1fae5', color:'#0CA678'},
+  {id:'estimate-fuel',   name:'Estimate Fuel',     emoji:'⚡', bg:'#dbeafe', color:'#3B82F6'},
+  {id:'feed-chartering', name:'Feed Chartering',   emoji:'🌐', bg:'#e0e7ff', color:'#6366F1'},
+  {id:'analyse-tce',     name:'Analyse TCE Score', emoji:'⭐', bg:'#d1fae5', color:'#10B981'},
+  {id:'slide-gen',       name:'Slide Generation',  emoji:'🖥', bg:'#fef3c7', color:'#F59E0B'},
+  {id:'image-gen',       name:'Image Generation',  emoji:'🎨', bg:'#f5f3ff', color:'#8B5CF6'},
+  {id:'custom-skills',   name:'Custom Skills',     emoji:'⚙️', bg:'#e0f2fe', color:'#0891B2'},
+  {id:'code-exec',       name:'Code Execution',    emoji:'💻', bg:'#f1f5f9', color:'#64748B'},
+  {id:'weather',         name:'Estimate Weather',  emoji:'🌤', bg:'#e0f2fe', color:'#0369A1'},
+  {id:'port-ops',        name:'Port Operations',   emoji:'⚓', bg:'#ede9fe', color:'#7C3AED'},
+  {id:'voyage-plan',     name:'Voyage Planning',   emoji:'🗺', bg:'#e0e7ff', color:'#1D4ED8'},
+];
+
+var BUBBLE_POSITIONS = [
+  {top:'8%',   left:'50%', transform:'translateX(-50%)'},
+  {top:'18%',  right:'10%'},
+  {top:'42%',  right:'5%', transform:'translateY(-50%)'},
+  {bottom:'18%', right:'10%'},
+  {bottom:'8%', left:'50%', transform:'translateX(-50%)'},
+  {bottom:'18%', left:'10%'},
+  {top:'42%',  left:'5%', transform:'translateY(-50%)'},
+  {top:'18%',  left:'10%'},
+];
+
+var APPS = [
+  {id:'firecrawl', name:'Firecrawl',        sub:'Included in GeoConnect', emoji:'🔥', connected:true},
+  {id:'slack',     name:'Slack',            sub:'',                        emoji:'💬', connected:false},
+  {id:'airtable',  name:'Airtable',         sub:'',                        emoji:'📊', connected:false},
+  {id:'gmail',     name:'Gmail',            sub:'',                        emoji:'📧', connected:false},
+  {id:'outlook',   name:'Outlook',          sub:'',                        emoji:'📮', connected:false},
+  {id:'sheets',    name:'Google Sheets',    sub:'',                        emoji:'📗', connected:false},
+  {id:'drive',     name:'Google Drive',     sub:'',                        emoji:'📁', connected:false},
+  {id:'calendar',  name:'Google Calendar',  sub:'',                        emoji:'📅', connected:false},
+  {id:'notion',    name:'Notion',           sub:'',                        emoji:'📓', connected:false},
+  {id:'teams',     name:'Microsoft Teams',  sub:'',                        emoji:'💼', connected:false},
+  {id:'hubspot',   name:'HubSpot',          sub:'',                        emoji:'🟠', connected:false},
+  {id:'whatsapp',  name:'WhatsApp',         sub:'',                        emoji:'💚', connected:false},
+  {id:'telegram',  name:'Telegram',         sub:'',                        emoji:'✈️', connected:false},
+];
+
+var AGENTS_DEFAULT = [
+  {name:'Tank Cleaning Agent', desc:'Guides pre-wash procedures, cargo compatibility, COA issuance, and tank inspection workflows.', color:'#0CA678', chat:true},
+  {name:'CP & VO Agent', desc:'Parses charter parties, extracts key terms, routes clauses to downstream agents, and drafts master sailing instructions.', color:'#4F46E5', chat:'cpvo'},
+  {name:'Voyage Estimator Agent', desc:'Calculates voyage P&L, freight estimates, and performance benchmarks across voyages.', color:'#1852FE'},
+  {name:'Vessel Intelligence',    desc:'Provides real-time vessel data, AIS tracking, and fleet-wide performance insights.',    color:'#0EA5E9'},
+  {name:'Stowage Agent',          desc:'Optimises cargo stowage plans, stability calculations, and draft surveys.',             color:'#4F46E5'},
+  {name:'Bunker Agent',           desc:'Monitors fuel consumption, assists with bunker planning and cost optimisation.',        color:'#0891B2'},
+  {name:'Route Agent',            desc:'Plans optimal voyage routes considering weather, port schedules, and economics.',       color:'#1D4ED8'},
+  {name:'Port Operations Agent',  desc:'Manages port call planning, berth scheduling, and disbursement accounts.',             color:'#7C3AED'},
+];
+
+var agentsList = AGENTS_DEFAULT.slice();
+var selectedSkills = new Set(['estimate-costs','recurring-tasks','analyse-tce','slide-gen']);
+var currentStep = 0;
+var TOTAL_STEPS = 5;
+
+var STEP_DEFS = [
+  {label:'Assign Name',  sub:'Yet to fill'},
+  {label:'Connect Apps', sub:'Yet to fill'},
+  {label:'Give Training',sub:'Yet to fill'},
+  {label:'Functions',    sub:'Yet to fill'},
+  {label:'Assign Task',  sub:''},
+];
+
+/* ──────────────────────────────────────────
+   GREETING
+────────────────────────────────────────── */
+(function(){
+  var h = new Date().getHours();
+  document.getElementById('greeting').textContent =
+    (h<12?'Good Morning':h<17?'Good Afternoon':'Good Evening')+'! Vishnu';
+})();
+
+/* ──────────────────────────────────────────
+   RENDER AGENTS GRID
+────────────────────────────────────────── */
+function renderAgents() {
+  var grid = document.getElementById('agentsGrid');
+  var list = agentsList.slice(0, 6);
+  grid.innerHTML = list.map(function(a) {
+    var clickHandler, icon;
+    if (a.chat === 'cpvo') {
+      clickHandler = 'openCPVOChat()';
+      icon = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8l-6-6zm-1 1.5L18.5 9H13V3.5zM6 20V4h5v7h7v9H6z"/></svg>';
+    } else if (a.chat) {
+      clickHandler = 'openAgentChat()';
+      icon = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 2h10a3 3 0 013 3v7a3 3 0 01-3 3h-1.586l-2.707 2.707A1 1 0 0111 17v-2H7a3 3 0 01-3-3V5a3 3 0 013-3z"/></svg>';
+    } else {
+      clickHandler = 'return false';
+      icon = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v2.4h19.2v-2.4c0-3.2-6.4-4.8-9.6-4.8z"/></svg>';
+    }
+    return '<a class="agent-card" href="#" onclick="' + clickHandler + '; return false">' +
+      '<div class="agent-avatar" style="background:' + a.color + '">' + icon +
+      '</div><div class="agent-body"><div class="agent-name">' + a.name + '</div>' +
+      '<div class="agent-desc">' + a.desc + '</div></div></a>';
+  }).join('');
+}
+renderAgents();
+
+/* ──────────────────────────────────────────
+   TANK CLEANING AGENT CHAT
+────────────────────────────────────────── */
+function openAgentChat() {
+  document.querySelectorAll('.view').forEach(function(v){ v.classList.remove('active'); });
+  document.getElementById('viewTCD').classList.add('active');
+}
+function closeAgentChat() {
+  document.querySelectorAll('.view').forEach(function(v){ v.classList.remove('active'); });
+  document.getElementById('viewMain').classList.add('active');
+}
+function tcdToggleSend() {
+  var v = document.getElementById('tcdChatInput').value.trim();
+  document.getElementById('tcdSendBtn').classList.toggle('on', v.length > 0);
+}
+function tcdSend() {
+  var input = document.getElementById('tcdChatInput');
+  if (!input.value.trim()) return;
+  input.value = '';
+  tcdToggleSend();
+}
+function tcdApprove() {
+  closeAgentChat();
+  var cards = document.querySelectorAll('.agent-card .agent-name');
+  for (var i = 0; i < cards.length; i++) {
+    if (cards[i].textContent.indexOf('Tank Cleaning') !== -1) {
+      cards[i].textContent = 'Tank Cleaning Agent ✓';
+      cards[i].style.color = '#0CA678';
+      break;
+    }
+  }
+}
+
+/* ──────────────────────────────────────────
+   CP & VO AGENT CHAT
+────────────────────────────────────────── */
+function openCPVOChat() {
+  document.querySelectorAll('.view').forEach(function(v){ v.classList.remove('active'); });
+  document.getElementById('viewCPVO').classList.add('active');
+}
+function closeCPVOChat() {
+  document.querySelectorAll('.view').forEach(function(v){ v.classList.remove('active'); });
+  document.getElementById('viewMain').classList.add('active');
+}
+
+function cpvoHandleUpload() {
+  // Simulate file selection for demo
+  var fileName = document.getElementById('cpvoFileName');
+  var startBtn = document.getElementById('cpvoStartBtn');
+  fileName.textContent = '📄 STI_CLAPHAM_CP_20260514.pdf';
+  fileName.style.display = 'block';
+  startBtn.disabled = false;
+  startBtn.style.opacity = '1';
+}
+
+function cpvoSimulateProcessing() {
+  // Hide upload card, show processing card
+  document.getElementById('cpvoUploadCard').style.display = 'none';
+  var procCard = document.getElementById('cpvoProcessingCard');
+  procCard.style.display = 'block';
+
+  var steps = [
+    { id: 'cpvoStep1', text: 'CP document parsed — SHELL VOVOY 93 · 60 pages', delay: 800 },
+    { id: 'cpvoStep2', text: 'Vessel & voyage identified — STI CLAPHAM · Voyage 20260514', delay: 1800 },
+    { id: 'cpvoStep3', text: '24 key terms extracted · 3 clauses flagged for review', delay: 3000 },
+    { id: 'cpvoStep4', text: 'Clauses routed to 6 downstream agents · 2 action cards ready', delay: 4200 },
+  ];
+
+  // Set first step to pulsing
+  document.getElementById('cpvoStep1').classList.add('processing');
+
+  steps.forEach(function(step, idx) {
+    setTimeout(function() {
+      var el = document.getElementById(step.id);
+      el.classList.remove('processing');
+      el.classList.add('done');
+      el.querySelector('.cpvo-proc-text').textContent = step.text;
+      el.querySelector('.cpvo-proc-num').innerHTML = '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>';
+      // Start next step pulsing
+      var nextStep = steps[idx + 1];
+      if (nextStep) {
+        document.getElementById(nextStep.id).classList.add('processing');
+      }
+    }, step.delay);
+  });
+
+  // Show success after all steps
+  setTimeout(function() {
+    procCard.style.display = 'none';
+    document.getElementById('cpvoSuccessCard').style.display = 'block';
+  }, 4500);
+}
+
+function cpvoResetView() {
+  document.getElementById('cpvoUploadCard').style.display = 'block';
+  document.getElementById('cpvoProcessingCard').style.display = 'none';
+  document.getElementById('cpvoSuccessCard').style.display = 'none';
+  document.getElementById('cpvoFileName').style.display = 'none';
+  document.getElementById('cpvoStartBtn').disabled = true;
+  document.getElementById('cpvoStartBtn').style.opacity = '0.5';
+  // Reset steps
+  ['cpvoStep1','cpvoStep2','cpvoStep3','cpvoStep4'].forEach(function(id, i) {
+    var el = document.getElementById(id);
+    el.classList.remove('done', 'processing');
+    el.querySelector('.cpvo-proc-num').textContent = (i + 1);
+    el.querySelector('.cpvo-proc-text').textContent = 'Waiting…';
+  });
+}
+
+/* ──────────────────────────────────────────
+   RENDER STEPPER
+────────────────────────────────────────── */
+function renderStepper() {
+  var html = '';
+  STEP_DEFS.forEach(function(s, i) {
+    var cls = i < currentStep ? 'done' : i === currentStep ? 'active' : '';
+    var circle = i < currentStep
+      ? '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>'
+      : (i + 1);
+    var line = i < TOTAL_STEPS - 1
+      ? '<div class="step-line"></div>'
+      : '';
+    var sub = STEP_DEFS[i].sub;
+    html += '<div class="step-row ' + cls + '" onclick="goToStep(' + i + ')" id="sr' + i + '">' +
+      '<div class="step-track">' +
+      '<div class="step-circle">' + circle + '</div>' +
+      line +
+      '</div>' +
+      '<div class="step-info">' +
+      '<div class="step-name">' + s.label + '</div>' +
+      '<div class="step-sub" id="ss' + i + '">' + sub + '</div>' +
+      '</div></div>';
+  });
+  document.getElementById('stepperList').innerHTML = html;
+}
+
+/* ──────────────────────────────────────────
+   RENDER SKILLS
+────────────────────────────────────────── */
+var SVG_CHECKED = '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M16.25 5H7.75C6.233 5 5 6.233 5 7.75V16.25C5 17.767 6.233 19 7.75 19H16.25C17.767 19 19 17.767 19 16.25V7.75C19 6.233 17.767 5 16.25 5ZM15.843 9.708L11.593 15.208C11.457 15.384 11.25 15.491 11.028 15.499C11.018 15.499 11.009 15.499 11 15.499C10.788 15.499 10.585 15.409 10.442 15.251L8.192 12.751C7.915 12.443 7.94 11.969 8.248 11.691C8.557 11.415 9.03 11.439 9.308 11.747L10.956 13.579L14.657 8.79C14.909 8.462 15.383 8.402 15.709 8.655C16.037 8.908 16.097 9.379 15.844 9.707L15.843 9.708Z" fill="#1852FE"/></svg>';
+var SVG_UNCHECKED = '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M7.75 5.5H16.25C17.4909 5.5 18.5 6.50914 18.5 7.75V16.25C18.5 17.4909 17.4909 18.5 16.25 18.5H7.75C6.50914 18.5 5.5 17.4909 5.5 16.25V7.75C5.5 6.50914 6.50914 5.5 7.75 5.5ZM7.75 6C6.78486 6 6 6.78486 6 7.75V16.25C6 17.2151 6.78486 18 7.75 18H16.25C17.2151 18 18 17.2151 18 16.25V7.75C18 6.78486 17.2151 6 16.25 6H7.75Z" fill="black" stroke="#CBD5E1"/></svg>';
+
+function renderSkills(query) {
+  var list = SKILLS.filter(function(s) {
+    return !query || s.name.toLowerCase().indexOf(query.toLowerCase()) !== -1;
+  });
+  var html = list.map(function(s) {
+    var sel = selectedSkills.has(s.id);
+    return '<div class="skill-row' + (sel ? ' selected' : '') + '" onclick="toggleSkill(\'' + s.id + '\')">' +
+      '<div class="skill-icon" style="background:' + s.bg + '">' + s.emoji + '</div>' +
+      '<span class="skill-row-name">' + s.name + '</span>' +
+      '<span class="skill-checkbox">' + (sel ? SVG_CHECKED : SVG_UNCHECKED) + '</span>' +
+      '</div>';
+  }).join('');
+  document.getElementById('skillsList').innerHTML = html;
+  renderSkillVis();
+}
+
+function filterSkills(q) { renderSkills(q); }
+
+function toggleSkill(id) {
+  if (selectedSkills.has(id)) selectedSkills.delete(id);
+  else selectedSkills.add(id);
+  renderSkills(document.getElementById('skillSearch').value);
+  updateNextBtn();
+  var count = selectedSkills.size;
+  var names = Array.from(selectedSkills).slice(0, 2).map(function(sid){
+    var s = SKILLS.find(function(x){ return x.id === sid; });
+    return s ? s.name : sid;
+  });
+  var extra = count > 2 ? ' +' + (count - 2) : '';
+  updateStepSub(0,
+    document.getElementById('agentNameInput').value.trim() ||
+    (count > 0 ? names.join(', ') + extra : 'Yet to fill')
+  );
+}
+
+function updateNextBtn() {
+  var btn = document.querySelector('#wp0 .btn-next');
+  var hint = document.getElementById('skillsHint');
+  if (!btn) return;
+  if (selectedSkills.size < 3) {
+    btn.disabled = true; btn.style.opacity = '.45'; btn.style.cursor = 'not-allowed';
+    if (hint) hint.classList.add('show');
+  } else {
+    btn.disabled = false; btn.style.opacity = ''; btn.style.cursor = '';
+    if (hint) hint.classList.remove('show');
+  }
+}
+
+/* ──────────────────────────────────────────
+   SKILL VISUALIZATION
+────────────────────────────────────────── */
+function renderSkillVis() {
+  var vis = document.getElementById('skillVis');
+  var html = '<div class="vis-center">✦</div>';
+  var shown = SKILLS.slice(0, 8);
+  shown.forEach(function(s, i) {
+    var pos = BUBBLE_POSITIONS[i] || {top:'50%', left:'50%'};
+    var sel = selectedSkills.has(s.id);
+    var style = '';
+    Object.keys(pos).forEach(function(k) { style += k + ':' + pos[k] + ';'; });
+    // offset chip so it centres on the position point
+    style += 'margin-left:-40px;margin-top:-40px;';
+    html += '<div class="vis-chip ' + (sel ? 'on' : 'off') + '" style="' + style + '">' +
+      '<div class="vis-chip-icon" style="background:' + s.bg + '">' + s.emoji + '</div>' +
+      '<span class="vis-chip-label">' + s.name + '</span>' +
+      '</div>';
+  });
+  vis.innerHTML = html;
+}
+
+/* ──────────────────────────────────────────
+   RENDER APPS
+────────────────────────────────────────── */
+function renderApps(query) {
+  var connected = APPS.filter(function(a) { return a.connected && (!query || a.name.toLowerCase().indexOf(query.toLowerCase()) !== -1); });
+  var all = APPS.filter(function(a) { return !a.connected && (!query || a.name.toLowerCase().indexOf(query.toLowerCase()) !== -1); });
+
+  var connSec = document.getElementById('connectedAppsSection');
+  connSec.style.display = connected.length ? '' : 'none';
+  document.getElementById('connectedAppsList').innerHTML = connected.map(appRow).join('');
+  document.getElementById('allAppsList').innerHTML = all.map(appRow).join('');
+  renderOrbit();
+}
+
+function appRow(a) {
+  var chk = a.connected ? SVG_CHECKED : SVG_UNCHECKED;
+  return '<div class="app-row' + (a.connected ? ' connected' : '') + '" onclick="toggleApp(\'' + a.id + '\')">' +
+    '<div class="app-icon">' + a.emoji + '</div>' +
+    '<div style="flex:1"><div class="app-name">' + a.name + '</div>' +
+    (a.sub ? '<div class="app-sub">' + a.sub + '</div>' : '') +
+    '</div>' +
+    '<span class="app-checkbox">' + chk + '</span>' +
+    '</div>';
+}
+
+function filterApps(q) { renderApps(q); }
+
+function toggleApp(id) {
+  var app = APPS.find(function(a) { return a.id === id; });
+  if (app) app.connected = !app.connected;
+  renderApps(document.getElementById('appSearch').value);
+  updateAppSub();
+}
+
+function renderOrbit() {
+  var allApps = APPS;
+  // Positions calibrated for 380px orbit-wrap, 44px nodes, outer ring 320px (radius 160px)
+  var positions = [
+    {top:'8px',  left:'50%',  transform:'translateX(-50%)'},          // top
+    {top:'55px', right:'55px'},                                        // top-right
+    {top:'50%',  right:'8px', transform:'translateY(-50%)'},          // right
+    {bottom:'55px', right:'55px'},                                     // bottom-right
+    {bottom:'8px', left:'50%', transform:'translateX(-50%)'},         // bottom
+    {bottom:'55px', left:'55px'},                                      // bottom-left
+    {top:'50%',  left:'8px',  transform:'translateY(-50%)'},          // left
+    {top:'55px', left:'55px'},                                         // top-left
+  ];
+  var shown = allApps.slice(0, 8);
+  var html = shown.map(function(app, i) {
+    var pos = positions[i] || {};
+    var style = Object.keys(pos).map(function(k){ return k+':'+pos[k]; }).join(';');
+    return '<div class="orbit-node' + (app.connected ? ' connected' : '') + '" style="' + style + '">' + app.emoji + '</div>';
+  }).join('');
+  document.getElementById('orbitNodes').innerHTML = html;
+}
+
+/* ──────────────────────────────────────────
+   VIEW SWITCHING
+────────────────────────────────────────── */
+function setView(id) {
+  ['viewMain','viewLanding','viewWizard'].forEach(function(v) {
+    document.getElementById(v).classList.toggle('active', v === id);
+  });
+}
+function showMain()          { setView('viewMain'); }
+function showCreateLanding() { setView('viewLanding'); }
+function showWizard()        { setView('viewWizard'); setStep(0); }
+
+/* ──────────────────────────────────────────
+   STEPPER LOGIC
+────────────────────────────────────────── */
+function setStep(n) {
+  currentStep = n;
+  renderStepper();
+  for (var i = 0; i < TOTAL_STEPS; i++) {
+    var p = document.getElementById('wp' + i);
+    if (p) p.classList.toggle('active', i === n);
+  }
+  if (n === 2) {
+    var slot = document.getElementById('aiTeamCardSlot');
+    if (slot) slot.innerHTML = renderAITeamCard();
+  }
+  if (n === 3) updateFnSub();
+}
+
+function goToStep(n) { setStep(n); }
+function nextStep()  { if (currentStep < TOTAL_STEPS - 1) setStep(currentStep + 1); }
+function skipStep()  { if (currentStep < TOTAL_STEPS - 1) setStep(currentStep + 1); else saveAgent(); }
+
+function updateStepSub(i, text) {
+  STEP_DEFS[i].sub = text;
+  var el = document.getElementById('ss' + i);
+  if (el) el.textContent = text;
+}
+
+function onNameChange(val) {
+  var name = val ? val.trim() : '';
+  updateStepSub(0, name || 'Yet to fill');
+}
+
+function updateAppSub() {
+  var connected = APPS.filter(function(a) { return a.connected; });
+  if (connected.length === 0) {
+    updateStepSub(1, 'No apps connected');
+  } else {
+    var names = connected.slice(0, 2).map(function(a){ return a.name; });
+    var extra = connected.length > 2 ? ' +' + (connected.length - 2) + ' more' : '';
+    updateStepSub(1, names.join(', ') + extra);
+  }
+}
+
+function updateFnSub() {
+  var on = document.querySelectorAll('#wp3 .fn-toggle.on').length;
+  updateStepSub(3, on + ' function' + (on === 1 ? '' : 's') + ' enabled');
+}
+
+function renderAITeamCard() {
+  var skills = Array.from(selectedSkills).slice(0, 5).map(function(id) {
+    return SKILLS.find(function(s){ return s.id === id; });
+  }).filter(Boolean);
+  var apps = APPS.filter(function(a){ return a.connected; }).slice(0, 5);
+  var items = skills.map(function(s) {
+    return '<div class="ai-team-item"><span class="ai-team-icon">' + s.emoji + '</span><span class="ai-team-label">' + s.name + '</span></div>';
+  }).concat(apps.map(function(a) {
+    return '<div class="ai-team-item"><span class="ai-team-icon">' + a.emoji + '</span><span class="ai-team-label">' + a.name + '</span></div>';
+  })).join('');
+  if (!items) return '';
+  return '<div class="ai-team-card">' +
+    '<div class="ai-team-title">Your AI Team</div>' +
+    '<div class="ai-team-grid">' + items + '</div>' +
+    '</div>';
+}
+
+/* ──────────────────────────────────────────
+   SAVE + SUCCESS
+────────────────────────────────────────── */
+function saveAgent() {
+  var name = (document.getElementById('agentNameInput').value || '').trim() || 'Custom Agent';
+  var colors = ['#1852FE','#0EA5E9','#4F46E5','#0891B2','#1D4ED8','#7C3AED','#0CA678','#F59E0B'];
+  var color = colors[Math.floor(Math.random() * colors.length)];
+  var skills = Array.from(selectedSkills);
+  var desc = 'Custom AI agent with ' + (skills.length || 'selected') + ' skills including ' +
+    (skills.slice(0,2).map(function(id){ var s=SKILLS.find(function(x){return x.id===id}); return s?s.name:id; }).join(', ') || 'AI capabilities') + '.';
+
+  // Add new agent to front of list
+  agentsList.unshift({name: name, desc: desc, color: color});
+  agentsList = agentsList.slice(0, 6);
+
+  // Show success
+  spawnConfetti();
+  var overlay = document.getElementById('successOverlay');
+  document.getElementById('successSub').textContent = '"' + name + '" is ready and has been added to Geonix.';
+  overlay.classList.add('show');
+
+  setTimeout(function() {
+    overlay.classList.remove('show');
+    renderAgents();
+    showMain();
+    // Reset wizard
+    selectedSkills = new Set(['estimate-costs','recurring-tasks','analyse-tce','slide-gen']);
+    document.getElementById('agentNameInput').value = '';
+    setStep(0);
+  }, 2600);
+}
+
+function spawnConfetti() {
+  var wrap = document.getElementById('confettiWrap');
+  wrap.innerHTML = '';
+  var colors = ['#1852FE','#0CA678','#F59E0B','#EC4899','#8B5CF6','#0EA5E9'];
+  for (var i = 0; i < 60; i++) {
+    var d = document.createElement('div');
+    d.className = 'dot';
+    d.style.cssText = 'left:' + (10 + Math.random()*80) + '%;' +
+      'background:' + colors[Math.floor(Math.random()*colors.length)] + ';' +
+      'animation-duration:' + (1.5 + Math.random()*1.5) + 's;' +
+      'animation-delay:' + (Math.random()*0.4) + 's;' +
+      'width:' + (6 + Math.random()*8) + 'px;height:' + (6 + Math.random()*8) + 'px;' +
+      'border-radius:' + (Math.random() > 0.5 ? '50%' : '2px');
+    wrap.appendChild(d);
+  }
+}
+
+/* ──────────────────────────────────────────
+   TASK SELECTION
+────────────────────────────────────────── */
+function selectTask(el) {
+  document.querySelectorAll('.task-card').forEach(function(c){ c.classList.remove('sel'); });
+  el.classList.add('sel');
+  var title = el.querySelector('.task-title');
+  if (title) updateStepSub(4, title.textContent);
+}
+
+function handleSend() {
+  var inp = document.getElementById('chatInput');
+  if (inp && inp.value.trim()) inp.value = '';
+}
+document.getElementById('chatInput').addEventListener('keydown', function(e){
+  if (e.key === 'Enter') handleSend();
+});
+
+/* ──────────────────────────────────────────
+   INIT
+────────────────────────────────────────── */
+renderStepper();
+renderSkills('');
+renderApps('');
+updateNextBtn();
+// Pre-populate stepper subtitles for default selections
+updateAppSub();                            // Firecrawl is connected by default
+updateStepSub(3, '2 functions enabled');  // Live Email Parsing + Draft Response start "on"
+updateStepSub(4, 'Daily Voyage Summary'); // First task card is pre-selected
+
+if (window.location.hash === '#create-agent') showWizard();
+</script>
+</body>
+</html>

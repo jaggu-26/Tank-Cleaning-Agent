@@ -1,0 +1,828 @@
+<!-- ═══════════════════════════════════════════════════════════════
+     TOGGLES & SWITCHES — Pelagos Design System
+     ═══════════════════════════════════════════════════════════════ -->
+
+<style>
+  /* Switch demo button resets + transitions */
+  .gs-sdemo { border:none; padding:0; cursor:pointer; position:relative; border-radius:var(--radius-full); display:inline-block; vertical-align:middle; transition:background 0.2s ease; }
+  .gs-sdemo:focus-visible { outline:none; box-shadow:0 0 0 3px rgba(24,82,254,0.28); }
+  .gs-sdemo[aria-disabled="true"] { opacity:0.45; cursor:not-allowed; pointer-events:none; }
+  .gs-sdemo-thumb { position:absolute; top:2px; left:2px; background:var(--prim-white); border-radius:var(--radius-full); box-shadow:var(--prim-shadow-sm); transition:transform 0.2s ease; display:block; }
+  .gs-sdemo-label { font-family:var(--prim-font-primary); font-size:var(--prim-font-size-md); font-weight:var(--prim-font-weight-medium); }
+  /* Accordion demo */
+  .gs-ademo-hdr { display:flex; align-items:center; justify-content:space-between; border:none; background:none; width:100%; cursor:pointer; text-align:left; transition:background 0.15s ease; }
+  .gs-ademo-hdr:focus-visible { outline:2px solid var(--color-brand); outline-offset:2px; }
+  .gs-ademo-title { font-family:var(--prim-font-primary); font-size:var(--prim-font-size-md); font-weight:var(--prim-font-weight-semibold); color:var(--prim-grey-700); }
+  .gs-ademo-chevron { flex-shrink:0; transition:transform 0.2s ease; }
+  .gs-ademo-body { border-top:1px solid var(--color-brand-border); }
+</style>
+
+<!-- BANNER -->
+<div class="page-header">
+  <h1 class="ds-hero-title">Switch</h1>
+</div>
+
+<!-- TAB BAR -->
+<div class="btn-tab-bar">
+  <button class="btn-tab-btn tog-tab-btn active" data-tab="design" onclick="switchTogglesTab('design')">Design</button>
+  <button class="btn-tab-btn tog-tab-btn" data-tab="code"   onclick="switchTogglesTab('code')">Code</button>
+  <button class="btn-tab-btn tog-tab-btn" data-tab="usage"  onclick="switchTogglesTab('usage')">Usage</button>
+</div>
+
+<!-- ═══ DESIGN TAB ═══════════════════════════════════════════════════ -->
+<div id="tog-tab-design" class="btn-tab-pane tog-tab-pane active">
+  <div class="code-tab-layout">
+    <div class="code-tab-main">
+
+      <!-- OVERVIEW -->
+      <div id="tog-s-overview" class="btn-family-card">
+        <div class="btn-family-title">Overview</div>
+        <p class="btn-family-desc">Toggles and switches are binary controls that instantly apply a setting without requiring a submit action. They replace checkboxes when a setting takes immediate effect — enabling dark mode, turning notifications on. Pelagos provides three sizes and a loading state, with smooth thumb-slide transitions and complete ARIA switch semantics.</p>
+
+        <!-- INTERACTIVE PREVIEW -->
+        <div class="btn-preview-strip" style="display:flex;gap:0;flex-direction:column;align-items:flex-start;padding:32px 28px;background:var(--color-surface-subtle);border:1px solid var(--color-border-default);border-radius:var(--radius-lg);margin-top:16px;gap:20px;">
+          <!-- Off -->
+          <div style="display:flex;align-items:center;gap:12px;">
+            <button class="gs-sdemo"
+              role="switch" aria-checked="false" data-on="0" data-travel="20"
+              style="width:44px;height:24px;background:var(--prim-grey-100);"
+              aria-label="Notifications" onclick="gsToggleSwitchDemo(this)">
+              <span class="gs-sdemo-thumb" style="width:20px;height:20px;"></span>
+            </button>
+            <span class="gs-sdemo-label" style="color:var(--color-text-secondary);">Notifications off — click to toggle</span>
+          </div>
+          <!-- On -->
+          <div style="display:flex;align-items:center;gap:12px;">
+            <button class="gs-sdemo"
+              role="switch" aria-checked="true" data-on="1" data-travel="20"
+              style="width:44px;height:24px;background:var(--color-brand);"
+              aria-label="Dark mode" onclick="gsToggleSwitchDemo(this)">
+              <span class="gs-sdemo-thumb" style="width:20px;height:20px;transform:translateX(20px);"></span>
+            </button>
+            <span class="gs-sdemo-label" style="color:var(--color-text-default);font-weight:var(--prim-font-weight-semibold);">Dark mode on — click to toggle</span>
+          </div>
+          <!-- Large -->
+          <div style="display:flex;align-items:center;gap:12px;">
+            <button class="gs-sdemo"
+              role="switch" aria-checked="true" data-on="1" data-travel="24"
+              style="width:52px;height:28px;background:var(--color-brand);"
+              aria-label="Feature flag" onclick="gsToggleSwitchDemo(this)">
+              <span class="gs-sdemo-thumb" style="width:24px;height:24px;transform:translateX(24px);"></span>
+            </button>
+            <span class="gs-sdemo-label" style="color:var(--color-text-default);font-weight:var(--prim-font-weight-semibold);">Feature flag (large) — click to toggle</span>
+          </div>
+        </div>
+
+        <div class="btn-when-examples" style="margin-top:16px;">
+          <span class="btn-when-example-tag">3 Sizes</span>
+          <span class="btn-when-example-tag">5 States</span>
+          <span class="btn-when-example-tag">Loading State</span>
+          <span class="btn-when-example-tag">WCAG AA</span>
+        </div>
+      </div>
+
+      <!-- ANATOMY -->
+      <div id="tog-s-anatomy" class="btn-family-card">
+        <div class="btn-family-title">Anatomy</div>
+        <p class="btn-family-desc">A switch is a single <code>&lt;button role="switch"&gt;</code> element. It consists of a pill-shaped track and a circular thumb that slides between off (left) and on (right). An optional label sits beside it.</p>
+
+        <div style="background:var(--color-surface-subtle);border:1px solid var(--color-border-default);border-radius:var(--radius-lg);padding:32px;display:flex;justify-content:center;margin-top:8px;overflow:auto;">
+          <svg width="520" height="200" viewBox="0 0 520 200" fill="none" xmlns="http://www.w3.org/2000/svg" style="min-width:440px;">
+            <text x="80" y="108" font-size="13" font-weight="600" fill="#1e293b" font-family="Helvetica,Arial,sans-serif">Dark mode</text>
+            <rect x="200" y="90" width="80" height="40" rx="20" fill="#1852fe"/>
+            <circle cx="260" cy="110" r="16" fill="#fff"/>
+            <defs><filter id="sw-shadow2" x="-50%" y="-50%" width="200%" height="200%"><feDropShadow dx="0" dy="1" stdDeviation="2" flood-color="rgba(0,0,0,0.15)"/></filter></defs>
+            <!-- 1 Label -->
+            <line x1="120" y1="98" x2="120" y2="40" stroke="#cbd5e1" stroke-width="1"/>
+            <line x1="120" y1="40" x2="400" y2="40" stroke="#cbd5e1" stroke-width="1"/>
+            <circle cx="400" cy="40" r="10" fill="#1852fe"/>
+            <text x="400" y="44" font-size="11" font-weight="700" fill="white" text-anchor="middle" font-family="Helvetica,Arial,sans-serif">1</text>
+            <text x="416" y="44" font-size="11" fill="#475569" font-family="Helvetica,Arial,sans-serif">Label (optional, 8px gap)</text>
+            <!-- 2 Track -->
+            <line x1="240" y1="90" x2="240" y2="28" stroke="#cbd5e1" stroke-width="1"/>
+            <circle cx="240" cy="18" r="10" fill="#1852fe"/>
+            <text x="240" y="22" font-size="11" font-weight="700" fill="white" text-anchor="middle" font-family="Helvetica,Arial,sans-serif">2</text>
+            <text x="215" y="8" font-size="11" fill="#475569" font-family="Helvetica,Arial,sans-serif" text-anchor="middle">Track (pill)</text>
+            <!-- 3 Thumb -->
+            <line x1="260" y1="94" x2="260" y2="60" stroke="#cbd5e1" stroke-width="1"/>
+            <line x1="260" y1="60" x2="400" y2="60" stroke="#cbd5e1" stroke-width="1"/>
+            <circle cx="400" cy="60" r="10" fill="#1852fe"/>
+            <text x="400" y="64" font-size="11" font-weight="700" fill="white" text-anchor="middle" font-family="Helvetica,Arial,sans-serif">3</text>
+            <text x="416" y="64" font-size="11" fill="#475569" font-family="Helvetica,Arial,sans-serif">Thumb (slides)</text>
+            <!-- Width -->
+            <line x1="200" y1="148" x2="280" y2="148" stroke="#94a3b8" stroke-width="1"/>
+            <line x1="200" y1="144" x2="200" y2="152" stroke="#94a3b8" stroke-width="1"/>
+            <line x1="280" y1="144" x2="280" y2="152" stroke="#94a3b8" stroke-width="1"/>
+            <text x="240" y="162" font-size="10" fill="#94a3b8" text-anchor="middle" font-family="Helvetica,Arial,sans-serif">44px (md)</text>
+            <!-- Height -->
+            <line x1="296" y1="90" x2="296" y2="130" stroke="#94a3b8" stroke-width="1"/>
+            <line x1="292" y1="90" x2="300" y2="90" stroke="#94a3b8" stroke-width="1"/>
+            <line x1="292" y1="130" x2="300" y2="130" stroke="#94a3b8" stroke-width="1"/>
+            <text x="312" y="114" font-size="10" fill="#94a3b8" font-family="Helvetica,Arial,sans-serif">24px</text>
+          </svg>
+        </div>
+
+        <ol style="margin-top:20px;display:flex;flex-direction:column;gap:8px;padding-left:20px;">
+          <li><strong>Label</strong> — Optional. Font: <code>--prim-font-size-md</code> / <code>--prim-font-weight-medium</code>. Gap to track: <code>--prim-space-3</code> (12px). Colour: <code>--color-text-secondary</code> (off) → <code>--color-text-default</code> (on).</li>
+          <li><strong>Track</strong> — Pill background. Sizes: sm 36×20px, md 44×24px (default), lg 52×28px. Colour: <code>--prim-grey-100</code> (off) → <code>--color-brand</code> (on). Radius: <code>--radius-full</code>.</li>
+          <li><strong>Thumb</strong> — White circle with <code>--prim-shadow-sm</code>. Diameter: sm 16px, md 20px, lg 24px. 2px inset from track edge. Slide transition: <code>transform 200ms ease</code>.</li>
+        </ol>
+      </div>
+
+      <!-- VARIANTS -->
+      <div id="tog-s-variants" class="btn-family-card">
+        <div class="btn-family-title">Variants</div>
+        <p class="btn-family-desc">Three sizes share the same interaction model and colour tokens. Click any switch below to toggle it.</p>
+
+        <div class="btn-variant-row" style="margin-top:16px;">
+          <span class="btn-variant-label">Small<br><small style="font-weight:400;color:var(--color-text-secondary);">36×20px</small></span>
+          <div class="btn-variant-sizes" style="display:flex;gap:20px;align-items:center;">
+            <div style="display:flex;flex-direction:column;align-items:center;gap:6px;">
+              <button class="gs-sdemo" role="switch" aria-checked="false" data-on="0" data-travel="16"
+                style="width:36px;height:20px;background:var(--prim-grey-100);"
+                aria-label="Small off" onclick="gsToggleSwitchDemo(this)">
+                <span class="gs-sdemo-thumb" style="width:16px;height:16px;"></span>
+              </button>
+              <span style="font-size:10px;color:var(--color-text-secondary);">Off</span>
+            </div>
+            <div style="display:flex;flex-direction:column;align-items:center;gap:6px;">
+              <button class="gs-sdemo" role="switch" aria-checked="true" data-on="1" data-travel="16"
+                style="width:36px;height:20px;background:var(--color-brand);"
+                aria-label="Small on" onclick="gsToggleSwitchDemo(this)">
+                <span class="gs-sdemo-thumb" style="width:16px;height:16px;transform:translateX(16px);"></span>
+              </button>
+              <span style="font-size:10px;color:var(--color-text-secondary);">On</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="btn-variant-row" style="margin-top:20px;">
+          <span class="btn-variant-label">Medium<br><small style="font-weight:400;color:var(--color-text-secondary);">44×24px · default</small></span>
+          <div class="btn-variant-sizes" style="display:flex;gap:20px;align-items:center;">
+            <div style="display:flex;flex-direction:column;align-items:center;gap:6px;">
+              <button class="gs-sdemo" role="switch" aria-checked="false" data-on="0" data-travel="20"
+                style="width:44px;height:24px;background:var(--prim-grey-100);"
+                aria-label="Medium off" onclick="gsToggleSwitchDemo(this)">
+                <span class="gs-sdemo-thumb" style="width:20px;height:20px;"></span>
+              </button>
+              <span style="font-size:10px;color:var(--color-text-secondary);">Off</span>
+            </div>
+            <div style="display:flex;flex-direction:column;align-items:center;gap:6px;">
+              <button class="gs-sdemo" role="switch" aria-checked="true" data-on="1" data-travel="20"
+                style="width:44px;height:24px;background:var(--color-brand);"
+                aria-label="Medium on" onclick="gsToggleSwitchDemo(this)">
+                <span class="gs-sdemo-thumb" style="width:20px;height:20px;transform:translateX(20px);"></span>
+              </button>
+              <span style="font-size:10px;color:var(--color-text-secondary);">On</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="btn-variant-row" style="margin-top:20px;">
+          <span class="btn-variant-label">Large<br><small style="font-weight:400;color:var(--color-text-secondary);">52×28px</small></span>
+          <div class="btn-variant-sizes" style="display:flex;gap:20px;align-items:center;">
+            <div style="display:flex;flex-direction:column;align-items:center;gap:6px;">
+              <button class="gs-sdemo" role="switch" aria-checked="false" data-on="0" data-travel="24"
+                style="width:52px;height:28px;background:var(--prim-grey-100);"
+                aria-label="Large off" onclick="gsToggleSwitchDemo(this)">
+                <span class="gs-sdemo-thumb" style="width:24px;height:24px;"></span>
+              </button>
+              <span style="font-size:10px;color:var(--color-text-secondary);">Off</span>
+            </div>
+            <div style="display:flex;flex-direction:column;align-items:center;gap:6px;">
+              <button class="gs-sdemo" role="switch" aria-checked="true" data-on="1" data-travel="24"
+                style="width:52px;height:28px;background:var(--color-brand);"
+                aria-label="Large on" onclick="gsToggleSwitchDemo(this)">
+                <span class="gs-sdemo-thumb" style="width:24px;height:24px;transform:translateX(24px);"></span>
+              </button>
+              <span style="font-size:10px;color:var(--color-text-secondary);">On</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="btn-sub-label" style="margin-top:24px;margin-bottom:12px;">Label Placement</div>
+        <div style="display:flex;flex-direction:column;gap:14px;">
+          <div style="display:flex;align-items:center;gap:10px;">
+            <span class="gs-sdemo-label" style="min-width:110px;color:var(--color-text-default);">Label left</span>
+            <button class="gs-sdemo" role="switch" aria-checked="true" data-on="1" data-travel="20"
+              style="width:44px;height:24px;background:var(--color-brand);"
+              aria-label="Label left demo" onclick="gsToggleSwitchDemo(this)">
+              <span class="gs-sdemo-thumb" style="width:20px;height:20px;transform:translateX(20px);"></span>
+            </button>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;">
+            <button class="gs-sdemo" role="switch" aria-checked="false" data-on="0" data-travel="20"
+              style="width:44px;height:24px;background:var(--prim-grey-100);"
+              aria-label="Label right demo" onclick="gsToggleSwitchDemo(this)">
+              <span class="gs-sdemo-thumb" style="width:20px;height:20px;"></span>
+            </button>
+            <span class="gs-sdemo-label" style="color:var(--color-text-secondary);">Label right</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- STATES -->
+      <div id="tog-s-states" class="btn-family-card">
+        <div class="btn-family-title">States</div>
+        <p class="btn-family-desc">Five documented states. The first two are interactive — click to toggle. The remaining three show specific visual states for documentation.</p>
+
+        <div class="btn-states-grid" style="grid-template-columns:repeat(5,1fr);">
+          <!-- Off — interactive -->
+          <div class="btn-state-cell">
+            <button class="gs-sdemo" role="switch" aria-checked="false" data-on="0" data-travel="20"
+              style="width:44px;height:24px;background:var(--prim-grey-100);"
+              aria-label="Off state" onclick="gsToggleSwitchDemo(this)">
+              <span class="gs-sdemo-thumb" style="width:20px;height:20px;"></span>
+            </button>
+            <span class="btn-state-label">Off</span>
+          </div>
+          <!-- On — interactive -->
+          <div class="btn-state-cell">
+            <button class="gs-sdemo" role="switch" aria-checked="true" data-on="1" data-travel="20"
+              style="width:44px;height:24px;background:var(--color-brand);"
+              aria-label="On state" onclick="gsToggleSwitchDemo(this)">
+              <span class="gs-sdemo-thumb" style="width:20px;height:20px;transform:translateX(20px);"></span>
+            </button>
+            <span class="btn-state-label">On</span>
+          </div>
+          <!-- Hover — static -->
+          <div class="btn-state-cell">
+            <div style="pointer-events:none;">
+              <button class="gs-sdemo" role="switch" aria-checked="true" data-on="1"
+                style="width:44px;height:24px;background:var(--color-brand-hover,#1242d4);">
+                <span class="gs-sdemo-thumb" style="width:20px;height:20px;transform:translateX(20px);"></span>
+              </button>
+            </div>
+            <span class="btn-state-label">Hover</span>
+          </div>
+          <!-- Focus — static -->
+          <div class="btn-state-cell">
+            <div style="pointer-events:none;">
+              <button class="gs-sdemo" role="switch" aria-checked="true" data-on="1"
+                style="width:44px;height:24px;background:var(--color-brand);box-shadow:0 0 0 3px rgba(24,82,254,0.28);">
+                <span class="gs-sdemo-thumb" style="width:20px;height:20px;transform:translateX(20px);"></span>
+              </button>
+            </div>
+            <span class="btn-state-label">Focus</span>
+          </div>
+          <!-- Disabled — static -->
+          <div class="btn-state-cell">
+            <div style="pointer-events:none;">
+              <button class="gs-sdemo" role="switch" aria-checked="true" aria-disabled="true"
+                style="width:44px;height:24px;background:var(--color-brand);opacity:0.45;">
+                <span class="gs-sdemo-thumb" style="width:20px;height:20px;transform:translateX(20px);"></span>
+              </button>
+            </div>
+            <span class="btn-state-label">Disabled</span>
+          </div>
+        </div>
+
+        <div class="btn-sub-label" style="margin-top:20px;margin-bottom:12px;">Loading State</div>
+        <div style="display:flex;gap:24px;align-items:center;">
+          <div style="display:flex;flex-direction:column;align-items:center;gap:6px;pointer-events:none;">
+            <div style="width:44px;height:24px;background:var(--prim-blue-50);border-radius:var(--radius-full);display:flex;align-items:center;justify-content:center;">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" style="opacity:0.7;">
+                <circle cx="12" cy="12" r="9" stroke="var(--color-brand)" stroke-width="2.5" stroke-dasharray="28 8" stroke-linecap="round"/>
+              </svg>
+            </div>
+            <span style="font-size:10px;color:var(--color-text-secondary);">Loading</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- INTERACTIONS -->
+      <div id="tog-s-interaction" class="btn-family-card">
+        <div class="btn-family-title">Interactions</div>
+        <table>
+          <thead><tr><th>Trigger</th><th>Behaviour</th><th>Timing</th></tr></thead>
+          <tbody>
+            <tr class="ds-tr-border"><td>Click / Tap</td><td>Immediately toggles on↔off, firing <code>onChange</code>. If async, enters loading state until resolved.</td><td>200ms thumb slide</td></tr>
+            <tr class="ds-tr-border"><td>Hover track</td><td>Track colour shifts to <code>--color-brand-hover</code>.</td><td>120ms ease</td></tr>
+            <tr class="ds-tr-border"><td><kbd>Space</kbd></td><td>Toggles the focused switch — same as click.</td><td>200ms thumb slide</td></tr>
+            <tr class="ds-tr-border"><td><kbd>Tab</kbd></td><td>Moves focus to switch; focus ring (<code>--prim-shadow-md</code> blue) appears.</td><td>—</td></tr>
+            <tr class="ds-tr-border"><td><kbd>Shift+Tab</kbd></td><td>Moves focus backward.</td><td>—</td></tr>
+            <tr class="ds-tr-border"><td>Drag thumb</td><td>Optional: thumb follows finger/cursor across the track on touch devices.</td><td>Live follow</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- ACCESSIBILITY -->
+      <div id="tog-s-a11y" class="btn-family-card">
+        <div class="btn-family-title">Accessibility</div>
+        <div class="btn-sub-label">Semantic Element</div>
+        <p class="btn-family-desc">The switch renders as <code>&lt;button role="switch"&gt;</code> — not <code>&lt;input type="checkbox"&gt;</code> — because it represents an immediate-effect binary state, not a submitted form value. <code>aria-checked</code> mirrors the current state.</p>
+
+        <div class="btn-sub-label" style="margin-top:16px;">ARIA Attributes</div>
+        <table>
+          <thead><tr><th>Attribute</th><th>Value</th><th>When to apply</th></tr></thead>
+          <tbody>
+            <tr class="ds-tr-border"><td><code>role="switch"</code></td><td>—</td><td>Always on the button element</td></tr>
+            <tr class="ds-tr-border"><td><code>aria-checked</code></td><td><code>"true"</code> / <code>"false"</code></td><td>Always; reflects current on/off state</td></tr>
+            <tr class="ds-tr-border"><td><code>aria-label</code></td><td>e.g. <code>"Dark mode"</code></td><td>When no visible text label is present</td></tr>
+            <tr class="ds-tr-border"><td><code>aria-labelledby</code></td><td>ID of visible label element</td><td>When a separate visible label exists</td></tr>
+            <tr class="ds-tr-border"><td><code>aria-disabled="true"</code></td><td>—</td><td>On disabled switch (keeps it focusable)</td></tr>
+            <tr class="ds-tr-border"><td><code>aria-busy="true"</code></td><td>—</td><td>During async loading state</td></tr>
+          </tbody>
+        </table>
+
+        <div class="btn-sub-label" style="margin-top:16px;">Keyboard Navigation</div>
+        <table>
+          <thead><tr><th>Key</th><th>Action</th></tr></thead>
+          <tbody>
+            <tr class="ds-tr-border"><td><kbd>Tab</kbd></td><td>Move focus to switch</td></tr>
+            <tr class="ds-tr-border"><td><kbd>Shift+Tab</kbd></td><td>Move focus away</td></tr>
+            <tr class="ds-tr-border"><td><kbd>Space</kbd></td><td>Toggle switch on/off</td></tr>
+          </tbody>
+        </table>
+
+        <div class="btn-sub-label" style="margin-top:16px;">Contrast Ratios</div>
+        <table>
+          <thead><tr><th>State</th><th>Element</th><th>Foreground</th><th>Background token</th><th>Ratio</th><th>WCAG</th></tr></thead>
+          <tbody>
+            <tr class="ds-tr-border"><td>On</td><td>Thumb vs track</td><td><code>--prim-white</code></td><td><code>--color-brand</code></td><td>4.8:1</td><td>AA ✓</td></tr>
+            <tr class="ds-tr-border"><td>Label (on)</td><td>Text</td><td><code>--color-text-default</code></td><td><code>--color-surface-default</code></td><td>15.8:1</td><td>AA ✓</td></tr>
+            <tr class="ds-tr-border"><td>Label (off)</td><td>Text</td><td><code>--color-text-secondary</code></td><td><code>--color-surface-default</code></td><td>5.9:1</td><td>AA ✓</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- RESPONSIVE -->
+      <div id="tog-s-responsive" class="btn-family-card">
+        <div class="btn-family-title">Responsive Behaviour</div>
+        <table>
+          <thead><tr><th>Breakpoint</th><th>Behaviour</th></tr></thead>
+          <tbody>
+            <tr class="ds-tr-border"><td>&gt; 1024px</td><td>Default medium size. Click interaction. Label left or right as designed.</td></tr>
+            <tr class="ds-tr-border"><td>768px – 1024px</td><td>Same as desktop. Touch events begin to supplement mouse on hybrid devices.</td></tr>
+            <tr class="ds-tr-border"><td>&lt; 768px</td><td>Minimum tap target 44×44px met at medium and large sizes. Use large for primary settings on mobile. Touch drag enabled.</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- DO / DON'T -->
+      <div id="tog-s-dosdonts" class="btn-family-card">
+        <div class="btn-family-title">Do / Don't</div>
+        <div class="btn-dos-donts">
+          <div class="btn-do-card">
+            <div class="btn-do-header">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
+              Do
+            </div>
+            <ul>
+              <li>
+                <div class="btn-do-example" style="display:flex;flex-direction:column;gap:12px;padding:4px 0;">
+                  <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;">
+                    <span style="font-size:13px;font-weight:500;color:var(--color-text-default);">Email notifications</span>
+                    <button class="gs-sdemo" role="switch" aria-checked="true" data-on="1" data-travel="20"
+                      style="width:44px;height:24px;background:var(--color-brand);flex-shrink:0;"
+                      aria-label="Email notifications" onclick="gsToggleSwitchDemo(this)">
+                      <span class="gs-sdemo-thumb" style="width:20px;height:20px;transform:translateX(20px);"></span>
+                    </button>
+                  </div>
+                  <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;">
+                    <span style="font-size:13px;font-weight:500;color:var(--color-text-default);">Dark mode</span>
+                    <button class="gs-sdemo" role="switch" aria-checked="false" data-on="0" data-travel="20"
+                      style="width:44px;height:24px;background:var(--prim-grey-100);flex-shrink:0;"
+                      aria-label="Dark mode" onclick="gsToggleSwitchDemo(this)">
+                      <span class="gs-sdemo-thumb" style="width:20px;height:20px;"></span>
+                    </button>
+                  </div>
+                </div>
+                <p>Use switches for settings that take immediate effect with a clear descriptive label.</p>
+              </li>
+            </ul>
+          </div>
+          <div class="btn-dont-card">
+            <div class="btn-dont-header">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+              Don't
+            </div>
+            <ul>
+              <li>
+                <div class="btn-dont-example" style="pointer-events:none;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:4px 0;">
+                  <span style="font-size:13px;font-weight:500;color:var(--color-danger);">Accept terms</span>
+                  <div style="width:44px;height:24px;background:var(--prim-red-200);border-radius:var(--radius-full);position:relative;">
+                    <span style="width:20px;height:20px;background:white;border-radius:var(--radius-full);position:absolute;top:2px;left:2px;box-shadow:var(--prim-shadow-sm);display:block;"></span>
+                  </div>
+                </div>
+                <p>Don't use a switch for form values requiring a submit action. Use a Checkbox for "Accept terms".</p>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- RELATED -->
+      <div id="tog-s-related" class="btn-family-card">
+        <div class="btn-family-title">Related Components</div>
+        <ul class="btn-related-list">
+          <li><button class="btn-inline-link" onclick="navigate('prim-checkbox')">Checkbox</button> — Use when the value is submitted as part of a form, or when selecting multiple options from a list.</li>
+          <li><button class="btn-inline-link" onclick="navigate('prim-radio')">Radio Button</button> — Use for selecting one from a set of more than two mutually exclusive choices.</li>
+          <li><button class="btn-inline-link" onclick="navigate('prim-slider')">Slider</button> — Use for adjusting a continuous value (volume, brightness) rather than binary on/off.</li>
+        </ul>
+      </div>
+
+    </div>
+
+    <div class="code-tab-qnav">
+      <div class="code-qnav-inner">
+        <p class="code-qnav-title">On This Page</p>
+        <ul class="code-qnav-list">
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('tog-s-overview')">Overview</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('tog-s-anatomy')">Anatomy</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('tog-s-variants')">Variants</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('tog-s-states')">States</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('tog-s-interaction')">Interactions</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('tog-s-a11y')">Accessibility</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('tog-s-responsive')">Responsive</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('tog-s-dosdonts')">Do / Don't</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('tog-s-related')">Related</button></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ CODE TAB ═══════════════════════════════════════════════════════ -->
+<div id="tog-tab-code" class="btn-tab-pane tog-tab-pane">
+  <div class="code-tab-layout">
+    <div class="code-tab-main">
+
+      <div class="fw-toggle-bar">
+        <button class="fw-toggle-bar-btn active" data-fw="react" onclick="switchFw('tog-tab-code','react')">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="2.5" fill="#61dafb"/><ellipse cx="12" cy="12" rx="10" ry="4.5" stroke="#61dafb" stroke-width="1.5" fill="none"/><ellipse cx="12" cy="12" rx="10" ry="4.5" stroke="#61dafb" stroke-width="1.5" fill="none" transform="rotate(60 12 12)"/><ellipse cx="12" cy="12" rx="10" ry="4.5" stroke="#61dafb" stroke-width="1.5" fill="none" transform="rotate(120 12 12)"/></svg>
+          React
+        </button>
+        <button class="fw-toggle-bar-btn" data-fw="angular" onclick="switchFw('tog-tab-code','angular')">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M12 2L2 6.5l1.5 12.5L12 22l8.5-3L22 6.5 12 2z" fill="#dd0031"/><path d="M12 2v20M12 2L6 17h12L12 2z" fill="none" stroke="#fff" stroke-width="1.2"/></svg>
+          Angular
+        </button>
+      </div>
+
+      <div id="tog-c-overview" class="btn-family-card">
+        <div class="ds-step-row"><span class="ds-step-num">1</span><div class="btn-family-title" style="margin:0;">Overview</div></div>
+        <div class="fw-react"><p class="btn-family-desc">The <code>Switch</code> component renders <code>button[role="switch"]</code>. Supports controlled and uncontrolled usage, async loading state, and optional label. Returning a <code>Promise</code> from <code>onChange</code> activates the loading spinner automatically.</p></div>
+        <div class="fw-angular" style="display:none;"><p class="btn-family-desc">Use <code>&lt;gs-switch&gt;</code> with <code>[(ngModel)]</code> for two-way binding, or <code>[checked]</code> + <code>(checkedChange)</code> for controlled usage.</p></div>
+      </div>
+
+      <div id="tog-c-install" class="btn-family-card">
+        <div class="ds-step-row"><span class="ds-step-num">2</span><div class="btn-family-title" style="margin:0;">Install / Setup</div></div>
+        <div class="fw-react">
+          <div class="btn-code-block"><div class="btn-code-head"><span class="btn-code-lang">bash</span><button class="btn-copy-btn" onclick="copyBtnCode('tog-install-react',this)">Copy</button></div>
+          <div class="btn-code-body"><pre id="tog-install-react"><code>npm install @pelagos/react-components</code></pre></div></div>
+        </div>
+        <div class="fw-angular" style="display:none;">
+          <div class="btn-code-block"><div class="btn-code-head"><span class="btn-code-lang">bash</span><button class="btn-copy-btn" onclick="copyBtnCode('tog-install-ng',this)">Copy</button></div>
+          <div class="btn-code-body"><pre id="tog-install-ng"><code>npm install @pelagos/angular-components</code></pre></div></div>
+        </div>
+      </div>
+
+      <div id="tog-c-imports" class="btn-family-card">
+        <div class="ds-step-row"><span class="ds-step-num">3</span><div class="btn-family-title" style="margin:0;">Import</div></div>
+        <div class="fw-react">
+          <div class="btn-code-block"><div class="btn-code-head"><span class="btn-code-lang">JSX</span><button class="btn-copy-btn" onclick="copyBtnCode('tog-import-react',this)">Copy</button></div>
+          <div class="btn-code-body"><pre id="tog-import-react"><code><span class="c-kw">import</span> { <span class="c-type">Switch</span> } <span class="c-kw">from</span> <span class="c-val">'@pelagos/react-components'</span>;</code></pre></div></div>
+        </div>
+        <div class="fw-angular" style="display:none;">
+          <div class="btn-code-block"><div class="btn-code-head"><span class="btn-code-lang">TS</span><button class="btn-copy-btn" onclick="copyBtnCode('tog-import-ng',this)">Copy</button></div>
+          <div class="btn-code-body"><pre id="tog-import-ng"><code><span class="c-kw">import</span> { <span class="c-type">SwitchModule</span> } <span class="c-kw">from</span> <span class="c-val">'@pelagos/angular-components'</span>;</code></pre></div></div>
+        </div>
+      </div>
+
+      <div id="tog-c-api" class="btn-family-card">
+        <div class="ds-step-row"><span class="ds-step-num">4</span><div class="btn-family-title" style="margin:0;">API / Props</div></div>
+        <div class="fw-react">
+          <table>
+            <thead><tr><th>Prop</th><th>Type</th><th>Default</th><th>Required</th><th>Description</th></tr></thead>
+            <tbody>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">checked</td><td class="ds-td-code-muted">boolean</td><td class="ds-td-code-muted">—</td><td>No</td><td class="ds-td-value">Controlled on/off state</td></tr>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">defaultChecked</td><td class="ds-td-code-muted">boolean</td><td class="ds-td-code-muted">false</td><td>No</td><td class="ds-td-value">Initial state (uncontrolled)</td></tr>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">onChange</td><td class="ds-td-code-muted">(checked: boolean) =&gt; void | Promise&lt;void&gt;</td><td class="ds-td-code-muted">—</td><td>No</td><td class="ds-td-value">Called on toggle. Promise activates loading state.</td></tr>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">size</td><td class="ds-td-code-muted">'sm' | 'md' | 'lg'</td><td class="ds-td-code-muted">'md'</td><td>No</td><td class="ds-td-value">sm=36×20 · md=44×24 · lg=52×28</td></tr>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">disabled</td><td class="ds-td-code-muted">boolean</td><td class="ds-td-code-muted">false</td><td>No</td><td class="ds-td-value">Prevents interaction; sets aria-disabled</td></tr>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">loading</td><td class="ds-td-code-muted">boolean</td><td class="ds-td-code-muted">false</td><td>No</td><td class="ds-td-value">Shows spinner; sets aria-busy</td></tr>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">aria-label</td><td class="ds-td-code-muted">string</td><td class="ds-td-code-muted">—</td><td>Conditional</td><td class="ds-td-value">Required when no visible label is present</td></tr>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">aria-labelledby</td><td class="ds-td-code-muted">string</td><td class="ds-td-code-muted">—</td><td>Conditional</td><td class="ds-td-value">ID of an external label element</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="fw-angular" style="display:none;">
+          <table>
+            <thead><tr><th>Input</th><th>Type</th><th>Default</th><th>Required</th><th>Description</th></tr></thead>
+            <tbody>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">[checked]</td><td class="ds-td-code-muted">boolean</td><td class="ds-td-code-muted">false</td><td>No</td><td class="ds-td-value">Controlled state</td></tr>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">(checkedChange)</td><td class="ds-td-code-muted">EventEmitter&lt;boolean&gt;</td><td class="ds-td-code-muted">—</td><td>No</td><td class="ds-td-value">Emits new state on toggle</td></tr>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">[(ngModel)]</td><td class="ds-td-code-muted">boolean</td><td class="ds-td-code-muted">—</td><td>No</td><td class="ds-td-value">Two-way binding</td></tr>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">[size]</td><td class="ds-td-code-muted">'sm' | 'md' | 'lg'</td><td class="ds-td-code-muted">'md'</td><td>No</td><td class="ds-td-value">Track size</td></tr>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">[disabled]</td><td class="ds-td-code-muted">boolean</td><td class="ds-td-code-muted">false</td><td>No</td><td class="ds-td-value">Disables interaction</td></tr>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">[loading]</td><td class="ds-td-code-muted">boolean</td><td class="ds-td-code-muted">false</td><td>No</td><td class="ds-td-value">Loading spinner state</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div id="tog-c-variants" class="btn-family-card">
+        <div class="ds-step-row"><span class="ds-step-num">5</span><div class="btn-family-title" style="margin:0;">Variants</div></div>
+        <div class="fw-react">
+          <div class="btn-code-block"><div class="btn-code-head"><span class="btn-code-lang">JSX</span><button class="btn-copy-btn" onclick="copyBtnCode('tog-variants-react',this)">Copy</button></div>
+          <div class="btn-code-body"><pre id="tog-variants-react"><code><span class="c-cmt">// Uncontrolled, default on</span>
+&lt;<span class="c-tag">Switch</span> <span class="c-attr">defaultChecked</span> <span class="c-attr">aria-label</span>=<span class="c-val">"Dark mode"</span> /&gt;
+
+<span class="c-cmt">// Sizes</span>
+&lt;<span class="c-tag">Switch</span> <span class="c-attr">size</span>=<span class="c-val">"sm"</span> <span class="c-attr">aria-label</span>=<span class="c-val">"Compact view"</span> /&gt;
+&lt;<span class="c-tag">Switch</span> <span class="c-attr">size</span>=<span class="c-val">"lg"</span> <span class="c-attr">aria-label</span>=<span class="c-val">"Feature flag"</span> /&gt;
+
+<span class="c-cmt">// Disabled (on)</span>
+&lt;<span class="c-tag">Switch</span> <span class="c-attr">checked</span> <span class="c-attr">disabled</span> <span class="c-attr">aria-label</span>=<span class="c-val">"Managed setting"</span> /&gt;
+
+<span class="c-cmt">// Async — Promise triggers loading state</span>
+&lt;<span class="c-tag">Switch</span>
+  <span class="c-attr">checked</span>={enabled}
+  <span class="c-attr">onChange</span>={<span class="c-kw">async</span> (val) =&gt; {
+    <span class="c-kw">await</span> api.updateSetting(<span class="c-val">'notifications'</span>, val);
+    setEnabled(val);
+  }}
+  <span class="c-attr">aria-label</span>=<span class="c-val">"Notifications"</span>
+/&gt;</code></pre></div></div>
+        </div>
+        <div class="fw-angular" style="display:none;">
+          <div class="btn-code-block"><div class="btn-code-head"><span class="btn-code-lang">HTML</span><button class="btn-copy-btn" onclick="copyBtnCode('tog-variants-ng',this)">Copy</button></div>
+          <div class="btn-code-body"><pre id="tog-variants-ng"><code>&lt;<span class="c-tag">gs-switch</span> [(ngModel)]=<span class="c-val">"darkMode"</span> <span class="c-attr">aria-label</span>=<span class="c-val">"Dark mode"</span>&gt;&lt;/<span class="c-tag">gs-switch</span>&gt;
+&lt;<span class="c-tag">gs-switch</span> [<span class="c-attr">size</span>]=<span class="c-val">"'sm'"</span> <span class="c-attr">aria-label</span>=<span class="c-val">"Compact"</span>&gt;&lt;/<span class="c-tag">gs-switch</span>&gt;
+&lt;<span class="c-tag">gs-switch</span> [<span class="c-attr">checked</span>]=<span class="c-val">"true"</span> [<span class="c-attr">disabled</span>]=<span class="c-val">"true"</span>&gt;&lt;/<span class="c-tag">gs-switch</span>&gt;</code></pre></div></div>
+        </div>
+      </div>
+
+      <div id="tog-c-states" class="btn-family-card">
+        <div class="ds-step-row"><span class="ds-step-num">6</span><div class="btn-family-title" style="margin:0;">States</div></div>
+        <div class="fw-react">
+          <div class="btn-code-block"><div class="btn-code-head"><span class="btn-code-lang">JSX</span><button class="btn-copy-btn" onclick="copyBtnCode('tog-states-react',this)">Copy</button></div>
+          <div class="btn-code-body"><pre id="tog-states-react"><code><span class="c-kw">const</span> [checked, setChecked] = useState(<span class="c-kw">false</span>);
+<span class="c-kw">const</span> [loading, setLoading] = useState(<span class="c-kw">false</span>);
+
+<span class="c-kw">async function</span> <span class="c-type">handleToggle</span>(val: <span class="c-type">boolean</span>) {
+  setLoading(<span class="c-kw">true</span>);
+  <span class="c-kw">try</span> { <span class="c-kw">await</span> api.save(val); setChecked(val); }
+  <span class="c-kw">finally</span> { setLoading(<span class="c-kw">false</span>); }
+}
+
+&lt;<span class="c-tag">Switch</span>
+  <span class="c-attr">checked</span>={checked}
+  <span class="c-attr">loading</span>={loading}
+  <span class="c-attr">onChange</span>={handleToggle}
+  <span class="c-attr">aria-label</span>=<span class="c-val">"Email notifications"</span>
+/&gt;</code></pre></div></div>
+        </div>
+        <div class="fw-angular" style="display:none;">
+          <div class="btn-code-block"><div class="btn-code-head"><span class="btn-code-lang">TS</span><button class="btn-copy-btn" onclick="copyBtnCode('tog-states-ng',this)">Copy</button></div>
+          <div class="btn-code-body"><pre id="tog-states-ng"><code>checked = <span class="c-kw">false</span>; loading = <span class="c-kw">false</span>;
+<span class="c-kw">async</span> onToggle(val: <span class="c-type">boolean</span>) {
+  <span class="c-kw">this</span>.loading = <span class="c-kw">true</span>;
+  <span class="c-kw">await</span> <span class="c-kw">this</span>.api.save(val);
+  <span class="c-kw">this</span>.checked = val; <span class="c-kw">this</span>.loading = <span class="c-kw">false</span>;
+}</code></pre></div></div>
+        </div>
+      </div>
+
+      <div id="tog-c-a11y" class="btn-family-card">
+        <div class="ds-step-row"><span class="ds-step-num">7</span><div class="btn-family-title" style="margin:0;">Accessibility</div></div>
+        <div class="fw-react">
+          <div class="btn-code-block"><div class="btn-code-head"><span class="btn-code-lang">HTML</span><button class="btn-copy-btn" onclick="copyBtnCode('tog-a11y-react',this)">Copy</button></div>
+          <div class="btn-code-body"><pre id="tog-a11y-react"><code><span class="c-cmt">&lt;!-- Generated output --&gt;</span>
+&lt;<span class="c-tag">button</span>
+  <span class="c-attr">role</span>=<span class="c-val">"switch"</span>
+  <span class="c-attr">aria-checked</span>=<span class="c-val">"true"</span>
+  <span class="c-attr">aria-label</span>=<span class="c-val">"Email notifications"</span>
+  <span class="c-attr">class</span>=<span class="c-val">"gs-switch gs-switch--on gs-switch--md"</span>
+&gt;
+  &lt;<span class="c-tag">span</span> <span class="c-attr">class</span>=<span class="c-val">"gs-switch__thumb"</span> <span class="c-attr">aria-hidden</span>=<span class="c-val">"true"</span>/&gt;
+&lt;/<span class="c-tag">button</span>&gt;
+
+<span class="c-cmt">&lt;!-- External label pattern --&gt;</span>
+&lt;<span class="c-tag">label</span> <span class="c-attr">id</span>=<span class="c-val">"sw-notif"</span>&gt;Email notifications&lt;/<span class="c-tag">label</span>&gt;
+&lt;<span class="c-tag">Switch</span> <span class="c-attr">aria-labelledby</span>=<span class="c-val">"sw-notif"</span> /&gt;</code></pre></div></div>
+        </div>
+        <div class="fw-angular" style="display:none;"><p class="btn-family-desc">The component auto-generates <code>role="switch"</code> and <code>aria-checked</code>. Provide <code>aria-label</code> or <code>aria-labelledby</code>.</p></div>
+      </div>
+
+      <div id="tog-c-files" class="btn-family-card">
+        <div class="ds-step-row"><span class="ds-step-num">8</span><div class="btn-family-title" style="margin:0;">File Structure</div></div>
+        <div class="fw-react">
+          <div class="btn-code-block"><div class="btn-code-head"><span class="btn-code-lang">tree</span><button class="btn-copy-btn" onclick="copyBtnCode('tog-files-react',this)">Copy</button></div>
+          <div class="btn-code-body"><pre id="tog-files-react"><code>src/components/Switch/
+├── Switch.tsx
+├── Switch.module.scss
+├── Switch.types.ts
+└── index.ts</code></pre></div></div>
+        </div>
+        <div class="fw-angular" style="display:none;">
+          <div class="btn-code-block"><div class="btn-code-head"><span class="btn-code-lang">tree</span><button class="btn-copy-btn" onclick="copyBtnCode('tog-files-ng',this)">Copy</button></div>
+          <div class="btn-code-body"><pre id="tog-files-ng"><code>src/lib/switch/
+├── switch.component.ts
+├── switch.module.ts
+└── switch.component.scss</code></pre></div></div>
+        </div>
+      </div>
+
+      <div id="tog-c-patterns" class="btn-family-card">
+        <div class="ds-step-row"><span class="ds-step-num">9</span><div class="btn-family-title" style="margin:0;">Usage Patterns</div></div>
+        <div class="fw-react">
+          <div class="btn-code-block"><div class="btn-code-head"><span class="btn-code-lang">JSX</span><button class="btn-copy-btn" onclick="copyBtnCode('tog-patterns-react',this)">Copy</button></div>
+          <div class="btn-code-body"><pre id="tog-patterns-react"><code><span class="c-kw">function</span> <span class="c-type">SettingRow</span>({ label, value, onChange }) {
+  <span class="c-kw">return</span> (
+    &lt;<span class="c-tag">div</span> <span class="c-attr">style</span>={{ display:<span class="c-val">'flex'</span>, justifyContent:<span class="c-val">'space-between'</span>, alignItems:<span class="c-val">'center'</span> }}&gt;
+      &lt;<span class="c-tag">label</span> <span class="c-attr">id</span>={`lbl-${label}`}&gt;{label}&lt;/<span class="c-tag">label</span>&gt;
+      &lt;<span class="c-tag">Switch</span> <span class="c-attr">checked</span>={value} <span class="c-attr">onChange</span>={onChange} <span class="c-attr">aria-labelledby</span>={`lbl-${label}`} /&gt;
+    &lt;/<span class="c-tag">div</span>&gt;
+  );
+}</code></pre></div></div>
+        </div>
+        <div class="fw-angular" style="display:none;">
+          <div class="btn-code-block"><div class="btn-code-head"><span class="btn-code-lang">HTML</span><button class="btn-copy-btn" onclick="copyBtnCode('tog-patterns-ng',this)">Copy</button></div>
+          <div class="btn-code-body"><pre id="tog-patterns-ng"><code>&lt;<span class="c-tag">div</span> *ngFor=<span class="c-val">"let s of settings"</span> <span class="c-attr">class</span>=<span class="c-val">"setting-row"</span>&gt;
+  &lt;<span class="c-tag">label</span> [<span class="c-attr">id</span>]=<span class="c-val">"'lbl-'+s.key"</span>&gt;{{s.label}}&lt;/<span class="c-tag">label</span>&gt;
+  &lt;<span class="c-tag">gs-switch</span> [<span class="c-attr">checked</span>]=<span class="c-val">"s.value"</span> (<span class="c-attr">checkedChange</span>)=<span class="c-val">"save(s,\$event)"</span> [<span class="c-attr">aria-labelledby</span>]=<span class="c-val">"'lbl-'+s.key"</span>&gt;&lt;/<span class="c-tag">gs-switch</span>&gt;
+&lt;/<span class="c-tag">div</span>&gt;</code></pre></div></div>
+        </div>
+      </div>
+
+      <div id="tog-c-tokens" class="btn-family-card">
+        <div class="ds-step-row"><span class="ds-step-num">10</span><div class="btn-family-title" style="margin:0;">Theming</div></div>
+        <div class="fw-react">
+          <div class="btn-code-block"><div class="btn-code-head"><span class="btn-code-lang">SCSS</span><button class="btn-copy-btn" onclick="copyBtnCode('tog-tokens-react',this)">Copy</button></div>
+          <div class="btn-code-body"><pre id="tog-tokens-react"><code><span class="c-cmt">/* All values reference Pelagos foundation tokens */</span>
+:root {
+  <span class="c-attr">--switch-track-off</span>:      <span class="c-val">var(--prim-grey-100)</span>;       <span class="c-cmt">/* #e2e8f0 */</span>
+  <span class="c-attr">--switch-track-on</span>:       <span class="c-val">var(--color-brand)</span>;         <span class="c-cmt">/* #1852fe */</span>
+  <span class="c-attr">--switch-track-hover</span>:    <span class="c-val">var(--color-brand-hover)</span>;   <span class="c-cmt">/* #1242d4 */</span>
+  <span class="c-attr">--switch-thumb</span>:          <span class="c-val">var(--prim-white)</span>;          <span class="c-cmt">/* #ffffff */</span>
+  <span class="c-attr">--switch-thumb-shadow</span>:   <span class="c-val">var(--prim-shadow-sm)</span>;      <span class="c-cmt">/* 0 1px 3px … */</span>
+  <span class="c-attr">--switch-focus-ring</span>:     <span class="c-val">0 0 0 3px rgba(24,82,254,0.28)</span>;
+  <span class="c-attr">--switch-radius</span>:         <span class="c-val">var(--radius-full)</span>;         <span class="c-cmt">/* 9999px */</span>
+  <span class="c-attr">--switch-transition</span>:     <span class="c-val">200ms ease</span>;
+  <span class="c-attr">--switch-disabled-opacity</span>: <span class="c-val">0.45</span>;
+  <span class="c-attr">--switch-size-sm</span>:        <span class="c-val">36px 20px</span>;
+  <span class="c-attr">--switch-size-md</span>:        <span class="c-val">44px 24px</span>;
+  <span class="c-attr">--switch-size-lg</span>:        <span class="c-val">52px 28px</span>;
+}</code></pre></div></div>
+        </div>
+        <div class="fw-angular" style="display:none;"><p class="btn-family-desc">Same CSS custom properties apply globally. Override in your app's root stylesheet or component-scoped styles.</p></div>
+      </div>
+
+      <div id="tog-c-example" class="btn-family-card">
+        <div class="ds-step-row"><span class="ds-step-num">11</span><div class="btn-family-title" style="margin:0;">Full Example</div></div>
+        <div class="fw-react">
+          <div class="btn-code-block"><div class="btn-code-head"><span class="btn-code-lang">JSX</span><button class="btn-copy-btn" onclick="copyBtnCode('tog-example-react',this)">Copy</button></div>
+          <div class="btn-code-body"><pre id="tog-example-react"><code><span class="c-kw">import</span> { useState } <span class="c-kw">from</span> <span class="c-val">'react'</span>;
+<span class="c-kw">import</span> { <span class="c-type">Switch</span> } <span class="c-kw">from</span> <span class="c-val">'@pelagos/react-components'</span>;
+
+<span class="c-kw">export function</span> <span class="c-type">SettingsPanel</span>() {
+  <span class="c-kw">const</span> [prefs, setPrefs] = useState({
+    notifications: <span class="c-kw">true</span>, darkMode: <span class="c-kw">false</span>, analytics: <span class="c-kw">true</span>
+  });
+  <span class="c-kw">const</span> toggle = (key) => setPrefs(p => ({ ...p, [key]: !p[key] }));
+
+  <span class="c-kw">return</span> (
+    &lt;<span class="c-tag">div</span> <span class="c-attr">style</span>={{ display:<span class="c-val">'flex'</span>, flexDirection:<span class="c-val">'column'</span>, gap:<span class="c-val">'var(--prim-space-5)'</span> }}&gt;
+      {[
+        [<span class="c-val">'notifications'</span>, <span class="c-val">'Email notifications'</span>],
+        [<span class="c-val">'darkMode'</span>,      <span class="c-val">'Dark mode'</span>],
+        [<span class="c-val">'analytics'</span>,    <span class="c-val">'Analytics'</span>],
+      ].map(([k, lbl]) => (
+        &lt;<span class="c-tag">div</span> <span class="c-attr">key</span>={k} <span class="c-attr">style</span>={{ display:<span class="c-val">'flex'</span>, justifyContent:<span class="c-val">'space-between'</span>, alignItems:<span class="c-val">'center'</span> }}&gt;
+          &lt;<span class="c-tag">label</span> <span class="c-attr">id</span>={`lbl-${k}`}
+            <span class="c-attr">style</span>={{ fontFamily:<span class="c-val">'var(--prim-font-primary)'</span>, fontSize:<span class="c-val">'var(--prim-font-size-md)'</span> }}
+          &gt;{lbl}&lt;/<span class="c-tag">label</span>&gt;
+          &lt;<span class="c-tag">Switch</span>
+            <span class="c-attr">checked</span>={prefs[k]}
+            <span class="c-attr">onChange</span>={() => toggle(k)}
+            <span class="c-attr">aria-labelledby</span>={`lbl-${k}`}
+          /&gt;
+        &lt;/<span class="c-tag">div</span>&gt;
+      ))}
+    &lt;/<span class="c-tag">div</span>&gt;
+  );
+}</code></pre></div></div>
+        </div>
+        <div class="fw-angular" style="display:none;">
+          <div class="btn-code-block"><div class="btn-code-head"><span class="btn-code-lang">HTML</span><button class="btn-copy-btn" onclick="copyBtnCode('tog-example-ng',this)">Copy</button></div>
+          <div class="btn-code-body"><pre id="tog-example-ng"><code>&lt;<span class="c-tag">section</span> <span class="c-attr">class</span>=<span class="c-val">"settings-panel"</span>&gt;
+  &lt;<span class="c-tag">div</span> <span class="c-attr">class</span>=<span class="c-val">"setting-row"</span>&gt;
+    &lt;<span class="c-tag">label</span> <span class="c-attr">id</span>=<span class="c-val">"lbl-notif"</span>&gt;Email notifications&lt;/<span class="c-tag">label</span>&gt;
+    &lt;<span class="c-tag">gs-switch</span> [(ngModel)]=<span class="c-val">"prefs.notifications"</span> [<span class="c-attr">aria-labelledby</span>]=<span class="c-val">"'lbl-notif'"</span>&gt;&lt;/<span class="c-tag">gs-switch</span>&gt;
+  &lt;/<span class="c-tag">div</span>&gt;
+  &lt;<span class="c-tag">div</span> <span class="c-attr">class</span>=<span class="c-val">"setting-row"</span>&gt;
+    &lt;<span class="c-tag">label</span> <span class="c-attr">id</span>=<span class="c-val">"lbl-dark"</span>&gt;Dark mode&lt;/<span class="c-tag">label</span>&gt;
+    &lt;<span class="c-tag">gs-switch</span> [(ngModel)]=<span class="c-val">"prefs.darkMode"</span> [<span class="c-attr">aria-labelledby</span>]=<span class="c-val">"'lbl-dark'"</span>&gt;&lt;/<span class="c-tag">gs-switch</span>&gt;
+  &lt;/<span class="c-tag">div</span>&gt;
+&lt;/<span class="c-tag">section</span>&gt;</code></pre></div></div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="code-tab-qnav">
+      <div class="code-qnav-inner">
+        <p class="code-qnav-title">On This Page</p>
+        <ul class="code-qnav-list">
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('tog-c-overview')">1 · Overview</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('tog-c-install')">2 · Install</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('tog-c-imports')">3 · Import</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('tog-c-api')">4 · API / Props</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('tog-c-variants')">5 · Variants</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('tog-c-states')">6 · States</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('tog-c-a11y')">7 · Accessibility</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('tog-c-files')">8 · File Structure</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('tog-c-patterns')">9 · Usage Patterns</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('tog-c-tokens')">10 · Theming</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('tog-c-example')">11 · Full Example</button></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ USAGE TAB ═══════════════════════════════════════════════════════ -->
+<div id="tog-tab-usage" class="btn-tab-pane tog-tab-pane">
+  <div class="code-tab-layout">
+    <div class="code-tab-main">
+
+      <div id="tog-u-when" class="btn-family-card">
+        <div class="btn-family-title">When to Use</div>
+        <ul class="btn-usage-list">
+          <li><strong>Immediate-effect binary settings</strong> — When toggling takes effect instantly without a Save button (dark mode, notification preferences, feature flags).</li>
+          <li><strong>Settings panels grouped by category</strong> — Each switch controls an independent on/off preference.</li>
+          <li><strong>Feature toggles in admin/developer UIs</strong> — Enable or disable system features with clear on/off feedback.</li>
+          <li><strong>Inline activation in data tables</strong> — Small switch in a table's action column to enable/disable a row without opening a detail view.</li>
+        </ul>
+      </div>
+
+      <div id="tog-u-when-not" class="btn-family-card">
+        <div class="btn-family-title">When Not to Use</div>
+        <ul class="btn-usage-list">
+          <li><strong>Form values submitted on Save</strong> — Use <button onclick="navigate('prim-checkbox')" class="btn-inline-link">Checkbox</button> instead. Switches imply instant action; checkboxes represent form data.</li>
+          <li><strong>Selecting multiple items from a list</strong> — Use <button onclick="navigate('prim-checkbox')" class="btn-inline-link">Checkbox group</button> for list selection.</li>
+          <li><strong>Mutually exclusive choices (more than 2)</strong> — Use <button onclick="navigate('prim-radio')" class="btn-inline-link">Radio Buttons</button> for options like "Never / Sometimes / Always".</li>
+          <li><strong>Continuous value adjustment</strong> — Use <button onclick="navigate('prim-slider')" class="btn-inline-link">Slider</button> for volume, brightness, or any range value.</li>
+        </ul>
+      </div>
+
+      <div id="tog-u-best" class="btn-family-card">
+        <div class="btn-family-title">Best Practices</div>
+        <ul class="btn-usage-list">
+          <li><strong>Always provide a label</strong> — Never show a switch without adjacent text or at minimum an <code>aria-label</code>.</li>
+          <li><strong>Label describes the setting, not the state</strong> — Use "Email notifications" not "Enabled". The switch itself communicates on/off.</li>
+          <li><strong>Use loading state for async operations</strong> — Use <code>loading={true}</code> while awaiting an API response to prevent double-clicks.</li>
+          <li><strong>Left-align labels in settings lists</strong> — Label on the left, switch on the right — consistent scan pattern.</li>
+          <li><strong>Use large size on mobile</strong> — Large (52×28px) provides a more comfortable tap area on touch screens.</li>
+        </ul>
+      </div>
+
+      <div id="tog-u-patterns" class="btn-family-card">
+        <div class="btn-family-title">Patterns</div>
+        <ul class="btn-usage-list">
+          <li><strong>Settings List</strong> — Stack switches vertically with labels left-aligned and switches right-aligned. Use <code>--prim-space-5</code> gap between rows.</li>
+          <li><strong>Feature Flag Panel</strong> — Large size with icon and description beneath the label. Show switch state prominently.</li>
+          <li><strong>Table Row Toggle</strong> — Inline small switch in the last column. Pair with a Tooltip to clarify what is being toggled.</li>
+          <li><strong>Permission Toggle</strong> — Pair with loading state and Toast feedback. Disable during async to prevent race conditions.</li>
+        </ul>
+      </div>
+
+      <div id="tog-u-mistakes" class="btn-family-card">
+        <div class="btn-family-title">Anti-patterns</div>
+        <ul class="btn-usage-list">
+          <li><strong>❌ Switch without a label</strong> — An unlabelled switch is meaningless to all users.<br><strong>✅ Fix:</strong> Always pair with visible text or an <code>aria-label</code>.</li>
+          <li><strong>❌ Switch for form-submitted values</strong> — "Accept terms" switch confuses users expecting explicit Save.<br><strong>✅ Fix:</strong> Use a Checkbox for any value requiring a Save/Submit action.</li>
+          <li><strong>❌ No loading state on async toggles</strong> — Double-clicks cause inconsistent state.<br><strong>✅ Fix:</strong> Always use <code>loading={true}</code> during async operations.</li>
+          <li><strong>❌ Labelling the state not the setting</strong> — "Enabled" is redundant; the switch shows on/off.<br><strong>✅ Fix:</strong> Name the setting: "Email notifications", "Two-factor authentication".</li>
+        </ul>
+      </div>
+
+      <div id="tog-u-refs" class="btn-family-card">
+        <div class="btn-family-title">References</div>
+        <ul class="btn-related-list">
+          <li><a href="https://www.figma.com/design/TOLfBpRePgynqwvDVp6fg3/Design-System?node-id=591-8106" target="_blank" rel="noopener">Figma — Toggles &amp; Switches frame</a></li>
+          <li><a href="https://ant.design/components/switch" target="_blank" rel="noopener">Ant Design — Switch reference</a></li>
+          <li><a href="https://www.w3.org/WAI/ARIA/apg/patterns/switch/" target="_blank" rel="noopener">ARIA Authoring Practices — Switch Pattern</a></li>
+          <li><a href="https://www.w3.org/WAI/WCAG21/Understanding/name-role-value.html" target="_blank" rel="noopener">WCAG 2.1 — 4.1.2 Name, Role, Value</a></li>
+          <li><a href="https://www.nngroup.com/articles/toggle-switch-guidelines/" target="_blank" rel="noopener">Nielsen Norman Group — Toggle-Switch Guidelines</a></li>
+        </ul>
+      </div>
+
+    </div>
+
+    <div class="code-tab-qnav">
+      <div class="code-qnav-inner">
+        <p class="code-qnav-title">On This Page</p>
+        <ul class="code-qnav-list">
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('tog-u-when')">When to Use</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('tog-u-when-not')">When Not to Use</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('tog-u-best')">Best Practices</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('tog-u-patterns')">Patterns</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('tog-u-mistakes')">Anti-patterns</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('tog-u-refs')">References</button></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>

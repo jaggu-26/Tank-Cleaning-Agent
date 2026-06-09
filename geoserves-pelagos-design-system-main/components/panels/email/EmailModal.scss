@@ -1,0 +1,336 @@
+// ─────────────────────────────────────────────────────────────────────────────
+// Pelagos Email Modal — panels/email/EmailModal.scss
+// Figma: 8240-5699 (recipient header) · 8240-5813 (compose modal)
+//        9638-3297 (toolbar) · 9638-3168 (input chip)
+// ─────────────────────────────────────────────────────────────────────────────
+
+// ── Overlay ───────────────────────────────────────────────────────────────────
+.gs-email-overlay {
+  position: fixed; inset: 0; z-index: 2000;
+  background: rgba(3, 7, 18, 0.5);
+  display: flex; align-items: center; justify-content: center;
+  padding: var(--prim-space-4);
+}
+
+// ── Modal shell ───────────────────────────────────────────────────────────────
+.gs-email-modal {
+  background:    var(--color-surface-default, #fff);
+  border-radius: var(--radius-lg, 12px);
+  box-shadow:    0 20px 60px rgba(0, 0, 0, 0.18);
+  width:         100%;
+  max-width:     480px;
+  max-height:    calc(100vh - 64px);
+  display:       flex;
+  flex-direction: column;
+  overflow:      hidden;
+  font-family:   var(--prim-font-primary);
+
+  // ── Header ────────────────────────────────────────────────────────────────
+  &__header {
+    display:         flex;
+    align-items:     center;
+    justify-content: space-between;
+    padding:         12px 16px;
+    border-bottom:   1px solid var(--color-border-default, #e2e8f0);
+    flex-shrink:     0;
+  }
+  &__title {
+    font-size:   14px;
+    font-weight: 600;
+    color:       var(--color-text-default);
+  }
+  &__close {
+    background: none; border: none; cursor: pointer;
+    font-size: 18px; color: var(--color-text-secondary);
+    line-height: 1; padding: 2px 6px; border-radius: 4px;
+    &:hover { background: var(--color-surface-subtle); }
+  }
+
+  // ── Footer ────────────────────────────────────────────────────────────────
+  &__footer {
+    display:      flex;
+    gap:          8px;
+    justify-content: flex-end;
+    padding:      12px 16px;
+    border-top:   1px solid var(--color-border-default, #e2e8f0);
+    flex-shrink:  0;
+  }
+}
+
+// ── Recipient section ─────────────────────────────────────────────────────────
+.gs-email-recipients {
+  flex-shrink: 0;
+  border-bottom: 1px solid var(--color-border-default, #e2e8f0);
+}
+
+// ── To row (wraps field + +Cc +Bcc) ──────────────────────────────────────────
+.gs-email-to-row {
+  display: flex; align-items: flex-start;
+  padding: 0 12px;
+}
+
+.gs-email-field-actions {
+  display:     flex;
+  gap:         4px;
+  padding:     8px 0;
+  flex-shrink: 0;
+}
+
+// ── Single recipient row ──────────────────────────────────────────────────────
+.gs-email-field {
+  display:     flex;
+  align-items: flex-start;
+  gap:         8px;
+  padding:     8px 12px;
+  min-height:  40px;
+  flex:        1;
+
+  &--error { border-bottom: 1.5px solid #dc2625; }
+
+  &__label {
+    font-size:   13px;
+    font-weight: 500;
+    color:       var(--color-text-secondary, #475569);
+    min-width:   32px;
+    padding-top: 6px;
+    flex-shrink: 0;
+  }
+}
+
+// ── Chip input container ──────────────────────────────────────────────────────
+.gs-email-chips {
+  display:   flex;
+  flex-wrap: wrap;
+  gap:       4px;
+  flex:      1;
+  min-width: 0;
+}
+
+.gs-email-chip-input {
+  border: none; outline: none; background: transparent;
+  font-family: var(--prim-font-primary); font-size: 14px;
+  color: var(--color-text-default);
+  min-width: 80px; flex: 1;
+  padding: 4px 0;
+  caret-color: var(--color-brand);
+}
+
+// ── Recipient chip ────────────────────────────────────────────────────────────
+.gs-chip {
+  display:     inline-flex;
+  align-items: center;
+  gap:         5px;
+  padding:     3px 8px 3px 5px;
+  background:  #eef6ff;
+  border:      1px solid #bedbfe;
+  border-radius: 100px;
+  font-size:   13px;
+  font-weight: 500;
+  color:       var(--color-brand, #1852fe);
+  max-width:   200px;
+
+  &--error {
+    background:  #fef1f2;
+    border-color: #fecaca;
+    color:       #dc2625;
+  }
+
+  &__avatar {
+    display:         inline-flex;
+    align-items:     center;
+    justify-content: center;
+    width:  20px; height: 20px;
+    border-radius: 50%;
+    background: var(--color-brand, #1852fe);
+    flex-shrink: 0;
+  }
+
+  &__warn {
+    display:         inline-flex;
+    align-items:     center;
+    justify-content: center;
+    width: 20px; height: 20px;
+    flex-shrink: 0;
+  }
+
+  &__label {
+    overflow:      hidden;
+    text-overflow: ellipsis;
+    white-space:   nowrap;
+    max-width:     140px;
+  }
+
+  &__close {
+    background: none; border: none; cursor: pointer;
+    font-size: 14px; line-height: 1; color: inherit; opacity: 0.6;
+    padding: 0 1px;
+    &:hover { opacity: 1; }
+  }
+}
+
+// ── Toggle buttons (+Cc, +Bcc) ────────────────────────────────────────────────
+.gs-email-toggle-btn {
+  background: none;
+  border: 1px solid var(--color-border-default, #e2e8f0);
+  border-radius: 4px;
+  padding: 4px 10px;
+  font-family: var(--prim-font-primary); font-size: 12px; font-weight: 600;
+  color: var(--color-text-secondary);
+  cursor: pointer; white-space: nowrap;
+  &:hover { background: var(--color-surface-subtle); color: var(--color-brand); border-color: var(--color-brand); }
+}
+
+// ── Subject input ─────────────────────────────────────────────────────────────
+.gs-email-subject {
+  padding: 0 12px;
+  border-top: 1px solid var(--color-border-default, #e2e8f0);
+
+  input {
+    width:      100%;
+    border:     none; outline: none; background: transparent;
+    font-family: var(--prim-font-primary); font-size: 14px; font-weight: 500;
+    color:      var(--color-text-default);
+    padding:    10px 0;
+    box-sizing: border-box;
+    &::placeholder { color: var(--color-text-placeholder, #94a3b8); font-weight: 400; }
+  }
+}
+
+// ── Toolbar ───────────────────────────────────────────────────────────────────
+.gs-email-toolbar {
+  display:       flex;
+  align-items:   center;
+  gap:           2px;
+  padding:       6px 12px;
+  border-top:    1px solid var(--color-border-default, #e2e8f0);
+  flex-shrink:   0;
+
+  &__btn {
+    background: none; border: none; cursor: pointer;
+    width: 28px; height: 28px;
+    display:     inline-flex; align-items: center; justify-content: center;
+    border-radius: 4px;
+    font-family: var(--prim-font-primary); font-size: 13px;
+    color: var(--color-text-secondary);
+    transition: background 100ms ease;
+    &:hover { background: var(--color-surface-subtle); color: var(--color-text-default); }
+    &:active { background: var(--prim-grey-100); }
+  }
+
+  &__sep {
+    width: 1px; height: 16px; background: var(--color-border-default, #e2e8f0);
+    margin: 0 4px; flex-shrink: 0;
+  }
+}
+
+// ── Body wrap ─────────────────────────────────────────────────────────────────
+.gs-email-body-wrap {
+  flex:           1;
+  overflow-y:     auto;
+  min-height:     120px;
+  position:       relative;
+}
+
+.gs-email-body {
+  padding:     12px 16px;
+  min-height:  120px;
+  outline:     none;
+  font-family: var(--prim-font-primary); font-size: 14px; line-height: 1.65;
+  color:       var(--color-text-default);
+
+  &:empty::before {
+    content: attr(data-placeholder);
+    color:   var(--color-text-placeholder, #94a3b8);
+    pointer-events: none;
+  }
+}
+
+// ── Drag-drop zone ────────────────────────────────────────────────────────────
+.gs-email-drop {
+  display:        flex;
+  flex-direction: column;
+  align-items:    center;
+  justify-content: center;
+  gap:            12px;
+  height:         160px;
+  margin:         12px;
+  border:         2px dashed var(--color-border-default, #e2e8f0);
+  border-radius:  var(--radius-md, 8px);
+  background:     var(--prim-blue-10, #eef6ff);
+  font-family:    var(--prim-font-primary); font-size: 13px;
+  color:          var(--color-text-secondary);
+}
+
+// ── Attachment chips ──────────────────────────────────────────────────────────
+.gs-email-attachments {
+  display:    flex;
+  flex-wrap:  wrap;
+  gap:        6px;
+  padding:    8px 12px;
+  border-top: 1px solid var(--color-border-default, #e2e8f0);
+  flex-shrink: 0;
+}
+
+.gs-attach-chip {
+  display:     inline-flex;
+  align-items: center;
+  gap:         5px;
+  padding:     4px 8px;
+  background:  var(--color-surface-subtle, #f7fafc);
+  border:      1px solid var(--color-border-default, #e2e8f0);
+  border-radius: 4px;
+  font-family: var(--prim-font-primary); font-size: 12px;
+  color:       var(--color-text-default);
+  max-width:   160px;
+
+  &__name {
+    overflow:      hidden;
+    text-overflow: ellipsis;
+    white-space:   nowrap;
+    max-width:     120px;
+  }
+
+  button {
+    background: none; border: none; cursor: pointer;
+    font-size: 13px; color: var(--color-text-secondary); line-height: 1; padding: 0;
+    &:hover { color: var(--color-danger); }
+  }
+}
+
+// ── Error banner ──────────────────────────────────────────────────────────────
+.gs-email-error-banner {
+  display:     flex;
+  align-items: center;
+  gap:         8px;
+  padding:     10px 16px;
+  background:  #fefce8;
+  border-top:  1px solid #feef89;
+  font-family: var(--prim-font-primary); font-size: 13px;
+  color:       #844d0f;
+  flex-shrink: 0;
+}
+
+// ── Footer buttons ────────────────────────────────────────────────────────────
+.gs-email-btn {
+  height:        36px;
+  padding:       0 20px;
+  border-radius: var(--radius-sm, 4px);
+  font-family:   var(--prim-font-primary); font-size: 14px; font-weight: 600;
+  cursor:        pointer; border: none; transition: background 120ms ease;
+
+  &--cancel {
+    background: #edf5ff;
+    border: 1px solid var(--color-brand, #1852fe);
+    color: var(--color-brand, #1852fe);
+    &:hover { background: var(--prim-blue-50, #dbeafe); }
+  }
+
+  &--send {
+    background: var(--color-brand, #1852fe);
+    color: #fff;
+    &:hover { background: #1242d4; }
+  }
+}
+
+// ── Hidden file input ─────────────────────────────────────────────────────────
+.gs-email-file-input { display: none; }

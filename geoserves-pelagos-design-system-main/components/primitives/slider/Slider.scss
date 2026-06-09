@@ -1,0 +1,166 @@
+// ─────────────────────────────────────────────────────────────────────────────
+// Pelagos Slider — primitives/slider/Slider.scss
+// Figma: node-id=11866-4068  |  Ref: Ant Design Slider
+//
+// Architecture: native <input type="range"> floated above a visual .gs-slider__track.
+// The native input is made transparent — only its thumb is visible. The fill and
+// track are rendered via .gs-slider__fill (absolutely positioned div).
+// ─────────────────────────────────────────────────────────────────────────────
+
+.gs-slider {
+  --slider-track-h:   4px;
+  --slider-thumb:     18px;
+  --slider-fill:      var(--color-brand, #1852fe);
+  --slider-track-bg:  var(--prim-grey-100, #e2e8f0);
+  --slider-thumb-bg:  var(--color-brand, #1852fe);
+  --slider-tip-bg:    var(--color-brand, #1852fe);
+
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  user-select: none;
+
+  &--disabled { opacity: 0.45; pointer-events: none; }
+
+  // ── Track wrapper — relative container ──────────────────────────────────
+  &__track-wrap {
+    position: relative;
+    height: var(--slider-thumb);
+    display: flex;
+    align-items: center;
+  }
+
+  // ── Visual track ─────────────────────────────────────────────────────────
+  &__track {
+    position: absolute;
+    left: 0; right: 0;
+    height: var(--slider-track-h);
+    background: var(--slider-track-bg);
+    border-radius: 100px;
+    overflow: visible;
+  }
+
+  // ── Fill — coloured portion ───────────────────────────────────────────────
+  &__fill {
+    position: absolute;
+    left: 0;
+    height: 100%;
+    background: var(--slider-fill);
+    border-radius: 100px;
+    transition: width 0ms;   // real-time, no animation delay
+
+    &--range {
+      // left + width set via inline style
+    }
+  }
+
+  // ── Native range input — transparent, floats above ────────────────────────
+  &__input {
+    position: absolute;
+    left: 0; right: 0;
+    width: 100%;
+    margin: 0;
+    height: var(--slider-thumb);
+    appearance: none;
+    -webkit-appearance: none;
+    background: transparent;
+    cursor: pointer;
+    outline: none;
+    z-index: 2;
+
+    // WebKit thumb
+    &::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width:  var(--slider-thumb);
+      height: var(--slider-thumb);
+      border-radius: 50%;
+      background:   var(--slider-thumb-bg);
+      border: 2px solid #fff;
+      box-shadow: 0 1px 4px rgba(24, 82, 254, 0.3);
+      cursor: pointer;
+      transition: transform 120ms ease, box-shadow 120ms ease;
+    }
+    &:hover::-webkit-slider-thumb,
+    &:focus::-webkit-slider-thumb {
+      transform: scale(1.15);
+      box-shadow: 0 0 0 4px rgba(24, 82, 254, 0.15);
+    }
+    &:active::-webkit-slider-thumb {
+      transform: scale(1.2);
+      box-shadow: 0 0 0 6px rgba(24, 82, 254, 0.12);
+    }
+
+    // Firefox thumb
+    &::-moz-range-thumb {
+      width:  var(--slider-thumb);
+      height: var(--slider-thumb);
+      border-radius: 50%;
+      background: var(--slider-thumb-bg);
+      border: 2px solid #fff;
+      box-shadow: 0 1px 4px rgba(24, 82, 254, 0.3);
+      cursor: pointer;
+    }
+
+    // Focus ring
+    &:focus-visible {
+      outline: none;
+      &::-webkit-slider-thumb {
+        box-shadow: 0 0 0 4px rgba(24, 82, 254, 0.25);
+      }
+    }
+
+    // Range slider: both inputs overlap — lower one needs lower z-index
+    &--lo { z-index: 2; pointer-events: auto; }
+    &--hi { z-index: 3; pointer-events: auto; }
+  }
+
+  // ── Tooltip — value bubble above active thumb ─────────────────────────────
+  &__tip {
+    position: absolute;
+    top: -28px;
+    transform: translateX(-50%);
+    background: var(--slider-tip-bg);
+    color: #fff;
+    font-family:  var(--prim-font-primary);
+    font-size:    11px;
+    font-weight:  600;
+    line-height:  1;
+    padding:      3px 7px;
+    border-radius: 4px;
+    white-space:  nowrap;
+    pointer-events: none;
+    z-index: 10;
+
+    &::after {
+      content: '';
+      position: absolute;
+      bottom: -4px; left: 50%;
+      transform: translateX(-50%);
+      border: 4px solid transparent;
+      border-top-color: var(--slider-tip-bg);
+      border-bottom: none;
+    }
+  }
+
+  // ── Marks ────────────────────────────────────────────────────────────────
+  &__marks { position: relative; height: 16px; }
+  &__mark {
+    position: absolute;
+    transform: translateX(-50%);
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--slider-track-bg);
+    top: 0;
+
+    &--active { background: var(--slider-fill); }
+  }
+  &__mark-label {
+    position: absolute;
+    top: 12px;
+    left: 50%; transform: translateX(-50%);
+    font-family: var(--prim-font-primary);
+    font-size: 11px;
+    color: var(--color-text-secondary);
+    white-space: nowrap;
+  }
+}

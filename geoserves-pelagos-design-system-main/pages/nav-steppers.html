@@ -1,0 +1,832 @@
+<!-- ═══════════════════════════════════════════════════════════════
+     STEPPERS — Pelagos Design System
+     Horizontal + Vertical × Light + Dark background
+     ═══════════════════════════════════════════════════════════════ -->
+<style>
+/* ═══ STEPPER SHARED ══════════════════════════════════════════ */
+.gs-stepper { display:flex; }
+
+/* ── Horizontal ── */
+.gs-stepper--h { flex-direction:row; align-items:flex-start; gap:0; width:100%; }
+.gs-stepper--v { flex-direction:column; gap:0; }
+
+/* Step item */
+.gs-step { display:flex; position:relative; }
+.gs-stepper--h .gs-step { flex-direction:column; align-items:center; flex:1; }
+.gs-stepper--v .gs-step { flex-direction:row; align-items:flex-start; gap:14px; }
+
+/* Circle */
+.gs-step-circle {
+  width:32px; height:32px; border-radius:50%;
+  display:flex; align-items:center; justify-content:center;
+  font-family:var(--prim-font-primary);
+  font-size:var(--prim-font-size-sm);
+  font-weight:var(--prim-font-weight-bold);
+  flex-shrink:0; position:relative; z-index:1;
+  transition:background .2s, border-color .2s, color .2s;
+}
+
+/* Connector line – horizontal */
+.gs-stepper--h .gs-step:not(:last-child)::after {
+  content:''; position:absolute;
+  top:16px; left:calc(50% + 20px);
+  width:calc(100% - 40px); height:2px;
+  background:var(--prim-grey-200);
+  transition:background .3s;
+}
+/* Connector line – vertical */
+.gs-stepper--v .gs-step:not(:last-child)::after {
+  content:''; position:absolute;
+  left:15px; top:36px;
+  width:2px; height:calc(100% - 12px);
+  background:var(--prim-grey-200);
+  transition:background .3s;
+}
+
+/* Step content (label + desc) */
+.gs-stepper--h .gs-step-content { text-align:center; margin-top:10px; padding:0 4px; }
+.gs-stepper--v .gs-step-content { padding-bottom:24px; }
+.gs-step-title {
+  font-family:var(--prim-font-primary);
+  font-size:var(--prim-font-size-sm);
+  font-weight:var(--prim-font-weight-semibold);
+  color:var(--color-text-default);
+  line-height:1.4;
+}
+.gs-step-desc {
+  font-family:var(--prim-font-primary);
+  font-size:var(--prim-font-size-xs);
+  color:var(--color-text-secondary);
+  margin-top:2px; line-height:1.5;
+}
+
+/* ── LIGHT THEME STATES ─────────────────────────────────────── */
+/* Waiting (not started) */
+.gs-step--waiting .gs-step-circle {
+  background:var(--color-surface-default);
+  border:2px solid var(--prim-grey-200);
+  color:var(--prim-grey-400);
+}
+.gs-step--waiting .gs-step-title { color:var(--color-text-secondary); }
+
+/* Active (current) */
+.gs-step--active .gs-step-circle {
+  background:var(--color-brand);
+  border:2px solid var(--color-brand);
+  color:var(--prim-white);
+}
+.gs-step--active .gs-step-title { color:var(--color-brand); }
+
+/* Done (completed) */
+.gs-step--done .gs-step-circle {
+  background:var(--prim-green-500);
+  border:2px solid var(--prim-green-500);
+  color:var(--prim-white);
+}
+.gs-stepper--h .gs-step--done::after,
+.gs-stepper--v .gs-step--done::after { background:var(--color-brand); }
+
+/* Error */
+.gs-step--error .gs-step-circle {
+  background:var(--prim-red-500);
+  border:2px solid var(--prim-red-500);
+  color:var(--prim-white);
+}
+.gs-step--error .gs-step-title { color:var(--prim-red-500); }
+
+/* ── DARK THEME ─────────────────────────────────────────────── */
+.gs-stepper--dark { background:#001e4c; border-radius:var(--radius-lg); padding:24px 28px; }
+
+.gs-stepper--dark .gs-step--waiting .gs-step-circle {
+  background:transparent;
+  border:2px solid rgba(255,255,255,0.25);
+  color:rgba(255,255,255,0.4);
+}
+.gs-stepper--dark .gs-step--waiting .gs-step-title { color:rgba(255,255,255,0.5); }
+.gs-stepper--dark .gs-step--waiting .gs-step-desc  { color:rgba(255,255,255,0.35); }
+.gs-stepper--dark .gs-stepper--h .gs-step--waiting::after,
+.gs-stepper--dark .gs-stepper--v .gs-step--waiting::after { background:rgba(255,255,255,0.2); }
+
+.gs-stepper--dark .gs-step--active .gs-step-circle {
+  background:#1852fe;
+  border:2px solid #1852fe;
+  color:#fff;
+}
+.gs-stepper--dark .gs-step--active .gs-step-title { color:#ffffff; font-weight:700; }
+.gs-stepper--dark .gs-step--active .gs-step-desc  { color:rgba(255,255,255,0.65); }
+
+.gs-stepper--dark .gs-step--done .gs-step-circle {
+  background:rgba(255,255,255,0.15);
+  border:2px solid rgba(255,255,255,0.4);
+  color:#fff;
+}
+.gs-stepper--dark .gs-step--done .gs-step-title { color:rgba(255,255,255,0.85); }
+.gs-stepper--dark .gs-step--done .gs-step-desc  { color:rgba(255,255,255,0.5); }
+
+/* Dark connector - done segment */
+.gs-stepper--dark .gs-step--done::after { background:rgba(255,255,255,0.4) !important; }
+/* Dark connector - active segment */
+.gs-stepper--dark .gs-step--active::after { background:rgba(255,255,255,0.2) !important; }
+/* Dark connector - waiting */
+.gs-stepper--dark .gs-step--waiting::after { background:rgba(255,255,255,0.15) !important; }
+
+/* Fix: connector rules for dark wrapper - override with higher specificity */
+.gs-stepper--dark.gs-stepper--h .gs-step--done::after   { background:rgba(255,255,255,0.5) !important; }
+.gs-stepper--dark.gs-stepper--h .gs-step--active::after { background:rgba(255,255,255,0.2) !important; }
+.gs-stepper--dark.gs-stepper--h .gs-step--waiting::after{ background:rgba(255,255,255,0.15) !important; }
+.gs-stepper--dark.gs-stepper--v .gs-step--done::after   { background:rgba(255,255,255,0.5) !important; }
+.gs-stepper--dark.gs-stepper--v .gs-step--active::after { background:rgba(255,255,255,0.2) !important; }
+.gs-stepper--dark.gs-stepper--v .gs-step--waiting::after{ background:rgba(255,255,255,0.15) !important; }
+
+/* ── STEPPER CONTROLS ─────────────────────────────────────────── */
+.gs-stepper-controls {
+  display:flex; gap:10px; margin-top:20px; align-items:center;
+}
+
+/* ── CHECK ICON for done steps ─────────────────────────────── */
+.gs-step-check { width:14px; height:14px; }
+.gs-step-error-x { width:14px; height:14px; }
+</style>
+
+<!-- BANNER -->
+<div class="page-header">
+  <h1 class="ds-hero-title">Steppers</h1>
+</div>
+
+<!-- TAB BAR -->
+<div class="btn-tab-bar">
+  <button class="btn-tab-btn step-tab-btn active" data-tab="design" onclick="switchStepperTab('design')">Design</button>
+  <button class="btn-tab-btn step-tab-btn" data-tab="code"   onclick="switchStepperTab('code')">Code</button>
+  <button class="btn-tab-btn step-tab-btn" data-tab="usage"  onclick="switchStepperTab('usage')">Usage</button>
+</div>
+
+<!-- ═══ DESIGN TAB ═══════════════════════════════════════════════ -->
+<div id="step-tab-design" class="btn-tab-pane step-tab-pane active">
+  <div class="code-tab-layout">
+    <div class="code-tab-main">
+
+      <!-- OVERVIEW -->
+      <div id="step-s-overview" class="btn-family-card">
+        <div class="btn-family-title">Overview</div>
+        <p class="btn-family-desc">Steppers (Progress Indicators) guide users through a numbered sequence of steps. They communicate where the user is in a multi-step process and how many steps remain. Pelagos provides horizontal and vertical orientations, each available on both light and dark backgrounds with identical step structure. Use the interactive Next/Back controls below.</p>
+
+        <!-- Light horizontal stepper demo -->
+        <div class="btn-preview-strip" style="padding:32px 24px;background:var(--color-surface-subtle);border:1px solid var(--color-border-default);border-radius:var(--radius-lg);margin-top:16px;">
+          <div class="gs-stepper gs-stepper--h" id="ov-step" data-current="1">
+            <div class="gs-step gs-step--done">
+              <div class="gs-step-circle"><svg class="gs-step-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+              <div class="gs-step-content"><div class="gs-step-title">Account</div><div class="gs-step-desc">Create profile</div></div>
+            </div>
+            <div class="gs-step gs-step--active">
+              <div class="gs-step-circle">2</div>
+              <div class="gs-step-content"><div class="gs-step-title">Details</div><div class="gs-step-desc">Add information</div></div>
+            </div>
+            <div class="gs-step gs-step--waiting">
+              <div class="gs-step-circle">3</div>
+              <div class="gs-step-content"><div class="gs-step-title">Review</div><div class="gs-step-desc">Check everything</div></div>
+            </div>
+            <div class="gs-step gs-step--waiting">
+              <div class="gs-step-circle">4</div>
+              <div class="gs-step-content"><div class="gs-step-title">Confirm</div><div class="gs-step-desc">Submit &amp; done</div></div>
+            </div>
+          </div>
+          <div class="gs-stepper-controls">
+            <button class="gs-btn gs-btn-secondary gs-btn-sm" id="ov-step-prev" onclick="gsStepperPrev('ov-step')" disabled>← Back</button>
+            <button class="gs-btn gs-btn-primary gs-btn-sm" id="ov-step-next" onclick="gsStepperNext('ov-step')">Next →</button>
+            <span id="ov-step-done" style="display:none;color:var(--prim-green-500);font-weight:600;font-size:14px;">✓ All steps complete!</span>
+          </div>
+        </div>
+
+        <div class="btn-when-examples" style="margin-top:16px;">
+          <span class="btn-when-example-tag">Horizontal</span>
+          <span class="btn-when-example-tag">Vertical</span>
+          <span class="btn-when-example-tag">Light + Dark BG</span>
+          <span class="btn-when-example-tag">4 States</span>
+          <span class="btn-when-example-tag">WCAG AA</span>
+        </div>
+      </div>
+
+      <!-- ANATOMY -->
+      <div id="step-s-anatomy" class="btn-family-card">
+        <div class="btn-family-title">Anatomy</div>
+        <p class="btn-family-desc">Each step has a circle indicator and a text block. Between steps, a connector line signals progress. The same anatomy applies to both horizontal and vertical orientations and both colour themes.</p>
+
+        <div style="background:var(--color-surface-subtle);border:1px solid var(--color-border-default);border-radius:var(--radius-lg);padding:32px;display:flex;justify-content:center;margin-top:8px;overflow:auto;">
+          <svg width="560" height="180" viewBox="0 0 560 180" fill="none" xmlns="http://www.w3.org/2000/svg" style="min-width:480px;">
+            <!-- Step 1 done -->
+            <circle cx="60" cy="60" r="16" fill="#22c55e"/>
+            <polyline points="53,60 58,65 68,55" stroke="white" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+            <text x="60" y="90" font-size="11" font-weight="600" fill="#1e293b" text-anchor="middle" font-family="Helvetica,Arial,sans-serif">Account</text>
+            <text x="60" y="104" font-size="10" fill="#64748b" text-anchor="middle" font-family="Helvetica,Arial,sans-serif">Create profile</text>
+            <!-- Connector done -->
+            <line x1="76" y1="60" x2="164" y2="60" stroke="#1852fe" stroke-width="2"/>
+            <!-- Step 2 active -->
+            <circle cx="180" cy="60" r="16" fill="#1852fe"/>
+            <text x="180" y="65" font-size="12" font-weight="700" fill="white" text-anchor="middle" font-family="Helvetica,Arial,sans-serif">2</text>
+            <text x="180" y="90" font-size="11" font-weight="600" fill="#1852fe" text-anchor="middle" font-family="Helvetica,Arial,sans-serif">Details</text>
+            <text x="180" y="104" font-size="10" fill="#64748b" text-anchor="middle" font-family="Helvetica,Arial,sans-serif">Add information</text>
+            <!-- Connector waiting -->
+            <line x1="196" y1="60" x2="284" y2="60" stroke="#e2e8f0" stroke-width="2"/>
+            <!-- Step 3 waiting -->
+            <circle cx="300" cy="60" r="16" fill="white" stroke="#e2e8f0" stroke-width="2"/>
+            <text x="300" y="65" font-size="12" font-weight="700" fill="#94a3b8" text-anchor="middle" font-family="Helvetica,Arial,sans-serif">3</text>
+            <text x="300" y="90" font-size="11" font-weight="600" fill="#64748b" text-anchor="middle" font-family="Helvetica,Arial,sans-serif">Review</text>
+            <text x="300" y="104" font-size="10" fill="#64748b" text-anchor="middle" font-family="Helvetica,Arial,sans-serif">Check it</text>
+
+            <!-- Annotations -->
+            <line x1="60" y1="44" x2="60" y2="4" stroke="#cbd5e1" stroke-width="1"/>
+            <line x1="60" y1="4" x2="480" y2="4" stroke="#cbd5e1" stroke-width="1"/>
+            <circle cx="480" cy="4" r="10" fill="#1852fe"/>
+            <text x="480" y="8" font-size="11" font-weight="700" fill="white" text-anchor="middle" font-family="Helvetica,Arial,sans-serif">1</text>
+            <text x="496" y="8" font-size="11" fill="#475569" font-family="Helvetica,Arial,sans-serif">Step circle (32×32)</text>
+
+            <line x1="120" y1="60" x2="480" y2="60" stroke="#cbd5e1" stroke-width="1"/>
+            <circle cx="480" cy="60" r="10" fill="#1852fe"/>
+            <text x="480" y="64" font-size="11" font-weight="700" fill="white" text-anchor="middle" font-family="Helvetica,Arial,sans-serif">2</text>
+            <text x="496" y="64" font-size="11" fill="#475569" font-family="Helvetica,Arial,sans-serif">Connector (2px)</text>
+
+            <line x1="180" y1="77" x2="480" y2="120" stroke="#cbd5e1" stroke-width="1"/>
+            <circle cx="480" cy="120" r="10" fill="#1852fe"/>
+            <text x="480" y="124" font-size="11" font-weight="700" fill="white" text-anchor="middle" font-family="Helvetica,Arial,sans-serif">3</text>
+            <text x="496" y="124" font-family="Helvetica,Arial,sans-serif" font-size="11" fill="#475569">Step title + description</text>
+
+            <!-- Circle size callout -->
+            <line x1="44" y1="60" x2="44" y2="44" stroke="#94a3b8" stroke-width="1"/>
+            <line x1="44" y1="44" x2="76" y2="44" stroke="#94a3b8" stroke-width="1"/>
+            <line x1="44" y1="76" x2="76" y2="76" stroke="#94a3b8" stroke-width="1"/>
+            <text x="36" y="62" font-size="9" fill="#94a3b8" text-anchor="middle" font-family="Helvetica,Arial,sans-serif">32px</text>
+          </svg>
+        </div>
+
+        <ol style="margin-top:20px;display:flex;flex-direction:column;gap:8px;padding-left:20px;">
+          <li><strong>Step circle</strong> — 32×32px, <code>border-radius: 50%</code>. Shows step number (waiting), check icon (done), or error icon (error). Active state: <code>--color-brand</code> fill.</li>
+          <li><strong>Connector</strong> — 2px horizontal (or vertical) line between circles. Colour: <code>--prim-grey-200</code> (waiting), <code>--color-brand</code> (done). Same in dark theme with adjusted opacity values.</li>
+          <li><strong>Step title</strong> — <code>--prim-font-size-sm</code> / <code>--prim-font-weight-semibold</code>. Active: <code>--color-brand</code>. Done: <code>--color-text-default</code>. Waiting: <code>--color-text-secondary</code>.</li>
+          <li><strong>Step description</strong> — Optional subtitle. <code>--prim-font-size-xs</code> / <code>--color-text-secondary</code>. Sits below the title on both orientations.</li>
+        </ol>
+      </div>
+
+      <!-- VARIANTS -->
+      <div id="step-s-variants" class="btn-family-card">
+        <div class="btn-family-title">Variants</div>
+        <p class="btn-family-desc">Four interactive demos — same step structure, different orientation and background. Use the controls on each to navigate.</p>
+
+        <!-- ─ Light Horizontal ─ -->
+        <div class="btn-sub-label" style="margin-bottom:12px;">Horizontal — Light background</div>
+        <div style="background:var(--color-surface-subtle);border:1px solid var(--color-border-default);border-radius:var(--radius-lg);padding:28px 24px;">
+          <div class="gs-stepper gs-stepper--h" id="lh-step" data-current="0">
+            <div class="gs-step gs-step--active">
+              <div class="gs-step-circle">1</div>
+              <div class="gs-step-content"><div class="gs-step-title">Vessel Info</div><div class="gs-step-desc">Name &amp; registration</div></div>
+            </div>
+            <div class="gs-step gs-step--waiting">
+              <div class="gs-step-circle">2</div>
+              <div class="gs-step-content"><div class="gs-step-title">Route Plan</div><div class="gs-step-desc">Waypoints &amp; ETAs</div></div>
+            </div>
+            <div class="gs-step gs-step--waiting">
+              <div class="gs-step-circle">3</div>
+              <div class="gs-step-content"><div class="gs-step-title">Cargo</div><div class="gs-step-desc">Manifest details</div></div>
+            </div>
+            <div class="gs-step gs-step--waiting">
+              <div class="gs-step-circle">4</div>
+              <div class="gs-step-content"><div class="gs-step-title">Submit</div><div class="gs-step-desc">Review &amp; confirm</div></div>
+            </div>
+          </div>
+          <div class="gs-stepper-controls">
+            <button class="gs-btn gs-btn-secondary gs-btn-sm" id="lh-step-prev" onclick="gsStepperPrev('lh-step')" disabled>← Back</button>
+            <button class="gs-btn gs-btn-primary gs-btn-sm" id="lh-step-next" onclick="gsStepperNext('lh-step')">Next →</button>
+            <span id="lh-step-done" style="display:none;color:var(--prim-green-500);font-weight:600;font-size:14px;">✓ Submitted!</span>
+          </div>
+        </div>
+
+        <!-- ─ Light Vertical ─ -->
+        <div class="btn-sub-label" style="margin-top:28px;margin-bottom:12px;">Vertical — Light background</div>
+        <div style="background:var(--color-surface-subtle);border:1px solid var(--color-border-default);border-radius:var(--radius-lg);padding:28px 24px;display:flex;gap:32px;flex-wrap:wrap;align-items:flex-start;">
+          <div class="gs-stepper gs-stepper--v" id="lv-step" data-current="1" style="flex:1;min-width:200px;max-width:320px;">
+            <div class="gs-step gs-step--done">
+              <div class="gs-step-circle"><svg class="gs-step-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+              <div class="gs-step-content"><div class="gs-step-title">Select Departure</div><div class="gs-step-desc">Origin port confirmed</div></div>
+            </div>
+            <div class="gs-step gs-step--active">
+              <div class="gs-step-circle">2</div>
+              <div class="gs-step-content"><div class="gs-step-title">Choose Destination</div><div class="gs-step-desc">Select arrival port</div></div>
+            </div>
+            <div class="gs-step gs-step--waiting">
+              <div class="gs-step-circle">3</div>
+              <div class="gs-step-content"><div class="gs-step-title">Book Cargo</div><div class="gs-step-desc">Specify freight type</div></div>
+            </div>
+            <div class="gs-step gs-step--waiting">
+              <div class="gs-step-circle">4</div>
+              <div class="gs-step-content"><div class="gs-step-title">Confirm &amp; Pay</div><div class="gs-step-desc">Review booking details</div></div>
+            </div>
+          </div>
+          <div style="flex:1;min-width:200px;">
+            <div class="gs-stepper-controls" style="flex-direction:column;align-items:flex-start;gap:8px;">
+              <button class="gs-btn gs-btn-secondary gs-btn-sm" id="lv-step-prev" onclick="gsStepperPrev('lv-step')" disabled>← Back</button>
+              <button class="gs-btn gs-btn-primary gs-btn-sm" id="lv-step-next" onclick="gsStepperNext('lv-step')">Next Step →</button>
+              <span id="lv-step-done" style="display:none;color:var(--prim-green-500);font-weight:600;font-size:14px;">✓ Booking complete!</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- ─ Dark Horizontal ─ -->
+        <div class="btn-sub-label" style="margin-top:28px;margin-bottom:12px;">Horizontal — Dark background</div>
+        <div class="gs-stepper--dark">
+          <div class="gs-stepper gs-stepper--h" id="dh-step" data-current="2">
+            <div class="gs-step gs-step--done">
+              <div class="gs-step-circle"><svg class="gs-step-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+              <div class="gs-step-content"><div class="gs-step-title" style="color:rgba(255,255,255,.85);">Vessel</div><div class="gs-step-desc" style="color:rgba(255,255,255,.5);">IMO confirmed</div></div>
+            </div>
+            <div class="gs-step gs-step--done">
+              <div class="gs-step-circle"><svg class="gs-step-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+              <div class="gs-step-content"><div class="gs-step-title" style="color:rgba(255,255,255,.85);">Crew</div><div class="gs-step-desc" style="color:rgba(255,255,255,.5);">List verified</div></div>
+            </div>
+            <div class="gs-step gs-step--active">
+              <div class="gs-step-circle">3</div>
+              <div class="gs-step-content"><div class="gs-step-title" style="color:#fff;font-weight:700;">Voyage</div><div class="gs-step-desc" style="color:rgba(255,255,255,.65);">Route planning</div></div>
+            </div>
+            <div class="gs-step gs-step--waiting">
+              <div class="gs-step-circle">4</div>
+              <div class="gs-step-content"><div class="gs-step-title" style="color:rgba(255,255,255,.5);">Documents</div><div class="gs-step-desc" style="color:rgba(255,255,255,.35);">Upload files</div></div>
+            </div>
+          </div>
+          <div class="gs-stepper-controls">
+            <button class="gs-btn gs-btn-secondary gs-btn-sm" id="dh-step-prev" onclick="gsStepperPrev('dh-step')" style="background:rgba(255,255,255,.1);border-color:rgba(255,255,255,.25);color:#fff;">← Back</button>
+            <button class="gs-btn gs-btn-primary gs-btn-sm" id="dh-step-next" onclick="gsStepperNext('dh-step')">Next →</button>
+            <span id="dh-step-done" style="display:none;color:#4ade80;font-weight:600;font-size:14px;">✓ All steps complete!</span>
+          </div>
+        </div>
+
+        <!-- ─ Dark Vertical ─ -->
+        <div class="btn-sub-label" style="margin-top:28px;margin-bottom:12px;">Vertical — Dark background</div>
+        <div class="gs-stepper--dark" style="display:flex;gap:32px;flex-wrap:wrap;align-items:flex-start;">
+          <div class="gs-stepper gs-stepper--v" id="dv-step" data-current="0" style="flex:1;min-width:220px;max-width:340px;">
+            <div class="gs-step gs-step--active">
+              <div class="gs-step-circle">1</div>
+              <div class="gs-step-content">
+                <div class="gs-step-title" style="color:#fff;font-weight:700;">Port Arrival</div>
+                <div class="gs-step-desc" style="color:rgba(255,255,255,.65);">Notify port authority</div>
+              </div>
+            </div>
+            <div class="gs-step gs-step--waiting">
+              <div class="gs-step-circle">2</div>
+              <div class="gs-step-content">
+                <div class="gs-step-title" style="color:rgba(255,255,255,.5);">Customs Check</div>
+                <div class="gs-step-desc" style="color:rgba(255,255,255,.35);">Documentation review</div>
+              </div>
+            </div>
+            <div class="gs-step gs-step--waiting">
+              <div class="gs-step-circle">3</div>
+              <div class="gs-step-content">
+                <div class="gs-step-title" style="color:rgba(255,255,255,.5);">Berthing</div>
+                <div class="gs-step-desc" style="color:rgba(255,255,255,.35);">Assign berth slot</div>
+              </div>
+            </div>
+            <div class="gs-step gs-step--waiting">
+              <div class="gs-step-circle">4</div>
+              <div class="gs-step-content">
+                <div class="gs-step-title" style="color:rgba(255,255,255,.5);">Clearance</div>
+                <div class="gs-step-desc" style="color:rgba(255,255,255,.35);">Final sign-off</div>
+              </div>
+            </div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:8px;flex-shrink:0;">
+            <button class="gs-btn gs-btn-secondary gs-btn-sm" id="dv-step-prev" onclick="gsStepperPrev('dv-step')" style="background:rgba(255,255,255,.1);border-color:rgba(255,255,255,.25);color:#fff;" disabled>← Back</button>
+            <button class="gs-btn gs-btn-primary gs-btn-sm" id="dv-step-next" onclick="gsStepperNext('dv-step')">Next Step →</button>
+            <span id="dv-step-done" style="display:none;color:#4ade80;font-weight:600;font-size:14px;">✓ Complete!</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- STATES -->
+      <div id="step-s-states" class="btn-family-card">
+        <div class="btn-family-title">States</div>
+        <p class="btn-family-desc">Four step states. The error state replaces the number with an × icon and uses the danger colour palette.</p>
+
+        <div class="btn-sub-label" style="margin-bottom:12px;">Light background</div>
+        <div class="btn-states-grid" style="grid-template-columns:repeat(4,1fr);">
+          <div class="btn-state-cell">
+            <div style="pointer-events:none;display:flex;flex-direction:column;align-items:center;gap:8px;">
+              <div style="width:32px;height:32px;border-radius:50%;border:2px solid var(--prim-grey-200);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:var(--prim-grey-400);">3</div>
+              <div style="font-size:12px;font-weight:600;color:var(--color-text-secondary);">Upcoming</div>
+            </div>
+            <span class="btn-state-label">Waiting</span>
+          </div>
+          <div class="btn-state-cell">
+            <div style="pointer-events:none;display:flex;flex-direction:column;align-items:center;gap:8px;">
+              <div style="width:32px;height:32px;border-radius:50%;background:var(--color-brand);border:2px solid var(--color-brand);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:white;">2</div>
+              <div style="font-size:12px;font-weight:600;color:var(--color-brand);">Current</div>
+            </div>
+            <span class="btn-state-label">Active</span>
+          </div>
+          <div class="btn-state-cell">
+            <div style="pointer-events:none;display:flex;flex-direction:column;align-items:center;gap:8px;">
+              <div style="width:32px;height:32px;border-radius:50%;background:var(--prim-green-500);border:2px solid var(--prim-green-500);display:flex;align-items:center;justify-content:center;">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
+              </div>
+              <div style="font-size:12px;font-weight:600;color:var(--color-text-default);">Finished</div>
+            </div>
+            <span class="btn-state-label">Done</span>
+          </div>
+          <div class="btn-state-cell">
+            <div style="pointer-events:none;display:flex;flex-direction:column;align-items:center;gap:8px;">
+              <div style="width:32px;height:32px;border-radius:50%;background:var(--prim-red-500);border:2px solid var(--prim-red-500);display:flex;align-items:center;justify-content:center;">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+              </div>
+              <div style="font-size:12px;font-weight:600;color:var(--prim-red-500);">Failed</div>
+            </div>
+            <span class="btn-state-label">Error</span>
+          </div>
+        </div>
+
+        <div class="btn-sub-label" style="margin-top:20px;margin-bottom:12px;">Dark background</div>
+        <div class="gs-stepper--dark" style="padding:20px;">
+          <div class="btn-states-grid" style="grid-template-columns:repeat(4,1fr);gap:12px;">
+            <div style="display:flex;flex-direction:column;align-items:center;gap:8px;">
+              <div style="width:32px;height:32px;border-radius:50%;border:2px solid rgba(255,255,255,.25);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:rgba(255,255,255,.4);">4</div>
+              <div style="font-size:11px;font-weight:600;color:rgba(255,255,255,.4);text-align:center;">Waiting</div>
+            </div>
+            <div style="display:flex;flex-direction:column;align-items:center;gap:8px;">
+              <div style="width:32px;height:32px;border-radius:50%;background:#1852fe;border:2px solid #1852fe;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:white;">2</div>
+              <div style="font-size:11px;font-weight:700;color:#fff;text-align:center;">Active</div>
+            </div>
+            <div style="display:flex;flex-direction:column;align-items:center;gap:8px;">
+              <div style="width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,.15);border:2px solid rgba(255,255,255,.4);display:flex;align-items:center;justify-content:center;">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
+              </div>
+              <div style="font-size:11px;font-weight:600;color:rgba(255,255,255,.85);text-align:center;">Done</div>
+            </div>
+            <div style="display:flex;flex-direction:column;align-items:center;gap:8px;">
+              <div style="width:32px;height:32px;border-radius:50%;background:var(--prim-red-500);border:2px solid var(--prim-red-500);display:flex;align-items:center;justify-content:center;">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+              </div>
+              <div style="font-size:11px;font-weight:600;color:var(--prim-red-400);text-align:center;">Error</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- INTERACTIONS -->
+      <div id="step-s-interaction" class="btn-family-card">
+        <div class="btn-family-title">Interactions</div>
+        <table>
+          <thead><tr><th>Trigger</th><th>Behaviour</th></tr></thead>
+          <tbody>
+            <tr class="ds-tr-border"><td>Click "Next" button</td><td>Advances the current step — marks previous as <em>done</em>, increments <em>active</em>, leaves future as <em>waiting</em>. Fires <code>onChange(nextIndex)</code>.</td></tr>
+            <tr class="ds-tr-border"><td>Click "Back" button</td><td>Decrements the active step. Previous step returns to <em>active</em>; current step reverts to <em>waiting</em>.</td></tr>
+            <tr class="ds-tr-border"><td>Click step circle (if <code>clickable</code>)</td><td>Navigates directly to that step. Useful for review flows where users revisit earlier steps.</td></tr>
+            <tr class="ds-tr-border"><td>Validation fail</td><td>Step remains <em>active</em>; an error state can be applied via <code>status="error"</code> on the step. Inline error messages appear in the panel below.</td></tr>
+            <tr class="ds-tr-border"><td><kbd>Tab</kbd></td><td>Moves focus through interactive step buttons (Next/Back or clickable circles).</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- ACCESSIBILITY -->
+      <div id="step-s-a11y" class="btn-family-card">
+        <div class="btn-family-title">Accessibility</div>
+        <div class="btn-sub-label">Semantic Pattern</div>
+        <p class="btn-family-desc">The step list uses <code>role="list"</code> with each step as <code>role="listitem"</code>. The current step is announced with <code>aria-current="step"</code>. Completed steps include a visually hidden "completed" text so screen readers announce both the step number and its state.</p>
+        <div class="btn-sub-label" style="margin-top:16px;">ARIA Attributes</div>
+        <table>
+          <thead><tr><th>Element</th><th>Attribute</th><th>Value</th></tr></thead>
+          <tbody>
+            <tr class="ds-tr-border"><td>Step list</td><td><code>role="list"</code></td><td>—</td></tr>
+            <tr class="ds-tr-border"><td>Active step</td><td><code>aria-current="step"</code></td><td>—</td></tr>
+            <tr class="ds-tr-border"><td>Completed circle</td><td><code>aria-label</code></td><td><code>"Step 1: Account — completed"</code></td></tr>
+            <tr class="ds-tr-border"><td>Error step</td><td><code>aria-invalid="true"</code></td><td>On the step item</td></tr>
+            <tr class="ds-tr-border"><td>Connector</td><td><code>aria-hidden="true"</code></td><td>Decorative only</td></tr>
+          </tbody>
+        </table>
+        <div class="btn-sub-label" style="margin-top:16px;">Contrast Ratios (Light)</div>
+        <table>
+          <thead><tr><th>State</th><th>Foreground token</th><th>Background token</th><th>Ratio</th><th>WCAG</th></tr></thead>
+          <tbody>
+            <tr class="ds-tr-border"><td>Active number</td><td><code>--prim-white</code></td><td><code>--color-brand</code></td><td>4.8:1</td><td>AA ✓</td></tr>
+            <tr class="ds-tr-border"><td>Done check</td><td><code>--prim-white</code></td><td><code>--prim-green-500</code></td><td>3.1:1</td><td>AA (large) ✓</td></tr>
+            <tr class="ds-tr-border"><td>Waiting number</td><td><code>--prim-grey-400</code></td><td><code>--prim-white</code></td><td>4.7:1</td><td>AA ✓</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- RESPONSIVE -->
+      <div id="step-s-responsive" class="btn-family-card">
+        <div class="btn-family-title">Responsive Behaviour</div>
+        <table>
+          <thead><tr><th>Breakpoint</th><th>Behaviour</th></tr></thead>
+          <tbody>
+            <tr class="ds-tr-border"><td>&gt; 1024px</td><td>Horizontal steppers display full labels beneath each circle. Vertical steppers show on the left with content on the right.</td></tr>
+            <tr class="ds-tr-border"><td>768px – 1024px</td><td>Horizontal steppers may truncate long descriptions. Consider switching to vertical at this range for 4+ steps.</td></tr>
+            <tr class="ds-tr-border"><td>&lt; 768px</td><td>Horizontal steppers collapse to icon-only (number/check) with only the current step showing its label. Vertical steppers remain the recommended orientation on mobile.</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- RELATED -->
+      <div id="step-s-related" class="btn-family-card">
+        <div class="btn-family-title">Related Components</div>
+        <ul class="btn-related-list">
+          <li><button class="btn-inline-link" onclick="navigate('nav-tabs')">Tabs</button> — Use for parallel, non-sequential content sections where any section can be accessed in any order.</li>
+          <li><button class="btn-inline-link" onclick="navigate('nav-progress')">Progress Bar</button> — Use when you need to show completion percentage without individual steps.</li>
+          <li><button class="btn-inline-link" onclick="navigate('prim-buttons')">Buttons</button> — Next/Back controls that drive step navigation.</li>
+        </ul>
+      </div>
+
+    </div><!-- /code-tab-main -->
+
+    <div class="code-tab-qnav">
+      <div class="code-qnav-inner">
+        <p class="code-qnav-title">On This Page</p>
+        <ul class="code-qnav-list">
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('step-s-overview')">Overview</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('step-s-anatomy')">Anatomy</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('step-s-variants')">Variants</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('step-s-states')">States</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('step-s-interaction')">Interactions</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('step-s-a11y')">Accessibility</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('step-s-responsive')">Responsive</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('step-s-related')">Related</button></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ CODE TAB ═══════════════════════════════════════════════════════ -->
+<div id="step-tab-code" class="btn-tab-pane step-tab-pane">
+  <div class="code-tab-layout">
+    <div class="code-tab-main">
+      <div class="fw-toggle-bar">
+        <button class="fw-toggle-bar-btn active" data-fw="react" onclick="switchFw('step-tab-code','react')"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="2.5" fill="#61dafb"/><ellipse cx="12" cy="12" rx="10" ry="4.5" stroke="#61dafb" stroke-width="1.5" fill="none"/><ellipse cx="12" cy="12" rx="10" ry="4.5" stroke="#61dafb" stroke-width="1.5" fill="none" transform="rotate(60 12 12)"/><ellipse cx="12" cy="12" rx="10" ry="4.5" stroke="#61dafb" stroke-width="1.5" fill="none" transform="rotate(120 12 12)"/></svg>React</button>
+        <button class="fw-toggle-bar-btn" data-fw="angular" onclick="switchFw('step-tab-code','angular')"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M12 2L2 6.5l1.5 12.5L12 22l8.5-3L22 6.5 12 2z" fill="#dd0031"/><path d="M12 2v20M12 2L6 17h12L12 2z" fill="none" stroke="#fff" stroke-width="1.2"/></svg>Angular</button>
+      </div>
+
+      <div id="step-c-overview" class="btn-family-card">
+        <div class="ds-step-row"><span class="ds-step-num">1</span><div class="btn-family-title" style="margin:0;">Overview</div></div>
+        <div class="fw-react"><p class="btn-family-desc"><code>&lt;Steps&gt;</code> accepts <code>items</code> and a controlled <code>current</code> index. Pass <code>direction="vertical"</code> for vertical layout, <code>theme="dark"</code> for dark background. Each item can carry an individual <code>status</code> override.</p></div>
+        <div class="fw-angular" style="display:none;"><p class="btn-family-desc"><code>&lt;gs-steps&gt;</code> with <code>[(current)]</code> two-way binding. Child <code>&lt;gs-step&gt;</code> elements define each step's label, description, and optional status.</p></div>
+      </div>
+
+      <div id="step-c-install" class="btn-family-card">
+        <div class="ds-step-row"><span class="ds-step-num">2</span><div class="btn-family-title" style="margin:0;">Install / Setup</div></div>
+        <div class="fw-react"><div class="btn-code-block"><div class="btn-code-head"><span class="btn-code-lang">bash</span><button class="btn-copy-btn" onclick="copyBtnCode('step-install',this)">Copy</button></div><div class="btn-code-body"><pre id="step-install"><code>npm install @pelagos/react-components</code></pre></div></div></div>
+        <div class="fw-angular" style="display:none;"><div class="btn-code-block"><div class="btn-code-head"><span class="btn-code-lang">bash</span><button class="btn-copy-btn" onclick="copyBtnCode('step-install-ng',this)">Copy</button></div><div class="btn-code-body"><pre id="step-install-ng"><code>npm install @pelagos/angular-components</code></pre></div></div></div>
+      </div>
+
+      <div id="step-c-imports" class="btn-family-card">
+        <div class="ds-step-row"><span class="ds-step-num">3</span><div class="btn-family-title" style="margin:0;">Import</div></div>
+        <div class="fw-react"><div class="btn-code-block"><div class="btn-code-head"><span class="btn-code-lang">JSX</span><button class="btn-copy-btn" onclick="copyBtnCode('step-import',this)">Copy</button></div><div class="btn-code-body"><pre id="step-import"><code><span class="c-kw">import</span> { <span class="c-type">Steps</span> } <span class="c-kw">from</span> <span class="c-val">'@pelagos/react-components'</span>;</code></pre></div></div></div>
+        <div class="fw-angular" style="display:none;"><div class="btn-code-block"><div class="btn-code-head"><span class="btn-code-lang">TS</span><button class="btn-copy-btn" onclick="copyBtnCode('step-import-ng',this)">Copy</button></div><div class="btn-code-body"><pre id="step-import-ng"><code><span class="c-kw">import</span> { <span class="c-type">StepsModule</span> } <span class="c-kw">from</span> <span class="c-val">'@pelagos/angular-components'</span>;</code></pre></div></div></div>
+      </div>
+
+      <div id="step-c-api" class="btn-family-card">
+        <div class="ds-step-row"><span class="ds-step-num">4</span><div class="btn-family-title" style="margin:0;">API / Props</div></div>
+        <div class="fw-react">
+          <div class="btn-sub-label" style="margin-bottom:8px;">Steps</div>
+          <table>
+            <thead><tr><th>Prop</th><th>Type</th><th>Default</th><th>Required</th><th>Description</th></tr></thead>
+            <tbody>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">items</td><td class="ds-td-code-muted">StepItem[]</td><td class="ds-td-code-muted">—</td><td>Yes</td><td class="ds-td-value">Array of step definitions</td></tr>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">current</td><td class="ds-td-code-muted">number</td><td class="ds-td-code-muted">0</td><td>No</td><td class="ds-td-value">Index of the active step (0-based)</td></tr>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">onChange</td><td class="ds-td-code-muted">(index: number) =&gt; void</td><td class="ds-td-code-muted">—</td><td>No</td><td class="ds-td-value">Called when a clickable step is selected</td></tr>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">direction</td><td class="ds-td-code-muted">'horizontal' | 'vertical'</td><td class="ds-td-code-muted">'horizontal'</td><td>No</td><td class="ds-td-value">Layout orientation</td></tr>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">theme</td><td class="ds-td-code-muted">'light' | 'dark'</td><td class="ds-td-code-muted">'light'</td><td>No</td><td class="ds-td-value">Colour theme — dark wraps in <code>--prim-blue-900</code> container</td></tr>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">clickable</td><td class="ds-td-code-muted">boolean</td><td class="ds-td-code-muted">false</td><td>No</td><td class="ds-td-value">Allow clicking step circles to navigate</td></tr>
+            </tbody>
+          </table>
+          <div class="btn-sub-label" style="margin-top:20px;margin-bottom:8px;">StepItem</div>
+          <div class="btn-code-block"><div class="btn-code-head"><span class="btn-code-lang">TS</span><button class="btn-copy-btn" onclick="copyBtnCode('step-type',this)">Copy</button></div><div class="btn-code-body"><pre id="step-type"><code><span class="c-kw">interface</span> <span class="c-type">StepItem</span> {
+  title:       <span class="c-type">string</span>;
+  description?:<span class="c-type">string</span>;
+  icon?:       <span class="c-type">ReactNode</span>;
+  status?:     <span class="c-val">'wait'</span> | <span class="c-val">'process'</span> | <span class="c-val">'finish'</span> | <span class="c-val">'error'</span>;
+  disabled?:   <span class="c-type">boolean</span>;
+}</code></pre></div></div>
+        </div>
+        <div class="fw-angular" style="display:none;">
+          <table>
+            <thead><tr><th>Input</th><th>Type</th><th>Default</th><th>Description</th></tr></thead>
+            <tbody>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">[(current)]</td><td class="ds-td-code-muted">number</td><td class="ds-td-code-muted">0</td><td class="ds-td-value">Active step index (two-way)</td></tr>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">[direction]</td><td class="ds-td-code-muted">'horizontal' | 'vertical'</td><td class="ds-td-code-muted">'horizontal'</td><td class="ds-td-value">Orientation</td></tr>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">[theme]</td><td class="ds-td-code-muted">'light' | 'dark'</td><td class="ds-td-code-muted">'light'</td><td class="ds-td-value">Colour theme</td></tr>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">[clickable]</td><td class="ds-td-code-muted">boolean</td><td class="ds-td-code-muted">false</td><td class="ds-td-value">Allow step click navigation</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div id="step-c-variants" class="btn-family-card">
+        <div class="ds-step-row"><span class="ds-step-num">5</span><div class="btn-family-title" style="margin:0;">Variants</div></div>
+        <div class="fw-react"><div class="btn-code-block"><div class="btn-code-head"><span class="btn-code-lang">JSX</span><button class="btn-copy-btn" onclick="copyBtnCode('step-variants',this)">Copy</button></div><div class="btn-code-body"><pre id="step-variants"><code><span class="c-kw">const</span> [step, setStep] = useState(0);
+
+<span class="c-kw">const</span> steps = [
+  { title: <span class="c-val">'Vessel Info'</span>,  description: <span class="c-val">'Name &amp; registration'</span> },
+  { title: <span class="c-val">'Route Plan'</span>,   description: <span class="c-val">'Waypoints &amp; ETAs'</span>    },
+  { title: <span class="c-val">'Cargo'</span>,        description: <span class="c-val">'Manifest details'</span>     },
+  { title: <span class="c-val">'Submit'</span>,       description: <span class="c-val">'Review &amp; confirm'</span>    },
+];
+
+<span class="c-cmt">// Horizontal light</span>
+&lt;<span class="c-tag">Steps</span> <span class="c-attr">current</span>={step} <span class="c-attr">items</span>={steps} /&gt;
+
+<span class="c-cmt">// Vertical light</span>
+&lt;<span class="c-tag">Steps</span> <span class="c-attr">current</span>={step} <span class="c-attr">items</span>={steps} <span class="c-attr">direction</span>=<span class="c-val">"vertical"</span> /&gt;
+
+<span class="c-cmt">// Horizontal dark</span>
+&lt;<span class="c-tag">Steps</span> <span class="c-attr">current</span>={step} <span class="c-attr">items</span>={steps} <span class="c-attr">theme</span>=<span class="c-val">"dark"</span> /&gt;
+
+<span class="c-cmt">// Vertical dark</span>
+&lt;<span class="c-tag">Steps</span> <span class="c-attr">current</span>={step} <span class="c-attr">items</span>={steps}
+  <span class="c-attr">direction</span>=<span class="c-val">"vertical"</span> <span class="c-attr">theme</span>=<span class="c-val">"dark"</span> /&gt;
+
+<span class="c-cmt">// Error on a specific step</span>
+&lt;<span class="c-tag">Steps</span> <span class="c-attr">current</span>={1} <span class="c-attr">items</span>={[
+  { title: <span class="c-val">'Step 1'</span> },
+  { title: <span class="c-val">'Step 2'</span>, status: <span class="c-val">'error'</span>, description: <span class="c-val">'Validation failed'</span> },
+  { title: <span class="c-val">'Step 3'</span> },
+]} /&gt;
+
+<span class="c-cmt">// Clickable steps (non-linear navigation)</span>
+&lt;<span class="c-tag">Steps</span>
+  <span class="c-attr">current</span>={step}
+  <span class="c-attr">onChange</span>={setStep}
+  <span class="c-attr">clickable</span>
+  <span class="c-attr">items</span>={steps}
+/&gt;</code></pre></div></div></div>
+        <div class="fw-angular" style="display:none;"><div class="btn-code-block"><div class="btn-code-head"><span class="btn-code-lang">HTML</span><button class="btn-copy-btn" onclick="copyBtnCode('step-variants-ng',this)">Copy</button></div><div class="btn-code-body"><pre id="step-variants-ng"><code><span class="c-cmt">&lt;!-- Horizontal light --&gt;</span>
+&lt;<span class="c-tag">gs-steps</span> [(current)]=<span class="c-val">"step"</span>&gt;
+  &lt;<span class="c-tag">gs-step</span> [<span class="c-attr">title</span>]=<span class="c-val">"'Vessel Info'"</span> [<span class="c-attr">description</span>]=<span class="c-val">"'Name &amp; reg'"</span>&gt;&lt;/<span class="c-tag">gs-step</span>&gt;
+  &lt;<span class="c-tag">gs-step</span> [<span class="c-attr">title</span>]=<span class="c-val">"'Route Plan'"</span>&gt;&lt;/<span class="c-tag">gs-step</span>&gt;
+  &lt;<span class="c-tag">gs-step</span> [<span class="c-attr">title</span>]=<span class="c-val">"'Submit'"</span>&gt;&lt;/<span class="c-tag">gs-step</span>&gt;
+&lt;/<span class="c-tag">gs-steps</span>&gt;
+
+<span class="c-cmt">&lt;!-- Vertical dark --&gt;</span>
+&lt;<span class="c-tag">gs-steps</span> [(current)]=<span class="c-val">"step"</span>
+  [<span class="c-attr">direction</span>]=<span class="c-val">"'vertical'"</span>
+  [<span class="c-attr">theme</span>]=<span class="c-val">"'dark'"</span>&gt;
+  &lt;<span class="c-tag">gs-step</span> [<span class="c-attr">title</span>]=<span class="c-val">"'Port Arrival'"</span>&gt;&lt;/<span class="c-tag">gs-step</span>&gt;
+  &lt;<span class="c-tag">gs-step</span> [<span class="c-attr">title</span>]=<span class="c-val">"'Customs'"</span>&gt;&lt;/<span class="c-tag">gs-step</span>&gt;
+&lt;/<span class="c-tag">gs-steps</span>&gt;</code></pre></div></div></div>
+      </div>
+
+      <div id="step-c-tokens" class="btn-family-card">
+        <div class="ds-step-row"><span class="ds-step-num">10</span><div class="btn-family-title" style="margin:0;">Theming</div></div>
+        <div class="fw-react"><div class="btn-code-block"><div class="btn-code-head"><span class="btn-code-lang">SCSS</span><button class="btn-copy-btn" onclick="copyBtnCode('step-tokens',this)">Copy</button></div><div class="btn-code-body"><pre id="step-tokens"><code><span class="c-cmt">/* Light theme (default) */</span>
+:root {
+  <span class="c-attr">--step-circle-size</span>:      <span class="c-val">32px</span>;
+  <span class="c-attr">--step-connector-size</span>:   <span class="c-val">2px</span>;
+  <span class="c-attr">--step-wait-border</span>:      <span class="c-val">var(--prim-grey-200)</span>;
+  <span class="c-attr">--step-wait-number</span>:      <span class="c-val">var(--prim-grey-400)</span>;
+  <span class="c-attr">--step-active-bg</span>:        <span class="c-val">var(--color-brand)</span>;        <span class="c-cmt">/* #1852fe */</span>
+  <span class="c-attr">--step-done-bg</span>:          <span class="c-val">var(--prim-green-500)</span>;     <span class="c-cmt">/* #22c55e */</span>
+  <span class="c-attr">--step-error-bg</span>:         <span class="c-val">var(--prim-red-500)</span>;       <span class="c-cmt">/* #dc2625 */</span>
+  <span class="c-attr">--step-connector-done</span>:   <span class="c-val">var(--color-brand)</span>;
+  <span class="c-attr">--step-connector-wait</span>:   <span class="c-val">var(--prim-grey-200)</span>;
+  <span class="c-attr">--step-font</span>:             <span class="c-val">var(--prim-font-primary)</span>;
+  <span class="c-attr">--step-title-size</span>:       <span class="c-val">var(--prim-font-size-sm)</span>;
+  <span class="c-attr">--step-desc-size</span>:        <span class="c-val">var(--prim-font-size-xs)</span>;
+}
+
+<span class="c-cmt">/* Dark theme overrides */</span>
+[data-theme="dark"] {
+  <span class="c-attr">--step-dark-bg</span>:          <span class="c-val">var(--prim-blue-900)</span>;      <span class="c-cmt">/* #001e4c */</span>
+  <span class="c-attr">--step-wait-border</span>:      <span class="c-val">rgba(255,255,255,0.25)</span>;
+  <span class="c-attr">--step-done-bg</span>:          <span class="c-val">rgba(255,255,255,0.15)</span>;
+  <span class="c-attr">--step-connector-done</span>:   <span class="c-val">rgba(255,255,255,0.5)</span>;
+  <span class="c-attr">--step-connector-wait</span>:   <span class="c-val">rgba(255,255,255,0.15)</span>;
+}</code></pre></div></div></div>
+        <div class="fw-angular" style="display:none;"><p class="btn-family-desc">Same CSS custom properties apply. Override in your root stylesheet for both themes.</p></div>
+      </div>
+
+      <div id="step-c-example" class="btn-family-card">
+        <div class="ds-step-row"><span class="ds-step-num">11</span><div class="btn-family-title" style="margin:0;">Full Example</div></div>
+        <div class="fw-react"><div class="btn-code-block"><div class="btn-code-head"><span class="btn-code-lang">JSX</span><button class="btn-copy-btn" onclick="copyBtnCode('step-example',this)">Copy</button></div><div class="btn-code-body"><pre id="step-example"><code><span class="c-kw">import</span> { useState } <span class="c-kw">from</span> <span class="c-val">'react'</span>;
+<span class="c-kw">import</span> { <span class="c-type">Steps</span> } <span class="c-kw">from</span> <span class="c-val">'@pelagos/react-components'</span>;
+
+<span class="c-kw">const</span> STEPS = [
+  { title: <span class="c-val">'Vessel Info'</span>,  description: <span class="c-val">'Name &amp; IMO'</span>       },
+  { title: <span class="c-val">'Route Plan'</span>,   description: <span class="c-val">'Waypoints &amp; ETAs'</span> },
+  { title: <span class="c-val">'Cargo'</span>,        description: <span class="c-val">'Manifest'</span>         },
+  { title: <span class="c-val">'Submit'</span>,       description: <span class="c-val">'Review &amp; confirm'</span> },
+];
+
+<span class="c-kw">export function</span> <span class="c-type">VoyageWizard</span>() {
+  <span class="c-kw">const</span> [step, setStep] = useState(0);
+  <span class="c-kw">const</span> [errors, setErrors] = useState&lt;<span class="c-type">number[]</span>&gt;([]);
+
+  <span class="c-kw">async function</span> <span class="c-type">handleNext</span>() {
+    <span class="c-kw">const</span> valid = <span class="c-kw">await</span> validateStep(step);
+    <span class="c-kw">if</span> (!valid) { setErrors([...errors, step]); <span class="c-kw">return</span>; }
+    setErrors(errors.filter(e =&gt; e !== step));
+    setStep(step + 1);
+  }
+
+  <span class="c-kw">return</span> (
+    &lt;<span class="c-tag">div</span>&gt;
+      &lt;<span class="c-tag">Steps</span>
+        <span class="c-attr">current</span>={step}
+        <span class="c-attr">items</span>={STEPS.map((s, i) =&gt; ({
+          ...s,
+          status: errors.includes(i) ? <span class="c-val">'error'</span> : <span class="c-kw">undefined</span>,
+        }))}
+      /&gt;
+
+      &lt;<span class="c-tag">div</span> <span class="c-attr">style</span>={{ marginTop: <span class="c-val">'var(--prim-space-8)'</span> }}&gt;
+        {step === 0 &amp;&amp; &lt;<span class="c-tag">VesselForm</span> /&gt;}
+        {step === 1 &amp;&amp; &lt;<span class="c-tag">RouteForm</span>  /&gt;}
+        {step === 2 &amp;&amp; &lt;<span class="c-tag">CargoForm</span>  /&gt;}
+        {step === 3 &amp;&amp; &lt;<span class="c-tag">ReviewPage</span> /&gt;}
+      &lt;/<span class="c-tag">div</span>&gt;
+
+      &lt;<span class="c-tag">div</span> <span class="c-attr">style</span>={{ display:<span class="c-val">'flex'</span>, gap:10, marginTop:20 }}&gt;
+        &lt;<span class="c-tag">Button</span> <span class="c-attr">onClick</span>={() =&gt; setStep(step-1)} <span class="c-attr">disabled</span>={step===0}&gt;Back&lt;/<span class="c-tag">Button</span>&gt;
+        &lt;<span class="c-tag">Button</span> <span class="c-attr">variant</span>=<span class="c-val">"primary"</span> <span class="c-attr">onClick</span>={handleNext}&gt;
+          {step === STEPS.length-1 ? <span class="c-val">'Submit'</span> : <span class="c-val">'Next'</span>}
+        &lt;/<span class="c-tag">Button</span>&gt;
+      &lt;/<span class="c-tag">div</span>&gt;
+    &lt;/<span class="c-tag">div</span>&gt;
+  );
+}</code></pre></div></div></div>
+        <div class="fw-angular" style="display:none;"><div class="btn-code-block"><div class="btn-code-head"><span class="btn-code-lang">HTML</span><button class="btn-copy-btn" onclick="copyBtnCode('step-example-ng',this)">Copy</button></div><div class="btn-code-body"><pre id="step-example-ng"><code>&lt;<span class="c-tag">gs-steps</span> [(current)]=<span class="c-val">"step"</span>&gt;
+  &lt;<span class="c-tag">gs-step</span> *ngFor=<span class="c-val">"let s of steps; let i=index"</span>
+    [<span class="c-attr">title</span>]=<span class="c-val">"s.title"</span>
+    [<span class="c-attr">description</span>]=<span class="c-val">"s.description"</span>
+    [<span class="c-attr">status</span>]=<span class="c-val">"errors.includes(i) ? 'error' : undefined"</span>&gt;
+  &lt;/<span class="c-tag">gs-step</span>&gt;
+&lt;/<span class="c-tag">gs-steps</span>&gt;</code></pre></div></div></div>
+      </div>
+
+    </div>
+    <div class="code-tab-qnav">
+      <div class="code-qnav-inner">
+        <p class="code-qnav-title">On This Page</p>
+        <ul class="code-qnav-list">
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('step-c-overview')">1 · Overview</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('step-c-install')">2 · Install</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('step-c-imports')">3 · Import</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('step-c-api')">4 · API / Props</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('step-c-variants')">5 · Variants</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('step-c-tokens')">10 · Theming</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('step-c-example')">11 · Full Example</button></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ USAGE TAB ═══════════════════════════════════════════════════════ -->
+<div id="step-tab-usage" class="btn-tab-pane step-tab-pane">
+  <div class="code-tab-layout">
+    <div class="code-tab-main">
+      <div id="step-u-when" class="btn-family-card">
+        <div class="btn-family-title">When to Use</div>
+        <ul class="btn-usage-list">
+          <li><strong>Multi-step forms</strong> — Registration, booking, checkout, onboarding wizards where tasks must be completed in a defined order.</li>
+          <li><strong>Process tracking</strong> — Showing where a shipment, application, or order is in a workflow without user control (display-only mode).</li>
+          <li><strong>Guided configuration</strong> — Complex setup wizards (e.g., vessel registration, route planning) where each step validates before proceeding.</li>
+          <li><strong>Dark background contexts</strong> — Dashboards, map views, or full-screen dark UIs that need the stepper to match the surface colour.</li>
+        </ul>
+      </div>
+      <div id="step-u-when-not" class="btn-family-card">
+        <div class="btn-family-title">When Not to Use</div>
+        <ul class="btn-usage-list">
+          <li><strong>Parallel non-sequential sections</strong> — Use <button onclick="navigate('nav-tabs')" class="btn-inline-link">Tabs</button> when any section can be accessed in any order.</li>
+          <li><strong>Simple 2-step process</strong> — A stepper for 2 steps adds overhead. Use a simple form with a summary step or a dialog instead.</li>
+          <li><strong>Progress indication only</strong> — Use a Progress Bar when you only need percentage completion, not labelled step milestones.</li>
+        </ul>
+      </div>
+      <div id="step-u-best" class="btn-family-card">
+        <div class="btn-family-title">Best Practices</div>
+        <ul class="btn-usage-list">
+          <li><strong>3–6 steps is the sweet spot</strong> — Fewer feels unnecessary; more becomes overwhelming. Break complex processes into grouped stages if needed.</li>
+          <li><strong>Validate before advancing</strong> — Never silently skip validation. If a step is invalid, show the error state on the circle and keep the user on that step.</li>
+          <li><strong>Allow going back</strong> — Unless there is a strong security reason, users should be able to review and edit previous steps.</li>
+          <li><strong>Use the same structure for light and dark</strong> — Do not add or remove steps based on theme. Identical step count and labels on both variants ensures consistency.</li>
+          <li><strong>Persist state across steps</strong> — Do not reset form values when navigating backward. Use a form state manager or controlled inputs.</li>
+        </ul>
+      </div>
+      <div id="step-u-refs" class="btn-family-card">
+        <div class="btn-family-title">References</div>
+        <ul class="btn-related-list">
+          <li><a href="https://www.figma.com/design/TOLfBpRePgynqwvDVp6fg3/Design-System?node-id=660-6522" target="_blank" rel="noopener">Figma — Steppers component frame</a></li>
+          <li><a href="https://www.figma.com/design/vYLhuu4azukDbzVJEWHNkl/Shinc--WIP-?node-id=13064-302710" target="_blank" rel="noopener">Figma — Dark vertical stepper (Shinc)</a></li>
+          <li><a href="https://www.figma.com/design/vYLhuu4azukDbzVJEWHNkl/Shinc--WIP-?node-id=13064-302676" target="_blank" rel="noopener">Figma — Dark horizontal stepper (Shinc)</a></li>
+          <li><a href="https://ant.design/components/steps" target="_blank" rel="noopener">Ant Design — Steps reference</a></li>
+          <li><a href="https://www.w3.org/WAI/ARIA/apg/patterns/breadcrumb/" target="_blank" rel="noopener">ARIA APG — Step navigation pattern</a></li>
+          <li><a href="https://www.w3.org/WAI/WCAG21/Understanding/keyboard.html" target="_blank" rel="noopener">WCAG 2.1 — 2.1.1 Keyboard</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="code-tab-qnav">
+      <div class="code-qnav-inner">
+        <p class="code-qnav-title">On This Page</p>
+        <ul class="code-qnav-list">
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('step-u-when')">When to Use</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('step-u-when-not')">When Not to Use</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('step-u-best')">Best Practices</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('step-u-refs')">References</button></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
