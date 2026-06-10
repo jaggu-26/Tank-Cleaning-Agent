@@ -1139,7 +1139,53 @@
     .tc-chain-label {
       font-size: 10px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase;
       color: #CBD5E1; margin-bottom: 14px;
+      display: flex; align-items: center; justify-content: space-between;
     }
+    .tc-chain-link {
+      font-size: 11px; font-weight: 600; color: #1852FE; text-transform: none; letter-spacing: 0;
+      background: none; border: none; cursor: pointer; font-family: inherit; padding: 0;
+      text-decoration: underline; text-underline-offset: 2px; transition: opacity 150ms;
+    }
+    .tc-chain-link:hover { opacity: 0.7; }
+    .tc-edge-panel {
+      display: none;
+    }
+    .tc-edge-panel.open { display: block; }
+    #tc-main-steps.hidden { display: none; }
+    .tc-edge-divider {
+      font-size: 10px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase;
+      color: #CBD5E1; margin: 16px 0 14px; display: flex; align-items: center; gap: 8px;
+    }
+    .tc-edge-divider::before, .tc-edge-divider::after {
+      content: ''; flex: 1; height: 1px; background: #F1F5F9;
+    }
+    .tc-no-data {
+      display: flex; align-items: center; justify-content: space-between; gap: 8px;
+      background: #FEF2F2; border: 1px solid #FECACA; border-radius: 7px;
+      padding: 8px 12px; margin-top: 6px;
+    }
+    .tc-no-data-text {
+      font-size: 11.5px; font-weight: 600; color: #B91C1C;
+      display: flex; align-items: center; gap: 5px;
+    }
+    .tc-no-data-text svg { flex-shrink: 0; }
+    .tc-add-manually {
+      font-size: 11.5px; font-weight: 700; color: #1852FE;
+      background: none; border: none; cursor: pointer; font-family: inherit; padding: 0;
+      white-space: nowrap; text-decoration: underline; text-underline-offset: 2px; transition: opacity 150ms;
+    }
+    .tc-add-manually:hover { opacity: 0.7; }
+    .tc-toast {
+      position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%) translateY(20px);
+      background: #0F172A; color: #fff; font-size: 13px; font-weight: 600;
+      padding: 10px 20px; border-radius: 99px; box-shadow: 0 4px 20px rgba(0,0,0,0.18);
+      display: flex; align-items: center; gap: 8px;
+      opacity: 0; pointer-events: none;
+      transition: opacity 220ms ease, transform 220ms ease;
+      z-index: 9999; white-space: nowrap;
+    }
+    .tc-toast.show { opacity: 1; transform: translateX(-50%) translateY(0); pointer-events: auto; }
+    .tc-toast svg { color: #22C55E; flex-shrink: 0; }
     .tc-steps { display: flex; flex-direction: column; }
     .tc-step {
       display: flex; gap: 12px; align-items: flex-start;
@@ -1152,7 +1198,7 @@
       width: 24px; height: 24px; border-radius: 50%;
       background: #1852FE; color: #fff;
       font-size: 11px; font-weight: 700;
-      display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px;
+      display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 0;
     }
     .tc-step-num.green { background: #22C55E; color: #fff; }
     .tc-step-body { flex: 1; min-width: 0; }
@@ -1160,6 +1206,7 @@
     /* Step label */
     .tc-step-label {
       font-size: 13px; font-weight: 500; color: #64748B;
+      min-height: 24px;
       margin-bottom: 5px; display: flex; align-items: center; gap: 7px; flex-wrap: wrap;
       letter-spacing: -0.1px;
     }
@@ -3529,6 +3576,37 @@
     if (panel) panel.scrollTop = 0;
   }
   var _openTCCorr = null;
+  function openEC1Edit() {
+    var current = document.getElementById('tc-ec1-cargo-display').textContent.trim();
+    document.getElementById('tc-ec1-in').value = current;
+    toggleTCCorr('ec1');
+  }
+  function addCargoDone() {
+    var val = document.getElementById('tc-ec1-in').value.trim();
+    if (!val) return;
+    // Update display
+    document.getElementById('tc-ec1-cargo-display').textContent = val;
+    document.getElementById('tc-ec1-no-data').style.display = 'none';
+    document.getElementById('tc-ec1-filled').style.display = 'block';
+    // Close the form panel
+    var panel = document.getElementById('tc-ec1');
+    var btn = document.getElementById('tcbtn-ec1');
+    if (panel) panel.classList.remove('open');
+    if (btn) btn.classList.remove('active');
+    if (window._openTCCorr === 'ec1') window._openTCCorr = null;
+    // Show toast
+    var toast = document.getElementById('tcToast');
+    toast.classList.add('show');
+    setTimeout(function(){ toast.classList.remove('show'); }, 2800);
+  }
+  function toggleEdgeCases() {
+    var edgePanel = document.getElementById('tc-edge-cases');
+    var mainSteps = document.getElementById('tc-main-steps');
+    var link = document.getElementById('tcEdgeCasesLink');
+    var isOpen = edgePanel.classList.toggle('open');
+    mainSteps.classList.toggle('hidden', isOpen);
+    link.textContent = isOpen ? 'hide edge cases' : 'edge cases';
+  }
   function openGEdit(group) {
     var cargoEl = document.getElementById('tc-g' + group + '-cargo');
     var input = document.getElementById('tc-g' + group + '-cargo-in');
@@ -3853,8 +3931,11 @@ MOEVE Trading Operations</div>
     <!-- ── TAB 2: Procedure ── -->
     <div class="tc-tab-panel" id="tcp-procedure">
       <div class="tc-det-scroll">
-        <div class="tc-chain-label">Determination result</div>
-        <div class="tc-steps">
+        <div class="tc-chain-label">
+          Determination result
+          <button class="tc-chain-link" id="tcEdgeCasesLink" onclick="toggleEdgeCases()">edge cases</button>
+        </div>
+        <div class="tc-steps" id="tc-main-steps">
 
           <!-- Step 1: Next cargo retrieved -->
           <div class="tc-step">
@@ -3941,18 +4022,28 @@ MOEVE Trading Operations</div>
             </div>
           </div>
 
-          <!-- Step 3: Guide Lookup + Procedure Determined -->
+          <!-- Step 3: Guide Lookup & Procedures -->
           <div class="tc-step" style="border-bottom:none;">
             <div class="tc-step-num">3</div>
             <div class="tc-step-body">
-              <div class="tc-step-label" style="margin-bottom:6px;">Guide Lookup</div>
-              <div style="margin-bottom:12px;">
-                <span class="tc-guide-badge" style="display:inline-flex;align-items:center;gap:5px;">
-                  Shell Guide
-                  <button onclick="toggleTCCorr('src3')" style="background:none;border:none;padding:0;cursor:pointer;display:inline-flex;align-items:center;color:inherit;opacity:0.7;" title="Change guide">
-                    <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
-                  </button>
-                </span>
+              <div class="tc-step-label" style="margin-bottom:10px;">Guide Lookup &amp; Procedures <span style="background:#334154;color:#fff;font-size:10px;font-weight:700;border-radius:4px;padding:1px 7px;margin-left:4px;">✓ 2 procedures</span></div>
+
+              <div class="tc-proc-card">
+                <div class="tc-proc-header">
+                  <span class="tc-proc-transition">Gasoil / Gasoline → LVN</span>
+                  <span class="tc-method-badge amber">Well Drained</span>
+                  <span class="tc-guide-badge" style="margin-left:auto;display:inline-flex;align-items:center;gap:5px;">
+                    Shell Guide
+                    <button onclick="toggleTCCorr('src3')" style="background:none;border:none;padding:0;cursor:pointer;display:inline-flex;align-items:center;color:inherit;opacity:0.7;" title="Change guide">
+                      <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                    </button>
+                  </span>
+                </div>
+                <ol class="tc-proc-steps">
+                  <li>Tank, pump columns and pipelines <strong>well drained</strong> — ROB must not exceed 0.05% of tank capacity.</li>
+                  <li>Any ROB to remain only in the <strong>pump well</strong>, where fitted.</li>
+                  <li>Pump columns, pipelines and drops cleared of all free-standing product.</li>
+                </ol>
               </div>
               <div class="tc-corr-panel" id="tc-src3">
                 <div class="tc-corr-inner">
@@ -3960,9 +4051,8 @@ MOEVE Trading Operations</div>
                   <div class="tc-corr-lbl">Select guide to use instead</div>
                   <select class="tc-corr-in">
                     <option selected>Shell Guide v2.4 (current)</option>
-                    <option>INTERTANKO Guide</option>
-                    <option>ICS Guide</option>
-                    <option>Charterer-specific guide</option>
+                    <option>HM50</option>
+                    <option>BP New 2006</option>
                   </select>
                   <div class="tc-corr-lbl">Reason for change</div>
                   <textarea class="tc-corr-in" placeholder="e.g. Charterer requires INTERTANKO guide…"></textarea>
@@ -3973,35 +4063,141 @@ MOEVE Trading Operations</div>
                 </div>
               </div>
 
-              <div class="tc-step-label" style="margin-bottom:10px;">Procedure determined <span style="background:#D3F3DF;color:#147638;font-size:10px;font-weight:700;border-radius:4px;padding:1px 7px;margin-left:4px;">✓ 2 procedures</span></div>
-
-              <div class="tc-proc-card">
-                <div class="tc-proc-header">
-                  <span class="tc-proc-transition">Gasoil / Gasoline → LVN</span>
-                  <span class="tc-method-badge amber">Well Drained</span>
-                </div>
-                <ol class="tc-proc-steps">
-                  <li>Tank, pump columns and pipelines <strong>well drained</strong> — ROB must not exceed 0.05% of tank capacity.</li>
-                  <li>Any ROB to remain only in the <strong>pump well</strong>, where fitted.</li>
-                  <li>Pump columns, pipelines and drops cleared of all free-standing product.</li>
-                </ol>
-              </div>
-
               <div class="tc-proc-card">
                 <div class="tc-proc-header">
                   <span class="tc-proc-transition">Naphtha → LVN</span>
                   <span class="tc-method-badge" style="background:#D3F3DF;color:#147638;">Same Grade</span>
+                  <span class="tc-guide-badge" style="margin-left:auto;display:inline-flex;align-items:center;gap:5px;">
+                    HM50
+                    <button onclick="toggleTCCorr('src4')" style="background:none;border:none;padding:0;cursor:pointer;display:inline-flex;align-items:center;color:inherit;opacity:0.7;" title="Change guide">
+                      <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                    </button>
+                  </span>
                 </div>
                 <ol class="tc-proc-steps">
                   <li><strong>No cleaning required</strong> — both cargoes are the same product category.</li>
                   <li>Ensure tanks are well drained and pump columns cleared of all free-standing product.</li>
                 </ol>
               </div>
+              <div class="tc-corr-panel" id="tc-src4">
+                <div class="tc-corr-inner">
+                  <div class="tc-corr-title">Change guide</div>
+                  <div class="tc-corr-lbl">Select guide to use instead</div>
+                  <select class="tc-corr-in">
+                    <option selected>HM50 (current)</option>
+                    <option>INTERTANKO Guide</option>
+                    <option>BP New 2006</option>
+                  </select>
+                  <div class="tc-corr-lbl">Reason for change</div>
+                  <textarea class="tc-corr-in" placeholder="e.g. Charterer requires Shell guide…"></textarea>
+                  <div class="tc-corr-btns">
+                    <button class="tc-corr-run">Re-run with new guide</button>
+                    <button class="tc-corr-cancel" onclick="toggleTCCorr('src4')">Cancel</button>
+                  </div>
+                </div>
+              </div>
 
             </div>
           </div>
 
         </div><!-- /tc-steps -->
+
+        <!-- Edge Cases Panel -->
+        <div class="tc-edge-panel" id="tc-edge-cases">
+          <div class="tc-steps">
+
+            <!-- EC Step 1: Next cargo -->
+            <div class="tc-step">
+              <div class="tc-step-num">1</div>
+              <div class="tc-step-body">
+                <div class="tc-step-label" style="margin-bottom:6px;">Next cargo retrieved</div>
+                <div style="position:relative;">
+                  <div class="tc-tank-grid-3" style="grid-template-columns:1fr;">
+                    <div class="tc-tank-card" id="tc-ec1-card">
+                      <div class="tc-tank-label">Next cargo</div>
+                      <div id="tc-ec1-no-data" class="tc-no-data">
+                        <span class="tc-no-data-text">
+                          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#B91C1C" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M12 8v4m0 4h.01" stroke-linecap="round"/></svg>
+                          No fuel data pulled
+                        </span>
+                        <button class="tc-add-manually" onclick="toggleTCCorr('ec1')">Add manually</button>
+                      </div>
+                      <div id="tc-ec1-filled" style="display:none;">
+                        <div class="tc-tank-cargo" id="tc-ec1-cargo-display"></div>
+                        <button id="tcbtn-ec1" class="tc-correct-btn" onclick="openEC1Edit()" style="position:absolute;top:8px;right:8px;padding:4px 6px;">
+                          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="tc-corr-panel" id="tc-ec1">
+                  <div class="tc-corr-inner">
+                    <div class="tc-corr-title">Add next cargo manually</div>
+                    <div class="tc-corr-lbl">Cargo name</div>
+                    <input type="text" class="tc-corr-in" id="tc-ec1-in" placeholder="e.g. Jet A1, ULSD, Naphtha…" value="" />
+                    <div class="tc-corr-lbl">Note for audit trail</div>
+                    <textarea class="tc-corr-in" placeholder="Why are you entering this manually?"></textarea>
+                    <div class="tc-corr-btns">
+                      <button class="tc-corr-run" onclick="addCargoDone()">Add Cargo</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- EC Step 2: Previous cargo -->
+            <div class="tc-step">
+              <div class="tc-step-num">2</div>
+              <div class="tc-step-body">
+                <div class="tc-step-label" style="margin-bottom:6px;">Previous cargo retrieved <span style="font-size:10px;color:#94A3B8;font-weight:500;margin-left:4px;">Sorted by date</span></div>
+                <div class="tc-tank-grid-3" style="grid-template-columns:1fr 1fr;">
+                  <div class="tc-tank-card">
+                    <div class="tc-tank-label">Last cargo · group 1</div>
+                    <div class="tc-tank-cargo">Gasoil 500 / 2000ppm</div>
+                    <div class="tc-tank-sub">UnDyed</div>
+                  </div>
+                  <div class="tc-tank-card">
+                    <div class="tc-tank-label">Last cargo · group 2</div>
+                    <div class="tc-tank-cargo">Gasoline 10 / 50ppm</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- EC Step 3: Guide Lookup & Procedures -->
+            <div class="tc-step" style="border-bottom:none;">
+              <div class="tc-step-num">3</div>
+              <div class="tc-step-body">
+                <div class="tc-step-label" style="margin-bottom:10px;">Guide Lookup &amp; Procedures</div>
+                <div class="tc-proc-card">
+                  <div class="tc-proc-header">
+                    <span class="tc-proc-transition">Gasoil / Gasoline → LVN</span>
+                    <span class="tc-method-badge amber">Well Drained</span>
+                    <span class="tc-guide-badge" style="margin-left:auto;">Shell Guide</span>
+                  </div>
+                  <ol class="tc-proc-steps">
+                    <li>Tank, pump columns and pipelines <strong>well drained</strong> — ROB must not exceed 0.05% of tank capacity.</li>
+                    <li>Any ROB to remain only in the <strong>pump well</strong>, where fitted.</li>
+                  </ol>
+                </div>
+                <div class="tc-proc-card">
+                  <div class="tc-proc-header">
+                    <span class="tc-proc-transition">Naphtha → LVN</span>
+                    <span class="tc-method-badge" style="background:#D3F3DF;color:#147638;">Same Grade</span>
+                    <span class="tc-guide-badge" style="margin-left:auto;">HM50</span>
+                  </div>
+                  <ol class="tc-proc-steps">
+                    <li><strong>No cleaning required</strong> — both cargoes are the same product category.</li>
+                    <li>Ensure tanks are well drained and pump columns cleared of all free-standing product.</li>
+                  </ol>
+                </div>
+              </div>
+            </div>
+
+          </div><!-- /ec tc-steps -->
+        </div><!-- /tc-edge-cases -->
+
       </div><!-- /tc-det-scroll -->
 
       <div class="tc-det-footer">
@@ -4519,6 +4715,11 @@ GeoServe Operations</div>
 
   </div><!-- /cpvo-modal -->
 </div><!-- /cpvoSummaryBackdrop -->
+
+<div class="tc-toast" id="tcToast">
+  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  Cargo added successfully
+</div>
 
 </body>
 </html>
