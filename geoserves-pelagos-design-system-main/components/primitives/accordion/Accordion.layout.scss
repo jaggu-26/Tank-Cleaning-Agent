@@ -1,0 +1,45 @@
+/**
+ * Pelagos Accordion — Structural / Layout Styles
+ * components/primitives/accordion/Accordion.layout.scss
+ *
+ * Renamed from Accordion.scss — the `.layout` suffix signals that this file
+ * contains zero colour values; all colour is handled by AntD tokens via
+ * ConfigProvider in accordionTheme.js.
+ *
+ * This file covers only structural layout that the AntD token system cannot
+ * express on its own:
+ *
+ *   · Chevron rotation   — CSS transition for the expand/collapse icon motion
+ *   · Angular host       — ensures the wrapper takes full width as a block element
+ *
+ * ─── Rules ──────────────────────────────────────────────────────────────────
+ * ✅ Allowed   : display, flex, gap, position, overflow, z-index, cursor,
+ *               transition (non-colour), transform, spacing via CSS custom properties
+ * ❌ Forbidden : color, background, border-color, box-shadow, outline-color,
+ *               any hardcoded colour value
+ */
+
+/* ── Chevron rotation ─────────────────────────────────────────────────────── */
+//
+// AntD Collapse renders the expandIcon in its own wrapper and handles aria
+// state internally. The Pelagos ChevronIcon uses CSS classes to drive the
+// rotation animation while AntD controls aria-expanded on the header button.
+//
+// .accordion__chevron          — default (collapsed): points down
+// .accordion__chevron--active  — expanded: rotated 180° (points up)
+
+.accordion__chevron {
+  display:     block;
+  flex-shrink: 0;
+  transition:  transform 200ms cubic-bezier(0.645, 0.045, 0.355, 1);
+}
+
+.accordion__chevron--active {
+  transform: rotate(180deg);
+}
+
+/* ── Angular host element ─────────────────────────────────────────────────── */
+
+.gs-accordion-host {
+  display: block;
+}

@@ -1,0 +1,1230 @@
+<!-- ═══════════════════════════════════════════════════════════════
+     POPOVER — Pelagos Design System
+     Trigger: click or hover  |  8 placements  |  Spring animation
+     ═══════════════════════════════════════════════════════════════ -->
+<style>
+/* ═══════════════════════════════════════════════════════════════
+   POPOVER TOKENS — override to retheme
+   ═══════════════════════════════════════════════════════════════ */
+:root {
+  --pop-bg:          var(--color-surface-default, #ffffff);
+  --pop-border:      var(--color-border-default, #e2e8f0);
+  --pop-radius:      var(--radius-md, 8px);             /* Figma: 8 px */
+  --pop-shadow:      0 2px 8px rgba(0,0,0,0.12), 0 1px 3px rgba(0,0,0,0.06);
+  --pop-padding:     4px;                               /* Figma: 4 px inner pad */
+  --pop-item-h:      40px;                              /* Figma: 40 px min-height */
+  --pop-item-px:     12px;                              /* Figma: 12 px horizontal */
+  --pop-item-font:   var(--prim-font-size-md, 14px);    /* Figma: 14 px Gilroy */
+  --pop-item-color:  var(--color-text-default);
+  --pop-item-hover:  var(--prim-grey-50, #f7fafc);
+  --pop-icon-size:   24px;                              /* Figma: 24 px icon box */
+  --pop-min-w:       200px;                             /* Figma: 200 px min-width */
+  --pop-arrow-size:  8px;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   POPOVER SHELL — position wrapper + floating panel
+   ═══════════════════════════════════════════════════════════════ */
+.gs-pop-wrap {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+
+/* The floating panel */
+.gs-popover {
+  position: absolute;
+  z-index: 1100;
+  background: var(--pop-bg);
+  border: 1px solid var(--pop-border);
+  border-radius: var(--pop-radius);
+  box-shadow: var(--pop-shadow);
+  padding: var(--pop-padding);
+  min-width: var(--pop-min-w);
+  /* Spring animation — closed state (scale 0.95 matches React component) */
+  opacity: 0;
+  transform: scale(0.95) translateY(-4px);
+  pointer-events: none;
+  transition:
+    opacity  .18s cubic-bezier(0.16, 1, 0.3, 1),
+    transform .22s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.gs-popover.is-open {
+  opacity: 1;
+  transform: scale(1) translateY(0);
+  pointer-events: all;
+}
+
+/* ── Placement: bottom (default) ── */
+.gs-popover--bottom {
+  top: calc(100% + 8px);
+  left: 50%;
+  transform-origin: top center;
+  transform: scale(0.95) translateY(-4px);
+}
+.gs-popover--bottom.is-open { transform: scale(1) translateY(0); }
+
+/* ── Placement: bottom-start ── */
+.gs-popover--bottom-start {
+  top: calc(100% + 8px);
+  left: 0;
+  transform-origin: top left;
+  transform: scale(0.95) translateY(-4px);
+}
+.gs-popover--bottom-start.is-open { transform: scale(1) translateY(0); }
+
+/* ── Placement: bottom-end ── */
+.gs-popover--bottom-end {
+  top: calc(100% + 8px);
+  right: 0;
+  transform-origin: top right;
+  transform: scale(0.95) translateY(-4px);
+}
+.gs-popover--bottom-end.is-open { transform: scale(1) translateY(0); }
+
+/* ── Placement: top ── */
+.gs-popover--top {
+  bottom: calc(100% + 8px);
+  left: 50%;
+  transform-origin: bottom center;
+  transform: scale(0.95) translateY(4px);
+}
+.gs-popover--top.is-open { transform: scale(1) translateY(0); }
+
+/* ── Placement: top-start ── */
+.gs-popover--top-start {
+  bottom: calc(100% + 8px);
+  left: 0;
+  transform-origin: bottom left;
+  transform: scale(0.95) translateY(4px);
+}
+.gs-popover--top-start.is-open { transform: scale(1) translateY(0); }
+
+/* ── Placement: top-end ── */
+.gs-popover--top-end {
+  bottom: calc(100% + 8px);
+  right: 0;
+  transform-origin: bottom right;
+  transform: scale(0.95) translateY(4px);
+}
+.gs-popover--top-end.is-open { transform: scale(1) translateY(0); }
+
+/* ── Placement: left ── */
+.gs-popover--left {
+  right: calc(100% + 8px);
+  top: 50%;
+  transform-origin: center right;
+  transform: scale(0.95) translateX(4px);
+}
+.gs-popover--left.is-open { transform: scale(1) translateX(0); }
+
+/* ── Placement: right ── */
+.gs-popover--right {
+  left: calc(100% + 8px);
+  top: 50%;
+  transform-origin: center left;
+  transform: scale(0.95) translateX(-4px);
+}
+.gs-popover--right.is-open { transform: scale(1) translateX(0); }
+
+/* ═══════════════════════════════════════════════════════════════
+   POPOVER CONTENT ELEMENTS
+   ═══════════════════════════════════════════════════════════════ */
+
+/* Header (optional title bar) */
+.gs-pop-header {
+  padding: 10px var(--pop-item-px) 8px;
+  border-bottom: 1px solid var(--pop-border);
+  margin-bottom: 4px;
+}
+.gs-pop-header-title {
+  font-family: var(--prim-font-primary);
+  font-size: var(--prim-font-size-sm);
+  font-weight: var(--prim-font-weight-semibold, 600);
+  color: var(--color-text-default);
+  line-height: 1.4;
+}
+.gs-pop-header-sub {
+  font-family: var(--prim-font-primary);
+  font-size: var(--prim-font-size-xs, 12px);
+  color: var(--color-text-secondary);
+  margin-top: 2px;
+}
+
+/* Section title */
+.gs-pop-section-title {
+  font-family: var(--prim-font-primary);
+  font-size: 11px;
+  font-weight: var(--prim-font-weight-semibold, 600);
+  color: var(--color-text-tertiary, #94a3b8);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 8px var(--pop-item-px) 4px;
+}
+
+/* Menu item — Figma: 40 px min-height · 8/12 px padding · 12 px gap · 14 px Gilroy */
+.gs-pop-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: var(--pop-item-h);                        /* 40 px */
+  padding: 8px var(--pop-item-px);                      /* 8 px 12 px */
+  font-family: var(--prim-font-primary);
+  font-size: var(--pop-item-font);                      /* 14 px */
+  font-weight: 500;
+  line-height: 20px;
+  color: var(--pop-item-color);
+  cursor: pointer;
+  background: none;
+  border: none;
+  border-radius: 4px;
+  width: 100%;
+  text-align: left;
+  white-space: nowrap;
+  transition: background .12s;
+}
+.gs-pop-item:hover { background: var(--pop-item-hover); }
+.gs-pop-item--danger { color: var(--color-danger, #dc2625); }
+.gs-pop-item--danger:hover { background: var(--prim-red-10, #fef1f2); }
+.gs-pop-item svg { flex-shrink: 0; width: 24px; height: 24px; }
+
+/* Item with trailing badge */
+.gs-pop-item-badge {
+  margin-left: auto;
+  font-size: 10px;
+  font-weight: 600;
+  padding: 2px 6px;
+  border-radius: 10px;
+  background: var(--color-brand-subtle, #eff3ff);
+  color: var(--color-brand, #1852fe);
+}
+
+/* Divider */
+.gs-pop-divider {
+  height: 1px;
+  background: var(--pop-border);
+  margin: 4px 0;
+}
+
+/* Toggle row (for status items) */
+.gs-pop-toggle-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  height: var(--pop-item-h);
+  padding: 0 var(--pop-item-px);
+  font-family: var(--prim-font-primary);
+  font-size: var(--pop-item-font);
+  color: var(--pop-item-color);
+  cursor: pointer;
+  transition: background .12s;
+}
+.gs-pop-toggle-row:hover { background: var(--pop-item-hover); }
+.gs-pop-status-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.gs-pop-status-dot--green  { background: #22c55e; }
+.gs-pop-status-dot--yellow { background: #f59e0b; }
+.gs-pop-status-dot--grey   { background: #94a3b8; }
+.gs-pop-toggle-check {
+  margin-left: auto;
+  opacity: 0;
+  color: var(--color-brand);
+}
+.gs-pop-toggle-row.is-selected .gs-pop-toggle-check { opacity: 1; }
+.gs-pop-toggle-row.is-selected { background: var(--color-brand-subtle, #eff3ff); }
+
+/* Rich content body */
+.gs-pop-body {
+  padding: 12px var(--pop-item-px);
+  font-family: var(--prim-font-primary);
+  font-size: var(--prim-font-size-sm);
+  color: var(--color-text-secondary);
+  line-height: 1.55;
+  max-width: 240px;
+}
+.gs-pop-footer {
+  padding: 8px var(--pop-item-px) 4px;
+  border-top: 1px solid var(--pop-border);
+  margin-top: 4px;
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   DEMO LAYOUT HELPERS
+   ═══════════════════════════════════════════════════════════════ */
+.pop-demo-area {
+  background: var(--color-surface-subtle);
+  border: 1px solid var(--color-border-default);
+  border-radius: var(--radius-lg);
+  padding: 48px 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-top: 16px;
+  min-height: 180px;
+}
+.pop-placement-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-top: 16px;
+}
+.pop-placement-cell {
+  background: var(--color-surface-subtle);
+  border: 1px solid var(--color-border-default);
+  border-radius: var(--radius-md);
+  padding: 32px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.pop-placement-label {
+  font-family: var(--prim-font-primary);
+  font-size: 11px;
+  color: var(--color-text-tertiary);
+  text-align: center;
+  margin-top: 8px;
+}
+
+/* Code token table */
+.pop-token-table { width:100%; border-collapse:collapse; font-size:13px; }
+.pop-token-table th {
+  text-align:left; padding:8px 12px;
+  border-bottom:2px solid var(--color-border-default);
+  font-weight:600; color:var(--color-text-secondary);
+  font-size:12px;
+}
+.pop-token-table td {
+  padding:8px 12px;
+  border-bottom:1px solid var(--color-border-subtle, #f1f5f9);
+  vertical-align:top;
+}
+.pop-token-table tr:last-child td { border-bottom:none; }
+.pop-token-name { font-family:monospace; color:var(--color-brand); font-size:12px; }
+.pop-token-val  { font-family:monospace; color:var(--color-text-secondary); font-size:12px; }
+/* Design-system switch (gs-sdemo) — same as prim-toggles.html */
+.gs-sdemo { border:none; padding:0; cursor:pointer; position:relative; border-radius:var(--radius-full); display:inline-block; vertical-align:middle; transition:background 0.2s ease; flex-shrink:0; }
+.gs-sdemo:focus-visible { outline:none; box-shadow:0 0 0 3px rgba(24,82,254,0.28); }
+.gs-sdemo-thumb { position:absolute; top:2px; left:2px; background:var(--prim-white); border-radius:var(--radius-full); box-shadow:var(--prim-shadow-sm); transition:transform 0.2s ease; display:block; }
+</style>
+
+<!-- BANNER -->
+<div class="page-header">
+  <h1 class="ds-hero-title">Popover</h1>
+</div>
+
+<!-- TAB BAR -->
+<div class="btn-tab-bar">
+  <button class="btn-tab-btn pop-tab-btn active" data-tab="design" onclick="switchPopoverTab('design')">Design</button>
+  <button class="btn-tab-btn pop-tab-btn" data-tab="code"   onclick="switchPopoverTab('code')">Code</button>
+  <button class="btn-tab-btn pop-tab-btn" data-tab="usage"  onclick="switchPopoverTab('usage')">Usage</button>
+</div>
+
+<!-- ═══ DESIGN TAB ═══════════════════════════════════════════════════ -->
+<div id="pop-tab-design" class="btn-tab-pane pop-tab-pane active">
+  <div class="code-tab-layout">
+    <div class="code-tab-main">
+
+      <!-- OVERVIEW -->
+      <div id="pop-s-overview" class="btn-family-card">
+        <div class="btn-family-title">Overview</div>
+        <p class="btn-family-desc">A Popover is a floating panel anchored to a trigger element — a button, icon, or any inline control. It acts as a shell: inner content is fully composable (menus, toggles, form fields, rich text). Popovers open on <strong>click</strong> or <strong>hover</strong>, close on outside click or Escape, and animate with a spring curve for a natural feel. Minimum width is 200 px.</p>
+
+        <div class="btn-preview-strip" style="display:flex;gap:24px;align-items:flex-start;flex-wrap:wrap;padding:40px 32px;background:var(--color-surface-subtle);border:1px solid var(--color-border-default);border-radius:var(--radius-lg);margin-top:16px;min-height:200px;">
+          <!-- Click trigger -->
+          <div style="display:flex;flex-direction:column;align-items:center;gap:10px;">
+            <div class="gs-pop-wrap">
+              <button class="gs-btn gs-btn-secondary gs-btn-sm" id="ov-click-t"
+                data-popover-trigger aria-haspopup="true" aria-expanded="false"
+                onclick="gsPopoverToggle('ov-click-t','ov-click-p')">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></svg>
+                Actions
+              </button>
+              <div class="gs-popover gs-popover--bottom-start" id="ov-click-p" role="menu" style="min-width:200px;padding:4px;">
+                <button class="gs-pop-item" role="menuitem">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                  Edit Details
+                </button>
+                <button class="gs-pop-item" role="menuitem">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+                  Clone Claim
+                </button>
+                <div class="gs-pop-divider"></div>
+                <button class="gs-pop-item gs-pop-item--danger" role="menuitem">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4h6v2"/></svg>
+                  Delete
+                </button>
+              </div>
+            </div>
+            <span style="font-size:11px;color:var(--color-text-secondary);font-family:var(--prim-font-primary);">On-click trigger</span>
+          </div>
+
+          <!-- Hover trigger -->
+          <div style="display:flex;flex-direction:column;align-items:center;gap:10px;">
+            <div class="gs-pop-wrap"
+              onmouseenter="clearTimeout(window._ph_ov);gsPopoverOpen('ov-hover-t','ov-hover-p')"
+              onmouseleave="window._ph_ov=setTimeout(function(){gsPopoverClose('ov-hover-p')},120)">
+              <button class="gs-btn gs-btn-secondary gs-btn-sm" id="ov-hover-t" aria-haspopup="true">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                Hover me
+              </button>
+              <div class="gs-popover gs-popover--bottom-start" id="ov-hover-p" role="menu"
+                style="min-width:200px;padding:8px 12px;"
+                onmouseenter="clearTimeout(window._ph_ov)"
+                onmouseleave="window._ph_ov=setTimeout(function(){gsPopoverClose('ov-hover-p')},120)">
+                <p style="font-family:var(--prim-font-primary);font-size:13px;color:var(--color-text-secondary);margin:0;line-height:1.5;">Hover trigger — useful for read-only contextual tips that don't require user interaction.</p>
+              </div>
+            </div>
+            <span style="font-size:11px;color:var(--color-text-secondary);font-family:var(--prim-font-primary);">On-hover trigger</span>
+          </div>
+        </div>
+
+        <div class="btn-when-examples" style="margin-top:16px;">
+          <span class="btn-when-example-tag">8 Placements</span>
+          <span class="btn-when-example-tag">Click + Hover</span>
+          <span class="btn-when-example-tag">200 px min-width</span>
+          <span class="btn-when-example-tag">Spring animation</span>
+          <span class="btn-when-example-tag">WCAG AA</span>
+        </div>
+      </div>
+
+      <!-- ANATOMY -->
+      <div id="pop-s-anatomy" class="btn-family-card">
+        <div class="btn-family-title">Anatomy</div>
+        <p class="btn-family-desc">The popover is a shell — a positioned panel. All inner content is composable. The trigger element lives outside the panel and is connected only via JS.</p>
+
+        <div style="background:var(--color-surface-subtle);border:1px solid var(--color-border-default);border-radius:var(--radius-lg);padding:32px;display:flex;justify-content:center;margin-top:8px;overflow:auto;">
+          <svg width="480" height="260" viewBox="0 0 480 260" fill="none" xmlns="http://www.w3.org/2000/svg" style="min-width:420px;">
+            <!-- Trigger button -->
+            <rect x="30" y="20" width="100" height="36" rx="4" fill="#1852fe" opacity="0.12" stroke="#1852fe" stroke-width="1.5"/>
+            <text x="80" y="43" text-anchor="middle" font-size="12" fill="#1852fe" font-family="Helvetica,Arial,sans-serif" font-weight="600">Actions</text>
+            <!-- Panel -->
+            <rect x="30" y="76" width="200" height="140" rx="8" fill="white" stroke="#e2e8f0" stroke-width="1.5"/>
+            <!-- Shadow hint -->
+            <rect x="32" y="78" width="200" height="140" rx="8" fill="none" stroke="#00000010" stroke-width="6"/>
+            <!-- Item 1 -->
+            <rect x="34" y="80" width="192" height="40" rx="4" fill="#f8fafc"/>
+            <rect x="50" y="92" width="16" height="16" rx="2" fill="#cbd5e1"/>
+            <text x="74" y="105" font-size="13" fill="#0f172a" font-family="Helvetica,Arial,sans-serif">Edit Details</text>
+            <!-- Item 2 -->
+            <rect x="50" y="132" width="16" height="16" rx="2" fill="#cbd5e1"/>
+            <text x="74" y="145" font-size="13" fill="#0f172a" font-family="Helvetica,Arial,sans-serif">Clone Claim</text>
+            <!-- Divider -->
+            <line x1="42" y1="162" x2="218" y2="162" stroke="#e2e8f0" stroke-width="1"/>
+            <!-- Danger item -->
+            <rect x="50" y="172" width="16" height="16" rx="2" fill="#fecaca"/>
+            <text x="74" y="185" font-size="13" fill="#dc2625" font-family="Helvetica,Arial,sans-serif">Delete</text>
+
+            <!-- Badge 1 — Trigger -->
+            <circle cx="30" cy="38" r="10" fill="#1852fe"/>
+            <text x="30" y="42" text-anchor="middle" font-size="11" font-weight="700" fill="white" font-family="Helvetica,Arial,sans-serif">1</text>
+            <!-- Badge 2 — Panel shell -->
+            <circle cx="250" cy="146" r="10" fill="#1852fe"/>
+            <text x="250" y="150" text-anchor="middle" font-size="11" font-weight="700" fill="white" font-family="Helvetica,Arial,sans-serif">2</text>
+            <!-- Badge 3 — Action item -->
+            <circle cx="250" cy="100" r="10" fill="#1852fe"/>
+            <text x="250" y="104" text-anchor="middle" font-size="11" font-weight="700" fill="white" font-family="Helvetica,Arial,sans-serif">3</text>
+            <!-- Badge 4 — Icon slot -->
+            <circle cx="250" cy="60" r="10" fill="#1852fe"/>
+            <text x="250" y="64" text-anchor="middle" font-size="11" font-weight="700" fill="white" font-family="Helvetica,Arial,sans-serif">4</text>
+            <!-- Badge 5 — Divider -->
+            <circle cx="250" cy="162" r="10" fill="#1852fe"/>
+            <text x="250" y="166" text-anchor="middle" font-size="11" font-weight="700" fill="white" font-family="Helvetica,Arial,sans-serif">5</text>
+
+            <!-- Leader lines -->
+            <line x1="240" y1="38" x2="130" y2="38" stroke="#cbd5e1" stroke-width="1" stroke-dasharray="3,2"/>
+            <line x1="240" y1="100" x2="226" y2="100" stroke="#cbd5e1" stroke-width="1" stroke-dasharray="3,2"/>
+            <line x1="240" y1="146" x2="230" y2="146" stroke="#cbd5e1" stroke-width="1" stroke-dasharray="3,2"/>
+            <line x1="240" y1="162" x2="222" y2="162" stroke="#cbd5e1" stroke-width="1" stroke-dasharray="3,2"/>
+            <line x1="240" y1="60" x2="66" y2="90" stroke="#cbd5e1" stroke-width="1" stroke-dasharray="3,2"/>
+
+            <!-- Annotations -->
+            <text x="265" y="42" font-size="11" fill="#475569" font-family="Helvetica,Arial,sans-serif">Trigger element (any tag)</text>
+            <text x="265" y="64" font-size="11" fill="#475569" font-family="Helvetica,Arial,sans-serif">24 × 24 px icon slot</text>
+            <text x="265" y="104" font-size="11" fill="#475569" font-family="Helvetica,Arial,sans-serif">Action item (40 px min-h)</text>
+            <text x="265" y="150" font-size="11" fill="#475569" font-family="Helvetica,Arial,sans-serif">Panel shell (8 px radius)</text>
+            <text x="265" y="166" font-size="11" fill="#475569" font-family="Helvetica,Arial,sans-serif">Divider (1 px, inset 12 px)</text>
+          </svg>
+        </div>
+
+        <ol style="margin-top:20px;display:flex;flex-direction:column;gap:8px;padding-left:20px;">
+          <li><strong>Trigger</strong> — any focusable element; receives <code>aria-haspopup</code> and <code>aria-expanded</code>.</li>
+          <li><strong>Panel shell</strong> — white background, 8 px radius, composite shadow, 200 px minimum width.</li>
+          <li><strong>Action item</strong> — 40 px min-height, 12 px horizontal padding, 12 px icon gap, 14 px Gilroy.</li>
+          <li><strong>Icon slot</strong> — 24 × 24 px box; optional but recommended for scanability.</li>
+          <li><strong>Divider</strong> — 1 px line, 4 px vertical margin, 12 px horizontal inset.</li>
+        </ol>
+      </div>
+
+      <!-- VARIANTS -->
+      <div id="pop-s-variants" class="btn-family-card">
+        <div class="btn-family-title">Variants</div>
+        <p class="btn-family-desc">Two primary Figma patterns. Both share the same shell — 8 px radius, 200 px minimum width. Content composition differs.</p>
+
+        <!-- User Actions -->
+        <div class="btn-variant-row" style="margin-top:20px;">
+          <span class="btn-variant-label" style="width:160px;flex-shrink:0;">User Actions</span>
+          <div class="btn-variant-sizes" style="display:flex;gap:32px;align-items:flex-start;flex-wrap:wrap;padding:32px 24px;background:var(--color-surface-subtle);border:1px solid var(--color-border-default);border-radius:var(--radius-lg);">
+            <div style="display:flex;flex-direction:column;align-items:center;gap:10px;">
+              <div class="gs-pop-wrap">
+                <button class="gs-btn gs-btn-secondary gs-btn-sm" id="var-ua-t"
+                  data-popover-trigger aria-haspopup="true" aria-expanded="false"
+                  onclick="gsPopoverToggle('var-ua-t','var-ua-p')">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></svg>
+                  Actions
+                </button>
+                <div class="gs-popover gs-popover--bottom-start" id="var-ua-p" role="menu" style="min-width:200px;padding:8px;">
+                  <button class="gs-pop-item" role="menuitem">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                    Edit Details
+                  </button>
+                  <div class="gs-pop-divider"></div>
+                  <div class="gs-pop-toggle-row" style="display:flex;align-items:center;justify-content:space-between;padding:8px 12px;min-height:40px;">
+                    <span style="font-family:var(--prim-font-primary);font-size:14px;font-weight:500;color:var(--color-text-secondary);">Active Counterparty</span>
+                    <button class="gs-sdemo" role="switch" aria-checked="true" data-on="1" data-travel="20"
+                      style="width:44px;height:24px;background:var(--color-brand);"
+                      onclick="gsToggleSwitchDemo(this)">
+                      <span class="gs-sdemo-thumb" style="width:20px;height:20px;transform:translateX(20px);"></span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+              <span style="font-size:11px;color:var(--color-text-secondary);font-family:var(--prim-font-primary);">On-click</span>
+            </div>
+            <div style="display:flex;flex-direction:column;align-items:center;gap:10px;">
+              <div class="gs-pop-wrap"
+                onmouseenter="clearTimeout(window._ph_ua);gsPopoverOpen('var-ua-h-t','var-ua-h-p')"
+                onmouseleave="window._ph_ua=setTimeout(function(){gsPopoverClose('var-ua-h-p')},120)">
+                <button class="gs-btn gs-btn-secondary gs-btn-sm" id="var-ua-h-t" aria-haspopup="true">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></svg>
+                  Actions
+                </button>
+                <div class="gs-popover gs-popover--bottom-start" id="var-ua-h-p" role="menu"
+                  style="min-width:200px;padding:8px;"
+                  onmouseenter="clearTimeout(window._ph_ua)"
+                  onmouseleave="window._ph_ua=setTimeout(function(){gsPopoverClose('var-ua-h-p')},120)">
+                  <button class="gs-pop-item" role="menuitem">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                    Edit Details
+                  </button>
+                  <div class="gs-pop-divider"></div>
+                  <div style="display:flex;align-items:center;justify-content:space-between;padding:8px 12px;min-height:40px;">
+                    <span style="font-family:var(--prim-font-primary);font-size:14px;font-weight:500;color:var(--color-text-secondary);">Active Counterparty</span>
+                    <button class="gs-sdemo" role="switch" aria-checked="true" data-on="1" data-travel="20"
+                      style="width:44px;height:24px;background:var(--color-brand);"
+                      onclick="gsToggleSwitchDemo(this)">
+                      <span class="gs-sdemo-thumb" style="width:20px;height:20px;transform:translateX(20px);"></span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+              <span style="font-size:11px;color:var(--color-text-secondary);font-family:var(--prim-font-primary);">On-hover</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Context Menu -->
+        <div class="btn-variant-row" style="margin-top:16px;">
+          <span class="btn-variant-label" style="width:160px;flex-shrink:0;">Context Menu</span>
+          <div class="btn-variant-sizes" style="display:flex;gap:32px;align-items:flex-start;flex-wrap:wrap;padding:32px 24px;background:var(--color-surface-subtle);border:1px solid var(--color-border-default);border-radius:var(--radius-lg);">
+            <div style="display:flex;flex-direction:column;align-items:center;gap:10px;">
+              <div class="gs-pop-wrap">
+                <button class="gs-btn gs-btn-secondary gs-btn-sm" id="var-ctx-t"
+                  data-popover-trigger aria-haspopup="menu" aria-expanded="false"
+                  onclick="gsPopoverToggle('var-ctx-t','var-ctx-p')">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></svg>
+                  More
+                </button>
+                <div class="gs-popover gs-popover--bottom-start" id="var-ctx-p" role="menu" style="min-width:200px;padding:4px;">
+                  <button class="gs-pop-item" role="menuitem">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+                    Open in New Tab
+                  </button>
+                  <button class="gs-pop-item" role="menuitem">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+                    Clone Claim
+                  </button>
+                  <button class="gs-pop-item gs-pop-item--danger" role="menuitem">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4h6v2"/></svg>
+                    Delete
+                  </button>
+                </div>
+              </div>
+              <span style="font-size:11px;color:var(--color-text-secondary);font-family:var(--prim-font-primary);">On-click</span>
+            </div>
+            <div style="display:flex;flex-direction:column;align-items:center;gap:10px;">
+              <div class="gs-pop-wrap"
+                onmouseenter="clearTimeout(window._ph_ctx);gsPopoverOpen('var-ctx-h-t','var-ctx-h-p')"
+                onmouseleave="window._ph_ctx=setTimeout(function(){gsPopoverClose('var-ctx-h-p')},120)">
+                <button class="gs-btn gs-btn-secondary gs-btn-sm" id="var-ctx-h-t" aria-haspopup="menu">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></svg>
+                  More
+                </button>
+                <div class="gs-popover gs-popover--bottom-start" id="var-ctx-h-p" role="menu"
+                  style="min-width:200px;padding:4px;"
+                  onmouseenter="clearTimeout(window._ph_ctx)"
+                  onmouseleave="window._ph_ctx=setTimeout(function(){gsPopoverClose('var-ctx-h-p')},120)">
+                  <button class="gs-pop-item" role="menuitem">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+                    Open in New Tab
+                  </button>
+                  <button class="gs-pop-item" role="menuitem">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+                    Clone Claim
+                  </button>
+                  <button class="gs-pop-item gs-pop-item--danger" role="menuitem">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4h6v2"/></svg>
+                    Delete
+                  </button>
+                </div>
+              </div>
+              <span style="font-size:11px;color:var(--color-text-secondary);font-family:var(--prim-font-primary);">On-hover</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- STATES -->
+      <div id="pop-s-states" class="btn-family-card">
+        <div class="btn-family-title">States</div>
+        <p class="btn-family-desc">The trigger and panel each carry their own states. Previews below use <code>pointer-events:none</code> — interact with the live demos in Overview.</p>
+
+        <div class="btn-sub-label" style="margin-bottom:12px;">Trigger states</div>
+        <div class="btn-states-grid" style="grid-template-columns:repeat(4,1fr);">
+          <div class="btn-state-cell">
+            <div style="pointer-events:none;"><button class="gs-btn gs-btn-secondary gs-btn-sm">Actions</button></div>
+            <span class="btn-state-label">Default</span>
+          </div>
+          <div class="btn-state-cell">
+            <div style="pointer-events:none;"><button class="gs-btn gs-btn-secondary gs-btn-sm" style="background:var(--prim-grey-50);border-color:var(--prim-grey-200);">Actions</button></div>
+            <span class="btn-state-label">Hover</span>
+          </div>
+          <div class="btn-state-cell">
+            <div style="pointer-events:none;"><button class="gs-btn gs-btn-secondary gs-btn-sm" style="outline:2px solid var(--color-brand);outline-offset:2px;">Actions</button></div>
+            <span class="btn-state-label">Focus</span>
+          </div>
+          <div class="btn-state-cell">
+            <div style="pointer-events:none;"><button class="gs-btn gs-btn-secondary gs-btn-sm" disabled style="opacity:0.4;cursor:not-allowed;">Actions</button></div>
+            <span class="btn-state-label">Disabled</span>
+          </div>
+        </div>
+
+        <div class="btn-sub-label" style="margin-top:20px;margin-bottom:12px;">Panel states</div>
+        <div class="btn-states-grid" style="grid-template-columns:repeat(3,1fr);">
+          <div class="btn-state-cell">
+            <div style="pointer-events:none;opacity:0;transform:scale(0.95);background:#fff;border:1px solid var(--color-border-default);border-radius:8px;padding:4px;min-width:160px;box-shadow:0 2px 8px rgba(0,0,0,0.12);">
+              <div class="gs-pop-item" style="pointer-events:none;">Edit Details</div>
+            </div>
+            <span class="btn-state-label">Closed (hidden)</span>
+          </div>
+          <div class="btn-state-cell">
+            <div style="pointer-events:none;background:#fff;border:1px solid var(--color-border-default);border-radius:8px;padding:4px;min-width:160px;box-shadow:0 2px 8px rgba(0,0,0,0.12);">
+              <div style="display:flex;align-items:center;gap:12px;padding:8px 12px;min-height:40px;border-radius:4px;background:var(--prim-grey-50);font-family:var(--prim-font-primary);font-size:14px;color:var(--color-text-default);">Edit Details</div>
+              <div style="display:flex;align-items:center;gap:12px;padding:8px 12px;min-height:40px;border-radius:4px;font-family:var(--prim-font-primary);font-size:14px;color:var(--color-text-default);">Clone Claim</div>
+            </div>
+            <span class="btn-state-label">Open (item hovered)</span>
+          </div>
+          <div class="btn-state-cell">
+            <div style="pointer-events:none;background:#fff;border:1px solid var(--color-border-default);border-radius:8px;padding:4px;min-width:160px;box-shadow:0 2px 8px rgba(0,0,0,0.12);">
+              <div style="display:flex;align-items:center;gap:12px;padding:8px 12px;min-height:40px;border-radius:4px;background:var(--color-danger-subtle);font-family:var(--prim-font-primary);font-size:14px;color:var(--color-danger);">Delete</div>
+            </div>
+            <span class="btn-state-label">Danger item hovered</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- INTERACTIONS -->
+      <div id="pop-s-interaction" class="btn-family-card">
+        <div class="btn-family-title">Interactions</div>
+        <table>
+          <thead><tr><th>Trigger</th><th>Behaviour</th><th>Notes</th></tr></thead>
+          <tbody>
+            <tr class="ds-tr-border"><td>Click trigger</td><td>Toggle open/closed</td><td>Only one panel open at a time</td></tr>
+            <tr class="ds-tr-border"><td>Click outside</td><td>Close panel</td><td>Any click outside <code>.gs-pop-wrap</code></td></tr>
+            <tr class="ds-tr-border"><td>Mouse enter (hover)</td><td>Open panel after 0 ms</td><td>Panel stays open when pointer moves into it</td></tr>
+            <tr class="ds-tr-border"><td>Mouse leave (hover)</td><td>Close after 80 ms delay</td><td>Delay lets cursor move to panel without closing</td></tr>
+            <tr class="ds-tr-border"><td><kbd>Escape</kbd></td><td>Close panel, return focus to trigger</td><td>Works for both click and hover</td></tr>
+            <tr class="ds-tr-border"><td><kbd>Tab</kbd></td><td>Move focus through items</td><td>Leaves panel on last item</td></tr>
+            <tr class="ds-tr-border"><td><kbd>Enter</kbd> / <kbd>Space</kbd></td><td>Activate focused item</td><td>—</td></tr>
+            <tr class="ds-tr-border"><td><kbd>↑</kbd> / <kbd>↓</kbd></td><td>Navigate menu items</td><td>Role <code>menu</code> panels only</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- ANIMATION -->
+      <div id="pop-s-animation" class="btn-family-card">
+        <div class="btn-family-title">Animation</div>
+        <p class="btn-family-desc">Spring easing — <code>cubic-bezier(0.16, 1, 0.3, 1)</code> — produces a natural snap-open feel. The panel scales from <strong>0.95 → 1.0</strong> and translates 4 px toward the trigger on enter. Exit is a short reverse (180 ms) so it doesn't compete with the next interaction.</p>
+
+        <div class="btn-preview-strip" style="display:flex;gap:40px;align-items:center;flex-wrap:wrap;padding:32px 24px;background:var(--color-surface-subtle);border:1px solid var(--color-border-default);border-radius:var(--radius-lg);margin-top:16px;">
+          <div class="gs-pop-wrap">
+            <button class="gs-btn gs-btn-primary gs-btn-md" id="anim-t" data-popover-trigger onclick="gsPopoverToggle('anim-t','anim-p')">
+              Toggle spring
+            </button>
+            <div class="gs-popover gs-popover--bottom-start" id="anim-p" style="min-width:220px;padding:12px 16px;">
+              <p style="font-family:var(--prim-font-primary);font-size:13px;color:var(--color-text-secondary);margin:0 0 4px;font-weight:600;">cubic-bezier(0.16, 1, 0.3, 1)</p>
+              <p style="font-family:var(--prim-font-primary);font-size:13px;color:var(--color-text-secondary);margin:0;">Scale 0.95 → 1.0 · Translate 4 px</p>
+            </div>
+          </div>
+
+          <svg width="180" height="56" viewBox="0 0 180 56" style="opacity:0.7;flex-shrink:0;">
+            <text x="0" y="11" font-size="9" fill="#94a3b8" font-family="Helvetica,Arial,sans-serif">cubic-bezier(0.16, 1, 0.3, 1)</text>
+            <path d="M8 48 C36 48 26 8 172 8" stroke="#1852fe" stroke-width="2" fill="none" stroke-linecap="round"/>
+            <circle cx="8"  cy="48" r="3" fill="#1852fe" opacity="0.4"/>
+            <circle cx="172" cy="8" r="3" fill="#1852fe"/>
+          </svg>
+        </div>
+      </div>
+
+      <!-- PLACEMENTS -->
+      <div id="pop-s-placements" class="btn-family-card">
+        <div class="btn-family-title">Placements</div>
+        <p class="btn-family-desc">8 positions. <code>transform-origin</code> updates per placement so the spring always emanates from the correct anchor. Click each to preview.</p>
+
+        <div class="pop-placement-grid">
+          <div><div class="pop-placement-cell"><div class="gs-pop-wrap"><button class="gs-btn gs-btn-secondary gs-btn-xs" data-popover-trigger id="pl-ts-t" onclick="gsPopoverToggle('pl-ts-t','pl-ts-p')">top-start</button><div class="gs-popover gs-popover--top-start" id="pl-ts-p" style="min-width:0;padding:8px 12px;"><div style="font-size:12px;font-family:var(--prim-font-primary);white-space:nowrap;">top-start</div></div></div></div><div class="pop-placement-label">top-start</div></div>
+          <div><div class="pop-placement-cell"><div class="gs-pop-wrap"><button class="gs-btn gs-btn-secondary gs-btn-xs" data-popover-trigger id="pl-tc-t" onclick="gsPopoverToggle('pl-tc-t','pl-tc-p')">top</button><div class="gs-popover gs-popover--top" id="pl-tc-p" style="min-width:0;padding:8px 12px;left:-20px;"><div style="font-size:12px;font-family:var(--prim-font-primary);white-space:nowrap;">top</div></div></div></div><div class="pop-placement-label">top</div></div>
+          <div><div class="pop-placement-cell"><div class="gs-pop-wrap"><button class="gs-btn gs-btn-secondary gs-btn-xs" data-popover-trigger id="pl-te-t" onclick="gsPopoverToggle('pl-te-t','pl-te-p')">top-end</button><div class="gs-popover gs-popover--top-end" id="pl-te-p" style="min-width:0;padding:8px 12px;"><div style="font-size:12px;font-family:var(--prim-font-primary);white-space:nowrap;">top-end</div></div></div></div><div class="pop-placement-label">top-end</div></div>
+          <div><div class="pop-placement-cell" style="justify-content:flex-end;"><div class="gs-pop-wrap"><button class="gs-btn gs-btn-secondary gs-btn-xs" data-popover-trigger id="pl-l-t" onclick="gsPopoverToggle('pl-l-t','pl-l-p')">left</button><div class="gs-popover gs-popover--left" id="pl-l-p" style="min-width:0;padding:8px 12px;top:-8px;"><div style="font-size:12px;font-family:var(--prim-font-primary);white-space:nowrap;">left</div></div></div></div><div class="pop-placement-label">left</div></div>
+          <div><div class="pop-placement-cell" style="background:transparent;border-color:transparent;"><div style="font-size:11px;color:var(--color-text-secondary);font-family:var(--prim-font-primary);text-align:center;line-height:1.6;">8 placements<br/>same API</div></div></div>
+          <div><div class="pop-placement-cell" style="justify-content:flex-start;"><div class="gs-pop-wrap"><button class="gs-btn gs-btn-secondary gs-btn-xs" data-popover-trigger id="pl-r-t" onclick="gsPopoverToggle('pl-r-t','pl-r-p')">right</button><div class="gs-popover gs-popover--right" id="pl-r-p" style="min-width:0;padding:8px 12px;top:-8px;"><div style="font-size:12px;font-family:var(--prim-font-primary);white-space:nowrap;">right</div></div></div></div><div class="pop-placement-label">right</div></div>
+          <div><div class="pop-placement-cell"><div class="gs-pop-wrap"><button class="gs-btn gs-btn-secondary gs-btn-xs" data-popover-trigger id="pl-bs-t" onclick="gsPopoverToggle('pl-bs-t','pl-bs-p')">bottom-start</button><div class="gs-popover gs-popover--bottom-start" id="pl-bs-p" style="min-width:0;padding:8px 12px;"><div style="font-size:12px;font-family:var(--prim-font-primary);white-space:nowrap;">bottom-start</div></div></div></div><div class="pop-placement-label">bottom-start</div></div>
+          <div><div class="pop-placement-cell"><div class="gs-pop-wrap"><button class="gs-btn gs-btn-secondary gs-btn-xs" data-popover-trigger id="pl-bc-t" onclick="gsPopoverToggle('pl-bc-t','pl-bc-p')">bottom</button><div class="gs-popover gs-popover--bottom" id="pl-bc-p" style="min-width:0;padding:8px 12px;left:-20px;"><div style="font-size:12px;font-family:var(--prim-font-primary);white-space:nowrap;">bottom</div></div></div></div><div class="pop-placement-label">bottom</div></div>
+          <div><div class="pop-placement-cell"><div class="gs-pop-wrap"><button class="gs-btn gs-btn-secondary gs-btn-xs" data-popover-trigger id="pl-be-t" onclick="gsPopoverToggle('pl-be-t','pl-be-p')">bottom-end</button><div class="gs-popover gs-popover--bottom-end" id="pl-be-p" style="min-width:0;padding:8px 12px;"><div style="font-size:12px;font-family:var(--prim-font-primary);white-space:nowrap;">bottom-end</div></div></div></div><div class="pop-placement-label">bottom-end</div></div>
+        </div>
+      </div>
+
+      <!-- ACCESSIBILITY -->
+      <div id="pop-s-a11y" class="btn-family-card">
+        <div class="btn-family-title">Accessibility</div>
+
+        <div class="btn-sub-label">Semantic element</div>
+        <p class="btn-family-desc">The trigger is any focusable element. The panel uses <code>role="dialog"</code> for rich content or <code>role="menu"</code> for action lists. Combine with <code>aria-haspopup</code> and <code>aria-expanded</code> on the trigger.</p>
+
+        <div class="btn-sub-label" style="margin-top:16px;">ARIA attributes</div>
+        <table>
+          <thead><tr><th>Attribute</th><th>Element</th><th>Value</th></tr></thead>
+          <tbody>
+            <tr class="ds-tr-border"><td><code>aria-haspopup</code></td><td>Trigger</td><td><code>"true"</code>, <code>"menu"</code>, or <code>"dialog"</code></td></tr>
+            <tr class="ds-tr-border"><td><code>aria-expanded</code></td><td>Trigger</td><td><code>"true"</code> when open, <code>"false"</code> when closed</td></tr>
+            <tr class="ds-tr-border"><td><code>role</code></td><td>Panel</td><td><code>"menu"</code> for action lists, <code>"dialog"</code> for rich content</td></tr>
+            <tr class="ds-tr-border"><td><code>role="menuitem"</code></td><td>Each item</td><td>When panel has <code>role="menu"</code></td></tr>
+          </tbody>
+        </table>
+
+        <div class="btn-sub-label" style="margin-top:16px;">Keyboard navigation</div>
+        <table>
+          <thead><tr><th>Key</th><th>Action</th></tr></thead>
+          <tbody>
+            <tr class="ds-tr-border"><td><kbd>Enter</kbd> / <kbd>Space</kbd></td><td>Open popover (click trigger)</td></tr>
+            <tr class="ds-tr-border"><td><kbd>Escape</kbd></td><td>Close popover, return focus to trigger</td></tr>
+            <tr class="ds-tr-border"><td><kbd>Tab</kbd></td><td>Move focus through interactive items; exits panel on last item</td></tr>
+            <tr class="ds-tr-border"><td><kbd>↑</kbd> / <kbd>↓</kbd></td><td>Navigate <code>role="menu"</code> items</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+    </div><!-- /code-tab-main -->
+
+    <div class="code-tab-qnav">
+      <div class="code-qnav-inner">
+        <p class="code-qnav-title">On This Page</p>
+        <ul class="code-qnav-list">
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('pop-s-overview')">Overview</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('pop-s-anatomy')">Anatomy</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('pop-s-variants')">Variants</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('pop-s-states')">States</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('pop-s-interaction')">Interactions</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('pop-s-animation')">Animation</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('pop-s-placements')">Placements</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('pop-s-a11y')">Accessibility</button></li>
+        </ul>
+      </div>
+    </div>
+
+  </div><!-- /code-tab-layout -->
+</div><!-- /pop-tab-design -->
+
+<!-- ═══ CODE TAB ════════════════════════════════════════════════════ -->
+<div id="pop-tab-code" class="btn-tab-pane pop-tab-pane">
+  <div class="code-tab-layout">
+    <div class="code-tab-main">
+
+      <!-- Framework switcher -->
+      <div class="fw-toggle-bar">
+        <button class="fw-toggle-bar-btn active" data-fw="react" onclick="switchFw('pop-tab-code','react')">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="2.5" fill="#61dafb"/><ellipse cx="12" cy="12" rx="10" ry="4.5" stroke="#61dafb" stroke-width="1.5" fill="none"/><ellipse cx="12" cy="12" rx="10" ry="4.5" stroke="#61dafb" stroke-width="1.5" fill="none" transform="rotate(60 12 12)"/><ellipse cx="12" cy="12" rx="10" ry="4.5" stroke="#61dafb" stroke-width="1.5" fill="none" transform="rotate(120 12 12)"/></svg>
+          React
+        </button>
+        <button class="fw-toggle-bar-btn" data-fw="angular" onclick="switchFw('pop-tab-code','angular')">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M12 2L2 6.5l1.5 12.5L12 22l8.5-3L22 6.5 12 2z" fill="#dd0031"/><path d="M12 2v20M12 2L6 17h12L12 2z" fill="none" stroke="#fff" stroke-width="1.2"/></svg>
+          Angular
+        </button>
+      </div>
+
+      <!-- 1 · Overview -->
+      <div id="pop-c-overview" class="btn-family-card">
+        <div class="ds-step-row"><span class="ds-step-num">1</span><div class="btn-family-title" style="margin:0;">Overview</div></div>
+        <div class="fw-react"><p class="btn-family-desc"><code>Popover</code> wraps any trigger element and floats a composable panel. Use <code>PopoverItem</code>, <code>PopoverDivider</code>, and <code>PopoverToggleRow</code> as content sub-components.</p></div>
+        <div class="fw-angular" style="display:none;"><p class="btn-family-desc">Use the <code>.gs-pop-wrap</code> wrapper with <code>.gs-popover</code> panel and call <code>gsPopoverToggle()</code> or <code>gsPopoverOpen()</code> from the global JS API.</p></div>
+      </div>
+
+      <!-- 2 · Install / Setup -->
+      <div id="pop-c-install" class="btn-family-card">
+        <div class="ds-step-row"><span class="ds-step-num">2</span><div class="btn-family-title" style="margin:0;">Install / Setup</div></div>
+        <div class="fw-react">
+          <div class="btn-code-block"><div class="btn-code-head"><span class="btn-code-lang">bash</span><button class="btn-copy-btn" onclick="copyBtnCode('pop-install-react',this)">Copy</button></div>
+          <div class="btn-code-body"><pre id="pop-install-react"><code>npm install @pelagos/react-components</code></pre></div></div>
+        </div>
+        <div class="fw-angular" style="display:none;">
+          <p class="btn-family-desc">No install needed — include <code>styles.css</code> and <code>script.js</code> from the design system bundle. The popover JS functions are globally available.</p>
+        </div>
+      </div>
+
+      <!-- 3 · Import -->
+      <div id="pop-c-imports" class="btn-family-card">
+        <div class="ds-step-row"><span class="ds-step-num">3</span><div class="btn-family-title" style="margin:0;">Import</div></div>
+        <div class="fw-react">
+          <div class="btn-code-block"><div class="btn-code-head"><span class="btn-code-lang">JSX</span><button class="btn-copy-btn" onclick="copyBtnCode('pop-import-react',this)">Copy</button></div>
+          <div class="btn-code-body"><pre id="pop-import-react"><code><span class="c-kw">import</span> {
+  <span class="c-type">Popover</span>,
+  <span class="c-type">PopoverItem</span>,
+  <span class="c-type">PopoverDivider</span>,
+  <span class="c-type">PopoverToggleRow</span>,
+} <span class="c-kw">from</span> <span class="c-val">'@pelagos/components/panels/popover'</span>;</code></pre></div></div>
+        </div>
+        <div class="fw-angular" style="display:none;">
+          <div class="btn-code-block"><div class="btn-code-head"><span class="btn-code-lang">HTML</span><button class="btn-copy-btn" onclick="copyBtnCode('pop-import-ng',this)">Copy</button></div>
+          <div class="btn-code-body"><pre id="pop-import-ng"><code><span class="c-cmt">&lt;!-- Wrap trigger + panel in the same container --&gt;</span>
+<span class="c-tag">&lt;div</span> <span class="c-attr">class</span>=<span class="c-val">"gs-pop-wrap"</span><span class="c-tag">&gt;</span>
+  <span class="c-tag">&lt;button</span> <span class="c-attr">class</span>=<span class="c-val">"gs-btn gs-btn-secondary gs-btn-sm"</span>
+    <span class="c-attr">id</span>=<span class="c-val">"my-trigger"</span>
+    <span class="c-attr">onclick</span>=<span class="c-val">"gsPopoverToggle('my-trigger','my-panel')"</span><span class="c-tag">&gt;</span>
+    Actions
+  <span class="c-tag">&lt;/button&gt;</span>
+  <span class="c-tag">&lt;div</span> <span class="c-attr">class</span>=<span class="c-val">"gs-popover gs-popover--bottom-start"</span>
+    <span class="c-attr">id</span>=<span class="c-val">"my-panel"</span> <span class="c-attr">role</span>=<span class="c-val">"menu"</span><span class="c-tag">&gt;</span>
+    <span class="c-cmt">&lt;!-- items --&gt;</span>
+  <span class="c-tag">&lt;/div&gt;</span>
+<span class="c-tag">&lt;/div&gt;</span></code></pre></div></div>
+        </div>
+      </div>
+
+      <!-- 4 · API / Props -->
+      <div id="pop-c-api" class="btn-family-card">
+        <div class="ds-step-row"><span class="ds-step-num">4</span><div class="btn-family-title" style="margin:0;">API / Props</div></div>
+
+        <div class="btn-sub-label" style="margin-bottom:8px;">Popover</div>
+        <div class="fw-react">
+          <table>
+            <thead><tr><th>Prop</th><th>Type</th><th>Default</th><th>Required</th><th>Description</th></tr></thead>
+            <tbody>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">content</td><td class="ds-td-code-muted">ReactNode</td><td class="ds-td-code-muted">—</td><td>Yes</td><td class="ds-td-value">Content inside the floating panel</td></tr>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">placement</td><td class="ds-td-code-muted">string</td><td class="ds-td-code-muted">'bottom'</td><td>No</td><td class="ds-td-value"><code>'bottom'</code> · <code>'bottom-center'</code> · <code>'bottom-right'</code> · <code>'top'</code> · <code>'top-center'</code> · <code>'top-right'</code> · <code>'left'</code> · <code>'right'</code></td></tr>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">trigger</td><td class="ds-td-code-muted">'click' | 'hover'</td><td class="ds-td-code-muted">'click'</td><td>No</td><td class="ds-td-value">How the popover opens. Hover includes 80 ms debounce so the panel stays reachable.</td></tr>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">minWidth</td><td class="ds-td-code-muted">number | string</td><td class="ds-td-code-muted">200</td><td>No</td><td class="ds-td-value">Panel minimum width. Numbers are converted to px.</td></tr>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">className</td><td class="ds-td-code-muted">string</td><td class="ds-td-code-muted">''</td><td>No</td><td class="ds-td-value">Extra class on the wrapper <code>&lt;span&gt;</code></td></tr>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">children</td><td class="ds-td-code-muted">ReactNode</td><td class="ds-td-code-muted">—</td><td>Yes</td><td class="ds-td-value">Trigger element — rendered as-is</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="fw-angular" style="display:none;">
+          <table>
+            <thead><tr><th>CSS class</th><th>Description</th></tr></thead>
+            <tbody>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">.gs-pop-wrap</td><td class="ds-td-value">Relative-positioned wrapper containing trigger + panel</td></tr>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">.gs-popover</td><td class="ds-td-value">The floating panel — hidden by default, shown via <code>.is-open</code></td></tr>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">.gs-popover--{placement}</td><td class="ds-td-value">Placement modifier: <code>bottom-start</code>, <code>bottom-end</code>, <code>top-start</code>, <code>top-end</code>, <code>left</code>, <code>right</code></td></tr>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">.gs-pop-item</td><td class="ds-td-value">Action row — 40 px min-height, 12 px padding</td></tr>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">.gs-pop-item--danger</td><td class="ds-td-value">Danger variant — red text</td></tr>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">.gs-pop-divider</td><td class="ds-td-value">1 px horizontal separator</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="btn-sub-label" style="margin-top:20px;margin-bottom:8px;">Sub-components (React only)</div>
+        <div class="fw-react">
+          <table>
+            <thead><tr><th>Component</th><th>Props</th><th>Notes</th></tr></thead>
+            <tbody>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">PopoverItem</td><td class="ds-td-code-muted">icon, label, danger, onClick, href</td><td class="ds-td-value">Renders <code>&lt;button&gt;</code> by default; <code>&lt;a&gt;</code> when <code>href</code> is set. <code>danger</code> applies red colour.</td></tr>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">PopoverDivider</td><td class="ds-td-code-muted">—</td><td class="ds-td-value">Full-width 1 px separator, 12 px side inset.</td></tr>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">PopoverToggleRow</td><td class="ds-td-code-muted">label, children</td><td class="ds-td-value">Label left, control (Toggle, Checkbox…) right.</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="fw-angular" style="display:none;">
+          <p class="btn-family-desc">JS functions available globally:</p>
+          <div class="btn-code-block"><div class="btn-code-head"><span class="btn-code-lang">JS</span><button class="btn-copy-btn" onclick="copyBtnCode('pop-api-ng',this)">Copy</button></div>
+          <div class="btn-code-body"><pre id="pop-api-ng"><code><span class="c-cmt">// Toggle open/closed</span>
+gsPopoverToggle(triggerId, panelId)
+
+<span class="c-cmt">// Open (closes all others first)</span>
+gsPopoverOpen(triggerId, panelId)
+
+<span class="c-cmt">// Close a specific panel</span>
+gsPopoverClose(panelId)
+
+<span class="c-cmt">// Outside-click auto-dismiss is handled globally</span></code></pre></div></div>
+        </div>
+      </div>
+
+      <!-- 5 · Variants -->
+      <div id="pop-c-variants" class="btn-family-card">
+        <div class="ds-step-row"><span class="ds-step-num">5</span><div class="btn-family-title" style="margin:0;">Variants</div></div>
+
+        <div class="btn-sub-label" style="margin-bottom:8px;">Click trigger — action menu</div>
+        <div class="fw-react">
+          <div class="btn-code-block"><div class="btn-code-head"><span class="btn-code-lang">JSX</span><button class="btn-copy-btn" onclick="copyBtnCode('pop-v-click-react',this)">Copy</button></div>
+          <div class="btn-code-body"><pre id="pop-v-click-react"><code><span class="c-tag">&lt;Popover</span>
+  <span class="c-attr">placement</span>=<span class="c-val">"bottom"</span>
+  <span class="c-attr">trigger</span>=<span class="c-val">"click"</span>
+  <span class="c-attr">content</span>={
+    <span class="c-tag">&lt;&gt;</span>
+      <span class="c-tag">&lt;PopoverItem</span> <span class="c-attr">icon</span>={<span class="c-tag">&lt;EditIcon /&gt;</span>} <span class="c-attr">label</span>=<span class="c-val">"Edit Details"</span> <span class="c-attr">onClick</span>={onEdit} <span class="c-tag">/&gt;</span>
+      <span class="c-tag">&lt;PopoverItem</span> <span class="c-attr">icon</span>={<span class="c-tag">&lt;CopyIcon /&gt;</span>}  <span class="c-attr">label</span>=<span class="c-val">"Clone Claim"</span>  <span class="c-attr">onClick</span>={onClone} <span class="c-tag">/&gt;</span>
+      <span class="c-tag">&lt;PopoverDivider /&gt;</span>
+      <span class="c-tag">&lt;PopoverItem</span> <span class="c-attr">icon</span>={<span class="c-tag">&lt;TrashIcon /&gt;</span>} <span class="c-attr">label</span>=<span class="c-val">"Delete"</span> <span class="c-attr">danger</span> <span class="c-attr">onClick</span>={onDelete} <span class="c-tag">/&gt;</span>
+    <span class="c-tag">&lt;/&gt;</span>
+  }
+<span class="c-tag">&gt;</span>
+  <span class="c-tag">&lt;button</span> <span class="c-attr">className</span>=<span class="c-val">"gs-btn gs-btn-secondary gs-btn-sm"</span><span class="c-tag">&gt;</span>Actions<span class="c-tag">&lt;/button&gt;</span>
+<span class="c-tag">&lt;/Popover&gt;</span></code></pre></div></div>
+        </div>
+        <div class="fw-angular" style="display:none;">
+          <div class="btn-code-block"><div class="btn-code-head"><span class="btn-code-lang">HTML</span><button class="btn-copy-btn" onclick="copyBtnCode('pop-v-click-ng',this)">Copy</button></div>
+          <div class="btn-code-body"><pre id="pop-v-click-ng"><code><span class="c-tag">&lt;div</span> <span class="c-attr">class</span>=<span class="c-val">"gs-pop-wrap"</span><span class="c-tag">&gt;</span>
+  <span class="c-tag">&lt;button</span> <span class="c-attr">class</span>=<span class="c-val">"gs-btn gs-btn-secondary gs-btn-sm"</span>
+    <span class="c-attr">id</span>=<span class="c-val">"actions-btn"</span> <span class="c-attr">aria-haspopup</span>=<span class="c-val">"menu"</span> <span class="c-attr">aria-expanded</span>=<span class="c-val">"false"</span>
+    <span class="c-attr">onclick</span>=<span class="c-val">"gsPopoverToggle('actions-btn','actions-pop')"</span><span class="c-tag">&gt;</span>
+    Actions
+  <span class="c-tag">&lt;/button&gt;</span>
+  <span class="c-tag">&lt;div</span> <span class="c-attr">class</span>=<span class="c-val">"gs-popover gs-popover--bottom-start"</span> <span class="c-attr">id</span>=<span class="c-val">"actions-pop"</span> <span class="c-attr">role</span>=<span class="c-val">"menu"</span><span class="c-tag">&gt;</span>
+    <span class="c-tag">&lt;button</span> <span class="c-attr">class</span>=<span class="c-val">"gs-pop-item"</span> <span class="c-attr">role</span>=<span class="c-val">"menuitem"</span><span class="c-tag">&gt;</span>Edit Details<span class="c-tag">&lt;/button&gt;</span>
+    <span class="c-tag">&lt;button</span> <span class="c-attr">class</span>=<span class="c-val">"gs-pop-item"</span> <span class="c-attr">role</span>=<span class="c-val">"menuitem"</span><span class="c-tag">&gt;</span>Clone Claim<span class="c-tag">&lt;/button&gt;</span>
+    <span class="c-tag">&lt;div</span> <span class="c-attr">class</span>=<span class="c-val">"gs-pop-divider"</span><span class="c-tag">&gt;&lt;/div&gt;</span>
+    <span class="c-tag">&lt;button</span> <span class="c-attr">class</span>=<span class="c-val">"gs-pop-item gs-pop-item--danger"</span> <span class="c-attr">role</span>=<span class="c-val">"menuitem"</span><span class="c-tag">&gt;</span>Delete<span class="c-tag">&lt;/button&gt;</span>
+  <span class="c-tag">&lt;/div&gt;</span>
+<span class="c-tag">&lt;/div&gt;</span></code></pre></div></div>
+        </div>
+
+        <div class="btn-sub-label" style="margin-top:20px;margin-bottom:8px;">Hover trigger with toggle row</div>
+        <div class="fw-react">
+          <div class="btn-code-block"><div class="btn-code-head"><span class="btn-code-lang">JSX</span><button class="btn-copy-btn" onclick="copyBtnCode('pop-v-hover-react',this)">Copy</button></div>
+          <div class="btn-code-body"><pre id="pop-v-hover-react"><code><span class="c-tag">&lt;Popover</span>
+  <span class="c-attr">trigger</span>=<span class="c-val">"hover"</span>
+  <span class="c-attr">placement</span>=<span class="c-val">"bottom"</span>
+  <span class="c-attr">content</span>={
+    <span class="c-tag">&lt;&gt;</span>
+      <span class="c-tag">&lt;PopoverItem</span> <span class="c-attr">icon</span>={<span class="c-tag">&lt;EditIcon /&gt;</span>} <span class="c-attr">label</span>=<span class="c-val">"Edit Details"</span> <span class="c-tag">/&gt;</span>
+      <span class="c-tag">&lt;PopoverDivider /&gt;</span>
+      <span class="c-tag">&lt;PopoverToggleRow</span> <span class="c-attr">label</span>=<span class="c-val">"Active Counterparty"</span><span class="c-tag">&gt;</span>
+        <span class="c-tag">&lt;Toggle</span> <span class="c-attr">checked</span>={active} <span class="c-attr">onChange</span>={setActive} <span class="c-tag">/&gt;</span>
+      <span class="c-tag">&lt;/PopoverToggleRow&gt;</span>
+    <span class="c-tag">&lt;/&gt;</span>
+  }
+<span class="c-tag">&gt;</span>
+  <span class="c-tag">&lt;button</span> <span class="c-attr">className</span>=<span class="c-val">"gs-btn gs-btn-secondary gs-btn-sm"</span><span class="c-tag">&gt;</span>Actions<span class="c-tag">&lt;/button&gt;</span>
+<span class="c-tag">&lt;/Popover&gt;</span></code></pre></div></div>
+        </div>
+        <div class="fw-angular" style="display:none;">
+          <div class="btn-code-block"><div class="btn-code-head"><span class="btn-code-lang">HTML</span><button class="btn-copy-btn" onclick="copyBtnCode('pop-v-hover-ng',this)">Copy</button></div>
+          <div class="btn-code-body"><pre id="pop-v-hover-ng"><code><span class="c-tag">&lt;div</span> <span class="c-attr">class</span>=<span class="c-val">"gs-pop-wrap"</span>
+  <span class="c-attr">onmouseenter</span>=<span class="c-val">"gsPopoverOpen('h-t','h-p')"</span>
+  <span class="c-attr">onmouseleave</span>=<span class="c-val">"gsPopoverClose('h-p')"</span><span class="c-tag">&gt;</span>
+  <span class="c-tag">&lt;button</span> <span class="c-attr">class</span>=<span class="c-val">"gs-btn gs-btn-secondary gs-btn-sm"</span> <span class="c-attr">id</span>=<span class="c-val">"h-t"</span><span class="c-tag">&gt;</span>Actions<span class="c-tag">&lt;/button&gt;</span>
+  <span class="c-tag">&lt;div</span> <span class="c-attr">class</span>=<span class="c-val">"gs-popover gs-popover--bottom-start"</span> <span class="c-attr">id</span>=<span class="c-val">"h-p"</span>
+    <span class="c-attr">onmouseenter</span>=<span class="c-val">"gsPopoverOpen('h-t','h-p')"</span>
+    <span class="c-attr">onmouseleave</span>=<span class="c-val">"gsPopoverClose('h-p')"</span><span class="c-tag">&gt;</span>
+    <span class="c-tag">&lt;button</span> <span class="c-attr">class</span>=<span class="c-val">"gs-pop-item"</span><span class="c-tag">&gt;</span>Edit Details<span class="c-tag">&lt;/button&gt;</span>
+  <span class="c-tag">&lt;/div&gt;</span>
+<span class="c-tag">&lt;/div&gt;</span></code></pre></div></div>
+        </div>
+      </div>
+
+      <!-- 6 · Accessibility -->
+      <div id="pop-c-a11y" class="btn-family-card">
+        <div class="ds-step-row"><span class="ds-step-num">6</span><div class="btn-family-title" style="margin:0;">Accessibility</div></div>
+        <div class="fw-react">
+          <div class="btn-code-block"><div class="btn-code-head"><span class="btn-code-lang">JSX</span><button class="btn-copy-btn" onclick="copyBtnCode('pop-a11y-react',this)">Copy</button></div>
+          <div class="btn-code-body"><pre id="pop-a11y-react"><code><span class="c-cmt">// Popover manages aria-expanded on the trigger automatically.
+// Pass the right role on the panel via role on the panel wrapper.</span>
+
+<span class="c-tag">&lt;Popover</span>
+  <span class="c-attr">content</span>={<span class="c-tag">&lt;PopoverItem</span> <span class="c-attr">label</span>=<span class="c-val">"Edit"</span> <span class="c-tag">/&gt;</span>}
+<span class="c-tag">&gt;</span>
+  <span class="c-cmt">{/* trigger — receives aria-haspopup + aria-expanded automatically */}</span>
+  <span class="c-tag">&lt;button</span> <span class="c-attr">className</span>=<span class="c-val">"gs-btn gs-btn-secondary gs-btn-sm"</span><span class="c-tag">&gt;</span>Actions<span class="c-tag">&lt;/button&gt;</span>
+<span class="c-tag">&lt;/Popover&gt;</span></code></pre></div></div>
+        </div>
+        <div class="fw-angular" style="display:none;">
+          <div class="btn-code-block"><div class="btn-code-head"><span class="btn-code-lang">HTML</span><button class="btn-copy-btn" onclick="copyBtnCode('pop-a11y-ng',this)">Copy</button></div>
+          <div class="btn-code-body"><pre id="pop-a11y-ng"><code><span class="c-tag">&lt;button</span>
+  <span class="c-attr">id</span>=<span class="c-val">"my-t"</span>
+  <span class="c-attr">aria-haspopup</span>=<span class="c-val">"menu"</span>
+  <span class="c-attr">aria-expanded</span>=<span class="c-val">"false"</span>
+  <span class="c-attr">onclick</span>=<span class="c-val">"gsPopoverToggle('my-t','my-p')"</span>
+<span class="c-tag">&gt;</span>Actions<span class="c-tag">&lt;/button&gt;</span>
+
+<span class="c-tag">&lt;div</span> <span class="c-attr">id</span>=<span class="c-val">"my-p"</span> <span class="c-attr">class</span>=<span class="c-val">"gs-popover"</span> <span class="c-attr">role</span>=<span class="c-val">"menu"</span><span class="c-tag">&gt;</span>
+  <span class="c-tag">&lt;button</span> <span class="c-attr">class</span>=<span class="c-val">"gs-pop-item"</span> <span class="c-attr">role</span>=<span class="c-val">"menuitem"</span><span class="c-tag">&gt;</span>Edit<span class="c-tag">&lt;/button&gt;</span>
+<span class="c-tag">&lt;/div&gt;</span></code></pre></div></div>
+        </div>
+      </div>
+
+      <!-- 7 · File Structure -->
+      <div id="pop-c-files" class="btn-family-card">
+        <div class="ds-step-row"><span class="ds-step-num">7</span><div class="btn-family-title" style="margin:0;">File Structure</div></div>
+        <div class="fw-react">
+          <div class="btn-code-block"><div class="btn-code-head"><span class="btn-code-lang">tree</span></div>
+          <div class="btn-code-body"><pre><code>components/panels/popover/
+├── Popover.jsx        <span class="c-cmt"># Popover, PopoverItem, PopoverDivider, PopoverToggleRow</span>
+├── Popover.scss       <span class="c-cmt"># .popover-wrap, .popover, sub-elements</span>
+└── README.md</code></pre></div></div>
+        </div>
+        <div class="fw-angular" style="display:none;">
+          <div class="btn-code-block"><div class="btn-code-head"><span class="btn-code-lang">tree</span></div>
+          <div class="btn-code-body"><pre><code>pages/
+├── panel-popover.html  <span class="c-cmt"># this page</span>
+styles.css              <span class="c-cmt"># .gs-pop-wrap, .gs-popover, .gs-pop-item …</span>
+script.js               <span class="c-cmt"># gsPopoverToggle, gsPopoverOpen, gsPopoverClose</span></code></pre></div></div>
+        </div>
+      </div>
+
+      <!-- 8 · Design Tokens -->
+      <div id="pop-c-tokens" class="btn-family-card">
+        <div class="ds-step-row"><span class="ds-step-num">8</span><div class="btn-family-title" style="margin:0;">Design Tokens</div></div>
+        <p class="btn-family-desc">Override CSS custom properties to retheme without touching component markup.</p>
+        <div style="overflow-x:auto;margin-top:12px;">
+          <table class="pop-token-table">
+            <thead><tr><th>Token</th><th>Default</th><th>Description</th></tr></thead>
+            <tbody>
+              <tr><td class="pop-token-name">--pop-bg</td><td class="pop-token-val">var(--color-surface-default)</td><td>Panel background</td></tr>
+              <tr><td class="pop-token-name">--pop-border</td><td class="pop-token-val">var(--color-border-default)</td><td>Panel border</td></tr>
+              <tr><td class="pop-token-name">--pop-radius</td><td class="pop-token-val">var(--radius-md, 8px)</td><td>Panel corner radius</td></tr>
+              <tr><td class="pop-token-name">--pop-shadow</td><td class="pop-token-val">0 2px 8px rgba(0,0,0,.12)</td><td>Drop shadow</td></tr>
+              <tr><td class="pop-token-name">--pop-padding</td><td class="pop-token-val">4px</td><td>Panel inner padding</td></tr>
+              <tr><td class="pop-token-name">--pop-item-h</td><td class="pop-token-val">40px</td><td>Item min-height (Figma)</td></tr>
+              <tr><td class="pop-token-name">--pop-item-px</td><td class="pop-token-val">12px</td><td>Item horizontal padding</td></tr>
+              <tr><td class="pop-token-name">--pop-item-font</td><td class="pop-token-val">var(--prim-font-size-md, 14px)</td><td>Item font size</td></tr>
+              <tr><td class="pop-token-name">--pop-icon-size</td><td class="pop-token-val">24px</td><td>Icon box size</td></tr>
+              <tr><td class="pop-token-name">--pop-min-w</td><td class="pop-token-val">200px</td><td>Minimum panel width</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- 9 · Full Example -->
+      <div id="pop-c-example" class="btn-family-card">
+        <div class="ds-step-row"><span class="ds-step-num">9</span><div class="btn-family-title" style="margin:0;">Full Example</div></div>
+        <div class="fw-react">
+          <div class="btn-code-block"><div class="btn-code-head"><span class="btn-code-lang">JSX</span><button class="btn-copy-btn" onclick="copyBtnCode('pop-full-react',this)">Copy</button></div>
+          <div class="btn-code-body"><pre id="pop-full-react"><code><span class="c-kw">import</span> { <span class="c-type">useState</span> } <span class="c-kw">from</span> <span class="c-val">'react'</span>;
+<span class="c-kw">import</span> {
+  <span class="c-type">Popover</span>, <span class="c-type">PopoverItem</span>, <span class="c-type">PopoverDivider</span>, <span class="c-type">PopoverToggleRow</span>,
+} <span class="c-kw">from</span> <span class="c-val">'@pelagos/components/panels/popover'</span>;
+<span class="c-kw">import</span> { <span class="c-type">Toggle</span> } <span class="c-kw">from</span> <span class="c-val">'@pelagos/components/primitives/toggle'</span>;
+
+<span class="c-kw">export function</span> <span class="c-type">ClaimActions</span>({ claim, onEdit, onDelete }) {
+  <span class="c-kw">const</span> [active, setActive] = <span class="c-type">useState</span>(claim.active);
+
+  <span class="c-kw">return</span> (
+    <span class="c-tag">&lt;Popover</span>
+      <span class="c-attr">placement</span>=<span class="c-val">"bottom"</span>
+      <span class="c-attr">trigger</span>=<span class="c-val">"click"</span>
+      <span class="c-attr">content</span>={
+        <span class="c-tag">&lt;&gt;</span>
+          <span class="c-tag">&lt;PopoverItem</span>
+            <span class="c-attr">icon</span>={<span class="c-tag">&lt;EditIcon /&gt;</span>}
+            <span class="c-attr">label</span>=<span class="c-val">"Edit Details"</span>
+            <span class="c-attr">onClick</span>={onEdit}
+          <span class="c-tag">/&gt;</span>
+          <span class="c-tag">&lt;PopoverDivider /&gt;</span>
+          <span class="c-tag">&lt;PopoverToggleRow</span> <span class="c-attr">label</span>=<span class="c-val">"Active Counterparty"</span><span class="c-tag">&gt;</span>
+            <span class="c-tag">&lt;Toggle</span> <span class="c-attr">checked</span>={active} <span class="c-attr">onChange</span>={setActive} <span class="c-tag">/&gt;</span>
+          <span class="c-tag">&lt;/PopoverToggleRow&gt;</span>
+          <span class="c-tag">&lt;PopoverDivider /&gt;</span>
+          <span class="c-tag">&lt;PopoverItem</span>
+            <span class="c-attr">icon</span>={<span class="c-tag">&lt;TrashIcon /&gt;</span>}
+            <span class="c-attr">label</span>=<span class="c-val">"Delete"</span>
+            <span class="c-attr">danger</span>
+            <span class="c-attr">onClick</span>={onDelete}
+          <span class="c-tag">/&gt;</span>
+        <span class="c-tag">&lt;/&gt;</span>
+      }
+    <span class="c-tag">&gt;</span>
+      <span class="c-tag">&lt;button</span> <span class="c-attr">className</span>=<span class="c-val">"gs-btn gs-btn-secondary gs-btn-sm"</span>
+        <span class="c-attr">aria-label</span>=<span class="c-val">{`Actions for ${claim.id}`}</span><span class="c-tag">&gt;</span>
+        <span class="c-tag">&lt;DotsIcon /&gt;</span>
+      <span class="c-tag">&lt;/button&gt;</span>
+    <span class="c-tag">&lt;/Popover&gt;</span>
+  );
+}</code></pre></div></div>
+        </div>
+        <div class="fw-angular" style="display:none;">
+          <div class="btn-code-block"><div class="btn-code-head"><span class="btn-code-lang">HTML</span><button class="btn-copy-btn" onclick="copyBtnCode('pop-full-ng',this)">Copy</button></div>
+          <div class="btn-code-body"><pre id="pop-full-ng"><code><span class="c-tag">&lt;div</span> <span class="c-attr">class</span>=<span class="c-val">"gs-pop-wrap"</span><span class="c-tag">&gt;</span>
+  <span class="c-tag">&lt;button</span>
+    <span class="c-attr">class</span>=<span class="c-val">"gs-btn gs-btn-secondary gs-btn-sm"</span>
+    <span class="c-attr">id</span>=<span class="c-val">"claim-actions-btn"</span>
+    <span class="c-attr">aria-haspopup</span>=<span class="c-val">"menu"</span>
+    <span class="c-attr">aria-expanded</span>=<span class="c-val">"false"</span>
+    <span class="c-attr">onclick</span>=<span class="c-val">"gsPopoverToggle('claim-actions-btn','claim-actions-pop')"</span>
+  <span class="c-tag">&gt;</span>
+    Actions
+  <span class="c-tag">&lt;/button&gt;</span>
+
+  <span class="c-tag">&lt;div</span> <span class="c-attr">class</span>=<span class="c-val">"gs-popover gs-popover--bottom-start"</span>
+    <span class="c-attr">id</span>=<span class="c-val">"claim-actions-pop"</span> <span class="c-attr">role</span>=<span class="c-val">"menu"</span><span class="c-tag">&gt;</span>
+    <span class="c-tag">&lt;button</span> <span class="c-attr">class</span>=<span class="c-val">"gs-pop-item"</span> <span class="c-attr">role</span>=<span class="c-val">"menuitem"</span><span class="c-tag">&gt;</span>Edit Details<span class="c-tag">&lt;/button&gt;</span>
+    <span class="c-tag">&lt;div</span> <span class="c-attr">class</span>=<span class="c-val">"gs-pop-divider"</span><span class="c-tag">&gt;&lt;/div&gt;</span>
+    <span class="c-tag">&lt;button</span> <span class="c-attr">class</span>=<span class="c-val">"gs-pop-item gs-pop-item--danger"</span> <span class="c-attr">role</span>=<span class="c-val">"menuitem"</span><span class="c-tag">&gt;</span>Delete<span class="c-tag">&lt;/button&gt;</span>
+  <span class="c-tag">&lt;/div&gt;</span>
+<span class="c-tag">&lt;/div&gt;</span></code></pre></div></div>
+        </div>
+      </div>
+
+    </div><!-- /code-tab-main -->
+
+    <div class="code-tab-qnav">
+      <div class="code-qnav-inner">
+        <p class="code-qnav-title">On This Page</p>
+        <ul class="code-qnav-list">
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('pop-c-overview')">1 · Overview</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('pop-c-install')">2 · Install</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('pop-c-imports')">3 · Import</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('pop-c-api')">4 · API / Props</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('pop-c-variants')">5 · Variants</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('pop-c-a11y')">6 · Accessibility</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('pop-c-files')">7 · File Structure</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('pop-c-tokens')">8 · Tokens</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('pop-c-example')">9 · Full Example</button></li>
+        </ul>
+      </div>
+    </div>
+
+  </div><!-- /code-tab-layout -->
+</div><!-- /pop-tab-code -->
+
+<!-- ═══ USAGE TAB ════════════════════════════════════════════════════ -->
+<div id="pop-tab-usage" class="btn-tab-pane pop-tab-pane">
+  <div class="code-tab-layout">
+    <div class="code-tab-main">
+
+      <!-- WHEN TO USE -->
+      <div id="pop-u-when" class="btn-family-card">
+        <div class="btn-family-title">When to Use</div>
+        <ul class="btn-usage-list">
+          <li><strong>Secondary actions on a row or card</strong> — an overflow menu (⋯) avoids cluttering the primary UI with rarely-used operations.</li>
+          <li><strong>Status or assignment pickers</strong> — inline dropdowns that feel lighter than a full modal (e.g., change claim status, assign user).</li>
+          <li><strong>Quick toggles tied to a record</strong> — the "Active Counterparty" toggle-row pattern keeps context without navigation.</li>
+          <li><strong>Contextual info on hover</strong> — a read-only panel that expands on hover for glossary terms, field help, or vessel summaries.</li>
+          <li><strong>Lightweight confirmations</strong> — small panels with Cancel + Confirm buttons for low-stakes destructive actions.</li>
+        </ul>
+      </div>
+
+      <!-- WHEN NOT TO USE -->
+      <div id="pop-u-when-not" class="btn-family-card">
+        <div class="btn-family-title">When Not to Use</div>
+        <ul class="btn-usage-list">
+          <li>
+            <strong>Complex forms or multi-step flows</strong> — use
+            <button onclick="navigate('panel-modals')" class="btn-inline-link">Modal</button>
+            or
+            <button onclick="navigate('panel-slideout')" class="btn-inline-link">Slideout</button>
+            instead. Popovers have no scroll containment guarantee.
+          </li>
+          <li>
+            <strong>Brief single-line hints</strong> — use
+            <button onclick="navigate('prim-tooltip')" class="btn-inline-link">Tooltip</button>
+            instead. Tooltips have no interactive content and lighter markup.
+          </li>
+          <li><strong>Primary navigation</strong> — popovers are transient overlays; persistent navigation belongs in the side-nav or tab bar.</li>
+          <li><strong>Error or success feedback</strong> — use <button onclick="navigate('prim-toasts')" class="btn-inline-link">Toast</button> or inline validation instead. Popovers require a trigger; feedback should be unprompted.</li>
+        </ul>
+      </div>
+
+      <!-- BEST PRACTICES -->
+      <div id="pop-u-best" class="btn-family-card">
+        <div class="btn-family-title">Best Practices</div>
+        <ul class="btn-usage-list">
+          <li><strong>One popover open at a time</strong> — the global JS handler closes all others when a new one opens. Never open two popovers simultaneously.</li>
+          <li><strong>Minimum 200 px width</strong> — per Figma spec. Shorter panels look cramped and break at typical viewport zoom levels.</li>
+          <li><strong>Keep hover trigger content read-only</strong> — users on touch devices cannot hover. Reserve interactive items (buttons, toggles) for click triggers.</li>
+          <li><strong>Limit item count to 7 ± 2</strong> — long menus lose scannability. Group related items with dividers and consider a search-inside pattern beyond 10 items.</li>
+          <li><strong>Always provide a dismiss path</strong> — click outside, Escape key, or an explicit Cancel button. Never trap focus in a hover panel.</li>
+          <li><strong>Use <code>bottom-start</code> as the default placement</strong> — left-aligned panels align with the button's left edge, which is the most natural reading direction for LTR interfaces.</li>
+        </ul>
+      </div>
+
+      <!-- PATTERNS -->
+      <div id="pop-u-patterns" class="btn-family-card">
+        <div class="btn-family-title">Patterns</div>
+        <ul class="btn-usage-list">
+          <li><strong>Row overflow menu</strong> — a <code>⋯</code> icon button at the end of a table row opens a context menu (Edit, Clone, Delete). Use <code>trigger="click"</code> and <code>placement="bottom-end"</code>.</li>
+          <li><strong>Record action panel</strong> — a labelled "Actions" button opens a panel with grouped items separated by a divider. Primary actions first, destructive (red) items last.</li>
+          <li><strong>Status picker</strong> — a Badge or Chip triggers a panel of selectable status options. Each option has a colour dot, label, and a checkmark when active.</li>
+          <li><strong>Toggle row</strong> — a settings action that includes a toggle (e.g. "Active Counterparty") uses <code>PopoverToggleRow</code> below a divider, keeping the toggle reachable without a full settings page.</li>
+          <li><strong>Info hover card</strong> — a small info icon (<code>ⓘ</code>) shows a rich tooltip card on hover with a vessel summary, user card, or glossary definition. Use <code>trigger="hover"</code>.</li>
+        </ul>
+      </div>
+
+      <!-- ANTI-PATTERNS -->
+      <div id="pop-u-mistakes" class="btn-family-card">
+        <div class="btn-family-title">Anti-patterns</div>
+        <ul class="btn-usage-list">
+          <li>
+            <strong>❌ Nesting popovers</strong> — a popover item that opens another popover creates confusing z-index stacking and unpredictable dismiss behaviour.<br>
+            <strong>✅ Fix:</strong> Flatten the hierarchy or open a Modal for deeper options.
+          </li>
+          <li>
+            <strong>❌ Hover trigger for actionable content</strong> — buttons and toggles inside a hover panel are unreachable on touch devices and fail WCAG 2.1 §1.4.13.<br>
+            <strong>✅ Fix:</strong> Switch to <code>trigger="click"</code> whenever the panel contains any interactive element.
+          </li>
+          <li>
+            <strong>❌ Missing <code>aria-haspopup</code> / <code>aria-expanded</code></strong> — screen readers won't announce the trigger correctly.<br>
+            <strong>✅ Fix:</strong> Add both attributes to every trigger; toggle <code>aria-expanded</code> in sync with panel state.
+          </li>
+          <li>
+            <strong>❌ Inline <code>min-width</code> smaller than 200 px</strong> — items wrap unexpectedly and the panel looks broken at zoom levels above 100%.<br>
+            <strong>✅ Fix:</strong> Never override <code>--pop-min-w</code> below 200 px.
+          </li>
+        </ul>
+      </div>
+
+      <!-- REFERENCES -->
+      <div id="pop-u-refs" class="btn-family-card">
+        <div class="btn-family-title">References</div>
+        <ul class="btn-related-list">
+          <li><a href="https://www.figma.com/design/TOLfBpRePgynqwvDVp6fg3/Design-System?node-id=12983-50855" target="_blank" rel="noopener">Figma — Popover component frame</a></li>
+          <li><a href="https://www.w3.org/WAI/ARIA/apg/patterns/menu-button/" target="_blank" rel="noopener">ARIA Authoring Practices — Menu Button pattern</a></li>
+          <li><a href="https://www.w3.org/WAI/WCAG21/Understanding/content-on-hover-or-focus.html" target="_blank" rel="noopener">WCAG 2.1 — 1.4.13 Content on Hover or Focus</a></li>
+          <li><a href="https://headlessui.com/react/popover" target="_blank" rel="noopener">Headless UI — Popover (spring animation reference)</a></li>
+        </ul>
+      </div>
+
+    </div><!-- /code-tab-main -->
+
+    <div class="code-tab-qnav">
+      <div class="code-qnav-inner">
+        <p class="code-qnav-title">Quick Access</p>
+        <ul class="code-qnav-list">
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('pop-u-when')">When to Use</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('pop-u-when-not')">When Not to Use</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('pop-u-best')">Best Practices</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('pop-u-patterns')">Patterns</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('pop-u-mistakes')">Anti-patterns</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('pop-u-refs')">References</button></li>
+        </ul>
+      </div>
+    </div>
+
+  </div><!-- /code-tab-layout -->
+</div><!-- /pop-tab-usage -->

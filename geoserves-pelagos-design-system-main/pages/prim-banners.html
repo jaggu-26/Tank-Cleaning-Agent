@@ -1,0 +1,917 @@
+<!-- ═══════════════════════════════════════════════════════════════
+     BANNERS — Pelagos Design System
+     Info Banner · General Banner
+     Figma: 7271-15730 (Alert) · 9192-1614 (General)
+     Animation: Ant Design smooth unmount
+     ═══════════════════════════════════════════════════════════════ -->
+<style>
+  /* ── Alert (Info Banner) strip ─────────────────────────────── */
+  .gs-alert {
+    display:flex; align-items:center; gap:12px;
+    border-radius:5px; border:0.5px solid transparent;
+    font-family:var(--prim-font-primary); box-sizing:border-box;
+  }
+  .gs-alert--lg { padding:12px; min-height:52px; }
+  .gs-alert--sm { padding:8px; gap:8px; }
+  /* Types */
+  .gs-alert--info    { background:#eef6ff; border-color:#bedbfe; color:#1d40af; }
+  .gs-alert--success { background:#e6fefb; border-color:#7cf7e8; color:#008475; }
+  .gs-alert--warning { background:#fefce8; border-color:#feef89; color:#844d0f; }
+  .gs-alert--error   { background:#fef1f2; border-color:#fecaca; color:#981b1b; }
+  /* Parts */
+  .gs-alert__icon { display:inline-flex; align-items:center; flex-shrink:0; width:24px; height:24px; }
+  .gs-alert__icon svg { width:100%; height:100%; }
+  .gs-alert__body { flex:1; min-width:0; display:flex; flex-direction:column; gap:2px; }
+  .gs-alert__title { font-weight:var(--prim-font-weight-semibold); margin:0; color:inherit; }
+  .gs-alert__desc  { margin:0; color:inherit; opacity:.85; line-height:1.6; }
+  .gs-alert--lg .gs-alert__title,
+  .gs-alert--lg .gs-alert__desc  { font-size:14px; line-height:20px; }
+  .gs-alert--sm .gs-alert__title,
+  .gs-alert--sm .gs-alert__desc  { font-size:12px; line-height:16px; }
+  .gs-alert__action { flex-shrink:0; }
+  .gs-alert__close  {
+    background:none; border:none; cursor:pointer; color:inherit;
+    opacity:.6; padding:0; display:inline-flex; align-items:center; flex-shrink:0;
+    border-radius:2px; transition:opacity 120ms ease;
+  }
+  .gs-alert__close:hover { opacity:1; }
+  .gs-alert__close:focus-visible { outline:2px solid currentColor; outline-offset:2px; }
+
+  /* ── General Banner card ──────────────────────────────────── */
+  .gs-banner {
+    background:#fff; border-radius:var(--radius-md,8px);
+    border:1px solid var(--color-border-default,#e2e8f0);
+    box-shadow:0 1px 4px rgba(0,0,0,0.06); box-sizing:border-box;
+    font-family:var(--prim-font-primary);
+  }
+  .gs-banner__inner {
+    display:flex; align-items:center; gap:16px; padding:32px 16px;
+  }
+  .gs-banner__icon {
+    display:inline-flex; align-items:center; justify-content:center;
+    width:42px; height:42px; border-radius:50%; background:#eef6ff; flex-shrink:0;
+  }
+  .gs-banner__icon svg { width:24px; height:24px; color:var(--color-brand,#1852fe); }
+  .gs-banner__body { flex:1; min-width:0; display:flex; flex-direction:column; gap:12px; }
+  .gs-banner__title { font-size:18px; font-weight:var(--prim-font-weight-semibold); line-height:24px; color:#1d40af; margin:0; }
+  .gs-banner__desc  { font-size:14px; font-weight:400; line-height:20px; color:var(--prim-grey-500,#475569); margin:0; }
+  .gs-banner__actions { display:flex; align-items:center; gap:4px; flex-shrink:0; }
+  .gs-banner__btn {
+    display:inline-flex; align-items:center; justify-content:center;
+    height:48px; padding:12px 24px; border-radius:var(--radius-sm,4px);
+    font-family:var(--prim-font-primary); font-size:14px;
+    font-weight:var(--prim-font-weight-semibold); line-height:20px;
+    cursor:pointer; transition:background 120ms ease; white-space:nowrap; border:none;
+  }
+  .gs-banner__btn--primary { background:var(--color-brand,#1852fe); color:#fff; }
+  .gs-banner__btn--primary:hover { background:#1242d4; }
+  .gs-banner__btn--secondary { background:#eef6ff; border:1px solid var(--color-brand,#1852fe); color:var(--color-brand,#1852fe); }
+  .gs-banner__btn--secondary:hover { background:#dbeafe; }
+  .gs-banner__close {
+    background:none; border:none; cursor:pointer;
+    color:var(--color-text-secondary,#475569); opacity:.6; padding:0;
+    display:inline-flex; align-items:center; flex-shrink:0;
+    border-radius:4px; transition:opacity 120ms ease;
+  }
+  .gs-banner__close:hover { opacity:1; }
+
+  /* ── Size toggle bar ─────────────────────────────────────── */
+  .bnr-size-bar { display:inline-flex; align-items:center; gap:0; background:var(--prim-grey-50,#f1f5f9); border-radius:6px; padding:3px; margin-bottom:16px; }
+  .bnr-size-btn {
+    padding:5px 16px; border:none; background:transparent; border-radius:4px;
+    font-family:var(--prim-font-primary); font-size:13px; font-weight:600;
+    color:var(--color-text-secondary); cursor:pointer; transition:background 120ms ease, color 120ms ease;
+  }
+  .bnr-size-btn.active { background:#fff; color:var(--color-brand,#1852fe); box-shadow:0 1px 3px rgba(0,0,0,0.1); }
+  .bnr-size-btn:not(.active):hover { color:var(--color-text-default); }
+
+  /* ── Reload button — always visible in top-right of demo header ── */
+  .bnr-reload-btn {
+    display:inline-flex; align-items:center; gap:5px;
+    padding:5px 10px; border-radius:var(--radius-sm,4px);
+    border:1px solid var(--color-border-default,#e2e8f0);
+    background:var(--color-surface-default,#fff);
+    font-family:var(--prim-font-primary); font-size:12px;
+    font-weight:600; color:var(--color-text-secondary);
+    cursor:pointer; transition:border-color 120ms ease, color 120ms ease, background 120ms ease;
+    flex-shrink:0;
+  }
+  .bnr-reload-btn:hover { border-color:var(--color-brand,#1852fe); color:var(--color-brand,#1852fe); background:var(--prim-blue-10,#eef6ff); }
+
+  /* ── Demo section header row (title + reload btn) ── */
+  .bnr-demo-header {
+    display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap;
+    gap:8px; margin-bottom:12px;
+  }
+
+  /* ── Side-by-side size grid ── */
+  .bnr-size-grid {
+    display:grid; grid-template-columns:1fr 1fr; gap:20px;
+  }
+  @media(max-width:900px){ .bnr-size-grid { grid-template-columns:1fr; } }
+  .bnr-size-col-label {
+    font-family:var(--prim-font-primary); font-size:11px; font-weight:700;
+    text-transform:uppercase; letter-spacing:0.06em;
+    color:var(--color-text-placeholder); margin-bottom:8px;
+  }
+
+  /* Small action button inside info banner */
+  .gs-alert-action-btn {
+    display:inline-flex; align-items:center; gap:4px;
+    height:32px; padding:4px 12px;
+    border-radius:var(--radius-sm,4px); border:none;
+    font-family:var(--prim-font-primary); font-size:14px;
+    font-weight:var(--prim-font-weight-semibold); cursor:pointer;
+    color:var(--color-brand,#1852fe); background:transparent;
+    transition:background 120ms ease;
+  }
+  .gs-alert-action-btn:hover { background:rgba(24,82,254,0.08); }
+</style>
+
+<!-- BANNER -->
+<div class="page-header">
+  <h1 class="ds-hero-title">Banners</h1>
+</div>
+
+<!-- TAB BAR -->
+<div class="btn-tab-bar">
+  <button class="btn-tab-btn bnr-tab-btn active" data-tab="design" onclick="switchBannersTab('design')">Design</button>
+  <button class="btn-tab-btn bnr-tab-btn" data-tab="code"   onclick="switchBannersTab('code')">Code</button>
+  <button class="btn-tab-btn bnr-tab-btn" data-tab="usage"  onclick="switchBannersTab('usage')">Usage</button>
+</div>
+
+<!-- ═══ DESIGN TAB ═══════════════════════════════════════════════ -->
+<div id="bnr-tab-design" class="btn-tab-pane bnr-tab-pane active">
+  <div class="code-tab-layout">
+    <div class="code-tab-main">
+
+      <!-- OVERVIEW -->
+      <div id="bnr-s-overview" class="btn-family-card">
+        <div class="btn-family-title">Overview</div>
+        <p class="btn-family-desc">Pelagos provides two banner types. <strong>Info Banners</strong> (alert strips) are compact contextual messages for inline feedback — 4 semantic variants, 2 sizes, optional dismiss and action. <strong>General Banners</strong> are announcement cards with a title, description, icon, and dual-action buttons. Both dismiss smoothly using Ant Design's height-collapse animation.</p>
+
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-top:16px;margin-bottom:0;">
+          <span></span>
+          <button class="bnr-reload-btn" onclick="(function(btn){var g=btn.closest('.btn-family-card').querySelector('[data-demo-group]');if(g){var o=g.getAttribute('data-original-html');if(o)g.innerHTML=o;}})(this)" aria-label="Reset examples">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
+            Reset
+          </button>
+        </div>
+        <div data-demo-group="overview-variants" class="btn-preview-strip" style="display:flex;flex-direction:column;gap:12px;padding:28px 24px;background:var(--color-surface-subtle);border:1px solid var(--color-border-default);border-radius:var(--radius-lg);">
+          <!-- Info Banner examples -->
+          <div class="gs-alert gs-alert--info gs-alert--lg">
+            <span class="gs-alert__icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+            </span>
+            <div class="gs-alert__body">
+              <p class="gs-alert__title">Info</p>
+              <p class="gs-alert__desc">Description comes here</p>
+            </div>
+            <button class="gs-alert__close" onclick="gsBannerDismiss(this)" aria-label="Dismiss">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+            </button>
+          </div>
+          <div class="gs-alert gs-alert--success gs-alert--lg">
+            <span class="gs-alert__icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+            </span>
+            <div class="gs-alert__body">
+              <p class="gs-alert__title">Success</p>
+              <p class="gs-alert__desc">Description comes here</p>
+            </div>
+            <button class="gs-alert__close" onclick="gsBannerDismiss(this)" aria-label="Dismiss">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+            </button>
+          </div>
+          <!-- General Banner -->
+          <div class="gs-banner" style="margin-top:8px;">
+            <div class="gs-banner__inner">
+              <span class="gs-banner__icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+              </span>
+              <div class="gs-banner__body">
+                <p class="gs-banner__title">Title</p>
+                <p class="gs-banner__desc">Description comes here</p>
+              </div>
+              <div class="gs-banner__actions">
+                <button class="gs-banner__btn gs-banner__btn--secondary">Archive</button>
+                <button class="gs-banner__btn gs-banner__btn--primary">Button</button>
+              </div>
+              <button class="gs-banner__close" onclick="gsBannerDismiss(this)" aria-label="Dismiss">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="btn-when-examples" style="margin-top:16px;">
+          <span class="btn-when-example-tag">2 Components</span>
+          <span class="btn-when-example-tag">4 Variants</span>
+          <span class="btn-when-example-tag">2 Sizes</span>
+          <span class="btn-when-example-tag">Smooth dismiss</span>
+          <span class="btn-when-example-tag">WCAG AA</span>
+        </div>
+      </div>
+
+      <!-- ANATOMY -->
+      <div id="bnr-s-anatomy" class="btn-family-card">
+        <div class="btn-family-title">Anatomy</div>
+        <p class="btn-family-desc">Both banner types share the same horizontal layout: icon → body → action → close. The Info Banner uses a tinted background; the General Banner uses white with an optional circular icon.</p>
+
+        <div style="background:var(--color-surface-subtle);border:1px solid var(--color-border-default);border-radius:var(--radius-lg);padding:32px;display:flex;justify-content:center;margin-top:8px;overflow:auto;">
+          <svg width="560" height="220" viewBox="0 0 560 220" fill="none" xmlns="http://www.w3.org/2000/svg" style="min-width:480px;">
+            <!-- Info Banner anatomy -->
+            <text x="0" y="16" font-size="11" font-weight="700" fill="#94a3b8" font-family="Helvetica,Arial,sans-serif" text-transform="uppercase">Info Banner</text>
+            <rect x="0" y="24" width="380" height="52" rx="5" fill="#eef6ff" stroke="#bedbfe" stroke-width="0.5"/>
+            <!-- Icon -->
+            <circle cx="24" cy="50" r="9" stroke="#1d40af" stroke-width="1.5" fill="none"/>
+            <line x1="24" y1="47" x2="24" y2="51" stroke="#1d40af" stroke-width="1.5" stroke-linecap="round"/>
+            <circle cx="24" cy="55" r="1" fill="#1d40af"/>
+            <!-- Title + desc -->
+            <rect x="44" y="35" width="60" height="8" rx="2" fill="#1d40af" opacity="0.8"/>
+            <rect x="44" y="48" width="120" height="7" rx="2" fill="#1d40af" opacity="0.35"/>
+            <!-- Close -->
+            <line x1="358" y1="43" x2="366" y2="57" stroke="#1d40af" stroke-width="1.5" stroke-linecap="round"/>
+            <line x1="366" y1="43" x2="358" y2="57" stroke="#1d40af" stroke-width="1.5" stroke-linecap="round"/>
+            <!-- Badge labels -->
+            <circle cx="24" cy="50" r="9" fill="#1852fe" opacity="0"/>
+            <circle cx="0" cy="50" r="10" fill="#1852fe"/><text x="0" y="54" text-anchor="middle" font-size="11" font-weight="700" fill="#fff" font-family="Helvetica,Arial,sans-serif">1</text>
+            <circle cx="100" cy="95" r="10" fill="#1852fe"/><text x="100" y="99" text-anchor="middle" font-size="11" font-weight="700" fill="#fff" font-family="Helvetica,Arial,sans-serif">2</text>
+            <circle cx="370" cy="50" r="10" fill="#1852fe"/><text x="370" y="54" text-anchor="middle" font-size="11" font-weight="700" fill="#fff" font-family="Helvetica,Arial,sans-serif">3</text>
+
+            <!-- General Banner anatomy -->
+            <text x="0" y="130" font-size="11" font-weight="700" fill="#94a3b8" font-family="Helvetica,Arial,sans-serif">General Banner</text>
+            <rect x="0" y="140" width="540" height="72" rx="8" fill="#fff" stroke="#e2e8f0" stroke-width="1"/>
+            <!-- Icon circle -->
+            <circle cx="37" cy="176" r="21" fill="#eef6ff"/>
+            <rect x="29" y="170" width="16" height="12" rx="2" stroke="#1852fe" stroke-width="1.5" fill="none"/>
+            <line x1="29" y1="174" x2="45" y2="174" stroke="#1852fe" stroke-width="1.5"/>
+            <!-- Title + desc -->
+            <rect x="70" y="158" width="80" height="10" rx="2" fill="#1d40af" opacity="0.8"/>
+            <rect x="70" y="174" width="160" height="8" rx="2" fill="#475569" opacity="0.35"/>
+            <!-- Buttons -->
+            <rect x="340" y="164" width="72" height="24" rx="4" fill="#eef6ff" stroke="#1852fe" stroke-width="1"/>
+            <text x="376" y="180" text-anchor="middle" font-size="10" fill="#1852fe" font-family="Helvetica,Arial,sans-serif" font-weight="600">Archive</text>
+            <rect x="418" y="164" width="60" height="24" rx="4" fill="#1852fe"/>
+            <text x="448" y="180" text-anchor="middle" font-size="10" fill="#fff" font-family="Helvetica,Arial,sans-serif" font-weight="600">Button</text>
+            <!-- Close -->
+            <line x1="516" y1="169" x2="524" y2="183" stroke="#94a3b8" stroke-width="1.5" stroke-linecap="round"/>
+            <line x1="524" y1="169" x2="516" y2="183" stroke="#94a3b8" stroke-width="1.5" stroke-linecap="round"/>
+            <!-- Badges -->
+            <circle cx="16" cy="176" r="10" fill="#1852fe"/><text x="16" y="180" text-anchor="middle" font-size="11" font-weight="700" fill="#fff" font-family="Helvetica,Arial,sans-serif">1</text>
+            <circle cx="150" cy="210" r="10" fill="#1852fe"/><text x="150" y="214" text-anchor="middle" font-size="11" font-weight="700" fill="#fff" font-family="Helvetica,Arial,sans-serif">2</text>
+            <circle cx="410" cy="210" r="10" fill="#1852fe"/><text x="410" y="214" text-anchor="middle" font-size="11" font-weight="700" fill="#fff" font-family="Helvetica,Arial,sans-serif">3</text>
+            <circle cx="540" cy="176" r="10" fill="#1852fe"/><text x="540" y="180" text-anchor="middle" font-size="11" font-weight="700" fill="#fff" font-family="Helvetica,Arial,sans-serif">4</text>
+          </svg>
+        </div>
+
+        <ol style="margin-top:20px;display:flex;flex-direction:column;gap:8px;padding-left:20px;">
+          <li><strong>Icon</strong> — 24 × 24 px semantic SVG (Info Banner) or 42 × 42 px circle container (General Banner).</li>
+          <li><strong>Body</strong> — Flex column: bold title (SemiBold) above regular description text.</li>
+          <li><strong>Action slot</strong> — Optional. Info Banner: small ghost button. General Banner: secondary + primary button pair.</li>
+          <li><strong>Close (×)</strong> — Optional dismiss button. Triggers the 300 ms height-collapse animation.</li>
+        </ol>
+      </div>
+
+      <!-- VARIANTS — INFO BANNER -->
+      <div id="bnr-s-info" class="btn-family-card">
+        <div class="bnr-demo-header">
+          <div>
+            <div class="btn-family-title" style="margin-bottom:4px;">Info Banner — Variants</div>
+            <p class="btn-family-desc" style="margin:0;">4 semantic types shown side-by-side at <strong>Large</strong> and <strong>Small</strong> sizes. Click × to dismiss individually. Figma: <code>node-id=7271-15730</code>.</p>
+          </div>
+          <button class="bnr-reload-btn" onclick="(function(btn){var g=btn.closest('.btn-family-card').querySelector('[data-demo-group]');if(g){var o=g.getAttribute('data-original-html');if(o)g.innerHTML=o;}})(this)" aria-label="Reset examples">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
+            Reset
+          </button>
+        </div>
+
+        <!-- ── Side-by-side Large | Small ── -->
+        <div data-demo-group="info-variants" class="bnr-size-grid" style="margin-top:16px;">
+
+          <!-- LEFT: Large -->
+          <div>
+            <div class="bnr-size-col-label">Large · 52 px · default</div>
+            <div style="display:flex;flex-direction:column;gap:8px;">
+              <div class="gs-alert gs-alert--info gs-alert--lg">
+                <span class="gs-alert__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></span>
+                <div class="gs-alert__body"><p class="gs-alert__title">Info</p><p class="gs-alert__desc">Description comes here</p></div>
+                <button class="gs-alert__close" onclick="gsBannerDismiss(this)" aria-label="Dismiss"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg></button>
+              </div>
+              <div class="gs-alert gs-alert--success gs-alert--lg">
+                <span class="gs-alert__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></span>
+                <div class="gs-alert__body"><p class="gs-alert__title">Success</p><p class="gs-alert__desc">Description comes here</p></div>
+                <button class="gs-alert__close" onclick="gsBannerDismiss(this)" aria-label="Dismiss"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg></button>
+              </div>
+              <div class="gs-alert gs-alert--warning gs-alert--lg">
+                <span class="gs-alert__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></span>
+                <div class="gs-alert__body"><p class="gs-alert__title">Warning</p><p class="gs-alert__desc">Description comes here</p></div>
+                <button class="gs-alert__close" onclick="gsBannerDismiss(this)" aria-label="Dismiss"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg></button>
+              </div>
+              <div class="gs-alert gs-alert--error gs-alert--lg">
+                <span class="gs-alert__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></span>
+                <div class="gs-alert__body"><p class="gs-alert__title">Error</p><p class="gs-alert__desc">Description comes here</p></div>
+                <button class="gs-alert__close" onclick="gsBannerDismiss(this)" aria-label="Dismiss"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg></button>
+              </div>
+            </div>
+          </div>
+
+          <!-- RIGHT: Small -->
+          <div>
+            <div class="bnr-size-col-label">Small · with action</div>
+            <div style="display:flex;flex-direction:column;gap:8px;">
+              <div class="gs-alert gs-alert--info gs-alert--sm">
+                <span class="gs-alert__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></span>
+                <div class="gs-alert__body"><p class="gs-alert__title">Info</p><p class="gs-alert__desc">Description comes here</p></div>
+                <div class="gs-alert__action"><button class="gs-alert-action-btn">Button</button></div>
+                <button class="gs-alert__close" onclick="gsBannerDismiss(this)" aria-label="Dismiss"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg></button>
+              </div>
+              <div class="gs-alert gs-alert--success gs-alert--sm">
+                <span class="gs-alert__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></span>
+                <div class="gs-alert__body"><p class="gs-alert__title">Success</p><p class="gs-alert__desc">Description comes here</p></div>
+                <div class="gs-alert__action"><button class="gs-alert-action-btn">Button</button></div>
+                <button class="gs-alert__close" onclick="gsBannerDismiss(this)" aria-label="Dismiss"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg></button>
+              </div>
+              <div class="gs-alert gs-alert--warning gs-alert--sm">
+                <span class="gs-alert__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></span>
+                <div class="gs-alert__body"><p class="gs-alert__title">Warning</p><p class="gs-alert__desc">Description comes here</p></div>
+                <div class="gs-alert__action"><button class="gs-alert-action-btn">Button</button></div>
+                <button class="gs-alert__close" onclick="gsBannerDismiss(this)" aria-label="Dismiss"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg></button>
+              </div>
+              <div class="gs-alert gs-alert--error gs-alert--sm">
+                <span class="gs-alert__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></span>
+                <div class="gs-alert__body"><p class="gs-alert__title">Error</p><p class="gs-alert__desc">Description comes here</p></div>
+                <div class="gs-alert__action"><button class="gs-alert-action-btn">Button</button></div>
+                <button class="gs-alert__close" onclick="gsBannerDismiss(this)" aria-label="Dismiss"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg></button>
+              </div>
+            </div>
+          </div>
+
+        </div><!-- /bnr-size-grid -->
+      </div>
+
+      <!-- VARIANTS — GENERAL BANNER -->
+      <div id="bnr-s-general" class="btn-family-card">
+        <div class="bnr-demo-header">
+          <div>
+            <div class="btn-family-title" style="margin-bottom:4px;">General Banner — Variants</div>
+            <p class="btn-family-desc" style="margin:0;">Announcement-style banner with icon, title, description, and dual-action buttons. Figma: <code>node-id=9192-1614</code>.</p>
+          </div>
+          <button class="bnr-reload-btn" onclick="(function(btn){var g=btn.closest('.btn-family-card').querySelector('[data-demo-group]');if(g){var o=g.getAttribute('data-original-html');if(o)g.innerHTML=o;}})(this)" aria-label="Reset examples">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
+            Reset
+          </button>
+        </div>
+
+        <div data-demo-group="general-variants" style="display:flex;flex-direction:column;gap:16px;margin-top:8px;">
+          <!-- With icon + description + 2 buttons -->
+          <div>
+            <div class="btn-sub-label" style="margin-bottom:8px;">With icon · title · description · 2 actions</div>
+            <div class="gs-banner">
+              <div class="gs-banner__inner">
+                <span class="gs-banner__icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+                </span>
+                <div class="gs-banner__body">
+                  <p class="gs-banner__title">Title</p>
+                  <p class="gs-banner__desc">Description comes here</p>
+                </div>
+                <div class="gs-banner__actions">
+                  <button class="gs-banner__btn gs-banner__btn--secondary">Archive</button>
+                  <button class="gs-banner__btn gs-banner__btn--primary">Button</button>
+                </div>
+                <button class="gs-banner__close" onclick="gsBannerDismiss(this)" aria-label="Dismiss">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Title only + 1 action -->
+          <div>
+            <div class="btn-sub-label" style="margin-bottom:8px;">Title only · 1 action · no icon</div>
+            <div class="gs-banner">
+              <div class="gs-banner__inner">
+                <div class="gs-banner__body">
+                  <p class="gs-banner__title">Banner Title</p>
+                </div>
+                <div class="gs-banner__actions">
+                  <button class="gs-banner__btn gs-banner__btn--primary">Read Update</button>
+                </div>
+                <button class="gs-banner__close" onclick="gsBannerDismiss(this)" aria-label="Dismiss">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- No close -->
+          <div>
+            <div class="btn-sub-label" style="margin-bottom:8px;">With icon · 2 actions · no close</div>
+            <div class="gs-banner">
+              <div class="gs-banner__inner">
+                <span class="gs-banner__icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 1.1h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.74a16 16 0 0 0 6.35 6.35l.74-.74a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 21.9 16.92z"/></svg>
+                </span>
+                <div class="gs-banner__body">
+                  <p class="gs-banner__title">Title</p>
+                  <p class="gs-banner__desc">Description comes here</p>
+                </div>
+                <div class="gs-banner__actions">
+                  <button class="gs-banner__btn gs-banner__btn--secondary">Later</button>
+                  <button class="gs-banner__btn gs-banner__btn--primary">Watch</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- STATES -->
+      <div id="bnr-s-states" class="btn-family-card">
+        <div class="btn-family-title">States</div>
+        <p class="btn-family-desc">Info Banner tokens and close-button states.</p>
+        <div class="btn-states-grid" style="grid-template-columns:repeat(2,1fr);margin-top:16px;">
+          <div class="btn-state-cell">
+            <div style="pointer-events:none;width:100%;">
+              <div class="gs-alert gs-alert--info gs-alert--lg">
+                <span class="gs-alert__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></span>
+                <div class="gs-alert__body"><p class="gs-alert__title">Info</p><p class="gs-alert__desc">Default state</p></div>
+              </div>
+            </div>
+            <span class="btn-state-label">Default</span>
+          </div>
+          <div class="btn-state-cell">
+            <div style="pointer-events:none;width:100%;">
+              <div class="gs-alert gs-alert--info gs-alert--lg" style="opacity:0;height:52px;"></div>
+            </div>
+            <span class="btn-state-label">Dismissed (removed)</span>
+          </div>
+          <div class="btn-state-cell">
+            <div style="pointer-events:none;width:100%;">
+              <div class="gs-alert gs-alert--info gs-alert--lg">
+                <span class="gs-alert__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></span>
+                <div class="gs-alert__body"><p class="gs-alert__title">Info</p><p class="gs-alert__desc">With action</p></div>
+                <div class="gs-alert__action"><button class="gs-alert-action-btn" style="pointer-events:none;">Button</button></div>
+              </div>
+            </div>
+            <span class="btn-state-label">With action</span>
+          </div>
+          <div class="btn-state-cell">
+            <div style="pointer-events:none;width:100%;">
+              <div class="gs-alert gs-alert--error gs-alert--lg">
+                <span class="gs-alert__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></span>
+                <div class="gs-alert__body"><p class="gs-alert__title">Error</p><p class="gs-alert__desc">Critical feedback</p></div>
+              </div>
+            </div>
+            <span class="btn-state-label">Error</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- INTERACTIONS -->
+      <div id="bnr-s-interaction" class="btn-family-card">
+        <div class="btn-family-title">Interactions</div>
+        <table>
+          <thead><tr><th>Trigger</th><th>Behaviour</th><th>Animation</th></tr></thead>
+          <tbody>
+            <tr class="ds-tr-border"><td>Click ×</td><td>Collapse height to 0, fade opacity to 0, then remove from DOM</td><td>300 ms ease (Ant Design pattern)</td></tr>
+            <tr class="ds-tr-border"><td>Click action button</td><td>Executes callback; does not auto-dismiss unless handler calls dismiss</td><td>—</td></tr>
+            <tr class="ds-tr-border"><td><kbd>Escape</kbd></td><td>Dismisses the focused banner (if closable)</td><td>Same 300 ms ease</td></tr>
+            <tr class="ds-tr-border"><td><kbd>Tab</kbd></td><td>Focus moves through action → close in order</td><td>—</td></tr>
+            <tr class="ds-tr-border"><td><kbd>Enter</kbd> / <kbd>Space</kbd> on ×</td><td>Dismiss</td><td>300 ms ease</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- ACCESSIBILITY -->
+      <div id="bnr-s-a11y" class="btn-family-card">
+        <div class="btn-family-title">Accessibility</div>
+
+        <div class="btn-sub-label">Semantic roles</div>
+        <p class="btn-family-desc">Info Banner uses <code>role="alert"</code> with <code>aria-live="polite"</code> so screen readers announce the message when it appears. General Banner uses <code>role="banner"</code>.</p>
+
+        <div class="btn-sub-label" style="margin-top:16px;">ARIA attributes</div>
+        <table>
+          <thead><tr><th>Attribute</th><th>Element</th><th>Value</th></tr></thead>
+          <tbody>
+            <tr class="ds-tr-border"><td><code>role="alert"</code></td><td>Info Banner root</td><td>Announces to screen readers on render</td></tr>
+            <tr class="ds-tr-border"><td><code>aria-live="polite"</code></td><td>Info Banner root</td><td>Non-interrupting announcement</td></tr>
+            <tr class="ds-tr-border"><td><code>role="banner"</code></td><td>General Banner root</td><td>Landmark for page-level notices</td></tr>
+            <tr class="ds-tr-border"><td><code>aria-label="Dismiss"</code></td><td>× close button</td><td>Labels the icon-only button for screen readers</td></tr>
+          </tbody>
+        </table>
+
+        <div class="btn-sub-label" style="margin-top:16px;">Keyboard navigation</div>
+        <table>
+          <thead><tr><th>Key</th><th>Action</th></tr></thead>
+          <tbody>
+            <tr class="ds-tr-border"><td><kbd>Tab</kbd></td><td>Move focus to action button(s), then close button</td></tr>
+            <tr class="ds-tr-border"><td><kbd>Shift+Tab</kbd></td><td>Move focus in reverse</td></tr>
+            <tr class="ds-tr-border"><td><kbd>Enter</kbd> / <kbd>Space</kbd></td><td>Activate focused button</td></tr>
+            <tr class="ds-tr-border"><td><kbd>Escape</kbd></td><td>Dismiss if the banner is closable and has focus within</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+    </div><!-- /code-tab-main -->
+
+    <div class="code-tab-qnav">
+      <div class="code-qnav-inner">
+        <p class="code-qnav-title">On This Page</p>
+        <ul class="code-qnav-list">
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('bnr-s-overview')">Overview</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('bnr-s-anatomy')">Anatomy</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('bnr-s-info')">Info Banner</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('bnr-s-general')">General Banner</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('bnr-s-states')">States</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('bnr-s-interaction')">Interactions</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('bnr-s-a11y')">Accessibility</button></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div><!-- /design tab -->
+
+<!-- ═══ CODE TAB ══════════════════════════════════════════════════ -->
+<div id="bnr-tab-code" class="btn-tab-pane bnr-tab-pane">
+  <div class="code-tab-layout">
+    <div class="code-tab-main">
+
+      <div class="fw-toggle-bar">
+        <button class="fw-toggle-bar-btn active" data-fw="react" onclick="switchFw('bnr-tab-code','react')">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="2.5" fill="#61dafb"/><ellipse cx="12" cy="12" rx="10" ry="4.5" stroke="#61dafb" stroke-width="1.5" fill="none"/><ellipse cx="12" cy="12" rx="10" ry="4.5" stroke="#61dafb" stroke-width="1.5" fill="none" transform="rotate(60 12 12)"/><ellipse cx="12" cy="12" rx="10" ry="4.5" stroke="#61dafb" stroke-width="1.5" fill="none" transform="rotate(120 12 12)"/></svg>
+          React
+        </button>
+        <button class="fw-toggle-bar-btn" data-fw="angular" onclick="switchFw('bnr-tab-code','angular')">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M12 2L2 6.5l1.5 12.5L12 22l8.5-3L22 6.5 12 2z" fill="#dd0031"/><path d="M12 2v20M12 2L6 17h12L12 2z" fill="none" stroke="#fff" stroke-width="1.2"/></svg>
+          Angular
+        </button>
+      </div>
+
+      <!-- 1 · Overview -->
+      <div id="bnr-c-overview" class="btn-family-card">
+        <div class="ds-step-row"><span class="ds-step-num">1</span><div class="btn-family-title" style="margin:0;">Overview</div></div>
+        <div class="fw-react"><p class="btn-family-desc"><code>Alert</code> is the Info Banner (strip alert). <code>Banner</code> is the General announcement card. Both use a shared dismiss hook implementing Ant Design's smooth height-collapse animation.</p></div>
+        <div class="fw-angular" style="display:none;"><p class="btn-family-desc">Use <code>.gs-alert</code> + <code>.gs-alert--{type}</code> + <code>.gs-alert--{size}</code> for alert strips. Use <code>.gs-banner</code> for announcement cards. Call <code>gsBannerDismiss(btn)</code> on the × button click.</p></div>
+      </div>
+
+      <!-- 2 · Install -->
+      <div id="bnr-c-install" class="btn-family-card">
+        <div class="ds-step-row"><span class="ds-step-num">2</span><div class="btn-family-title" style="margin:0;">Install / Setup</div></div>
+        <div class="fw-react">
+          <div class="btn-code-block"><div class="btn-code-head"><span class="btn-code-lang">bash</span><button class="btn-copy-btn" onclick="copyBtnCode('bnr-install-r',this)">Copy</button></div>
+          <div class="btn-code-body"><pre id="bnr-install-r"><code>npm install @pelagos/react-components</code></pre></div></div>
+        </div>
+        <div class="fw-angular" style="display:none;">
+          <p class="btn-family-desc">Include <code>styles.css</code> from the design system bundle — the <code>.gs-alert</code> and <code>.gs-banner</code> classes are globally available. Add <code>gsBannerDismiss</code> from <code>script.js</code>.</p>
+        </div>
+      </div>
+
+      <!-- 3 · Import -->
+      <div id="bnr-c-imports" class="btn-family-card">
+        <div class="ds-step-row"><span class="ds-step-num">3</span><div class="btn-family-title" style="margin:0;">Import</div></div>
+        <div class="fw-react">
+          <div class="btn-code-block"><div class="btn-code-head"><span class="btn-code-lang">JSX</span><button class="btn-copy-btn" onclick="copyBtnCode('bnr-import-r',this)">Copy</button></div>
+          <div class="btn-code-body"><pre id="bnr-import-r"><code><span class="c-kw">import</span> { <span class="c-type">Alert</span>, <span class="c-type">Banner</span> } <span class="c-kw">from</span> <span class="c-val">'@pelagos/components/primitives/banners'</span>;</code></pre></div></div>
+        </div>
+        <div class="fw-angular" style="display:none;">
+          <div class="btn-code-block"><div class="btn-code-head"><span class="btn-code-lang">HTML</span><button class="btn-copy-btn" onclick="copyBtnCode('bnr-import-ng',this)">Copy</button></div>
+          <div class="btn-code-body"><pre id="bnr-import-ng"><code><span class="c-cmt">&lt;!-- Info Banner --&gt;</span>
+<span class="c-tag">&lt;div</span> <span class="c-attr">class</span>=<span class="c-val">"gs-alert gs-alert--info gs-alert--lg"</span> <span class="c-attr">role</span>=<span class="c-val">"alert"</span><span class="c-tag">&gt;</span>
+  <span class="c-tag">&lt;span</span> <span class="c-attr">class</span>=<span class="c-val">"gs-alert__icon"</span><span class="c-tag">&gt;</span>...svg...<span class="c-tag">&lt;/span&gt;</span>
+  <span class="c-tag">&lt;div</span> <span class="c-attr">class</span>=<span class="c-val">"gs-alert__body"</span><span class="c-tag">&gt;</span>
+    <span class="c-tag">&lt;p</span> <span class="c-attr">class</span>=<span class="c-val">"gs-alert__title"</span><span class="c-tag">&gt;</span>Info<span class="c-tag">&lt;/p&gt;</span>
+    <span class="c-tag">&lt;p</span> <span class="c-attr">class</span>=<span class="c-val">"gs-alert__desc"</span><span class="c-tag">&gt;</span>Description<span class="c-tag">&lt;/p&gt;</span>
+  <span class="c-tag">&lt;/div&gt;</span>
+  <span class="c-tag">&lt;button</span> <span class="c-attr">class</span>=<span class="c-val">"gs-alert__close"</span>
+    <span class="c-attr">onclick</span>=<span class="c-val">"gsBannerDismiss(this)"</span>
+    <span class="c-attr">aria-label</span>=<span class="c-val">"Dismiss"</span><span class="c-tag">&gt;</span>×<span class="c-tag">&lt;/button&gt;</span>
+<span class="c-tag">&lt;/div&gt;</span></code></pre></div></div>
+        </div>
+      </div>
+
+      <!-- 4 · API -->
+      <div id="bnr-c-api" class="btn-family-card">
+        <div class="ds-step-row"><span class="ds-step-num">4</span><div class="btn-family-title" style="margin:0;">API / Props</div></div>
+
+        <div class="btn-sub-label" style="margin-bottom:8px;">Alert (Info Banner)</div>
+        <div class="fw-react">
+          <table>
+            <thead><tr><th>Prop</th><th>Type</th><th>Default</th><th>Description</th></tr></thead>
+            <tbody>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">type</td><td class="ds-td-code-muted">'info'|'success'|'warning'|'error'</td><td class="ds-td-code-muted">'info'</td><td class="ds-td-value">Semantic colour variant</td></tr>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">size</td><td class="ds-td-code-muted">'lg'|'sm'</td><td class="ds-td-code-muted">'lg'</td><td class="ds-td-value">Large (52 px) or Small</td></tr>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">title</td><td class="ds-td-code-muted">string</td><td class="ds-td-code-muted">—</td><td class="ds-td-value">Bold heading line (SemiBold)</td></tr>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">description</td><td class="ds-td-code-muted">string</td><td class="ds-td-code-muted">—</td><td class="ds-td-value">Secondary description text</td></tr>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">showIcon</td><td class="ds-td-code-muted">boolean</td><td class="ds-td-code-muted">true</td><td class="ds-td-value">Show left semantic icon</td></tr>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">closable</td><td class="ds-td-code-muted">boolean</td><td class="ds-td-code-muted">false</td><td class="ds-td-value">Show × dismiss button</td></tr>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">action</td><td class="ds-td-code-muted">ReactNode</td><td class="ds-td-code-muted">—</td><td class="ds-td-value">Custom action in right slot</td></tr>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">onClose</td><td class="ds-td-code-muted">function</td><td class="ds-td-code-muted">—</td><td class="ds-td-value">Called after dismiss animation</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="fw-angular" style="display:none;">
+          <table>
+            <thead><tr><th>CSS class</th><th>Description</th></tr></thead>
+            <tbody>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">.gs-alert--{type}</td><td class="ds-td-value">Type: info | success | warning | error</td></tr>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">.gs-alert--lg / --sm</td><td class="ds-td-value">Size modifier (12px / 8px padding)</td></tr>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">.gs-alert__icon</td><td class="ds-td-value">24×24 px icon container</td></tr>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">.gs-alert__body</td><td class="ds-td-value">Flex column: title + desc</td></tr>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">.gs-alert__close</td><td class="ds-td-value">× dismiss button — call gsBannerDismiss(this)</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="btn-sub-label" style="margin-top:20px;margin-bottom:8px;">Banner (General)</div>
+        <div class="fw-react">
+          <table>
+            <thead><tr><th>Prop</th><th>Type</th><th>Default</th><th>Description</th></tr></thead>
+            <tbody>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">title</td><td class="ds-td-code-muted">string</td><td class="ds-td-code-muted">—</td><td class="ds-td-value">18 px SemiBold headline</td></tr>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">description</td><td class="ds-td-code-muted">string</td><td class="ds-td-code-muted">—</td><td class="ds-td-value">14 px Regular body text</td></tr>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">icon</td><td class="ds-td-code-muted">ReactNode</td><td class="ds-td-code-muted">—</td><td class="ds-td-value">SVG inside the 42 px circle</td></tr>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">primaryAction</td><td class="ds-td-code-muted">&#123;label, onClick&#125;</td><td class="ds-td-code-muted">—</td><td class="ds-td-value">Filled primary button</td></tr>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">secondaryAction</td><td class="ds-td-code-muted">&#123;label, onClick&#125;</td><td class="ds-td-code-muted">—</td><td class="ds-td-value">Outlined secondary button</td></tr>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">closable</td><td class="ds-td-code-muted">boolean</td><td class="ds-td-code-muted">true</td><td class="ds-td-value">Show × dismiss button</td></tr>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">onClose</td><td class="ds-td-code-muted">function</td><td class="ds-td-code-muted">—</td><td class="ds-td-value">Called after dismiss animation</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="fw-angular" style="display:none;">
+          <table>
+            <thead><tr><th>CSS class</th><th>Description</th></tr></thead>
+            <tbody>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">.gs-banner</td><td class="ds-td-value">Root — white bg, 8px radius, border, shadow</td></tr>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">.gs-banner__inner</td><td class="ds-td-value">Flex row with 16px gap, 32px/16px padding</td></tr>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">.gs-banner__icon</td><td class="ds-td-value">42×42 px blue/10 circle</td></tr>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">.gs-banner__btn--primary / --secondary</td><td class="ds-td-value">48 px action buttons</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- 5 · Variants — one block per type -->
+      <div id="bnr-c-variants" class="btn-family-card">
+        <div class="ds-step-row"><span class="ds-step-num">5</span><div class="btn-family-title" style="margin:0;">Variants — Info Banner</div></div>
+        <p class="btn-family-desc">Each type shown separately. Switch <code>size="lg"</code> ↔ <code>size="sm"</code> directly on the prop — no wrapper needed.</p>
+
+        <!-- ── Info ── -->
+        <div class="btn-sub-label" style="margin-top:16px;margin-bottom:6px;">Info</div>
+        <div class="fw-react">
+          <div class="btn-code-block"><div class="btn-code-head"><span class="btn-code-lang">JSX</span><button class="btn-copy-btn" onclick="copyBtnCode('bnr-v-info-r',this)">Copy</button></div>
+          <div class="btn-code-body"><pre id="bnr-v-info-r"><code><span class="c-cmt">// Large (default)</span>
+<span class="c-tag">&lt;Alert</span> <span class="c-attr">type</span>=<span class="c-val">"info"</span> <span class="c-attr">size</span>=<span class="c-val">"lg"</span> <span class="c-attr">title</span>=<span class="c-val">"Info"</span> <span class="c-attr">description</span>=<span class="c-val">"Description comes here"</span> <span class="c-attr">closable</span> <span class="c-tag">/&gt;</span>
+
+<span class="c-cmt">// Small</span>
+<span class="c-tag">&lt;Alert</span> <span class="c-attr">type</span>=<span class="c-val">"info"</span> <span class="c-attr">size</span>=<span class="c-val">"sm"</span> <span class="c-attr">title</span>=<span class="c-val">"Info"</span> <span class="c-attr">description</span>=<span class="c-val">"Description comes here"</span> <span class="c-attr">closable</span> <span class="c-tag">/&gt;</span></code></pre></div></div>
+        </div>
+        <div class="fw-angular" style="display:none;">
+          <div class="btn-code-block"><div class="btn-code-head"><span class="btn-code-lang">HTML</span><button class="btn-copy-btn" onclick="copyBtnCode('bnr-v-info-ng',this)">Copy</button></div>
+          <div class="btn-code-body"><pre id="bnr-v-info-ng"><code><span class="c-cmt">&lt;!-- Large --&gt;</span>
+<span class="c-tag">&lt;div</span> <span class="c-attr">class</span>=<span class="c-val">"gs-alert gs-alert--info gs-alert--lg"</span> <span class="c-attr">role</span>=<span class="c-val">"alert"</span><span class="c-tag">&gt;</span>...icon + body + close...<span class="c-tag">&lt;/div&gt;</span>
+
+<span class="c-cmt">&lt;!-- Small — swap --lg for --sm --&gt;</span>
+<span class="c-tag">&lt;div</span> <span class="c-attr">class</span>=<span class="c-val">"gs-alert gs-alert--info gs-alert--sm"</span> <span class="c-attr">role</span>=<span class="c-val">"alert"</span><span class="c-tag">&gt;</span>...icon + body + close...<span class="c-tag">&lt;/div&gt;</span></code></pre></div></div>
+        </div>
+
+        <!-- ── Success ── -->
+        <div class="btn-sub-label" style="margin-top:20px;margin-bottom:6px;">Success</div>
+        <div class="fw-react">
+          <div class="btn-code-block"><div class="btn-code-head"><span class="btn-code-lang">JSX</span><button class="btn-copy-btn" onclick="copyBtnCode('bnr-v-success-r',this)">Copy</button></div>
+          <div class="btn-code-body"><pre id="bnr-v-success-r"><code><span class="c-cmt">// Large with optional action button</span>
+<span class="c-tag">&lt;Alert</span>
+  <span class="c-attr">type</span>=<span class="c-val">"success"</span>
+  <span class="c-attr">size</span>=<span class="c-val">"lg"</span>
+  <span class="c-attr">title</span>=<span class="c-val">"Route approved"</span>
+  <span class="c-attr">description</span>=<span class="c-val">"Voyage record updated successfully."</span>
+  <span class="c-attr">closable</span>
+  <span class="c-attr">action</span>={<span class="c-tag">&lt;button</span> <span class="c-attr">className</span>=<span class="c-val">"gs-alert-action-btn"</span><span class="c-tag">&gt;</span>View<span class="c-tag">&lt;/button&gt;</span>}
+  <span class="c-attr">onClose</span>={() =&gt; console.log(<span class="c-val">'dismissed'</span>)}
+<span class="c-tag">/&gt;</span>
+
+<span class="c-cmt">// Small</span>
+<span class="c-tag">&lt;Alert</span> <span class="c-attr">type</span>=<span class="c-val">"success"</span> <span class="c-attr">size</span>=<span class="c-val">"sm"</span> <span class="c-attr">title</span>=<span class="c-val">"Saved"</span> <span class="c-attr">closable</span> <span class="c-tag">/&gt;</span></code></pre></div></div>
+        </div>
+        <div class="fw-angular" style="display:none;">
+          <div class="btn-code-block"><div class="btn-code-head"><span class="btn-code-lang">HTML</span><button class="btn-copy-btn" onclick="copyBtnCode('bnr-v-success-ng',this)">Copy</button></div>
+          <div class="btn-code-body"><pre id="bnr-v-success-ng"><code><span class="c-tag">&lt;div</span> <span class="c-attr">class</span>=<span class="c-val">"gs-alert gs-alert--success gs-alert--lg"</span> <span class="c-attr">role</span>=<span class="c-val">"alert"</span><span class="c-tag">&gt;</span>
+  <span class="c-tag">&lt;span</span> <span class="c-attr">class</span>=<span class="c-val">"gs-alert__icon"</span><span class="c-tag">&gt;</span>...svg...<span class="c-tag">&lt;/span&gt;</span>
+  <span class="c-tag">&lt;div</span> <span class="c-attr">class</span>=<span class="c-val">"gs-alert__body"</span><span class="c-tag">&gt;</span>
+    <span class="c-tag">&lt;p</span> <span class="c-attr">class</span>=<span class="c-val">"gs-alert__title"</span><span class="c-tag">&gt;</span>Route approved<span class="c-tag">&lt;/p&gt;</span>
+    <span class="c-tag">&lt;p</span> <span class="c-attr">class</span>=<span class="c-val">"gs-alert__desc"</span><span class="c-tag">&gt;</span>Voyage record updated successfully.<span class="c-tag">&lt;/p&gt;</span>
+  <span class="c-tag">&lt;/div&gt;</span>
+  <span class="c-tag">&lt;div</span> <span class="c-attr">class</span>=<span class="c-val">"gs-alert__action"</span><span class="c-tag">&gt;</span>
+    <span class="c-tag">&lt;button</span> <span class="c-attr">class</span>=<span class="c-val">"gs-alert-action-btn"</span><span class="c-tag">&gt;</span>View<span class="c-tag">&lt;/button&gt;</span>
+  <span class="c-tag">&lt;/div&gt;</span>
+  <span class="c-tag">&lt;button</span> <span class="c-attr">class</span>=<span class="c-val">"gs-alert__close"</span> <span class="c-attr">onclick</span>=<span class="c-val">"gsBannerDismiss(this)"</span> <span class="c-attr">aria-label</span>=<span class="c-val">"Dismiss"</span><span class="c-tag">&gt;</span>&times;<span class="c-tag">&lt;/button&gt;</span>
+<span class="c-tag">&lt;/div&gt;</span></code></pre></div></div>
+        </div>
+
+        <!-- ── Warning ── -->
+        <div class="btn-sub-label" style="margin-top:20px;margin-bottom:6px;">Warning</div>
+        <div class="fw-react">
+          <div class="btn-code-block"><div class="btn-code-head"><span class="btn-code-lang">JSX</span><button class="btn-copy-btn" onclick="copyBtnCode('bnr-v-warning-r',this)">Copy</button></div>
+          <div class="btn-code-body"><pre id="bnr-v-warning-r"><code><span class="c-cmt">// Large</span>
+<span class="c-tag">&lt;Alert</span>
+  <span class="c-attr">type</span>=<span class="c-val">"warning"</span>
+  <span class="c-attr">size</span>=<span class="c-val">"lg"</span>
+  <span class="c-attr">title</span>=<span class="c-val">"Session expiring"</span>
+  <span class="c-attr">description</span>=<span class="c-val">"Your session will expire in 5 minutes."</span>
+  <span class="c-attr">closable</span>
+<span class="c-tag">/&gt;</span>
+
+<span class="c-cmt">// Small — no icon</span>
+<span class="c-tag">&lt;Alert</span> <span class="c-attr">type</span>=<span class="c-val">"warning"</span> <span class="c-attr">size</span>=<span class="c-val">"sm"</span> <span class="c-attr">title</span>=<span class="c-val">"Session expiring"</span> <span class="c-attr">showIcon</span>={false} <span class="c-tag">/&gt;</span></code></pre></div></div>
+        </div>
+        <div class="fw-angular" style="display:none;">
+          <div class="btn-code-block"><div class="btn-code-head"><span class="btn-code-lang">HTML</span><button class="btn-copy-btn" onclick="copyBtnCode('bnr-v-warning-ng',this)">Copy</button></div>
+          <div class="btn-code-body"><pre id="bnr-v-warning-ng"><code><span class="c-cmt">&lt;!-- Large --&gt;</span>
+<span class="c-tag">&lt;div</span> <span class="c-attr">class</span>=<span class="c-val">"gs-alert gs-alert--warning gs-alert--lg"</span> <span class="c-attr">role</span>=<span class="c-val">"alert"</span><span class="c-tag">&gt;</span>
+  <span class="c-tag">&lt;span</span> <span class="c-attr">class</span>=<span class="c-val">"gs-alert__icon"</span><span class="c-tag">&gt;</span>...svg...<span class="c-tag">&lt;/span&gt;</span>
+  <span class="c-tag">&lt;div</span> <span class="c-attr">class</span>=<span class="c-val">"gs-alert__body"</span><span class="c-tag">&gt;</span>
+    <span class="c-tag">&lt;p</span> <span class="c-attr">class</span>=<span class="c-val">"gs-alert__title"</span><span class="c-tag">&gt;</span>Session expiring<span class="c-tag">&lt;/p&gt;</span>
+  <span class="c-tag">&lt;/div&gt;</span>
+  <span class="c-tag">&lt;button</span> <span class="c-attr">class</span>=<span class="c-val">"gs-alert__close"</span> <span class="c-attr">onclick</span>=<span class="c-val">"gsBannerDismiss(this)"</span> <span class="c-attr">aria-label</span>=<span class="c-val">"Dismiss"</span><span class="c-tag">&gt;</span>&times;<span class="c-tag">&lt;/button&gt;</span>
+<span class="c-tag">&lt;/div&gt;</span>
+
+<span class="c-cmt">&lt;!-- Small: swap --lg → --sm --&gt;</span></code></pre></div></div>
+        </div>
+
+        <!-- ── Error ── -->
+        <div class="btn-sub-label" style="margin-top:20px;margin-bottom:6px;">Error</div>
+        <div class="fw-react">
+          <div class="btn-code-block"><div class="btn-code-head"><span class="btn-code-lang">JSX</span><button class="btn-copy-btn" onclick="copyBtnCode('bnr-v-error-r',this)">Copy</button></div>
+          <div class="btn-code-body"><pre id="bnr-v-error-r"><code><span class="c-cmt">// Large — with description</span>
+<span class="c-tag">&lt;Alert</span>
+  <span class="c-attr">type</span>=<span class="c-val">"error"</span>
+  <span class="c-attr">size</span>=<span class="c-val">"lg"</span>
+  <span class="c-attr">title</span>=<span class="c-val">"Sync failed"</span>
+  <span class="c-attr">description</span>=<span class="c-val">"AIS feed unreachable. Retrying in 30 s."</span>
+  <span class="c-attr">closable</span>
+  <span class="c-attr">onClose</span>={handleClose}
+<span class="c-tag">/&gt;</span>
+
+<span class="c-cmt">// Small</span>
+<span class="c-tag">&lt;Alert</span> <span class="c-attr">type</span>=<span class="c-val">"error"</span> <span class="c-attr">size</span>=<span class="c-val">"sm"</span> <span class="c-attr">title</span>=<span class="c-val">"Connection lost"</span> <span class="c-attr">closable</span> <span class="c-tag">/&gt;</span></code></pre></div></div>
+        </div>
+        <div class="fw-angular" style="display:none;">
+          <div class="btn-code-block"><div class="btn-code-head"><span class="btn-code-lang">HTML</span><button class="btn-copy-btn" onclick="copyBtnCode('bnr-v-error-ng',this)">Copy</button></div>
+          <div class="btn-code-body"><pre id="bnr-v-error-ng"><code><span class="c-cmt">&lt;!-- Large --&gt;</span>
+<span class="c-tag">&lt;div</span> <span class="c-attr">class</span>=<span class="c-val">"gs-alert gs-alert--error gs-alert--lg"</span> <span class="c-attr">role</span>=<span class="c-val">"alert"</span><span class="c-tag">&gt;</span>
+  <span class="c-tag">&lt;span</span> <span class="c-attr">class</span>=<span class="c-val">"gs-alert__icon"</span><span class="c-tag">&gt;</span>...svg...<span class="c-tag">&lt;/span&gt;</span>
+  <span class="c-tag">&lt;div</span> <span class="c-attr">class</span>=<span class="c-val">"gs-alert__body"</span><span class="c-tag">&gt;</span>
+    <span class="c-tag">&lt;p</span> <span class="c-attr">class</span>=<span class="c-val">"gs-alert__title"</span><span class="c-tag">&gt;</span>Sync failed<span class="c-tag">&lt;/p&gt;</span>
+    <span class="c-tag">&lt;p</span> <span class="c-attr">class</span>=<span class="c-val">"gs-alert__desc"</span><span class="c-tag">&gt;</span>AIS feed unreachable.<span class="c-tag">&lt;/p&gt;</span>
+  <span class="c-tag">&lt;/div&gt;</span>
+  <span class="c-tag">&lt;button</span> <span class="c-attr">class</span>=<span class="c-val">"gs-alert__close"</span> <span class="c-attr">onclick</span>=<span class="c-val">"gsBannerDismiss(this)"</span> <span class="c-attr">aria-label</span>=<span class="c-val">"Dismiss"</span><span class="c-tag">&gt;</span>&times;<span class="c-tag">&lt;/button&gt;</span>
+<span class="c-tag">&lt;/div&gt;</span>
+
+<span class="c-cmt">&lt;!-- Small: swap --lg → --sm --&gt;</span></code></pre></div></div>
+        </div>
+
+        <!-- ── General Banner ── -->
+        <div class="btn-sub-label" style="margin-top:24px;margin-bottom:6px;">General Banner</div>
+        <div class="fw-react">
+          <div class="btn-code-block"><div class="btn-code-head"><span class="btn-code-lang">JSX</span><button class="btn-copy-btn" onclick="copyBtnCode('bnr-v-banner-r',this)">Copy</button></div>
+          <div class="btn-code-body"><pre id="bnr-v-banner-r"><code><span class="c-kw">import</span> { <span class="c-type">Banner</span> } <span class="c-kw">from</span> <span class="c-val">'@pelagos/components/primitives/banners'</span>;
+
+<span class="c-tag">&lt;Banner</span>
+  <span class="c-attr">icon</span>={<span class="c-tag">&lt;UpdateIcon /&gt;</span>}
+  <span class="c-attr">title</span>=<span class="c-val">"System update available"</span>
+  <span class="c-attr">description</span>=<span class="c-val">"Version 3.2.0 brings improved AIS accuracy."</span>
+  <span class="c-attr">primaryAction</span>={{ label: <span class="c-val">'Update now'</span>, onClick: doUpdate }}
+  <span class="c-attr">secondaryAction</span>={{ label: <span class="c-val">'Later'</span>, onClick: dismiss }}
+  <span class="c-attr">closable</span>
+  <span class="c-attr">onClose</span>={handleClose}
+<span class="c-tag">/&gt;</span></code></pre></div></div>
+        </div>
+        <div class="fw-angular" style="display:none;">
+          <div class="btn-code-block"><div class="btn-code-head"><span class="btn-code-lang">HTML</span><button class="btn-copy-btn" onclick="copyBtnCode('bnr-v-banner-ng',this)">Copy</button></div>
+          <div class="btn-code-body"><pre id="bnr-v-banner-ng"><code><span class="c-tag">&lt;div</span> <span class="c-attr">class</span>=<span class="c-val">"gs-banner"</span> <span class="c-attr">role</span>=<span class="c-val">"banner"</span><span class="c-tag">&gt;</span>
+  <span class="c-tag">&lt;div</span> <span class="c-attr">class</span>=<span class="c-val">"gs-banner__inner"</span><span class="c-tag">&gt;</span>
+    <span class="c-tag">&lt;span</span> <span class="c-attr">class</span>=<span class="c-val">"gs-banner__icon"</span><span class="c-tag">&gt;</span>...svg...<span class="c-tag">&lt;/span&gt;</span>
+    <span class="c-tag">&lt;div</span> <span class="c-attr">class</span>=<span class="c-val">"gs-banner__body"</span><span class="c-tag">&gt;</span>
+      <span class="c-tag">&lt;p</span> <span class="c-attr">class</span>=<span class="c-val">"gs-banner__title"</span><span class="c-tag">&gt;</span>System update<span class="c-tag">&lt;/p&gt;</span>
+      <span class="c-tag">&lt;p</span> <span class="c-attr">class</span>=<span class="c-val">"gs-banner__desc"</span><span class="c-tag">&gt;</span>Description<span class="c-tag">&lt;/p&gt;</span>
+    <span class="c-tag">&lt;/div&gt;</span>
+    <span class="c-tag">&lt;div</span> <span class="c-attr">class</span>=<span class="c-val">"gs-banner__actions"</span><span class="c-tag">&gt;</span>
+      <span class="c-tag">&lt;button</span> <span class="c-attr">class</span>=<span class="c-val">"gs-banner__btn gs-banner__btn--secondary"</span><span class="c-tag">&gt;</span>Later<span class="c-tag">&lt;/button&gt;</span>
+      <span class="c-tag">&lt;button</span> <span class="c-attr">class</span>=<span class="c-val">"gs-banner__btn gs-banner__btn--primary"</span><span class="c-tag">&gt;</span>Update<span class="c-tag">&lt;/button&gt;</span>
+    <span class="c-tag">&lt;/div&gt;</span>
+    <span class="c-tag">&lt;button</span> <span class="c-attr">class</span>=<span class="c-val">"gs-banner__close"</span> <span class="c-attr">onclick</span>=<span class="c-val">"gsBannerDismiss(this)"</span> <span class="c-attr">aria-label</span>=<span class="c-val">"Dismiss"</span><span class="c-tag">&gt;</span>&times;<span class="c-tag">&lt;/button&gt;</span>
+  <span class="c-tag">&lt;/div&gt;</span>
+<span class="c-tag">&lt;/div&gt;</span></code></pre></div></div>
+        </div>
+      </div>
+
+      <!-- 6 · File Structure -->
+      <div id="bnr-c-files" class="btn-family-card">
+        <div class="ds-step-row"><span class="ds-step-num">6</span><div class="btn-family-title" style="margin:0;">File Structure</div></div>
+        <div class="fw-react">
+          <div class="btn-code-block"><div class="btn-code-head"><span class="btn-code-lang">tree</span></div>
+          <div class="btn-code-body"><pre><code>components/primitives/banners/
+├── Banner.jsx    <span class="c-cmt"># Alert (Info Banner) + Banner (General) exports</span>
+├── Banner.scss   <span class="c-cmt"># .gs-alert + .gs-banner styles</span>
+└── README.md</code></pre></div></div>
+        </div>
+        <div class="fw-angular" style="display:none;">
+          <div class="btn-code-block"><div class="btn-code-head"><span class="btn-code-lang">tree</span></div>
+          <div class="btn-code-body"><pre><code>pages/prim-banners.html     <span class="c-cmt"># this page</span>
+styles.css                   <span class="c-cmt"># .gs-alert, .gs-banner — global classes</span>
+script.js                    <span class="c-cmt"># gsBannerDismiss() — dismiss animation</span></code></pre></div></div>
+        </div>
+      </div>
+
+    </div><!-- /code-tab-main -->
+
+    <div class="code-tab-qnav">
+      <div class="code-qnav-inner">
+        <p class="code-qnav-title">On This Page</p>
+        <ul class="code-qnav-list">
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('bnr-c-overview')">1 · Overview</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('bnr-c-install')">2 · Install</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('bnr-c-imports')">3 · Import</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('bnr-c-api')">4 · API / Props</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('bnr-c-variants')">5 · Variants</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('bnr-c-files')">6 · File Structure</button></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div><!-- /code tab -->
+
+<!-- ═══ USAGE TAB ════════════════════════════════════════════════ -->
+<div id="bnr-tab-usage" class="btn-tab-pane bnr-tab-pane">
+  <div class="code-tab-layout">
+    <div class="code-tab-main">
+
+      <div id="bnr-u-when" class="btn-family-card">
+        <div class="btn-family-title">When to Use</div>
+        <ul class="btn-usage-list">
+          <li><strong>Info Banner — inline feedback</strong> — Validation results, sync status, save confirmation, or permission warnings directly inside a form, panel, or table row.</li>
+          <li><strong>Info Banner — non-blocking alerts</strong> — When the user needs to be informed but not interrupted. Use <code>warning</code> or <code>error</code> for actionable issues that must be resolved before proceeding.</li>
+          <li><strong>General Banner — announcements</strong> — System updates, new feature launches, or policy notices that apply to the whole page and need a call-to-action button.</li>
+          <li><strong>General Banner — onboarding prompts</strong> — First-run tips or guided setup steps that users should be able to dismiss after completing.</li>
+        </ul>
+      </div>
+
+      <div id="bnr-u-when-not" class="btn-family-card">
+        <div class="btn-family-title">When Not to Use</div>
+        <ul class="btn-usage-list">
+          <li><strong>Transient feedback</strong> — Use <button onclick="navigate('prim-toasts')" class="btn-inline-link">Toast</button> instead. Banners are persistent; toasts auto-dismiss.</li>
+          <li><strong>Blocking confirmations</strong> — Use <button onclick="navigate('panel-modals')" class="btn-inline-link">Modal (ConfirmModal)</button> for destructive actions that require an explicit decision.</li>
+          <li><strong>Multiple simultaneous banners</strong> — Stack a maximum of 2 Info Banners. More than that creates alert fatigue. Consider collapsing them into a single summary banner.</li>
+          <li><strong>General Banner as a form header</strong> — The General Banner's 32 px vertical padding makes it too large for inside-form use. Use an Info Banner (lg) instead.</li>
+        </ul>
+      </div>
+
+      <div id="bnr-u-best" class="btn-family-card">
+        <div class="btn-family-title">Best Practices</div>
+        <ul class="btn-usage-list">
+          <li><strong>Keep messages short</strong> — Title under 6 words; description under 20 words. Long banners compete with page content.</li>
+          <li><strong>Match severity to type</strong> — <code>info</code> for neutral tips, <code>success</code> for completions, <code>warning</code> for non-critical risks, <code>error</code> for failures that block the user.</li>
+          <li><strong>Always provide a dismiss path</strong> — Set <code>closable</code> unless the banner is critical and must remain (e.g. a subscription expired error blocking a feature).</li>
+          <li><strong>Action labels should be specific</strong> — "Update now" not "Click here". "Archive" not "OK".</li>
+          <li><strong>Persist across navigations only when critical</strong> — General Banners for system-wide notices should persist at the page level, not per-component.</li>
+        </ul>
+      </div>
+
+      <div id="bnr-u-mistakes" class="btn-family-card">
+        <div class="btn-family-title">Anti-patterns</div>
+        <ul class="btn-usage-list">
+          <li><strong>❌ Using error banners for non-errors</strong> — Red is a strong signal. Using it for informational messages creates alarm without cause.<br><strong>✅ Fix:</strong> Use <code>info</code> or <code>warning</code> type instead.</li>
+          <li><strong>❌ Omitting <code>role="alert"</code></strong> — Screen readers won't announce the banner when it appears dynamically.<br><strong>✅ Fix:</strong> Always include <code>role="alert"</code> + <code>aria-live="polite"</code> on Info Banners.</li>
+          <li><strong>❌ Non-dismissible banners with no-action path</strong> — If users cannot act on or dismiss the banner, it becomes visual noise.<br><strong>✅ Fix:</strong> Either make it closable or link to an actionable page.</li>
+          <li><strong>❌ Using General Banner inside cards or panels</strong> — The 32 px vertical padding overflows constrained containers.<br><strong>✅ Fix:</strong> Use Info Banner (lg) inside cards; reserve General Banner for full-width page-level notices.</li>
+        </ul>
+      </div>
+
+      <div id="bnr-u-refs" class="btn-family-card">
+        <div class="btn-family-title">References</div>
+        <ul class="btn-related-list">
+          <li><a href="https://www.figma.com/design/TOLfBpRePgynqwvDVp6fg3/Design-System?node-id=7271-15730" target="_blank" rel="noopener">Figma — Info Banner (Alert) component frame</a></li>
+          <li><a href="https://www.figma.com/design/TOLfBpRePgynqwvDVp6fg3/Design-System?node-id=9192-1614" target="_blank" rel="noopener">Figma — General Banner component frame</a></li>
+          <li><a href="https://ant.design/components/alert" target="_blank" rel="noopener">Ant Design — Alert component (animation reference)</a></li>
+          <li><a href="https://www.w3.org/WAI/ARIA/apg/patterns/alert/" target="_blank" rel="noopener">ARIA Authoring Practices — Alert pattern</a></li>
+          <li><a href="https://www.w3.org/WAI/WCAG21/Understanding/status-messages.html" target="_blank" rel="noopener">WCAG 2.1 — 4.1.3 Status Messages</a></li>
+        </ul>
+      </div>
+
+    </div><!-- /code-tab-main -->
+
+    <div class="code-tab-qnav">
+      <div class="code-qnav-inner">
+        <p class="code-qnav-title">Quick Access</p>
+        <ul class="code-qnav-list">
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('bnr-u-when')">When to Use</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('bnr-u-when-not')">When Not to Use</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('bnr-u-best')">Best Practices</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('bnr-u-mistakes')">Anti-patterns</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('bnr-u-refs')">References</button></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div><!-- /usage tab -->

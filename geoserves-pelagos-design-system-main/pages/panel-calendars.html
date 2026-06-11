@@ -1,0 +1,1070 @@
+<!-- ═══════════════════════════════════════════════════════════════
+     CALENDAR — Pelagos Design System  (Figma-accurate v3)
+     ═══════════════════════════════════════════════════════════════ -->
+
+<style>
+/* ═══ BASE CALENDAR WIDGET ═══════════════════════════════════════ */
+.gs-cal-wrap {
+  background: var(--color-surface-default);
+  border: 1px solid var(--color-border-default);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  font-family: var(--prim-font-primary);
+  user-select: none;
+}
+
+/* ── Header ── */
+.gs-cal-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 14px 16px 10px;
+}
+.gs-cal-title-btn {
+  background: none; border: none;
+  font-family: var(--prim-font-primary);
+  font-size: var(--prim-font-size-md);
+  font-weight: var(--prim-font-weight-bold);
+  color: var(--color-text-default);
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 20px;
+  transition: background 0.12s;
+}
+.gs-cal-title-btn:hover { background: #edf5ff; }
+.gs-cal-title-static { pointer-events: none; }
+.gs-cal-nav {
+  width: 30px; height: 30px; border: none;
+  background: transparent; border-radius: 50%;
+  cursor: pointer; color: var(--color-text-secondary);
+  display: inline-flex; align-items: center; justify-content: center;
+  transition: background 0.12s;
+}
+.gs-cal-nav:hover { background: #edf5ff; color: var(--color-text-default); }
+.gs-cal-nav:focus-visible { outline: 2px solid var(--color-brand); }
+
+/* ── Weekday row ── */
+.gs-cal-wdays {
+  display: grid; grid-template-columns: repeat(7,1fr);
+  padding: 2px 8px 4px;
+}
+.gs-cal-wdays span {
+  text-align: center;
+  font-size: var(--prim-font-size-xs);
+  font-weight: var(--prim-font-weight-semibold);
+  color: var(--color-text-secondary);
+  padding: 4px 0;
+}
+
+/* ── Day grid ── */
+.gs-cal-body { padding: 4px 8px 12px; }
+.gs-cal-row  { display: flex; align-items: center; }
+
+/* Column wrapper — handles range background strip */
+.gs-cal-col {
+  flex: 1;
+  display: flex; align-items: center; justify-content: center;
+  height: 38px; position: relative;
+}
+/* Range: full column light-blue fill */
+.gs-col-in-range { background: #dcebff; }
+/* Range start: right half only */
+.gs-col-rs { background: linear-gradient(to right, transparent 50%, #dcebff 50%); }
+/* Range end: left half only */
+.gs-col-re { background: linear-gradient(to left, transparent 50%, #dcebff 50%); }
+
+/* ── Date cell — PILL shape (30px × 39px, radius 20px) ── */
+.gs-cal-cell {
+  border: none;
+  background: transparent;
+  font-family: var(--prim-font-primary);
+  font-size: var(--prim-font-size-sm);
+  font-weight: var(--prim-font-weight-semibold);
+  color: #555;
+  height: 30px;
+  width: 39px;
+  flex-shrink: 0;
+  border-radius: 20px;        /* pill — matches Figma exactly */
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: background 0.12s ease, color 0.12s ease;
+  position: relative; z-index: 1;
+}
+.gs-cal-cell:hover:not(.gs-cal-selected):not(.gs-cal-today) {
+  background: #edf5ff;
+  color: #001e4c;
+}
+.gs-cal-cell:focus-visible { outline: 2px solid var(--color-brand); outline-offset: 1px; }
+
+/* Muted (prev/next month) */
+.gs-cal-muted { color: #ccc !important; }
+
+/* Today */
+.gs-cal-today {
+  background: #dcebff !important;
+  color: #001e4c !important;
+  font-weight: var(--prim-font-weight-bold) !important;
+}
+
+/* Selected / range endpoint — solid blue pill */
+.gs-cal-selected {
+  background: #1852fe !important;
+  color: #ffffff !important;
+  font-weight: var(--prim-font-weight-semibold) !important;
+}
+
+/* ── Month / Year picker grid ── */
+.gs-cal-pick-grid {
+  display: grid; grid-template-columns: repeat(3,1fr);
+  gap: 8px; padding: 12px 16px 16px;
+}
+.gs-cal-pick-cell {
+  border: none; background: transparent;
+  font-family: var(--prim-font-primary);
+  font-size: var(--prim-font-size-sm);
+  font-weight: var(--prim-font-weight-semibold);
+  color: #555;
+  height: 30px; border-radius: 20px;    /* pill */
+  cursor: pointer; text-align: center;
+  transition: background 0.12s, color 0.12s;
+}
+.gs-cal-pick-cell:hover { background: #edf5ff; color: #001e4c; }
+.gs-cal-pick-cell.gs-cal-today {
+  background: #dcebff; color: #001e4c;
+  font-weight: var(--prim-font-weight-bold);
+}
+.gs-cal-pick-cell.gs-cal-selected {
+  background: #1852fe !important; color: #fff !important;
+}
+
+/* ── Footer bar ── */
+.gs-cal-footer {
+  display: flex; align-items: center; gap: 8px;
+  padding: 10px 16px;
+  background: var(--color-surface-subtle);
+  border-top: 1px solid var(--color-border-default);
+  font-size: var(--prim-font-size-sm);
+  color: var(--color-text-secondary); min-height: 44px;
+}
+.gs-cal-footer strong { color: var(--color-brand); font-weight: var(--prim-font-weight-semibold); }
+
+/* ═══ DATE + TIME VARIANT ════════════════════════════════════════ */
+
+/* Dark date header */
+.gs-cal-dthdr {
+  background: #001e4c;
+  padding: 14px 20px 16px;
+  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+}
+.gs-cal-dthdr-year {
+  font-size: var(--prim-font-size-sm);
+  color: rgba(255,255,255,0.55);
+  font-weight: var(--prim-font-weight-medium);
+  margin-bottom: 4px;
+}
+.gs-cal-dthdr-date {
+  font-size: var(--prim-font-size-xl);
+  color: #ffffff;
+  font-weight: var(--prim-font-weight-bold);
+  line-height: 1.25;
+}
+
+/* Date+time outer wrapper (no top radius — header is above) */
+.gs-cal-dt-body {
+  display: flex;
+  border: 1px solid var(--color-border-default);
+  border-top: none;
+  border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+  overflow: hidden;
+  background: var(--color-surface-default);
+}
+/* Calendar left portion */
+.gs-cal-dt-cal {
+  flex: 1;
+  border-right: 1px solid var(--color-border-default);
+}
+.gs-cal-dt-cal .gs-cal-wrap {
+  border: none; border-radius: 0;
+}
+
+/* Time picker right panel */
+.gs-cal-time-panel {
+  width: 130px; flex-shrink: 0;
+  display: flex; flex-direction: column;
+}
+.gs-cal-time-panel-title {
+  padding: 14px 12px 8px;
+  font-size: var(--prim-font-size-sm);
+  font-weight: var(--prim-font-weight-bold);
+  color: var(--color-text-default);
+  border-bottom: 1px solid var(--color-border-default);
+}
+.gs-cal-time-scroll {
+  flex: 1;
+  overflow-y: auto;
+  padding: 8px;
+  display: flex; flex-direction: column; gap: 4px;
+  scrollbar-width: thin;
+  scrollbar-color: var(--prim-grey-200) transparent;
+  max-height: 320px;
+}
+.gs-cal-time-scroll::-webkit-scrollbar { width: 4px; }
+.gs-cal-time-scroll::-webkit-scrollbar-thumb { background: var(--prim-grey-200); border-radius: 4px; }
+
+/* Time slot pill — matches Figma: 79px × 30px, radius 20px */
+.gs-cal-tslot {
+  border: none; background: white;
+  font-family: var(--prim-font-primary);
+  font-size: 13px;
+  font-weight: var(--prim-font-weight-semibold);
+  color: #555;
+  height: 30px; width: 100%;
+  border-radius: 20px; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: background 0.12s, color 0.12s;
+  white-space: nowrap;
+}
+.gs-cal-tslot:hover { background: #edf5ff; color: #001e4c; }
+.gs-cal-tslot-sel {
+  background: #1852fe !important; color: #ffffff !important;
+}
+
+/* Action buttons (Clear / Submit) */
+.gs-cal-dt-actions {
+  display: flex; gap: 10px; padding: 12px 16px;
+  border-top: 1px solid var(--color-border-default);
+  background: var(--color-surface-default);
+  border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+}
+
+/* ═══ RANGE DUAL CALENDAR ════════════════════════════════════════ */
+.gs-cal-range-pair {
+  display: flex;
+  border: 1px solid var(--color-border-default);
+  border-radius: var(--radius-lg); overflow: hidden;
+  background: var(--color-surface-default);
+}
+.gs-cal-range-pair .gs-cal-wrap {
+  flex: 1; border: none; border-radius: 0;
+}
+.gs-cal-range-pair .gs-cal-wrap + .gs-cal-wrap {
+  border-left: 1px solid var(--color-border-default);
+}
+.gs-cal-range-footer {
+  display: flex; align-items: center; gap: 10px;
+  padding: 12px 16px;
+  background: var(--color-surface-subtle);
+  border: 1px solid var(--color-border-default); border-top: none;
+  border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+  font-size: var(--prim-font-size-sm); color: var(--color-text-secondary);
+}
+.gs-cal-range-footer span { font-weight: var(--prim-font-weight-semibold); color: var(--color-text-default); }
+</style>
+
+<!-- BANNER -->
+<div class="page-header">
+  <h1 class="ds-hero-title">Calendar</h1>
+</div>
+
+<!-- TAB BAR -->
+<div class="btn-tab-bar">
+  <button class="btn-tab-btn cal-tab-btn active" data-tab="design" onclick="switchCalendarTab('design')">Design</button>
+  <button class="btn-tab-btn cal-tab-btn" data-tab="code"   onclick="switchCalendarTab('code')">Code</button>
+  <button class="btn-tab-btn cal-tab-btn" data-tab="usage"  onclick="switchCalendarTab('usage')">Usage</button>
+</div>
+
+<!-- ═══ DESIGN TAB ═══════════════════════════════════════════════════ -->
+<div id="cal-tab-design" class="btn-tab-pane cal-tab-pane active">
+  <div class="code-tab-layout">
+    <div class="code-tab-main">
+
+      <!-- OVERVIEW -->
+      <div id="cal-s-overview" class="btn-family-card">
+        <div class="btn-family-title">Overview</div>
+        <p class="btn-family-desc">The Calendar panel is a full-featured date-selection component. Date cells are pill-shaped (30px × 39px, border-radius 20px) matching the Figma specification. Clicking the month title switches to a month or year picker. Supports single-date, date-range, and date+time variants. Click any date or the month title to explore.</p>
+
+        <div class="btn-preview-strip" style="padding:32px 28px;background:var(--color-surface-subtle);border:1px solid var(--color-border-default);border-radius:var(--radius-lg);margin-top:16px;display:flex;gap:32px;flex-wrap:wrap;align-items:flex-start;justify-content:center;">
+          <div style="flex:1;min-width:280px;max-width:360px;">
+            <div style="font-size:var(--prim-font-size-xs);color:var(--color-text-secondary);margin-bottom:8px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;">Single date — click month title for month picker</div>
+            <div class="gs-cal-wrap" style="width:100%;">
+              <div id="cal-ov-1"></div>
+              <div class="gs-cal-footer">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                Selected: <strong id="cal-ov-1-sel">—</strong>
+              </div>
+            </div>
+          </div>
+          <div style="flex:1;min-width:280px;max-width:360px;">
+            <div style="font-size:var(--prim-font-size-xs);color:var(--color-text-secondary);margin-bottom:8px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;">Second calendar instance</div>
+            <div class="gs-cal-wrap" style="width:100%;">
+              <div id="cal-ov-2"></div>
+              <div class="gs-cal-footer">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                <strong id="cal-ov-2-sel" style="color:var(--color-brand);">Pick a date</strong>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="btn-when-examples" style="margin-top:16px;">
+          <span class="btn-when-example-tag">Pill cells (20px radius)</span>
+          <span class="btn-when-example-tag">Month/Year Picker</span>
+          <span class="btn-when-example-tag">Date Range</span>
+          <span class="btn-when-example-tag">Date + Time</span>
+          <span class="btn-when-example-tag">WCAG AA</span>
+        </div>
+      </div>
+
+      <!-- ANATOMY -->
+      <div id="cal-s-anatomy" class="btn-family-card">
+        <div class="btn-family-title">Anatomy</div>
+        <p class="btn-family-desc">Five zones: navigation header (month title is clickable), weekday labels, a 7-column pill-cell day grid, and an optional footer. The date+time variant adds a dark header and a side time-picker panel.</p>
+
+        <div style="background:var(--color-surface-subtle);border:1px solid var(--color-border-default);border-radius:var(--radius-lg);padding:32px;display:flex;justify-content:center;margin-top:8px;overflow:auto;">
+          <svg width="560" height="310" viewBox="0 0 560 310" fill="none" xmlns="http://www.w3.org/2000/svg" style="min-width:460px;">
+            <!-- Calendar body -->
+            <rect x="60" y="20" width="280" height="270" rx="10" fill="white" stroke="#e2e8f0" stroke-width="1.5"/>
+            <!-- Header bg -->
+            <rect x="60" y="20" width="280" height="48" rx="10" fill="#f8fafc"/>
+            <rect x="60" y="56" width="280" height="1" fill="#e2e8f0"/>
+            <!-- Nav arrows + title -->
+            <rect x="72" y="32" width="26" height="26" rx="13" fill="#e2e8f0" opacity="0.8"/>
+            <text x="85" y="50" font-size="13" fill="#64748b" text-anchor="middle" font-family="Helvetica,Arial,sans-serif">‹</text>
+            <!-- Month title as pill-shaped button -->
+            <rect x="150" y="32" width="100" height="26" rx="13" fill="#edf5ff" opacity="0.7"/>
+            <text x="200" y="50" font-size="13" font-weight="700" fill="#1e293b" text-anchor="middle" font-family="Helvetica,Arial,sans-serif">May 2026</text>
+            <rect x="302" y="32" width="26" height="26" rx="13" fill="#e2e8f0" opacity="0.8"/>
+            <text x="315" y="50" font-size="13" fill="#64748b" text-anchor="middle" font-family="Helvetica,Arial,sans-serif">›</text>
+            <!-- Weekday row -->
+            <rect x="60" y="57" width="280" height="26" fill="#fafafa"/>
+            <text x="80"  y="75" font-size="9" font-weight="700" fill="#64748b" text-anchor="middle" font-family="Helvetica,Arial,sans-serif">Mo</text>
+            <text x="120" y="75" font-size="9" font-weight="700" fill="#64748b" text-anchor="middle" font-family="Helvetica,Arial,sans-serif">Tu</text>
+            <text x="160" y="75" font-size="9" font-weight="700" fill="#64748b" text-anchor="middle" font-family="Helvetica,Arial,sans-serif">We</text>
+            <text x="200" y="75" font-size="9" font-weight="700" fill="#64748b" text-anchor="middle" font-family="Helvetica,Arial,sans-serif">Th</text>
+            <text x="240" y="75" font-size="9" font-weight="700" fill="#64748b" text-anchor="middle" font-family="Helvetica,Arial,sans-serif">Fr</text>
+            <text x="280" y="75" font-size="9" font-weight="700" fill="#64748b" text-anchor="middle" font-family="Helvetica,Arial,sans-serif">Sa</text>
+            <text x="320" y="75" font-size="9" font-weight="700" fill="#64748b" text-anchor="middle" font-family="Helvetica,Arial,sans-serif">Su</text>
+            <!-- Row 1 - muted dates -->
+            <text x="80" y="106" font-size="11" fill="#ccc" text-anchor="middle" font-family="Helvetica,Arial,sans-serif">28</text>
+            <text x="120" y="106" font-size="11" fill="#ccc" text-anchor="middle" font-family="Helvetica,Arial,sans-serif">29</text>
+            <text x="160" y="106" font-size="11" fill="#ccc" text-anchor="middle" font-family="Helvetica,Arial,sans-serif">30</text>
+            <text x="200" y="106" font-size="11" fill="#555" text-anchor="middle" font-family="Helvetica,Arial,sans-serif">1</text>
+            <text x="240" y="106" font-size="11" fill="#555" text-anchor="middle" font-family="Helvetica,Arial,sans-serif">2</text>
+            <!-- Row 2 - today pill (rounded rect 39×30) -->
+            <!-- Today: light blue pill -->
+            <rect x="181" y="118" width="39" height="30" rx="15" fill="#dcebff"/>
+            <text x="200" y="138" font-size="11" font-weight="700" fill="#001e4c" text-anchor="middle" font-family="Helvetica,Arial,sans-serif">12</text>
+            <!-- Selected: blue pill -->
+            <rect x="221" y="118" width="39" height="30" rx="15" fill="#1852fe"/>
+            <text x="240" y="138" font-size="11" font-weight="600" fill="white" text-anchor="middle" font-family="Helvetica,Arial,sans-serif">13</text>
+            <!-- Row 3 dates -->
+            <text x="80" y="170" font-size="11" fill="#555" text-anchor="middle" font-family="Helvetica,Arial,sans-serif">18</text>
+            <text x="120" y="170" font-size="11" fill="#555" text-anchor="middle" font-family="Helvetica,Arial,sans-serif">19</text>
+            <text x="160" y="170" font-size="11" fill="#555" text-anchor="middle" font-family="Helvetica,Arial,sans-serif">20</text>
+            <!-- Footer -->
+            <rect x="60" y="259" width="280" height="31" fill="#f7fafc"/>
+            <rect x="60" y="259" width="280" height="1" fill="#e2e8f0"/>
+            <text x="80" y="278" font-size="10" fill="#64748b" font-family="Helvetica,Arial,sans-serif">Selected: 13 May 2026</text>
+
+            <!-- Annotations -->
+            <line x1="200" y1="20" x2="200" y2="4" stroke="#cbd5e1" stroke-width="1"/>
+            <line x1="200" y1="4" x2="480" y2="4" stroke="#cbd5e1" stroke-width="1"/>
+            <circle cx="480" cy="4" r="10" fill="#1852fe"/>
+            <text x="480" y="8" font-size="11" font-weight="700" fill="white" text-anchor="middle" font-family="Helvetica,Arial,sans-serif">1</text>
+            <text x="496" y="8" font-size="11" fill="#475569" font-family="Helvetica,Arial,sans-serif">Header + clickable title</text>
+
+            <line x1="400" y1="68" x2="480" y2="68" stroke="#cbd5e1" stroke-width="1"/>
+            <circle cx="480" cy="68" r="10" fill="#1852fe"/>
+            <text x="480" y="72" font-size="11" font-weight="700" fill="white" text-anchor="middle" font-family="Helvetica,Arial,sans-serif">2</text>
+            <text x="496" y="72" font-size="11" fill="#475569" font-family="Helvetica,Arial,sans-serif">Weekday labels</text>
+
+            <line x1="200" y1="118" x2="480" y2="118" stroke="#cbd5e1" stroke-width="1"/>
+            <circle cx="480" cy="118" r="10" fill="#1852fe"/>
+            <text x="480" y="122" font-size="11" font-weight="700" fill="white" text-anchor="middle" font-family="Helvetica,Arial,sans-serif">3</text>
+            <text x="496" y="122" font-size="11" fill="#475569" font-family="Helvetica,Arial,sans-serif">Today (pill, light blue)</text>
+
+            <line x1="240" y1="148" x2="480" y2="148" stroke="#cbd5e1" stroke-width="1"/>
+            <circle cx="480" cy="148" r="10" fill="#1852fe"/>
+            <text x="480" y="152" font-size="11" font-weight="700" fill="white" text-anchor="middle" font-family="Helvetica,Arial,sans-serif">4</text>
+            <text x="496" y="152" font-size="11" fill="#475569" font-family="Helvetica,Arial,sans-serif">Selected (pill, 39×30px)</text>
+
+            <!-- Pill dimension callout -->
+            <line x1="221" y1="148" x2="221" y2="170" stroke="#94a3b8" stroke-width="1"/>
+            <line x1="260" y1="148" x2="260" y2="170" stroke="#94a3b8" stroke-width="1"/>
+            <line x1="221" y1="170" x2="260" y2="170" stroke="#94a3b8" stroke-width="1"/>
+            <line x1="221" y1="166" x2="221" y2="174" stroke="#94a3b8" stroke-width="1"/>
+            <line x1="260" y1="166" x2="260" y2="174" stroke="#94a3b8" stroke-width="1"/>
+            <text x="240" y="183" font-size="9" fill="#94a3b8" text-anchor="middle" font-family="Helvetica,Arial,sans-serif">39px</text>
+
+            <line x1="200" y1="259" x2="480" y2="259" stroke="#cbd5e1" stroke-width="1"/>
+            <circle cx="480" cy="259" r="10" fill="#1852fe"/>
+            <text x="480" y="263" font-size="11" font-weight="700" fill="white" text-anchor="middle" font-family="Helvetica,Arial,sans-serif">5</text>
+            <text x="496" y="263" font-size="11" fill="#475569" font-family="Helvetica,Arial,sans-serif">Footer strip</text>
+          </svg>
+        </div>
+
+        <ol style="margin-top:20px;display:flex;flex-direction:column;gap:8px;padding-left:20px;">
+          <li><strong>Header</strong> — Prev/Next buttons (circle 30px) + month-year title button. Title is a pill-shaped button; clicking switches to Month Picker view.</li>
+          <li><strong>Weekday labels</strong> — Mo–Su (Mon-first). <code>--prim-font-size-xs</code> / <code>--prim-font-weight-semibold</code> / colour <code>#64748b</code>.</li>
+          <li><strong>Today cell</strong> — Pill: 39×30px, <code>border-radius: 20px</code>, bg <code>#dcebff</code>, text <code>#001e4c</code> / bold.</li>
+          <li><strong>Selected cell</strong> — Pill: same dimensions, bg <code>#1852fe</code>, text <code>#ffffff</code>.</li>
+          <li><strong>Footer strip</strong> — Shows selected date, range, or date+time. Background <code>--color-surface-subtle</code>.</li>
+        </ol>
+      </div>
+
+      <!-- VARIANTS -->
+      <div id="cal-s-variants" class="btn-family-card">
+        <div class="btn-family-title">Variants</div>
+        <p class="btn-family-desc">Four variants. All are fully interactive — click dates, month titles, and time slots.</p>
+
+        <!-- Standard -->
+        <div class="btn-sub-label" style="margin-bottom:10px;">Standard — single date</div>
+        <div class="gs-cal-wrap" style="max-width:320px;">
+          <div id="cal-v-std"></div>
+          <div class="gs-cal-footer">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+            Selected: <strong id="cal-v-std-sel">—</strong>
+          </div>
+        </div>
+
+        <!-- Full-width -->
+        <div class="btn-sub-label" style="margin-top:28px;margin-bottom:10px;">Full-width — fluid layout</div>
+        <div class="gs-cal-wrap">
+          <div id="cal-v-full"></div>
+          <div class="gs-cal-footer">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+            Selected: <strong id="cal-v-full-sel">—</strong>
+          </div>
+        </div>
+
+        <!-- Date range -->
+        <div class="btn-sub-label" style="margin-top:28px;margin-bottom:10px;">Date Range — dual calendar (click start then end date)</div>
+        <div class="gs-cal-range-pair" style="max-width:680px;">
+          <div class="gs-cal-wrap"><div id="cal-range-l"></div></div>
+          <div class="gs-cal-wrap"><div id="cal-range-r"></div></div>
+        </div>
+        <div class="gs-cal-range-footer" style="max-width:680px;">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          Start: <span id="cal-range-l-sel">—</span>
+          &nbsp;&nbsp;→&nbsp;&nbsp;
+          End: <span id="cal-range-r-sel">—</span>
+          <div style="margin-left:auto;font-size:var(--prim-font-size-xs);color:var(--color-text-secondary);">1st click = start · 2nd click = end</div>
+        </div>
+
+        <!-- Date + Time -->
+        <div class="btn-sub-label" style="margin-top:28px;margin-bottom:10px;">Date + Time — calendar with side time picker</div>
+        <div style="max-width:460px;">
+          <!-- Dark header -->
+          <div class="gs-cal-dthdr" id="cal-v-time-dthdr">
+            <div class="gs-cal-dthdr-year">—</div>
+            <div class="gs-cal-dthdr-date">Pick a date</div>
+          </div>
+          <!-- Calendar + time panel -->
+          <div class="gs-cal-dt-body">
+            <div class="gs-cal-dt-cal">
+              <div class="gs-cal-wrap">
+                <div id="cal-v-time"></div>
+              </div>
+            </div>
+            <div class="gs-cal-time-panel">
+              <div class="gs-cal-time-panel-title">Time Picker</div>
+              <div class="gs-cal-time-scroll" id="cal-v-time-timepanel"></div>
+            </div>
+          </div>
+          <!-- Footer -->
+          <div class="gs-cal-footer" style="border:1px solid var(--color-border-default);border-top:none;border-radius:0 0 var(--radius-lg) var(--radius-lg);">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            <strong id="cal-v-time-sel">—</strong>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- STATES & MODES -->
+      <div id="cal-s-states" class="btn-family-card">
+        <div class="btn-family-title">States &amp; Picker Modes</div>
+        <p class="btn-family-desc">Date cell states plus month and year picker views. The month/year pickers are also activated by clicking the title button in any live calendar above.</p>
+
+        <div class="btn-sub-label" style="margin-bottom:12px;">Date Cell States</div>
+        <div class="btn-states-grid" style="grid-template-columns:repeat(5,1fr);gap:12px 8px;">
+          <!-- Default -->
+          <div class="btn-state-cell">
+            <div style="pointer-events:none;height:38px;display:flex;align-items:center;justify-content:center;">
+              <div style="width:39px;height:30px;border-radius:20px;background:white;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:600;color:#555;border:1px solid #f1f5f9;">8</div>
+            </div>
+            <span class="btn-state-label">Default</span>
+          </div>
+          <!-- Hover -->
+          <div class="btn-state-cell">
+            <div style="pointer-events:none;height:38px;display:flex;align-items:center;justify-content:center;">
+              <div style="width:39px;height:30px;border-radius:20px;background:#edf5ff;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:600;color:#001e4c;">9</div>
+            </div>
+            <span class="btn-state-label">Hover</span>
+          </div>
+          <!-- Today -->
+          <div class="btn-state-cell">
+            <div style="pointer-events:none;height:38px;display:flex;align-items:center;justify-content:center;">
+              <div style="width:39px;height:30px;border-radius:20px;background:#dcebff;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:#001e4c;">12</div>
+            </div>
+            <span class="btn-state-label">Today</span>
+          </div>
+          <!-- Selected -->
+          <div class="btn-state-cell">
+            <div style="pointer-events:none;height:38px;display:flex;align-items:center;justify-content:center;">
+              <div style="width:39px;height:30px;border-radius:20px;background:#1852fe;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:600;color:white;">13</div>
+            </div>
+            <span class="btn-state-label">Selected</span>
+          </div>
+          <!-- In Range -->
+          <div class="btn-state-cell">
+            <div style="pointer-events:none;height:38px;width:100%;background:#dcebff;display:flex;align-items:center;justify-content:center;">
+              <div style="width:39px;height:30px;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:600;color:#001e4c;">16</div>
+            </div>
+            <span class="btn-state-label">In Range</span>
+          </div>
+        </div>
+
+        <div class="btn-sub-label" style="margin-top:24px;margin-bottom:10px;">Month Picker — click month title header to activate</div>
+        <div class="gs-cal-wrap" style="max-width:300px;">
+          <div id="cal-s-mon"></div>
+        </div>
+
+        <div class="btn-sub-label" style="margin-top:20px;margin-bottom:10px;">Year Picker — click year in month picker</div>
+        <div class="gs-cal-wrap" style="max-width:300px;">
+          <div id="cal-s-yr"></div>
+        </div>
+      </div>
+
+      <!-- INTERACTIONS -->
+      <div id="cal-s-interaction" class="btn-family-card">
+        <div class="btn-family-title">Interactions</div>
+        <table>
+          <thead><tr><th>Trigger</th><th>Behaviour</th></tr></thead>
+          <tbody>
+            <tr class="ds-tr-border"><td>Click date cell</td><td>Selects date (blue pill). Range mode: 1st click = start, 2nd = end.</td></tr>
+            <tr class="ds-tr-border"><td>Click month title pill</td><td>Switches to Month Picker (3×4 grid of month pills).</td></tr>
+            <tr class="ds-tr-border"><td>Click year in month picker</td><td>Switches to Year Picker (decade grid of year pills).</td></tr>
+            <tr class="ds-tr-border"><td>Click month in picker</td><td>Returns to day grid for that month.</td></tr>
+            <tr class="ds-tr-border"><td>Click year in picker</td><td>Returns to month picker for that year.</td></tr>
+            <tr class="ds-tr-border"><td>Click ‹ / › arrows</td><td>Navigates prev/next month (or year/decade in picker views).</td></tr>
+            <tr class="ds-tr-border"><td>Click time slot</td><td>Selects the time; updates header and footer display.</td></tr>
+            <tr class="ds-tr-border"><td>Hover cell</td><td>Background: <code>#edf5ff</code> (light blue), text: <code>#001e4c</code>.</td></tr>
+            <tr class="ds-tr-border"><td><kbd>←</kbd> <kbd>→</kbd> <kbd>↑</kbd> <kbd>↓</kbd></td><td>Move focus between date cells.</td></tr>
+            <tr class="ds-tr-border"><td><kbd>Page Up/Down</kbd></td><td>Navigate prev/next month.</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- ACCESSIBILITY -->
+      <div id="cal-s-a11y" class="btn-family-card">
+        <div class="btn-family-title">Accessibility</div>
+        <div class="btn-sub-label">Semantic Pattern</div>
+        <p class="btn-family-desc">The calendar uses <code>role="application"</code> with a live-updated <code>aria-label</code>. The day grid is <code>role="grid"</code>. Each cell is <code>role="gridcell"</code> with <code>aria-label</code> (full date string), <code>aria-selected</code>, and <code>aria-current="date"</code> for today.</p>
+
+        <div class="btn-sub-label" style="margin-top:16px;">ARIA Attributes</div>
+        <table>
+          <thead><tr><th>Element</th><th>Attribute</th><th>Value</th></tr></thead>
+          <tbody>
+            <tr class="ds-tr-border"><td>Root</td><td><code>role="application"</code> + <code>aria-label</code></td><td><code>"Calendar, May 2026"</code></td></tr>
+            <tr class="ds-tr-border"><td>Grid</td><td><code>role="grid"</code></td><td>—</td></tr>
+            <tr class="ds-tr-border"><td>Date cell</td><td><code>role="gridcell"</code> + <code>aria-label</code></td><td><code>"Tuesday, 13 May 2026"</code></td></tr>
+            <tr class="ds-tr-border"><td>Date cell</td><td><code>aria-selected</code></td><td><code>"true"</code> on selected</td></tr>
+            <tr class="ds-tr-border"><td>Today</td><td><code>aria-current="date"</code></td><td>—</td></tr>
+          </tbody>
+        </table>
+
+        <div class="btn-sub-label" style="margin-top:16px;">Contrast Ratios</div>
+        <table>
+          <thead><tr><th>State</th><th>Foreground</th><th>Background</th><th>Ratio</th><th>WCAG</th></tr></thead>
+          <tbody>
+            <tr class="ds-tr-border"><td>Default</td><td>#555555</td><td>#ffffff</td><td>7.4:1</td><td>AA ✓</td></tr>
+            <tr class="ds-tr-border"><td>Today</td><td>#001e4c</td><td>#dcebff</td><td>11.2:1</td><td>AA ✓</td></tr>
+            <tr class="ds-tr-border"><td>Selected</td><td>#ffffff</td><td>#1852fe</td><td>4.8:1</td><td>AA ✓</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- RESPONSIVE -->
+      <div id="cal-s-responsive" class="btn-family-card">
+        <div class="btn-family-title">Responsive Behaviour</div>
+        <table>
+          <thead><tr><th>Breakpoint</th><th>Behaviour</th></tr></thead>
+          <tbody>
+            <tr class="ds-tr-border"><td>&gt; 1024px</td><td>Standard 320px or full-width. Range picker side by side. Date+time shows side panel.</td></tr>
+            <tr class="ds-tr-border"><td>768px – 1024px</td><td>Same. Range picker may narrow; time panel stays visible.</td></tr>
+            <tr class="ds-tr-border"><td>&lt; 768px</td><td>Full viewport width. Date+time stacks time picker below calendar. Range picker stacks vertically.</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- DO / DON'T -->
+      <div id="cal-s-dosdonts" class="btn-family-card">
+        <div class="btn-family-title">Do / Don't</div>
+        <div class="btn-dos-donts">
+          <div class="btn-do-card">
+            <div class="btn-do-header">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>Do
+            </div>
+            <ul>
+              <li>
+                <div class="btn-do-example" style="pointer-events:none;display:flex;gap:6px;align-items:center;padding:6px 0;">
+                  <div style="width:39px;height:30px;border-radius:20px;background:#dcebff;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#001e4c;">12</div>
+                  <div style="width:39px;height:30px;border-radius:20px;background:#1852fe;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;color:white;">13</div>
+                </div>
+                <p>Clearly distinguish today (light blue pill) from selected (solid blue pill). Both anchors help users orient themselves.</p>
+              </li>
+            </ul>
+          </div>
+          <div class="btn-dont-card">
+            <div class="btn-dont-header">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>Don't
+            </div>
+            <ul>
+              <li>
+                <div class="btn-dont-example" style="pointer-events:none;display:flex;gap:6px;align-items:center;padding:6px 0;">
+                  <div style="width:39px;height:30px;border-radius:20px;background:#f1f5f9;opacity:0.4;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;color:#94a3b8;text-decoration:line-through;">5</div>
+                  <div style="width:39px;height:30px;border-radius:20px;background:#f1f5f9;opacity:0.4;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;color:#94a3b8;text-decoration:line-through;">6</div>
+                </div>
+                <p>Don't silently grey out dates without explanation. Use a tooltip or helper text to communicate why dates are unavailable.</p>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- RELATED -->
+      <div id="cal-s-related" class="btn-family-card">
+        <div class="btn-family-title">Related Components</div>
+        <ul class="btn-related-list">
+          <li><button class="btn-inline-link" onclick="navigate('panel-popover')">Popover</button> — Embed the calendar in a Popover triggered by a Text Field for a full date-picker pattern.</li>
+          <li><button class="btn-inline-link" onclick="navigate('panel-modals')">Modal</button> — Use for date selection that requires confirmation before proceeding.</li>
+          <li><button class="btn-inline-link" onclick="navigate('prim-textfields')">Text Field</button> — Pair with a formatted date input and calendar Popover trigger.</li>
+        </ul>
+      </div>
+
+    </div>
+
+    <div class="code-tab-qnav">
+      <div class="code-qnav-inner">
+        <p class="code-qnav-title">On This Page</p>
+        <ul class="code-qnav-list">
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('cal-s-overview')">Overview</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('cal-s-anatomy')">Anatomy</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('cal-s-variants')">Variants</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('cal-s-states')">States &amp; Modes</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('cal-s-interaction')">Interactions</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('cal-s-a11y')">Accessibility</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('cal-s-responsive')">Responsive</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('cal-s-dosdonts')">Do / Don't</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('cal-s-related')">Related</button></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ CODE TAB ═══════════════════════════════════════════════════════ -->
+<div id="cal-tab-code" class="btn-tab-pane cal-tab-pane">
+  <div class="code-tab-layout">
+    <div class="code-tab-main">
+
+      <div class="fw-toggle-bar">
+        <button class="fw-toggle-bar-btn active" data-fw="react" onclick="switchFw('cal-tab-code','react')">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="2.5" fill="#61dafb"/><ellipse cx="12" cy="12" rx="10" ry="4.5" stroke="#61dafb" stroke-width="1.5" fill="none"/><ellipse cx="12" cy="12" rx="10" ry="4.5" stroke="#61dafb" stroke-width="1.5" fill="none" transform="rotate(60 12 12)"/><ellipse cx="12" cy="12" rx="10" ry="4.5" stroke="#61dafb" stroke-width="1.5" fill="none" transform="rotate(120 12 12)"/></svg>
+          React
+        </button>
+        <button class="fw-toggle-bar-btn" data-fw="angular" onclick="switchFw('cal-tab-code','angular')">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M12 2L2 6.5l1.5 12.5L12 22l8.5-3L22 6.5 12 2z" fill="#dd0031"/><path d="M12 2v20M12 2L6 17h12L12 2z" fill="none" stroke="#fff" stroke-width="1.2"/></svg>
+          Angular
+        </button>
+      </div>
+
+      <div id="cal-c-overview" class="btn-family-card">
+        <div class="ds-step-row"><span class="ds-step-num">1</span><div class="btn-family-title" style="margin:0;">Overview</div></div>
+        <div class="fw-react"><p class="btn-family-desc"><code>&lt;Calendar&gt;</code> supports controlled (<code>value</code>+<code>onChange</code>) and uncontrolled (<code>defaultValue</code>). Pass <code>mode="range"</code> for range selection, <code>showTime</code> for date+time. Date cells use the Figma-spec 39×30px pill shape.</p></div>
+        <div class="fw-angular" style="display:none;"><p class="btn-family-desc"><code>&lt;gs-calendar&gt;</code> supports <code>[(value)]</code>, <code>[(range)]</code>, and <code>[showTime]="true"</code>.</p></div>
+      </div>
+
+      <div id="cal-c-install" class="btn-family-card">
+        <div class="ds-step-row"><span class="ds-step-num">2</span><div class="btn-family-title" style="margin:0;">Install / Setup</div></div>
+        <div class="fw-react">
+          <div class="btn-code-block"><div class="btn-code-head"><span class="btn-code-lang">bash</span><button class="btn-copy-btn" onclick="copyBtnCode('cal-install',this)">Copy</button></div>
+          <div class="btn-code-body"><pre id="cal-install"><code>npm install @pelagos/react-components dayjs</code></pre></div></div>
+        </div>
+        <div class="fw-angular" style="display:none;">
+          <div class="btn-code-block"><div class="btn-code-head"><span class="btn-code-lang">bash</span><button class="btn-copy-btn" onclick="copyBtnCode('cal-install-ng',this)">Copy</button></div>
+          <div class="btn-code-body"><pre id="cal-install-ng"><code>npm install @pelagos/angular-components dayjs</code></pre></div></div>
+        </div>
+      </div>
+
+      <div id="cal-c-imports" class="btn-family-card">
+        <div class="ds-step-row"><span class="ds-step-num">3</span><div class="btn-family-title" style="margin:0;">Import</div></div>
+        <div class="fw-react">
+          <div class="btn-code-block"><div class="btn-code-head"><span class="btn-code-lang">JSX</span><button class="btn-copy-btn" onclick="copyBtnCode('cal-import',this)">Copy</button></div>
+          <div class="btn-code-body"><pre id="cal-import"><code><span class="c-kw">import</span> { <span class="c-type">Calendar</span> } <span class="c-kw">from</span> <span class="c-val">'@pelagos/react-components'</span>;
+<span class="c-kw">import</span> dayjs, { <span class="c-type">Dayjs</span> } <span class="c-kw">from</span> <span class="c-val">'dayjs'</span>;</code></pre></div></div>
+        </div>
+        <div class="fw-angular" style="display:none;">
+          <div class="btn-code-block"><div class="btn-code-head"><span class="btn-code-lang">TS</span><button class="btn-copy-btn" onclick="copyBtnCode('cal-import-ng',this)">Copy</button></div>
+          <div class="btn-code-body"><pre id="cal-import-ng"><code><span class="c-kw">import</span> { <span class="c-type">CalendarModule</span> } <span class="c-kw">from</span> <span class="c-val">'@pelagos/angular-components'</span>;</code></pre></div></div>
+        </div>
+      </div>
+
+      <div id="cal-c-api" class="btn-family-card">
+        <div class="ds-step-row"><span class="ds-step-num">4</span><div class="btn-family-title" style="margin:0;">API / Props</div></div>
+        <div class="fw-react">
+          <table>
+            <thead><tr><th>Prop</th><th>Type</th><th>Default</th><th>Required</th><th>Description</th></tr></thead>
+            <tbody>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">value</td><td class="ds-td-code-muted">Dayjs | null</td><td class="ds-td-code-muted">—</td><td>No</td><td class="ds-td-value">Controlled selected date</td></tr>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">defaultValue</td><td class="ds-td-code-muted">Dayjs</td><td class="ds-td-code-muted">today</td><td>No</td><td class="ds-td-value">Initial date (uncontrolled)</td></tr>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">onChange</td><td class="ds-td-code-muted">(date: Dayjs) =&gt; void</td><td class="ds-td-code-muted">—</td><td>No</td><td class="ds-td-value">Called on date selection</td></tr>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">mode</td><td class="ds-td-code-muted">'single' | 'range'</td><td class="ds-td-code-muted">'single'</td><td>No</td><td class="ds-td-value">Selection mode</td></tr>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">rangeValue</td><td class="ds-td-code-muted">[Dayjs, Dayjs] | null</td><td class="ds-td-code-muted">—</td><td>No</td><td class="ds-td-value">Controlled range (start, end)</td></tr>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">onRangeChange</td><td class="ds-td-code-muted">([Dayjs, Dayjs]) =&gt; void</td><td class="ds-td-code-muted">—</td><td>No</td><td class="ds-td-value">Called when range complete</td></tr>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">showTime</td><td class="ds-td-code-muted">boolean | TimeConfig</td><td class="ds-td-code-muted">false</td><td>No</td><td class="ds-td-value">Show side time picker panel</td></tr>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">disabledDate</td><td class="ds-td-code-muted">(date: Dayjs) =&gt; boolean</td><td class="ds-td-code-muted">—</td><td>No</td><td class="ds-td-value">Disable specific dates</td></tr>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">dateCellRender</td><td class="ds-td-code-muted">(date: Dayjs) =&gt; ReactNode</td><td class="ds-td-code-muted">—</td><td>No</td><td class="ds-td-value">Extra content inside each cell</td></tr>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">fullscreen</td><td class="ds-td-code-muted">boolean</td><td class="ds-td-code-muted">false</td><td>No</td><td class="ds-td-value">Fill container width</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="fw-angular" style="display:none;">
+          <table>
+            <thead><tr><th>Input</th><th>Type</th><th>Default</th><th>Description</th></tr></thead>
+            <tbody>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">[(value)]</td><td class="ds-td-code-muted">Date | null</td><td class="ds-td-code-muted">—</td><td class="ds-td-value">Two-way date binding</td></tr>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">[(range)]</td><td class="ds-td-code-muted">[Date,Date] | null</td><td class="ds-td-code-muted">—</td><td class="ds-td-value">Range binding</td></tr>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">[showTime]</td><td class="ds-td-code-muted">boolean</td><td class="ds-td-code-muted">false</td><td class="ds-td-value">Side time picker</td></tr>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">[fullscreen]</td><td class="ds-td-code-muted">boolean</td><td class="ds-td-code-muted">false</td><td class="ds-td-value">Fill width</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div id="cal-c-variants" class="btn-family-card">
+        <div class="ds-step-row"><span class="ds-step-num">5</span><div class="btn-family-title" style="margin:0;">Variants</div></div>
+        <div class="fw-react">
+          <div class="btn-code-block"><div class="btn-code-head"><span class="btn-code-lang">JSX</span><button class="btn-copy-btn" onclick="copyBtnCode('cal-variants',this)">Copy</button></div>
+          <div class="btn-code-body"><pre id="cal-variants"><code><span class="c-cmt">// Single date</span>
+&lt;<span class="c-tag">Calendar</span> <span class="c-attr">onChange</span>={(d) =&gt; console.log(d.format(<span class="c-val">'YYYY-MM-DD'</span>))} /&gt;
+
+<span class="c-cmt">// Full-width</span>
+&lt;<span class="c-tag">Calendar</span> <span class="c-attr">fullscreen</span> <span class="c-attr">onChange</span>={handleChange} /&gt;
+
+<span class="c-cmt">// Date range (dual calendar)</span>
+&lt;<span class="c-tag">Calendar</span>
+  <span class="c-attr">mode</span>=<span class="c-val">"range"</span>
+  <span class="c-attr">rangeValue</span>={[startDate, endDate]}
+  <span class="c-attr">onRangeChange</span>={([s, e]) =&gt; { setStart(s); setEnd(e); }}
+/&gt;
+
+<span class="c-cmt">// Date + time (scrollable time panel on right)</span>
+&lt;<span class="c-tag">Calendar</span>
+  <span class="c-attr">showTime</span>={{ minuteStep: 15, format: <span class="c-val">'hh:mm A'</span> }}
+  <span class="c-attr">onChange</span>={(d) =&gt; console.log(d.format(<span class="c-val">'YYYY-MM-DD hh:mm A'</span>))}
+/&gt;
+
+<span class="c-cmt">// Future dates only</span>
+&lt;<span class="c-tag">Calendar</span>
+  <span class="c-attr">disabledDate</span>={(d) =&gt; d.isBefore(dayjs(), <span class="c-val">'day'</span>)}
+  <span class="c-attr">onChange</span>={handleChange}
+/&gt;</code></pre></div></div>
+        </div>
+        <div class="fw-angular" style="display:none;">
+          <div class="btn-code-block"><div class="btn-code-head"><span class="btn-code-lang">HTML</span><button class="btn-copy-btn" onclick="copyBtnCode('cal-variants-ng',this)">Copy</button></div>
+          <div class="btn-code-body"><pre id="cal-variants-ng"><code>&lt;<span class="c-tag">gs-calendar</span> [(value)]=<span class="c-val">"date"</span>&gt;&lt;/<span class="c-tag">gs-calendar</span>&gt;
+&lt;<span class="c-tag">gs-calendar</span> [(range)]=<span class="c-val">"range"</span>&gt;&lt;/<span class="c-tag">gs-calendar</span>&gt;
+&lt;<span class="c-tag">gs-calendar</span> [(value)]=<span class="c-val">"dt"</span> [<span class="c-attr">showTime</span>]=<span class="c-val">"true"</span>&gt;&lt;/<span class="c-tag">gs-calendar</span>&gt;</code></pre></div></div>
+        </div>
+      </div>
+
+      <div id="cal-c-states" class="btn-family-card">
+        <div class="ds-step-row"><span class="ds-step-num">6</span><div class="btn-family-title" style="margin:0;">Custom Cell Content</div></div>
+        <div class="fw-react">
+          <div class="btn-code-block"><div class="btn-code-head"><span class="btn-code-lang">JSX</span><button class="btn-copy-btn" onclick="copyBtnCode('cal-states',this)">Copy</button></div>
+          <div class="btn-code-body"><pre id="cal-states"><code><span class="c-kw">const</span> events = {
+  <span class="c-val">'2026-05-14'</span>: <span class="c-val">'Standup'</span>,
+  <span class="c-val">'2026-05-20'</span>: <span class="c-val">'Sprint'</span>,
+};
+
+&lt;<span class="c-tag">Calendar</span>
+  <span class="c-attr">dateCellRender</span>={(date) =&gt; {
+    <span class="c-kw">const</span> ev = events[date.format(<span class="c-val">'YYYY-MM-DD'</span>)];
+    <span class="c-kw">return</span> ev ? (
+      &lt;<span class="c-tag">div</span> <span class="c-attr">style</span>={{
+        fontSize: <span class="c-val">'var(--prim-font-size-xs)'</span>,
+        color: <span class="c-val">'#1852fe'</span>,
+        background: <span class="c-val">'#dcebff'</span>,
+        borderRadius: <span class="c-val">'4px'</span>,
+        padding: <span class="c-val">'1px 4px'</span>,
+        marginTop: <span class="c-val">'2px'</span>,
+      }}&gt;{ev}&lt;/<span class="c-tag">div</span>&gt;
+    ) : <span class="c-kw">null</span>;
+  }}
+  <span class="c-attr">onChange</span>={handleChange}
+/&gt;</code></pre></div></div>
+        </div>
+        <div class="fw-angular" style="display:none;"><p class="btn-family-desc">Use <code>#dateCellRender</code> template to add content inside each date pill.</p></div>
+      </div>
+
+      <div id="cal-c-a11y" class="btn-family-card">
+        <div class="ds-step-row"><span class="ds-step-num">7</span><div class="btn-family-title" style="margin:0;">Accessibility</div></div>
+        <div class="fw-react">
+          <div class="btn-code-block"><div class="btn-code-head"><span class="btn-code-lang">HTML</span><button class="btn-copy-btn" onclick="copyBtnCode('cal-a11y',this)">Copy</button></div>
+          <div class="btn-code-body"><pre id="cal-a11y"><code><span class="c-cmt">&lt;!-- Generated output --&gt;</span>
+&lt;<span class="c-tag">div</span> <span class="c-attr">role</span>=<span class="c-val">"application"</span> <span class="c-attr">aria-label</span>=<span class="c-val">"Calendar, May 2026"</span>&gt;
+  &lt;<span class="c-tag">div</span> <span class="c-attr">role</span>=<span class="c-val">"grid"</span>&gt;
+    &lt;<span class="c-tag">div</span> <span class="c-attr">role</span>=<span class="c-val">"row"</span>&gt;
+      &lt;<span class="c-tag">button</span> <span class="c-attr">role</span>=<span class="c-val">"gridcell"</span>
+        <span class="c-attr">aria-label</span>=<span class="c-val">"Tuesday, 12 May 2026"</span>
+        <span class="c-attr">aria-current</span>=<span class="c-val">"date"</span>
+        <span class="c-attr">aria-selected</span>=<span class="c-val">"false"</span>&gt;12&lt;/<span class="c-tag">button</span>&gt;
+      &lt;<span class="c-tag">button</span> <span class="c-attr">role</span>=<span class="c-val">"gridcell"</span>
+        <span class="c-attr">aria-label</span>=<span class="c-val">"Wednesday, 13 May 2026"</span>
+        <span class="c-attr">aria-selected</span>=<span class="c-val">"true"</span>&gt;13&lt;/<span class="c-tag">button</span>&gt;
+    &lt;/<span class="c-tag">div</span>&gt;
+  &lt;/<span class="c-tag">div</span>&gt;
+&lt;/<span class="c-tag">div</span>&gt;</code></pre></div></div>
+        </div>
+        <div class="fw-angular" style="display:none;"><p class="btn-family-desc">All ARIA attributes auto-generated. No manual config needed.</p></div>
+      </div>
+
+      <div id="cal-c-files" class="btn-family-card">
+        <div class="ds-step-row"><span class="ds-step-num">8</span><div class="btn-family-title" style="margin:0;">File Structure</div></div>
+        <div class="fw-react">
+          <div class="btn-code-block"><div class="btn-code-head"><span class="btn-code-lang">tree</span><button class="btn-copy-btn" onclick="copyBtnCode('cal-files',this)">Copy</button></div>
+          <div class="btn-code-body"><pre id="cal-files"><code>src/components/Calendar/
+├── Calendar.tsx
+├── CalendarRange.tsx
+├── CalendarGrid.tsx
+├── CalendarMonthPicker.tsx
+├── CalendarYearPicker.tsx
+├── CalendarTimePicker.tsx    <span class="c-cmt">// side scroll panel</span>
+├── Calendar.module.scss
+├── Calendar.types.ts
+└── index.ts</code></pre></div></div>
+        </div>
+        <div class="fw-angular" style="display:none;">
+          <div class="btn-code-block"><div class="btn-code-head"><span class="btn-code-lang">tree</span><button class="btn-copy-btn" onclick="copyBtnCode('cal-files-ng',this)">Copy</button></div>
+          <div class="btn-code-body"><pre id="cal-files-ng"><code>src/lib/calendar/
+├── calendar.component.ts
+├── calendar-range.component.ts
+├── calendar-time.component.ts
+├── calendar.module.ts
+└── calendar.component.scss</code></pre></div></div>
+        </div>
+      </div>
+
+      <div id="cal-c-patterns" class="btn-family-card">
+        <div class="ds-step-row"><span class="ds-step-num">9</span><div class="btn-family-title" style="margin:0;">Usage Patterns</div></div>
+        <div class="fw-react">
+          <div class="btn-code-block"><div class="btn-code-head"><span class="btn-code-lang">JSX</span><button class="btn-copy-btn" onclick="copyBtnCode('cal-patterns',this)">Copy</button></div>
+          <div class="btn-code-body"><pre id="cal-patterns"><code><span class="c-cmt">// Booking with date + time</span>
+<span class="c-kw">function</span> <span class="c-type">BookingForm</span>() {
+  <span class="c-kw">const</span> [dt, setDt] = useState&lt;<span class="c-type">Dayjs</span>&gt;(dayjs());
+  <span class="c-kw">return</span> (
+    &lt;<span class="c-tag">Calendar</span>
+      <span class="c-attr">value</span>={dt}
+      <span class="c-attr">onChange</span>={setDt}
+      <span class="c-attr">showTime</span>={{ minuteStep: 15 }}
+      <span class="c-attr">disabledDate</span>={(d) =&gt; d.isBefore(dayjs(), <span class="c-val">'day'</span>)}
+    /&gt;
+  );
+}
+
+<span class="c-cmt">// Date picker (calendar in Popover)</span>
+<span class="c-kw">function</span> <span class="c-type">DatePickerField</span>() {
+  <span class="c-kw">const</span> [date, setDate] = useState&lt;<span class="c-type">Dayjs</span>|<span class="c-kw">null</span>&gt;(<span class="c-kw">null</span>);
+  <span class="c-kw">const</span> [open, setOpen] = useState(<span class="c-kw">false</span>);
+  <span class="c-kw">return</span> (
+    &lt;<span class="c-tag">Popover</span> <span class="c-attr">open</span>={open}
+      <span class="c-attr">content</span>={
+        &lt;<span class="c-tag">Calendar</span>
+          <span class="c-attr">value</span>={date}
+          <span class="c-attr">onChange</span>={(d) =&gt; { setDate(d); setOpen(<span class="c-kw">false</span>); }}
+        /&gt;
+      }
+    &gt;
+      &lt;<span class="c-tag">TextField</span>
+        <span class="c-attr">value</span>={date?.format(<span class="c-val">'DD MMM YYYY'</span>) ?? <span class="c-val">''</span>}
+        <span class="c-attr">placeholder</span>=<span class="c-val">"Select date"</span>
+        <span class="c-attr">readOnly</span>
+        <span class="c-attr">onClick</span>={() =&gt; setOpen(!open)}
+      /&gt;
+    &lt;/<span class="c-tag">Popover</span>&gt;
+  );
+}</code></pre></div></div>
+        </div>
+        <div class="fw-angular" style="display:none;">
+          <div class="btn-code-block"><div class="btn-code-head"><span class="btn-code-lang">HTML</span><button class="btn-copy-btn" onclick="copyBtnCode('cal-patterns-ng',this)">Copy</button></div>
+          <div class="btn-code-body"><pre id="cal-patterns-ng"><code>&lt;<span class="c-tag">gs-calendar</span>
+  [(value)]=<span class="c-val">"selectedDate"</span>
+  [<span class="c-attr">showTime</span>]=<span class="c-val">"true"</span>
+  [<span class="c-attr">disabledDate</span>]=<span class="c-val">"isPast"</span>
+&gt;&lt;/<span class="c-tag">gs-calendar</span>&gt;</code></pre></div></div>
+        </div>
+      </div>
+
+      <div id="cal-c-tokens" class="btn-family-card">
+        <div class="ds-step-row"><span class="ds-step-num">10</span><div class="btn-family-title" style="margin:0;">Theming</div></div>
+        <div class="fw-react">
+          <div class="btn-code-block"><div class="btn-code-head"><span class="btn-code-lang">SCSS</span><button class="btn-copy-btn" onclick="copyBtnCode('cal-tokens',this)">Copy</button></div>
+          <div class="btn-code-body"><pre id="cal-tokens"><code><span class="c-cmt">/* Figma-spec calendar tokens */</span>
+:root {
+  <span class="c-attr">--cal-cell-w</span>:          <span class="c-val">39px</span>;               <span class="c-cmt">/* Figma: 39px */</span>
+  <span class="c-attr">--cal-cell-h</span>:          <span class="c-val">30px</span>;               <span class="c-cmt">/* Figma: 30px */</span>
+  <span class="c-attr">--cal-cell-radius</span>:      <span class="c-val">20px</span>;               <span class="c-cmt">/* Figma: radius 20px (pill) */</span>
+  <span class="c-attr">--cal-cell-default</span>:    <span class="c-val">#555555</span>;            <span class="c-cmt">/* Figma: grey/600 */</span>
+  <span class="c-attr">--cal-cell-hover-bg</span>:   <span class="c-val">#edf5ff</span>;            <span class="c-cmt">/* Figma: hover bg */</span>
+  <span class="c-attr">--cal-cell-hover-color</span>:<span class="c-val">#001e4c</span>;            <span class="c-cmt">/* Figma: --prim-blue-900 */</span>
+  <span class="c-attr">--cal-today-bg</span>:        <span class="c-val">#dcebff</span>;            <span class="c-cmt">/* Figma: partially-select bg */</span>
+  <span class="c-attr">--cal-selected-bg</span>:     <span class="c-val">var(--color-brand)</span>; <span class="c-cmt">/* #1852fe */</span>
+  <span class="c-attr">--cal-range-bg</span>:        <span class="c-val">#dcebff</span>;            <span class="c-cmt">/* Figma: range fill */</span>
+  <span class="c-attr">--cal-header-dark</span>:     <span class="c-val">#001e4c</span>;            <span class="c-cmt">/* date+time dark header */</span>
+  <span class="c-attr">--cal-timeslot-w</span>:      <span class="c-val">79px</span>;               <span class="c-cmt">/* Figma time slot width */</span>
+}</code></pre></div></div>
+        </div>
+        <div class="fw-angular" style="display:none;"><p class="btn-family-desc">Same CSS custom properties apply globally.</p></div>
+      </div>
+
+      <div id="cal-c-example" class="btn-family-card">
+        <div class="ds-step-row"><span class="ds-step-num">11</span><div class="btn-family-title" style="margin:0;">Full Example</div></div>
+        <div class="fw-react">
+          <div class="btn-code-block"><div class="btn-code-head"><span class="btn-code-lang">JSX</span><button class="btn-copy-btn" onclick="copyBtnCode('cal-example',this)">Copy</button></div>
+          <div class="btn-code-body"><pre id="cal-example"><code><span class="c-kw">import</span> { useState } <span class="c-kw">from</span> <span class="c-val">'react'</span>;
+<span class="c-kw">import</span> { <span class="c-type">Calendar</span> } <span class="c-kw">from</span> <span class="c-val">'@pelagos/react-components'</span>;
+<span class="c-kw">import</span> dayjs, { <span class="c-type">Dayjs</span> } <span class="c-kw">from</span> <span class="c-val">'dayjs'</span>;
+
+<span class="c-kw">export function</span> <span class="c-type">AppointmentPicker</span>() {
+  <span class="c-kw">const</span> [dt, setDt] = useState&lt;<span class="c-type">Dayjs</span>&gt;(dayjs());
+
+  <span class="c-kw">return</span> (
+    &lt;<span class="c-tag">div</span>&gt;
+      &lt;<span class="c-tag">Calendar</span>
+        <span class="c-attr">value</span>={dt}
+        <span class="c-attr">onChange</span>={setDt}
+        <span class="c-attr">showTime</span>={{ minuteStep: 15, format: <span class="c-val">'hh:mm A'</span> }}
+        <span class="c-attr">disabledDate</span>={(d) =&gt;
+          d.isBefore(dayjs(), <span class="c-val">'day'</span>) ||
+          d.day() === 0 || d.day() === 6  <span class="c-cmt">// no weekends</span>
+        }
+      /&gt;
+      &lt;<span class="c-tag">p</span>&gt;Selected: &lt;<span class="c-tag">strong</span>&gt;{dt.format(<span class="c-val">'ddd, D MMM YYYY · hh:mm A'</span>)}&lt;/<span class="c-tag">strong</span>&gt;&lt;/<span class="c-tag">p</span>&gt;
+    &lt;/<span class="c-tag">div</span>&gt;
+  );
+}</code></pre></div></div>
+        </div>
+        <div class="fw-angular" style="display:none;">
+          <div class="btn-code-block"><div class="btn-code-head"><span class="btn-code-lang">HTML</span><button class="btn-copy-btn" onclick="copyBtnCode('cal-example-ng',this)">Copy</button></div>
+          <div class="btn-code-body"><pre id="cal-example-ng"><code>&lt;<span class="c-tag">gs-calendar</span>
+  [(value)]=<span class="c-val">"appointment"</span>
+  [<span class="c-attr">showTime</span>]=<span class="c-val">"true"</span>
+  [<span class="c-attr">disabledDate</span>]=<span class="c-val">"noWeekends"</span>
+  (<span class="c-attr">valueChange</span>)=<span class="c-val">"onBook($event)"</span>
+&gt;&lt;/<span class="c-tag">gs-calendar</span>&gt;</code></pre></div></div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="code-tab-qnav">
+      <div class="code-qnav-inner">
+        <p class="code-qnav-title">On This Page</p>
+        <ul class="code-qnav-list">
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('cal-c-overview')">1 · Overview</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('cal-c-install')">2 · Install</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('cal-c-imports')">3 · Import</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('cal-c-api')">4 · API / Props</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('cal-c-variants')">5 · Variants</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('cal-c-states')">6 · Custom Cells</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('cal-c-a11y')">7 · Accessibility</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('cal-c-files')">8 · File Structure</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('cal-c-patterns')">9 · Usage Patterns</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('cal-c-tokens')">10 · Theming</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('cal-c-example')">11 · Full Example</button></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ USAGE TAB ═══════════════════════════════════════════════════════ -->
+<div id="cal-tab-usage" class="btn-tab-pane cal-tab-pane">
+  <div class="code-tab-layout">
+    <div class="code-tab-main">
+
+      <div id="cal-u-when" class="btn-family-card">
+        <div class="btn-family-title">When to Use</div>
+        <ul class="btn-usage-list">
+          <li><strong>Date selection in forms</strong> — Booking, scheduling, filtering by date.</li>
+          <li><strong>Date range for stays / projects</strong> — Check-in/check-out, sprint duration, leave periods. Use dual-calendar range variant.</li>
+          <li><strong>Date + time scheduling</strong> — Appointments, meetings, event creation. Side time picker shows available slots.</li>
+          <li><strong>Event calendars</strong> — Full-width with <code>dateCellRender</code> showing event indicators per day.</li>
+        </ul>
+      </div>
+
+      <div id="cal-u-when-not" class="btn-family-card">
+        <div class="btn-family-title">When Not to Use</div>
+        <ul class="btn-usage-list">
+          <li><strong>Known exact date</strong> — A date text field is faster for birthdates or fixed past dates.</li>
+          <li><strong>Month/year only</strong> — Use a Dropdown pair instead of a full calendar.</li>
+          <li><strong>Time selection alone</strong> — Use a standalone Time Picker; the calendar+time combo is for when both are required.</li>
+        </ul>
+      </div>
+
+      <div id="cal-u-best" class="btn-family-card">
+        <div class="btn-family-title">Best Practices</div>
+        <ul class="btn-usage-list">
+          <li><strong>Default to today's month</strong> — Always open on the current month with today highlighted.</li>
+          <li><strong>Explain disabled dates</strong> — Add a helper note explaining availability constraints.</li>
+          <li><strong>Close popover on selection</strong> — Dismiss the Popover as soon as the user selects a date.</li>
+          <li><strong>Keep cell content minimal</strong> — One dot or a short label in <code>dateCellRender</code>; never overflow the pill.</li>
+        </ul>
+      </div>
+
+      <div id="cal-u-patterns" class="btn-family-card">
+        <div class="btn-family-title">Patterns</div>
+        <ul class="btn-usage-list">
+          <li><strong>Date Picker</strong> — Calendar in a Popover, triggered by a Text Field. Close on selection.</li>
+          <li><strong>Date Range Picker</strong> — Dual calendar in a Popover. Start on left, end on right. Show "→" separator.</li>
+          <li><strong>Appointment Booking</strong> — Full date+time variant. Disable weekends and past dates. Side time panel shows available slots.</li>
+          <li><strong>Sprint Calendar</strong> — Full-width with custom cell renders marking sprint days.</li>
+        </ul>
+      </div>
+
+      <div id="cal-u-mistakes" class="btn-family-card">
+        <div class="btn-family-title">Anti-patterns</div>
+        <ul class="btn-usage-list">
+          <li><strong>❌ Silent disabled dates</strong> — Users can't tell why.<br><strong>✅ Fix:</strong> Add tooltip or helper text explaining the constraint.</li>
+          <li><strong>❌ Overloading cells</strong> — Long strings overflow the 39px pill.<br><strong>✅ Fix:</strong> Use a dot indicator only; show details on hover.</li>
+          <li><strong>❌ No today anchor</strong> — Users get lost navigating.<br><strong>✅ Fix:</strong> Default to current month with today clearly highlighted.</li>
+        </ul>
+      </div>
+
+      <div id="cal-u-refs" class="btn-family-card">
+        <div class="btn-family-title">References</div>
+        <ul class="btn-related-list">
+          <li><a href="https://www.figma.com/design/TOLfBpRePgynqwvDVp6fg3/Design-System?node-id=860-1781" target="_blank" rel="noopener">Figma — Calendar cell variants (pill spec)</a></li>
+          <li><a href="https://www.figma.com/design/TOLfBpRePgynqwvDVp6fg3/Design-System?node-id=873-6002" target="_blank" rel="noopener">Figma — Date+time picker with side panel</a></li>
+          <li><a href="https://www.figma.com/design/TOLfBpRePgynqwvDVp6fg3/Design-System?node-id=6558-2666" target="_blank" rel="noopener">Figma — Date range selector</a></li>
+          <li><a href="https://ant.design/components/calendar" target="_blank" rel="noopener">Ant Design — Calendar reference</a></li>
+          <li><a href="https://www.w3.org/WAI/ARIA/apg/patterns/dialog-modal/examples/datepicker-dialog/" target="_blank" rel="noopener">ARIA APG — Date Picker Dialog Pattern</a></li>
+        </ul>
+      </div>
+
+    </div>
+
+    <div class="code-tab-qnav">
+      <div class="code-qnav-inner">
+        <p class="code-qnav-title">On This Page</p>
+        <ul class="code-qnav-list">
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('cal-u-when')">When to Use</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('cal-u-when-not')">When Not to Use</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('cal-u-best')">Best Practices</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('cal-u-patterns')">Patterns</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('cal-u-mistakes')">Anti-patterns</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('cal-u-refs')">References</button></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,1471 @@
+<!-- Banner -->
+    <div class="page-header"><h1 class="ds-hero-title">Text Fields</h1></div>
+
+    <!-- Tab bar -->
+    <div class="tf-tab-bar">
+      <button class="tf-tab-btn active" data-tab="design" onclick="switchTfTab('design')">Design</button>
+      <button class="tf-tab-btn" data-tab="code" onclick="switchTfTab('code')">Code</button>
+      <button class="tf-tab-btn" data-tab="usage" onclick="switchTfTab('usage')">Usage</button>
+    </div>
+
+    <!-- ========== DESIGN TAB ========== -->
+    <div id="tf-tab-design" class="tf-tab-pane active">
+      <div class="code-tab-layout">
+        <div class="code-tab-main">
+
+
+      <p style="font-size:15px;line-height:1.75;color:#475569;margin:0 0 28px;">Text fields collect user input in a structured, accessible container. The system provides two <strong>sizes</strong> (Large / Small), eight <strong>states</strong>, and multiple <strong>composition</strong> patterns - all wired to a 3-tier CSS token system so styling changes cascade automatically.</p>
+
+      <!-- ── SIZES ─────────────────────────────────────────────────── -->
+      <div class="btn-family-card" id="tf-s-sizes">
+        <div class="btn-family-title">Sizes</div>
+        <p class="btn-family-desc">Two height options scale with your interface density. Large (40 px) is the default for forms; Small (32 px) suits compact toolbars, inline filters, and data tables.</p>
+
+        <!-- Large -->
+        <div class="btn-sub-label ds-mb-12">Large - 40 px</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;max-width:640px;margin-bottom:24px;">
+          <div class="gs-tf-wrapper">
+            <div class="gs-tf-label-row"><span class="gs-tf-label">Email address</span></div>
+            <div class="gs-tf-box"><input class="gs-tf-input" placeholder="you@example.com"></div>
+          </div>
+          <div class="gs-tf-wrapper">
+            <div class="gs-tf-label-row"><span class="gs-tf-label">Full name</span><span class="gs-tf-required">*</span></div>
+            <div class="gs-tf-box"><input class="gs-tf-input" value="Jane Doe"></div>
+          </div>
+        </div>
+
+        <hr class="btn-family-divider">
+
+        <!-- Small -->
+        <div class="btn-sub-label ds-mb-12">Small - 32 px</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;max-width:640px;">
+          <div class="gs-tf-wrapper">
+            <div class="gs-tf-box size-sm"><input class="gs-tf-input" placeholder="Filter results…"></div>
+          </div>
+          <div class="gs-tf-wrapper">
+            <div class="gs-tf-box size-sm">
+              <span class="gs-tf-icon"><svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><use href="#gsi-search2"/></svg></span>
+              <input class="gs-tf-input" placeholder="Search…">
+            </div>
+          </div>
+        </div>
+      </div><!-- /tf-s-sizes -->
+
+      <!-- ── LABELS ─────────────────────────────────────────────────── -->
+      <div class="btn-family-card" id="tf-s-labels">
+        <div class="btn-family-title">Labels</div>
+        <p class="btn-family-desc">Fields can be shown without a label, with a label, or with a mandatory asterisk. Always prefer a visible label for accessibility - use the unlabelled variant only for single, contextually obvious fields like a global search bar.</p>
+
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:24px;align-items:end;">
+          <!-- No label - spacer keeps input row-aligned with labelled siblings -->
+          <div>
+            <div class="btn-sub-label ds-mb-12">No label</div>
+            <div class="gs-tf-wrapper">
+              <div style="height:20px;"></div><!-- aligns with label row height -->
+              <div class="gs-tf-box">
+                <span class="gs-tf-icon"><svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><use href="#gsi-search2"/></svg></span>
+                <input class="gs-tf-input" placeholder="Search…">
+              </div>
+            </div>
+          </div>
+          <!-- With label -->
+          <div>
+            <div class="btn-sub-label ds-mb-12">With label</div>
+            <div class="gs-tf-wrapper">
+              <div class="gs-tf-label-row"><span class="gs-tf-label">Email address</span></div>
+              <div class="gs-tf-box"><input class="gs-tf-input" placeholder="you@example.com"></div>
+            </div>
+          </div>
+          <!-- Required -->
+          <div>
+            <div class="btn-sub-label ds-mb-12">Required</div>
+            <div class="gs-tf-wrapper">
+              <div class="gs-tf-label-row"><span class="gs-tf-label">Full name</span><span class="gs-tf-required">*</span></div>
+              <div class="gs-tf-box"><input class="gs-tf-input" placeholder="Jane Doe"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── STATES ─────────────────────────────────────────────────── -->
+      <div class="btn-family-card" id="tf-s-states">
+        <div class="btn-family-title">States</div>
+        <p class="btn-family-desc">Seven functional states communicate availability, validation status, and focus. The hover state is a natural cursor interaction - experienced live, not shown as a frozen demo. Each state has a distinct border colour and optional focus ring drawn entirely via <code style="font-family:'SF Mono',monospace;font-size:12px;background:#f1f5f9;padding:1px 6px;border-radius:3px;">box-shadow</code> so there is no gap artefact between the border and ring.</p>
+
+        <div class="tf-states-grid">
+          <!-- Default -->
+          <div class="tf-state-item">
+            <div class="gs-tf-box"><input class="gs-tf-input" placeholder="Placeholder"></div>
+            <div class="tf-state-label">Default</div>
+          </div>
+          <!-- Filled -->
+          <div class="tf-state-item">
+            <div class="gs-tf-box state-filled"><input class="gs-tf-input" value="Filled value"></div>
+            <div class="tf-state-label">Filled</div>
+          </div>
+          <!-- Active -->
+          <div class="tf-state-item">
+            <div class="gs-tf-box state-focused"><input class="gs-tf-input" placeholder="Placeholder" readonly tabindex="-1"></div>
+            <div class="tf-state-label">Active</div>
+          </div>
+          <!-- Active + Filled -->
+          <div class="tf-state-item">
+            <div class="gs-tf-box state-focused"><input class="gs-tf-input" value="Filled value" readonly tabindex="-1"></div>
+            <div class="tf-state-label">Active-Focussed</div>
+          </div>
+          <!-- Error -->
+          <div class="tf-state-item">
+            <div class="gs-tf-wrapper" style="gap:4px;">
+              <div class="gs-tf-box status-error"><input class="gs-tf-input" value="Invalid input"></div>
+              <div class="gs-tf-help is-error">Please enter a valid email</div>
+            </div>
+            <div class="tf-state-label">Invalid</div>
+          </div>
+          <!-- Success -->
+          <div class="tf-state-item">
+            <div class="gs-tf-wrapper" style="gap:4px;">
+              <div class="gs-tf-box status-success"><input class="gs-tf-input" value="johndoe"></div>
+              <div class="gs-tf-help is-success">Username is available</div>
+            </div>
+            <div class="tf-state-label">Success</div>
+          </div>
+          <!-- Disabled -->
+          <div class="tf-state-item">
+            <div class="gs-tf-box state-disabled"><input class="gs-tf-input" placeholder="Disabled" disabled></div>
+            <div class="tf-state-label">Disabled</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── COMPOSITION ─────────────────────────────────────────────── -->
+      <div class="btn-family-card" id="tf-s-composition">
+        <div class="btn-family-title">Composition</div>
+        <p class="btn-family-desc">Text fields compose with prefix icons, suffix icons, and addons. Each slot is optional - combine them to build search bars, password fields, URL inputs, or any custom control.</p>
+
+        <!-- Vertical table layout - type label on left, field on right, every row identical structure -->
+        <div style="display:flex;flex-direction:column;">
+
+          <!-- 1. Plain -->
+          <div style="display:grid;grid-template-columns:140px 1fr;gap:24px;padding:16px 0;border-bottom:1px solid #f1f5f9;align-items:start;">
+            <div class="btn-sub-label" style="padding-top:20px;">Plain</div>
+            <div class="gs-tf-wrapper" style="max-width:400px;">
+              <div class="gs-tf-label-row"><span class="gs-tf-label">City</span></div>
+              <div class="gs-tf-box"><input class="gs-tf-input" placeholder="Singapore"></div>
+            </div>
+          </div>
+
+          <!-- 2. Prefix icon -->
+          <div style="display:grid;grid-template-columns:140px 1fr;gap:24px;padding:16px 0;border-bottom:1px solid #f1f5f9;align-items:start;">
+            <div class="btn-sub-label" style="padding-top:20px;">Prefix icon</div>
+            <div class="gs-tf-wrapper" style="max-width:400px;">
+              <div class="gs-tf-label-row"><span class="gs-tf-label">Search</span></div>
+              <div class="gs-tf-box">
+                <span class="gs-tf-icon"><svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><use href="#gsi-search2"/></svg></span>
+                <input class="gs-tf-input" placeholder="Search components…">
+              </div>
+            </div>
+          </div>
+
+          <!-- 3. Suffix icon -->
+          <div style="display:grid;grid-template-columns:140px 1fr;gap:24px;padding:16px 0;border-bottom:1px solid #f1f5f9;align-items:start;">
+            <div class="btn-sub-label" style="padding-top:20px;">Suffix icon</div>
+            <div class="gs-tf-wrapper" style="max-width:400px;">
+              <div class="gs-tf-label-row"><span class="gs-tf-label">Password</span></div>
+              <div class="gs-tf-box">
+                <input class="gs-tf-input" type="password" value="secret123">
+                <span class="gs-tf-icon" style="cursor:pointer;" title="Toggle visibility"><svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><use href="#gsi-eye-open"/></svg></span>
+              </div>
+            </div>
+          </div>
+
+          <!-- 4. Prefix & suffix -->
+          <div style="display:grid;grid-template-columns:140px 1fr;gap:24px;padding:16px 0;border-bottom:1px solid #f1f5f9;align-items:start;">
+            <div class="btn-sub-label" style="padding-top:20px;">Prefix &amp; suffix</div>
+            <div class="gs-tf-wrapper" style="max-width:400px;">
+              <div class="gs-tf-label-row"><span class="gs-tf-label">Amount</span></div>
+              <div class="gs-tf-box">
+                <span class="gs-tf-icon" style="color:var(--prim-grey-400);font-size:13px;font-weight:600;width:auto;">$</span>
+                <input class="gs-tf-input" value="1,200">
+                <span class="gs-tf-icon" style="color:var(--prim-grey-400);font-size:11px;font-weight:600;width:auto;">USD</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- 5. Addon (URL) -->
+          <div style="display:grid;grid-template-columns:140px 1fr;gap:24px;padding:16px 0;border-bottom:1px solid #f1f5f9;align-items:start;">
+            <div class="btn-sub-label" style="padding-top:20px;">Addon</div>
+            <div class="gs-tf-wrapper" style="max-width:400px;">
+              <div class="gs-tf-label-row"><span class="gs-tf-label">Website</span></div>
+              <div class="gs-tf-addon-wrap">
+                <div class="gs-tf-addon gs-tf-addon-before">https://</div>
+                <div class="gs-tf-box" style="border-radius:0 4px 4px 0;flex:1;"><input class="gs-tf-input" value="geoserve.io"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 6. Textarea -->
+          <div style="display:grid;grid-template-columns:140px 1fr;gap:24px;padding:16px 0;align-items:start;">
+            <div class="btn-sub-label" style="padding-top:20px;">Textarea</div>
+            <div class="gs-tf-wrapper" style="max-width:400px;">
+              <div class="gs-tf-label-row"><span class="gs-tf-label">Notes</span></div>
+              <div class="gs-tf-box is-textarea">
+                <textarea class="gs-tf-textarea" rows="3" placeholder="Add your notes here…"></textarea>
+              </div>
+              <div class="gs-tf-help">Max 500 characters</div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- ── DESIGN TOKENS ─────────────────────────────────────────────── -->
+      <div class="btn-family-card" id="tf-s-tokens">
+        <div class="btn-family-title">Design Tokens</div>
+        <p class="btn-family-desc">TextField styling flows through a 3-tier token system. Component tokens (<code style="font-family:'SF Mono',monospace;font-size:12px;background:#f1f5f9;padding:1px 6px;border-radius:3px;">--tf-*</code>) reference semantic tokens, which reference primitive values - so overriding a single semantic token cascades automatically.</p>
+
+        <!-- Token chain legend -->
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:24px;flex-wrap:wrap;">
+          <span style="display:inline-flex;align-items:center;gap:5px;padding:4px 10px;border-radius:20px;background:#eff6ff;font-size:11px;font-weight:700;color:#1852fe;letter-spacing:0.04em;">COMPONENT</span>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+          <span style="display:inline-flex;align-items:center;gap:5px;padding:4px 10px;border-radius:20px;background:#f0fdf4;font-size:11px;font-weight:700;color:#16a34a;letter-spacing:0.04em;">SEMANTIC</span>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+          <span style="display:inline-flex;align-items:center;gap:5px;padding:4px 10px;border-radius:20px;background:#faf5ff;font-size:11px;font-weight:700;color:#7c3aed;letter-spacing:0.04em;">PRIMITIVE</span>
+        </div>
+
+        <!-- Structure & Sizing -->
+        <div class="btn-sub-label">Structure &amp; Sizing</div>
+        <table class="tok-table" style="margin-bottom:24px;">
+          <thead><tr><th>Component Token</th><th>Semantic Token</th><th>Primitive / Value</th><th>Preview</th></tr></thead>
+          <tbody>
+            <tr>
+              <td class="tok-name"><code>--tf-radius</code></td>
+              <td class="tok-ref"><code>--radius-sm</code></td>
+              <td class="tok-ref"><code>--prim-radius-sm</code> · 4px</td>
+              <td><span style="display:inline-block;width:20px;height:20px;border-radius:4px;background:#e2e8f0;border:1.5px solid #cbd5e1;"></span></td>
+            </tr>
+            <tr>
+              <td class="tok-name"><code>--tf-font-size</code></td>
+              <td class="tok-ref">-</td>
+              <td class="tok-ref"><code>--prim-font-size-md</code> · 14px</td>
+              <td><span style="font-size:14px;color:#0f172a;line-height:1;">Aa</span></td>
+            </tr>
+            <tr>
+              <td class="tok-name"><code>--tf-height-lg</code></td>
+              <td class="tok-ref">-</td>
+              <td class="tok-ref"><code>--prim-space-10</code> · 40px</td>
+              <td><div style="width:40px;height:10px;background:#e2e8f0;border-radius:2px;"></div></td>
+            </tr>
+            <tr>
+              <td class="tok-name"><code>--tf-height-sm</code></td>
+              <td class="tok-ref">-</td>
+              <td class="tok-ref"><code>--prim-space-8</code> · 32px</td>
+              <td><div style="width:40px;height:8px;background:#e2e8f0;border-radius:2px;"></div></td>
+            </tr>
+            <tr>
+              <td class="tok-name"><code>--tf-padding-x</code></td>
+              <td class="tok-ref">-</td>
+              <td class="tok-ref"><code>--prim-space-3</code> · 12px</td>
+              <td><div style="width:12px;height:14px;border-left:2px solid #1852fe;"></div></td>
+            </tr>
+          </tbody>
+        </table>
+
+        <hr class="btn-family-divider">
+
+        <!-- Border tokens -->
+        <div class="btn-sub-label">Borders</div>
+        <table class="tok-table" style="margin-bottom:24px;">
+          <thead><tr><th>Component Token</th><th>Semantic Token</th><th>Primitive / Value</th><th>Preview</th></tr></thead>
+          <tbody>
+            <tr>
+              <td class="tok-name"><code>--tf-border-default</code></td>
+              <td class="tok-ref">-</td>
+              <td class="tok-ref"><code>--prim-grey-200</code> · #cbd5e1</td>
+              <td><span class="tok-swatch" style="background:#cbd5e1;"></span></td>
+            </tr>
+            <tr>
+              <td class="tok-name"><code>--tf-border-hover</code></td>
+              <td class="tok-ref">-</td>
+              <td class="tok-ref"><code>--prim-grey-300</code> · #94a3b8</td>
+              <td><span class="tok-swatch" style="background:#94a3b8;"></span></td>
+            </tr>
+            <tr>
+              <td class="tok-name"><code>--tf-border-filled</code></td>
+              <td class="tok-ref">-</td>
+              <td class="tok-ref"><code>--prim-grey-300</code> · #94a3b8</td>
+              <td><span class="tok-swatch" style="background:#94a3b8;"></span></td>
+            </tr>
+            <tr>
+              <td class="tok-name"><code>--tf-border-focus</code></td>
+              <td class="tok-ref">-</td>
+              <td class="tok-ref"><code>--prim-blue-500</code> · #2463eb</td>
+              <td><span class="tok-swatch" style="background:#2463eb;"></span></td>
+            </tr>
+            <tr>
+              <td class="tok-name"><code>--tf-border-error</code></td>
+              <td class="tok-ref"><code>--color-danger</code></td>
+              <td class="tok-ref"><code>--prim-red-500</code> · #dc2625</td>
+              <td><span class="tok-swatch" style="background:#dc2625;"></span></td>
+            </tr>
+            <tr>
+              <td class="tok-name"><code>--tf-border-success</code></td>
+              <td class="tok-ref">-</td>
+              <td class="tok-ref">raw · #1b9e4b</td>
+              <td><span class="tok-swatch" style="background:#1b9e4b;"></span></td>
+            </tr>
+          </tbody>
+        </table>
+
+        <hr class="btn-family-divider">
+
+        <!-- Background tokens -->
+        <div class="btn-sub-label">Backgrounds</div>
+        <table class="tok-table" style="margin-bottom:24px;">
+          <thead><tr><th>Component Token</th><th>Semantic Token</th><th>Primitive / Value</th><th>Preview</th></tr></thead>
+          <tbody>
+            <tr>
+              <td class="tok-name"><code>--tf-bg</code></td>
+              <td class="tok-ref"><code>--color-surface-default</code></td>
+              <td class="tok-ref"><code>--prim-white</code> · #ffffff</td>
+              <td><span class="tok-swatch tok-swatch-light" style="background:#ffffff;"></span></td>
+            </tr>
+            <tr>
+              <td class="tok-name"><code>--tf-bg-disabled</code></td>
+              <td class="tok-ref">-</td>
+              <td class="tok-ref"><code>--prim-grey-50</code> · #f8fafc</td>
+              <td><span class="tok-swatch tok-swatch-light" style="background:#f8fafc;"></span></td>
+            </tr>
+          </tbody>
+        </table>
+
+        <hr class="btn-family-divider">
+
+        <!-- Text tokens -->
+        <div class="btn-sub-label">Text &amp; Labels</div>
+        <table class="tok-table" style="margin-bottom:24px;">
+          <thead><tr><th>Component Token</th><th>Semantic Token</th><th>Primitive / Value</th><th>Preview</th></tr></thead>
+          <tbody>
+            <tr>
+              <td class="tok-name"><code>--tf-text-value</code></td>
+              <td class="tok-ref">-</td>
+              <td class="tok-ref"><code>--prim-grey-800</code> · #10172a</td>
+              <td><span style="font-size:13px;font-weight:400;color:#10172a;">Text</span></td>
+            </tr>
+            <tr>
+              <td class="tok-name"><code>--tf-text-placeholder</code></td>
+              <td class="tok-ref">-</td>
+              <td class="tok-ref"><code>--prim-grey-400</code> · #64748b</td>
+              <td><span style="font-size:13px;color:#64748b;">Placeholder</span></td>
+            </tr>
+            <tr>
+              <td class="tok-name"><code>--tf-text-disabled</code></td>
+              <td class="tok-ref">-</td>
+              <td class="tok-ref"><code>--prim-grey-300</code> · #94a3b8</td>
+              <td><span style="font-size:13px;color:#94a3b8;">Disabled</span></td>
+            </tr>
+            <tr>
+              <td class="tok-name"><code>--tf-label-color</code></td>
+              <td class="tok-ref">-</td>
+              <td class="tok-ref"><code>--prim-grey-600</code> · #334154</td>
+              <td><span style="font-size:12px;font-weight:600;color:#334154;">Label</span></td>
+            </tr>
+            <tr>
+              <td class="tok-name"><code>--tf-help-color</code></td>
+              <td class="tok-ref">-</td>
+              <td class="tok-ref"><code>--prim-grey-500</code> · #475569</td>
+              <td><span style="font-size:12px;color:#475569;">Helper text</span></td>
+            </tr>
+            <tr>
+              <td class="tok-name"><code>--tf-help-error</code></td>
+              <td class="tok-ref"><code>--color-danger-hover</code></td>
+              <td class="tok-ref"><code>--prim-red-700</code> · #b91c1b</td>
+              <td><span style="font-size:12px;color:#b91c1b;">Error message</span></td>
+            </tr>
+            <tr>
+              <td class="tok-name"><code>--tf-help-success</code></td>
+              <td class="tok-ref">-</td>
+              <td class="tok-ref">raw · #147638</td>
+              <td><span style="font-size:12px;color:#147638;">Success message</span></td>
+            </tr>
+          </tbody>
+        </table>
+
+        <hr class="btn-family-divider">
+
+        <!-- Focus ring tokens -->
+        <div class="btn-sub-label">Focus Rings</div>
+        <table class="tok-table">
+          <thead><tr><th>Component Token</th><th>Semantic Token</th><th>Value</th><th>Preview</th></tr></thead>
+          <tbody>
+            <tr>
+              <td class="tok-name"><code>--tf-focus-ring</code></td>
+              <td class="tok-ref">-</td>
+              <td class="tok-ref">0 0 0 3px rgba(36,99,235,0.18)</td>
+              <td><div style="width:28px;height:16px;border-radius:4px;border:1.5px solid #2463eb;box-shadow:0 0 0 3px rgba(36,99,235,0.18);"></div></td>
+            </tr>
+            <tr>
+              <td class="tok-name"><code>--tf-focus-ring-error</code></td>
+              <td class="tok-ref">-</td>
+              <td class="tok-ref">0 0 0 3px rgba(220,38,37,0.15)</td>
+              <td><div style="width:28px;height:16px;border-radius:4px;border:1.5px solid #dc2625;box-shadow:0 0 0 3px rgba(220,38,37,0.15);"></div></td>
+            </tr>
+            <tr>
+              <td class="tok-name"><code>--tf-focus-ring-success</code></td>
+              <td class="tok-ref">-</td>
+              <td class="tok-ref">0 0 0 3px rgba(27,158,75,0.15)</td>
+              <td><div style="width:28px;height:16px;border-radius:4px;border:1.5px solid #1b9e4b;box-shadow:0 0 0 3px rgba(27,158,75,0.15);"></div></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+        </div><!-- /code-tab-main -->
+        <div class="code-tab-qnav">
+          <div class="code-qnav-inner">
+            <p class="code-qnav-title">On This Page</p>
+            <ul class="code-qnav-list">
+              <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('tf-s-sizes')">Sizes</button></li>
+              <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('tf-s-labels')">Labels</button></li>
+              <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('tf-s-states')">States</button></li>
+              <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('tf-s-composition')">Composition</button></li>
+              <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('tf-s-tokens')">Design Tokens</button></li>
+            </ul>
+          </div>
+        </div>
+      </div><!-- /code-tab-layout -->
+    </div><!-- /design tab -->
+
+    <!-- ========== CODE TAB ========== -->
+    <div id="tf-tab-code" class="tf-tab-pane">
+      <div class="code-tab-layout">
+        <div class="code-tab-main">
+
+
+      <!-- Framework toggle -->
+      <div class="fw-toggle-bar">
+        <button class="fw-toggle-bar-btn active" data-fw="react" onclick="switchFw('tf-tab-code','react')">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="2.05" fill="#61DAFB"/><ellipse cx="12" cy="12" rx="10" ry="3.8" stroke="#61DAFB" stroke-width="1.3" fill="none"/><ellipse cx="12" cy="12" rx="10" ry="3.8" stroke="#61DAFB" stroke-width="1.3" fill="none" transform="rotate(60 12 12)"/><ellipse cx="12" cy="12" rx="10" ry="3.8" stroke="#61DAFB" stroke-width="1.3" fill="none" transform="rotate(120 12 12)"/></svg>
+          React
+        </button>
+        <button class="fw-toggle-bar-btn" data-fw="angular" onclick="switchFw('tf-tab-code','angular')">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none"><polygon points="12,2 22,5.5 20,18 12,22 4,18 2,5.5" fill="#DD0031"/><polygon points="12,2 12,22 4,18 2,5.5" fill="#C3002F"/><polygon points="12,5.5 8,15.5 9.5,15.5 10.5,13 13.5,13 14.5,15.5 16,15.5 12,5.5" fill="white"/></svg>
+          Angular
+        </button>
+      </div><!-- /fw-toggle-bar -->
+
+      <div class="fw-react">
+
+      <p style="font-size:15px;line-height:1.75;color:#475569;margin:0 0 32px;">
+        The <code class="ds-code-tag">TextField</code> component is a
+        <strong style="color:#0f172a;">Geoserve UI</strong> primitive built with React. A
+        <code class="ds-code-tag">status</code> prop drives validation states and a
+        <code class="ds-code-tag">size</code> prop drives height - both resolved through the
+        <code class="ds-code-tag">gs-theme</code> config and <code class="ds-code-tag">$tf-*</code> SCSS tokens.
+      </p>
+
+      <!-- ① Installation -->
+      <div class="btn-code-section">
+        <div class="ds-step-row">
+          <span class="ds-step-num">1</span>
+          <h3 class="ds-prop-title">Installation</h3>
+        </div>
+        <div class="btn-code-block">
+          <div class="btn-code-head">
+            <span class="btn-code-lang">bash</span>
+            <button class="btn-copy-btn" onclick="copyTfCode('tf-code-install',this)">Copy</button>
+          </div>
+          <div class="btn-code-body">
+            <pre id="tf-code-install"><span class="c-cmt"># Install dependencies</span>
+npm install antd
+npm install --save-dev sass</pre>
+          </div>
+        </div>
+      </div>
+
+      <!-- ② File Structure -->
+      <div class="btn-code-section">
+        <div class="ds-step-row">
+          <span class="ds-step-num">2</span>
+          <h3 class="ds-prop-title">File Structure</h3>
+        </div>
+        <div class="btn-code-block">
+          <div class="btn-code-head">
+            <span class="btn-code-lang">directory</span>
+          </div>
+          <div class="btn-code-body">
+            <pre id="tf-code-structure"><span class="c-cmt">src/
+├── tokens/
+│   └── tokens.css               </span><span class="c-cmt">← DS CSS custom properties (:root primitive → semantic → component)</span>
+<span class="c-cmt">├── theme/
+│   └── gs-theme.js              </span><span class="c-cmt">← Reads CSS vars at runtime → passes to ConfigProvider</span>
+<span class="c-cmt">├── styles/
+│   └── _variables.scss          </span><span class="c-cmt">← SCSS bridge: $tf-var: var(--tf-*)</span>
+<span class="c-cmt">└── components/
+    └── TextField/
+        ├── TextField.jsx        </span><span class="c-cmt">← GS TextField component</span>
+<span class="c-cmt">        ├── TextField.scss       </span><span class="c-cmt">← Uses SCSS vars → resolves to CSS tokens at runtime</span>
+<span class="c-cmt">        └── index.js             </span><span class="c-cmt">← Barrel export</span></pre>
+          </div>
+        </div>
+      </div>
+
+      <!-- ③ gs-theme.js -->
+      <div class="btn-code-section">
+        <div class="ds-step-row">
+          <span class="ds-step-num">3</span>
+          <h3 class="ds-prop-title">theme/gs-theme.js</h3>
+        </div>
+        <div class="btn-code-block">
+          <div class="btn-code-head">
+            <span class="btn-code-lang">JavaScript · Geoserve Theme</span>
+            <button class="btn-copy-btn" onclick="copyTfCode('tf-code-theme',this)">Copy</button>
+          </div>
+          <div class="btn-code-body">
+            <pre id="tf-code-theme"><span class="c-cmt">/**
+ * Geoserve UI theme config - injected via ConfigProvider.
+ * CSS custom properties are read at runtime so any :root update
+ * cascades here automatically - no hard-coded hex values.
+ *
+ * Token chain example:
+ *   colorPrimary  ←  --prim-marine  ←  :root { --prim-marine: #1852FE }
+ */</span>
+<span class="c-kw">const</span> cssVar = (name) =&gt;
+  getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+
+<span class="c-kw">const</span> gsTheme = {
+  token: {
+    colorPrimary:    cssVar(<span class="c-val">'--prim-marine'</span>),       <span class="c-cmt">// → #1852FE</span>
+    colorError:      cssVar(<span class="c-val">'--prim-red-500'</span>),      <span class="c-cmt">// → #DC2625</span>
+    borderRadius:    <span class="c-val">4</span>,                             <span class="c-cmt">// --prim-radius-sm</span>
+    fontFamily:      cssVar(<span class="c-val">'--prim-font-primary'</span>),  <span class="c-cmt">// Gilroy stack</span>
+    fontSize:        <span class="c-val">14</span>,                            <span class="c-cmt">// --prim-font-size-md</span>
+    controlHeight:   <span class="c-val">40</span>,                            <span class="c-cmt">// --tf-height-lg</span>
+    controlHeightSM: <span class="c-val">32</span>,                            <span class="c-cmt">// --tf-height-sm</span>
+  },
+  components: {
+    Input: {
+      paddingInline:     <span class="c-val">12</span>,                           <span class="c-cmt">// --tf-padding-x</span>
+      colorBgContainer:  cssVar(<span class="c-val">'--color-surface-default'</span>), <span class="c-cmt">// --tf-bg → #fff</span>
+      colorBorder:       cssVar(<span class="c-val">'--prim-grey-200'</span>),        <span class="c-cmt">// --tf-border-default → #cbd5e1</span>
+      colorPrimaryHover: cssVar(<span class="c-val">'--prim-grey-300'</span>),        <span class="c-cmt">// --tf-border-hover → #94a3b8</span>
+      hoverBorderColor:  cssVar(<span class="c-val">'--prim-grey-300'</span>),        <span class="c-cmt">// matches hover state</span>
+    },
+  },
+};
+
+<span class="c-kw">export default</span> gsTheme;</pre>
+          </div>
+        </div>
+      </div>
+
+      <!-- ④ _variables.scss -->
+      <div class="btn-code-section">
+        <div class="ds-step-row">
+          <span class="ds-step-num">4</span>
+          <h3 class="ds-prop-title">styles/_variables.scss</h3>
+        </div>
+        <div class="btn-code-block">
+          <div class="btn-code-head">
+            <span class="btn-code-lang">SCSS · Design Tokens</span>
+            <button class="btn-copy-btn" onclick="copyTfCode('tf-code-variables',this)">Copy</button>
+          </div>
+          <div class="btn-code-body">
+            <pre id="tf-code-variables"><span class="c-cmt">// ─── Token bridge: SCSS variables → CSS custom properties ─────────────────
+// Each $variable wraps a var(--token) so SCSS can use them in rules while
+// the CSS engine resolves the actual value from :root at runtime.
+//
+// Tier chain:  $tf-border-focus
+//               → var(--tf-border-focus)      [component token]
+//               → var(--prim-blue-500)         [primitive token]
+//               → #2463EB                      [raw value]
+// ─────────────────────────────────────────────────────────────────────────</span>
+
+<span class="c-cmt">// ─── Structure ────────────────────────────────────────────</span>
+<span class="c-kw">$tf-radius</span>:              var(<span class="c-val">--tf-radius</span>);              <span class="c-cmt">// → --radius-sm → 4px</span>
+<span class="c-kw">$tf-font-size</span>:           var(<span class="c-val">--tf-font-size</span>);           <span class="c-cmt">// → --prim-font-size-md → 14px</span>
+<span class="c-kw">$tf-label-size</span>:          var(<span class="c-val">--tf-label-size</span>);          <span class="c-cmt">// → 12px</span>
+<span class="c-kw">$tf-label-weight</span>:        var(<span class="c-val">--tf-label-weight</span>);        <span class="c-cmt">// → 600</span>
+<span class="c-kw">$tf-height-lg</span>:           var(<span class="c-val">--tf-height-lg</span>);           <span class="c-cmt">// → 40px</span>
+<span class="c-kw">$tf-height-sm</span>:           var(<span class="c-val">--tf-height-sm</span>);           <span class="c-cmt">// → 32px</span>
+<span class="c-kw">$tf-padding-x</span>:           var(<span class="c-val">--tf-padding-x</span>);           <span class="c-cmt">// → 12px</span>
+
+<span class="c-cmt">// ─── Borders ──────────────────────────────────────────────</span>
+<span class="c-kw">$tf-border-default</span>:      var(<span class="c-val">--tf-border-default</span>);      <span class="c-cmt">// → --prim-grey-200 → #cbd5e1</span>
+<span class="c-kw">$tf-border-hover</span>:        var(<span class="c-val">--tf-border-hover</span>);        <span class="c-cmt">// → --prim-grey-300 → #94a3b8</span>
+<span class="c-kw">$tf-border-filled</span>:       var(<span class="c-val">--tf-border-filled</span>);       <span class="c-cmt">// → --prim-grey-300 → #94a3b8 (has value)</span>
+<span class="c-kw">$tf-border-focus</span>:        var(<span class="c-val">--tf-border-focus</span>);        <span class="c-cmt">// → --prim-blue-500 → #2463eb</span>
+<span class="c-kw">$tf-border-error</span>:        var(<span class="c-val">--tf-border-error</span>);        <span class="c-cmt">// → --color-danger → #dc2625</span>
+<span class="c-kw">$tf-border-success</span>:      var(<span class="c-val">--tf-border-success</span>);      <span class="c-cmt">// → #1b9e4b</span>
+<span class="c-kw">$tf-border-width</span>:        var(<span class="c-val">--tf-border-width</span>);        <span class="c-cmt">// → 1px</span>
+<span class="c-kw">$tf-border-width-active</span>: var(<span class="c-val">--tf-border-width-active</span>); <span class="c-cmt">// → 1.5px (focus / error / success)</span>
+
+<span class="c-cmt">// ─── Backgrounds ──────────────────────────────────────────</span>
+<span class="c-kw">$tf-bg</span>:                  var(<span class="c-val">--tf-bg</span>);                  <span class="c-cmt">// → --color-surface-default → #fff</span>
+<span class="c-kw">$tf-bg-disabled</span>:         var(<span class="c-val">--tf-bg-disabled</span>);         <span class="c-cmt">// → --prim-grey-50 → #f8fafc</span>
+
+<span class="c-cmt">// ─── Text ─────────────────────────────────────────────────</span>
+<span class="c-kw">$tf-text-value</span>:          var(<span class="c-val">--tf-text-value</span>);          <span class="c-cmt">// → --prim-grey-800 → #10172a</span>
+<span class="c-kw">$tf-text-placeholder</span>:    var(<span class="c-val">--tf-text-placeholder</span>);    <span class="c-cmt">// → --prim-grey-400 → #64748b</span>
+<span class="c-kw">$tf-text-disabled</span>:       var(<span class="c-val">--tf-text-disabled</span>);       <span class="c-cmt">// → --prim-grey-300 → #94a3b8</span>
+<span class="c-kw">$tf-label-color</span>:         var(<span class="c-val">--tf-label-color</span>);         <span class="c-cmt">// → --prim-grey-600 → #334154</span>
+<span class="c-kw">$tf-help-color</span>:          var(<span class="c-val">--tf-help-color</span>);          <span class="c-cmt">// → --prim-grey-500 → #475569</span>
+<span class="c-kw">$tf-help-error</span>:          var(<span class="c-val">--tf-help-error</span>);          <span class="c-cmt">// → --color-danger-hover → #b91c1b</span>
+<span class="c-kw">$tf-help-success</span>:        var(<span class="c-val">--tf-help-success</span>);        <span class="c-cmt">// → #147638</span>
+<span class="c-kw">$tf-icon-color</span>:          var(<span class="c-val">--tf-icon-color</span>);          <span class="c-cmt">// → --prim-grey-300 → #94a3b8</span>
+
+<span class="c-cmt">// ─── Focus Rings ──────────────────────────────────────────</span>
+<span class="c-kw">$tf-focus-ring</span>:          var(<span class="c-val">--tf-focus-ring</span>);          <span class="c-cmt">// 0 0 0 3px rgba(36,99,235,0.18)</span>
+<span class="c-kw">$tf-focus-ring-error</span>:    var(<span class="c-val">--tf-focus-ring-error</span>);    <span class="c-cmt">// 0 0 0 3px rgba(220,38,37,0.15)</span>
+<span class="c-kw">$tf-focus-ring-success</span>:  var(<span class="c-val">--tf-focus-ring-success</span>);  <span class="c-cmt">// 0 0 0 3px rgba(27,158,75,0.15)</span></pre>
+          </div>
+        </div>
+      </div>
+
+      <!-- ⑤ TextField.scss -->
+      <div class="btn-code-section">
+        <div class="ds-step-row">
+          <span class="ds-step-num">5</span>
+          <h3 class="ds-prop-title">TextField/TextField.scss</h3>
+        </div>
+        <div class="btn-code-block">
+          <div class="btn-code-head">
+            <span class="btn-code-lang">SCSS · Geoserve TextField Overrides</span>
+            <button class="btn-copy-btn" onclick="copyTfCode('tf-code-scss',this)">Copy</button>
+          </div>
+          <div class="btn-code-body">
+            <pre id="tf-code-scss"><span class="c-kw">@use</span> <span class="c-val">'../../styles/variables'</span> <span class="c-kw">as</span> *;
+
+<span class="c-cmt">// Each $variable resolves via var(--tf-*) → var(--color-*) → var(--prim-*) → raw value.
+// Override a --tf-* or --color-* token in :root to retheme all text fields.</span>
+
+<span class="c-cmt">// ─── Wrapper &amp; Label ──────────────────────────────────────</span>
+.gs-tf-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: <span class="c-val">6px</span>;
+}
+
+.gs-tf-label {
+  font-size:   $tf-label-size;
+  font-weight: $tf-label-weight;
+  color:       $tf-label-color;
+}
+
+.gs-tf-required { color: $tf-border-error; }
+
+<span class="c-cmt">// ─── Input Box ────────────────────────────────────────────</span>
+.gs-tf-box {
+  height:        $tf-height-lg;
+  border:        $tf-border-width solid $tf-border-default;
+  border-radius: $tf-radius;
+  background:    $tf-bg;
+  padding:       <span class="c-val">0</span> $tf-padding-x;
+  transition:    border-color <span class="c-val">0.15s</span>, box-shadow <span class="c-val">0.15s</span>;
+
+  <span class="c-cmt">// Hover - darken border, no ring</span>
+  &amp;:hover:not(.state-disabled):not(.state-focused):not(.status-error):not(.status-success) {
+    border-color: $tf-border-hover;
+  }
+
+  <span class="c-cmt">// Focus - blue border + ring (no outline gap)</span>
+  &amp;.state-focused, &amp;:focus-within:not(.state-disabled) {
+    border-color: $tf-border-focus;
+    border-width: $tf-border-width-active;
+    box-shadow:   $tf-focus-ring;
+    outline:      none;
+  }
+
+  <span class="c-cmt">// Sizes</span>
+  &amp;.size-sm { height: $tf-height-sm; }
+
+  <span class="c-cmt">// Validation states</span>
+  &amp;.status-error {
+    border-color: $tf-border-error;
+    border-width: $tf-border-width-active;
+    box-shadow:   $tf-focus-ring-error;
+  }
+  &amp;.status-success {
+    border-color: $tf-border-success;
+    border-width: $tf-border-width-active;
+    box-shadow:   $tf-focus-ring-success;
+  }
+
+  <span class="c-cmt">// Disabled - muted bg, transparent border</span>
+  &amp;.state-disabled {
+    background:     $tf-bg-disabled;
+    border-color:   transparent;
+    pointer-events: none;
+  }
+}
+
+<span class="c-cmt">// ─── Input Element ────────────────────────────────────────</span>
+.gs-tf-input {
+  font-size: $tf-font-size;
+  color:     $tf-text-value;
+
+  &amp;::placeholder { color: $tf-text-placeholder; }
+}
+
+.gs-tf-box.state-disabled .gs-tf-input { color: $tf-text-disabled; }
+
+<span class="c-cmt">// ─── Help Text ────────────────────────────────────────────</span>
+.gs-tf-help              { color: $tf-help-color; }
+.gs-tf-help.is-error     { color: $tf-help-error; }
+.gs-tf-help.is-success   { color: $tf-help-success; }
+
+<span class="c-cmt">// ─── Icons ────────────────────────────────────────────────</span>
+.gs-tf-icon              { color: $tf-icon-color; }</pre>
+          </div>
+        </div>
+      </div>
+
+      <!-- ⑥ TextField.jsx -->
+      <div class="btn-code-section">
+        <div class="ds-step-row">
+          <span class="ds-step-num">6</span>
+          <h3 class="ds-prop-title">TextField/TextField.jsx</h3>
+        </div>
+        <div class="btn-code-block">
+          <div class="btn-code-head">
+            <span class="btn-code-lang">JSX · Geoserve TextField Component</span>
+            <button class="btn-copy-btn" onclick="copyTfCode('tf-code-jsx',this)">Copy</button>
+          </div>
+          <div class="btn-code-body">
+            <pre id="tf-code-jsx"><span class="c-kw">import</span> { Input } <span class="c-kw">from</span> <span class="c-val">'antd'</span>;          <span class="c-cmt">// underlying library</span>
+<span class="c-kw">import</span> { ConfigProvider } <span class="c-kw">from</span> <span class="c-val">'antd'</span>;
+<span class="c-kw">import</span> gsTheme <span class="c-kw">from</span> <span class="c-val">'../../theme/gs-theme'</span>;
+<span class="c-kw">import</span> <span class="c-val">'./TextField.scss'</span>;
+
+<span class="c-kw">const</span> { TextArea } = Input;
+<span class="c-kw">const</span> BaseInput = Input;  <span class="c-cmt">// alias - keeps GS naming in JSX</span>
+
+<span class="c-cmt">// Maps GS size shorthand to internal size prop values</span>
+<span class="c-kw">const</span> SIZE_MAP = {
+  lg: <span class="c-val">'large'</span>,
+  sm: <span class="c-val">'small'</span>,
+};
+
+<span class="c-cmt">// Maps GS status to internal antd status prop ('error' | undefined)</span>
+<span class="c-kw">const</span> STATUS_MAP = {
+  default: <span class="c-val">undefined</span>,
+  error:   <span class="c-val">'error'</span>,
+  success: <span class="c-val">undefined</span>,  <span class="c-cmt">// success handled via className → SCSS token</span>
+};
+
+<span class="c-cmt">/**
+ * @param {object}  props
+ * @param {'lg'|'sm'}                        [props.size='lg']
+ * @param {'default'|'error'|'success'}      [props.status='default']
+ * @param {string}                           [props.label]
+ * @param {boolean}                          [props.required=false]
+ * @param {string}                           [props.helpText]
+ * @param {React.ReactNode}                  [props.prefix]
+ * @param {React.ReactNode}                  [props.suffix]
+ * @param {React.ReactNode}                  [props.addonBefore]
+ * @param {React.ReactNode}                  [props.addonAfter]
+ * @param {boolean}                          [props.multiline=false]
+ * @param {number}                           [props.rows=3]
+ */</span>
+<span class="c-kw">const</span> TextField = ({
+  size      = <span class="c-val">'lg'</span>,
+  status    = <span class="c-val">'default'</span>,
+  label,
+  required  = <span class="c-val">false</span>,
+  helpText,
+  prefix,
+  suffix,
+  addonBefore,
+  addonAfter,
+  multiline = <span class="c-val">false</span>,
+  rows      = <span class="c-val">3</span>,
+  className = <span class="c-val">''</span>,
+  ...props
+}) =&gt; {
+  <span class="c-kw">const</span> statusClass = status === <span class="c-val">'error'</span>   ? <span class="c-val">'status-error'</span>
+    : status === <span class="c-val">'success'</span> ? <span class="c-val">'status-success'</span> : <span class="c-val">''</span>;
+
+  <span class="c-kw">const</span> helpClass = status === <span class="c-val">'error'</span>   ? <span class="c-val">'gs-tf-help is-error'</span>
+    : status === <span class="c-val">'success'</span> ? <span class="c-val">'gs-tf-help is-success'</span> : <span class="c-val">'gs-tf-help'</span>;
+
+  <span class="c-kw">const</span> cls = [<span class="c-val">'gs-tf'</span>, statusClass, className].filter(<span class="c-type">Boolean</span>).join(<span class="c-val">' '</span>);
+
+  <span class="c-kw">return</span> (
+    &lt;<span class="c-tag">ConfigProvider</span> <span class="c-attr">theme</span>={gsTheme}&gt;
+      &lt;<span class="c-tag">div</span> <span class="c-attr">className</span>=<span class="c-val">"gs-tf-wrapper"</span>&gt;
+
+        {label &amp;&amp; (
+          &lt;<span class="c-tag">div</span> <span class="c-attr">className</span>=<span class="c-val">"gs-tf-label-row"</span>&gt;
+            &lt;<span class="c-tag">span</span> <span class="c-attr">className</span>=<span class="c-val">"gs-tf-label"</span>&gt;{label}&lt;/<span class="c-tag">span</span>&gt;
+            {required &amp;&amp; &lt;<span class="c-tag">span</span> <span class="c-attr">className</span>=<span class="c-val">"gs-tf-required"</span>&gt;*&lt;/<span class="c-tag">span</span>&gt;}
+          &lt;/<span class="c-tag">div</span>&gt;
+        )}
+
+        {multiline ? (
+          &lt;<span class="c-tag">TextArea</span>
+            <span class="c-attr">className</span>={cls}
+            <span class="c-attr">rows</span>={rows}
+            <span class="c-attr">status</span>={STATUS_MAP[status]}
+            {...props}
+          /&gt;
+        ) : (
+          &lt;<span class="c-tag">BaseInput</span>
+            <span class="c-attr">size</span>={SIZE_MAP[size]}
+            <span class="c-attr">status</span>={STATUS_MAP[status]}
+            <span class="c-attr">className</span>={cls}
+            <span class="c-attr">prefix</span>={prefix}
+            <span class="c-attr">suffix</span>={suffix}
+            <span class="c-attr">addonBefore</span>={addonBefore}
+            <span class="c-attr">addonAfter</span>={addonAfter}
+            {...props}
+          /&gt;
+        )}
+
+        {helpText &amp;&amp; (
+          &lt;<span class="c-tag">div</span> <span class="c-attr">className</span>={helpClass}&gt;{helpText}&lt;/<span class="c-tag">div</span>&gt;
+        )}
+
+      &lt;/<span class="c-tag">div</span>&gt;
+    &lt;/<span class="c-tag">ConfigProvider</span>&gt;
+  );
+};
+
+<span class="c-kw">export default</span> TextField;</pre>
+          </div>
+        </div>
+      </div>
+
+      <!-- ⑦ index.js barrel -->
+      <div class="btn-code-section">
+        <div class="ds-step-row">
+          <span class="ds-step-num">7</span>
+          <h3 class="ds-prop-title">TextField/index.js</h3>
+        </div>
+        <div class="btn-code-block">
+          <div class="btn-code-head">
+            <span class="btn-code-lang">JavaScript · Barrel Export</span>
+            <button class="btn-copy-btn" onclick="copyTfCode('tf-code-barrel',this)">Copy</button>
+          </div>
+          <div class="btn-code-body">
+            <pre id="tf-code-barrel"><span class="c-kw">export</span> { <span class="c-kw">default</span> } <span class="c-kw">from</span> <span class="c-val">'./TextField'</span>;
+<span class="c-kw">export</span> { <span class="c-kw">default as</span> TextField } <span class="c-kw">from</span> <span class="c-val">'./TextField'</span>;</pre>
+          </div>
+        </div>
+      </div>
+
+      <!-- ⑧ Usage Examples -->
+      <div class="btn-code-section">
+        <div class="ds-step-row">
+          <span class="ds-step-num">8</span>
+          <h3 class="ds-prop-title">Usage Examples</h3>
+        </div>
+
+        <!-- Basic -->
+        <p class="ds-label-upper">Basic inputs</p>
+        <div class="btn-code-block" style="margin-bottom:20px;">
+          <div class="btn-code-head">
+            <span class="btn-code-lang">JSX</span>
+            <button class="btn-copy-btn" onclick="copyTfCode('tf-code-basic',this)">Copy</button>
+          </div>
+          <div class="btn-code-body">
+            <pre id="tf-code-basic"><span class="c-kw">import</span> TextField <span class="c-kw">from</span> <span class="c-val">'./components/TextField'</span>;
+
+<span class="c-cmt">// Plain - large (default)</span>
+&lt;<span class="c-tag">TextField</span> <span class="c-attr">label</span>=<span class="c-val">"Email"</span> <span class="c-attr">placeholder</span>=<span class="c-val">"you@example.com"</span> /&gt;
+
+<span class="c-cmt">// Required with helper text</span>
+&lt;<span class="c-tag">TextField</span>
+  <span class="c-attr">label</span>=<span class="c-val">"Password"</span>
+  <span class="c-attr">required</span>
+  <span class="c-attr">type</span>=<span class="c-val">"password"</span>
+  <span class="c-attr">placeholder</span>=<span class="c-val">"••••••••"</span>
+  <span class="c-attr">helpText</span>=<span class="c-val">"Must be at least 8 characters"</span>
+/&gt;
+
+<span class="c-cmt">// Small size - compact UI</span>
+&lt;<span class="c-tag">TextField</span> <span class="c-attr">size</span>=<span class="c-val">"sm"</span> <span class="c-attr">placeholder</span>=<span class="c-val">"Filter…"</span> /&gt;
+
+<span class="c-cmt">// Disabled</span>
+&lt;<span class="c-tag">TextField</span> <span class="c-attr">label</span>=<span class="c-val">"API Key"</span> <span class="c-attr">value</span>=<span class="c-val">"sk-••••••••"</span> <span class="c-attr">disabled</span> /&gt;</pre>
+          </div>
+        </div>
+
+        <!-- Validation states -->
+        <p class="ds-label-upper">Validation states</p>
+        <div class="btn-code-block" style="margin-bottom:20px;">
+          <div class="btn-code-head">
+            <span class="btn-code-lang">JSX</span>
+            <button class="btn-copy-btn" onclick="copyTfCode('tf-code-validation',this)">Copy</button>
+          </div>
+          <div class="btn-code-body">
+            <pre id="tf-code-validation"><span class="c-cmt">// Error state - red border + ring + helper text</span>
+&lt;<span class="c-tag">TextField</span>
+  <span class="c-attr">label</span>=<span class="c-val">"Email"</span>
+  <span class="c-attr">status</span>=<span class="c-val">"error"</span>
+  <span class="c-attr">value</span>=<span class="c-val">"not-an-email"</span>
+  <span class="c-attr">helpText</span>=<span class="c-val">"Please enter a valid email address"</span>
+/&gt;
+
+<span class="c-cmt">// Success state - green border + ring</span>
+&lt;<span class="c-tag">TextField</span>
+  <span class="c-attr">label</span>=<span class="c-val">"Username"</span>
+  <span class="c-attr">status</span>=<span class="c-val">"success"</span>
+  <span class="c-attr">value</span>=<span class="c-val">"johndoe"</span>
+  <span class="c-attr">helpText</span>=<span class="c-val">"Username is available"</span>
+/&gt;</pre>
+          </div>
+        </div>
+
+        <!-- Icons & Addons -->
+        <p class="ds-label-upper">Icons &amp; addons</p>
+        <div class="btn-code-block" style="margin-bottom:20px;">
+          <div class="btn-code-head">
+            <span class="btn-code-lang">JSX</span>
+            <button class="btn-copy-btn" onclick="copyTfCode('tf-code-icons',this)">Copy</button>
+          </div>
+          <div class="btn-code-body">
+            <pre id="tf-code-icons"><span class="c-kw">import</span> { SearchOutlined, EyeOutlined } <span class="c-kw">from</span> <span class="c-val">'@ant-design/icons'</span>;
+
+<span class="c-cmt">// Prefix icon - search field</span>
+&lt;<span class="c-tag">TextField</span>
+  <span class="c-attr">placeholder</span>=<span class="c-val">"Search components…"</span>
+  <span class="c-attr">prefix</span>={&lt;<span class="c-tag">SearchOutlined</span> /&gt;}
+/&gt;
+
+<span class="c-cmt">// Suffix icon - password toggle</span>
+&lt;<span class="c-tag">TextField</span>
+  <span class="c-attr">label</span>=<span class="c-val">"Password"</span>
+  <span class="c-attr">type</span>=<span class="c-val">"password"</span>
+  <span class="c-attr">suffix</span>={&lt;<span class="c-tag">EyeOutlined</span> /&gt;}
+/&gt;
+
+<span class="c-cmt">// Addon before - URL prefix</span>
+&lt;<span class="c-tag">TextField</span>
+  <span class="c-attr">label</span>=<span class="c-val">"Website"</span>
+  <span class="c-attr">addonBefore</span>=<span class="c-val">"https://"</span>
+  <span class="c-attr">placeholder</span>=<span class="c-val">"geoserve.io"</span>
+/&gt;</pre>
+          </div>
+        </div>
+
+        <!-- Textarea -->
+        <p class="ds-label-upper">Textarea (multiline)</p>
+        <div class="btn-code-block">
+          <div class="btn-code-head">
+            <span class="btn-code-lang">JSX</span>
+            <button class="btn-copy-btn" onclick="copyTfCode('tf-code-textarea',this)">Copy</button>
+          </div>
+          <div class="btn-code-body">
+            <pre id="tf-code-textarea"><span class="c-cmt">// Multiline textarea</span>
+&lt;<span class="c-tag">TextField</span>
+  <span class="c-attr">label</span>=<span class="c-val">"Notes"</span>
+  <span class="c-attr">multiline</span>
+  <span class="c-attr">rows</span>={<span class="c-val">4</span>}
+  <span class="c-attr">placeholder</span>=<span class="c-val">"Add your notes here…"</span>
+  <span class="c-attr">helpText</span>=<span class="c-val">"Max 500 characters"</span>
+/&gt;</pre>
+          </div>
+        </div>
+      </div>
+
+      </div><!-- /fw-react -->
+
+      <!-- ANGULAR IMPLEMENTATION -->
+      <div class="fw-angular" style="display:none">
+
+        <p style="font-size:15px;line-height:1.75;color:#475569;margin:0 0 32px;">
+          The <code class="ds-code-tag">gs-textfield</code> component implements <code class="ds-code-tag">ControlValueAccessor</code> for seamless Angular Reactive Forms integration. Design tokens are consumed directly from CSS custom properties — no third-party theme layer needed.
+        </p>
+
+        <!-- ① Installation -->
+        <div class="btn-code-section">
+          <div class="ds-step-row"><span class="ds-step-num">1</span><h3 class="ds-prop-title">Installation</h3></div>
+          <div class="btn-code-block">
+            <div class="btn-code-head"><span class="btn-code-lang">bash</span><button class="btn-copy-btn" onclick="copyTfCode('ng-tf-install',this)">Copy</button></div>
+            <div class="btn-code-body"><pre id="ng-tf-install"><span class="c-cmt"># Sass is pre-installed in Angular CLI projects</span>
+npm install --save-dev sass</pre></div>
+          </div>
+        </div>
+
+        <!-- ② File Structure -->
+        <div class="btn-code-section">
+          <div class="ds-step-row"><span class="ds-step-num">2</span><h3 class="ds-prop-title">File Structure</h3></div>
+          <div class="btn-code-block">
+            <div class="btn-code-head"><span class="btn-code-lang">directory</span></div>
+            <div class="btn-code-body"><pre id="ng-tf-structure"><span class="c-cmt">src/
+├── tokens/
+│   └── tokens.css                       </span><span class="c-cmt">← DS CSS custom properties</span>
+<span class="c-cmt">├── styles/
+│   └── _variables.scss                  </span><span class="c-cmt">← SCSS bridge: $var: var(--tf-*)</span>
+<span class="c-cmt">└── app/
+    └── shared/
+        └── textfield/
+            ├── textfield.component.ts   </span><span class="c-cmt">← Standalone, implements CVA</span>
+<span class="c-cmt">            ├── textfield.component.html </span><span class="c-cmt">← Template</span>
+<span class="c-cmt">            ├── textfield.component.scss </span><span class="c-cmt">← Uses SCSS vars → CSS tokens</span>
+<span class="c-cmt">            └── textfield.module.ts      </span><span class="c-cmt">← NgModule re-export</span></pre></div>
+          </div>
+        </div>
+
+        <!-- ③ textfield.component.ts -->
+        <div class="btn-code-section">
+          <div class="ds-step-row"><span class="ds-step-num">3</span><h3 class="ds-prop-title">textfield/textfield.component.ts</h3></div>
+          <div class="btn-code-block">
+            <div class="btn-code-head"><span class="btn-code-lang">TypeScript · Angular</span><button class="btn-copy-btn" onclick="copyTfCode('ng-tf-component',this)">Copy</button></div>
+            <div class="btn-code-body"><pre id="ng-tf-component"><span class="c-kw">import</span> {
+  Component, Input, Output, EventEmitter, forwardRef
+} <span class="c-kw">from</span> <span class="c-val">'@angular/core'</span>;
+<span class="c-kw">import</span> { CommonModule } <span class="c-kw">from</span> <span class="c-val">'@angular/common'</span>;
+<span class="c-kw">import</span> {
+  ControlValueAccessor, NG_VALUE_ACCESSOR, ReactiveFormsModule
+} <span class="c-kw">from</span> <span class="c-val">'@angular/forms'</span>;
+
+@<span class="c-tag">Component</span>({
+  selector: <span class="c-val">'gs-textfield'</span>,
+  standalone: <span class="c-val">true</span>,
+  imports: [CommonModule, ReactiveFormsModule],
+  templateUrl: <span class="c-val">'./textfield.component.html'</span>,
+  styleUrls: [<span class="c-val">'./textfield.component.scss'</span>],
+  providers: [{
+    provide: NG_VALUE_ACCESSOR,
+    useExisting: forwardRef(() =&gt; TextfieldComponent),
+    multi: <span class="c-val">true</span>,
+  }],
+})
+<span class="c-kw">export class</span> TextfieldComponent <span class="c-kw">implements</span> ControlValueAccessor {
+  @<span class="c-tag">Input</span>() label = <span class="c-val">''</span>;
+  @<span class="c-tag">Input</span>() placeholder = <span class="c-val">''</span>;
+  @<span class="c-tag">Input</span>() hint = <span class="c-val">''</span>;
+  @<span class="c-tag">Input</span>() error = <span class="c-val">''</span>;
+  @<span class="c-tag">Input</span>() prefix = <span class="c-val">''</span>;
+  @<span class="c-tag">Input</span>() suffix = <span class="c-val">''</span>;
+  @<span class="c-tag">Input</span>() disabled = <span class="c-val">false</span>;
+  @<span class="c-tag">Input</span>() type = <span class="c-val">'text'</span>;
+  @<span class="c-tag">Output</span>() valueChange = <span class="c-kw">new</span> EventEmitter&lt;<span class="c-type">string</span>&gt;();
+
+  value = <span class="c-val">''</span>;
+  isFocused = <span class="c-val">false</span>;
+
+  onChange = (_: <span class="c-type">string</span>) =&gt; {};
+  onTouched = () =&gt; {};
+
+  writeValue(val: <span class="c-type">string</span>): <span class="c-type">void</span>             { <span class="c-kw">this</span>.value = val ?? <span class="c-val">''</span>; }
+  registerOnChange(fn: (_: <span class="c-type">string</span>) =&gt; <span class="c-type">void</span>): <span class="c-type">void</span> { <span class="c-kw">this</span>.onChange = fn; }
+  registerOnTouched(fn: () =&gt; <span class="c-type">void</span>): <span class="c-type">void</span>         { <span class="c-kw">this</span>.onTouched = fn; }
+  setDisabledState(d: <span class="c-type">boolean</span>): <span class="c-type">void</span>              { <span class="c-kw">this</span>.disabled = d; }
+
+  handleInput(event: Event): <span class="c-type">void</span> {
+    <span class="c-kw">const</span> val = (event.target <span class="c-kw">as</span> HTMLInputElement).value;
+    <span class="c-kw">this</span>.value = val;
+    <span class="c-kw">this</span>.onChange(val);
+    <span class="c-kw">this</span>.valueChange.emit(val);
+  }
+}</pre></div>
+          </div>
+        </div>
+
+        <!-- ④ textfield.component.html -->
+        <div class="btn-code-section">
+          <div class="ds-step-row"><span class="ds-step-num">4</span><h3 class="ds-prop-title">textfield/textfield.component.html</h3></div>
+          <div class="btn-code-block">
+            <div class="btn-code-head"><span class="btn-code-lang">HTML · Angular template</span><button class="btn-copy-btn" onclick="copyTfCode('ng-tf-template',this)">Copy</button></div>
+            <div class="btn-code-body"><pre id="ng-tf-template">&lt;<span class="c-tag">div</span>
+  <span class="c-attr">class</span>=<span class="c-val">"gs-tf"</span>
+  [<span class="c-attr">class.gs-tf--error</span>]=<span class="c-val">"error"</span>
+  [<span class="c-attr">class.gs-tf--disabled</span>]=<span class="c-val">"disabled"</span>
+&gt;
+  &lt;<span class="c-tag">label</span> *<span class="c-attr">ngIf</span>=<span class="c-val">"label"</span> <span class="c-attr">class</span>=<span class="c-val">"gs-tf__label"</span>&gt;{{ label }}&lt;/<span class="c-tag">label</span>&gt;
+
+  &lt;<span class="c-tag">div</span>
+    <span class="c-attr">class</span>=<span class="c-val">"gs-tf__input-wrap"</span>
+    [<span class="c-attr">class.gs-tf__input-wrap--focused</span>]=<span class="c-val">"isFocused"</span>
+  &gt;
+    &lt;<span class="c-tag">span</span> *<span class="c-attr">ngIf</span>=<span class="c-val">"prefix"</span> <span class="c-attr">class</span>=<span class="c-val">"gs-tf__prefix"</span>&gt;{{ prefix }}&lt;/<span class="c-tag">span</span>&gt;
+    &lt;<span class="c-tag">input</span>
+      [<span class="c-attr">type</span>]=<span class="c-val">"type"</span>
+      [<span class="c-attr">placeholder</span>]=<span class="c-val">"placeholder"</span>
+      [<span class="c-attr">disabled</span>]=<span class="c-val">"disabled"</span>
+      [<span class="c-attr">value</span>]=<span class="c-val">"value"</span>
+      <span class="c-attr">class</span>=<span class="c-val">"gs-tf__input"</span>
+      (<span class="c-attr">input</span>)=<span class="c-val">"handleInput($event)"</span>
+      (<span class="c-attr">focus</span>)=<span class="c-val">"isFocused = true"</span>
+      (<span class="c-attr">blur</span>)=<span class="c-val">"isFocused = false; onTouched()"</span>
+    /&gt;
+    &lt;<span class="c-tag">span</span> *<span class="c-attr">ngIf</span>=<span class="c-val">"suffix"</span> <span class="c-attr">class</span>=<span class="c-val">"gs-tf__suffix"</span>&gt;{{ suffix }}&lt;/<span class="c-tag">span</span>&gt;
+  &lt;/<span class="c-tag">div</span>&gt;
+
+  &lt;<span class="c-tag">span</span> *<span class="c-attr">ngIf</span>=<span class="c-val">"error"</span> <span class="c-attr">class</span>=<span class="c-val">"gs-tf__error"</span>&gt;{{ error }}&lt;/<span class="c-tag">span</span>&gt;
+  &lt;<span class="c-tag">span</span> *<span class="c-attr">ngIf</span>=<span class="c-val">"hint &amp;&amp; !error"</span> <span class="c-attr">class</span>=<span class="c-val">"gs-tf__hint"</span>&gt;{{ hint }}&lt;/<span class="c-tag">span</span>&gt;
+&lt;/<span class="c-tag">div</span>&gt;</pre></div>
+          </div>
+        </div>
+
+        <!-- ⑤ textfield.module.ts -->
+        <div class="btn-code-section">
+          <div class="ds-step-row"><span class="ds-step-num">5</span><h3 class="ds-prop-title">textfield/textfield.module.ts</h3></div>
+          <div class="btn-code-block">
+            <div class="btn-code-head"><span class="btn-code-lang">TypeScript · NgModule</span><button class="btn-copy-btn" onclick="copyTfCode('ng-tf-module',this)">Copy</button></div>
+            <div class="btn-code-body"><pre id="ng-tf-module"><span class="c-kw">import</span> { NgModule } <span class="c-kw">from</span> <span class="c-val">'@angular/core'</span>;
+<span class="c-kw">import</span> { TextfieldComponent } <span class="c-kw">from</span> <span class="c-val">'./textfield.component'</span>;
+
+@<span class="c-tag">NgModule</span>({
+  imports:  [TextfieldComponent],
+  exports:  [TextfieldComponent],
+})
+<span class="c-kw">export class</span> TextfieldModule {}</pre></div>
+          </div>
+        </div>
+
+        <!-- ⑥ Usage Examples -->
+        <div class="btn-code-section">
+          <div class="ds-step-row"><span class="ds-step-num">6</span><h3 class="ds-prop-title">Usage Examples</h3></div>
+
+          <p class="ds-label-upper">Basic usage</p>
+          <div class="btn-code-block" style="margin-bottom:20px;">
+            <div class="btn-code-head"><span class="btn-code-lang">HTML · Angular template</span><button class="btn-copy-btn" onclick="copyTfCode('ng-tf-basic',this)">Copy</button></div>
+            <div class="btn-code-body"><pre id="ng-tf-basic"><span class="c-cmt">&lt;!-- Basic --&gt;</span>
+&lt;<span class="c-tag">gs-textfield</span>
+  <span class="c-attr">label</span>=<span class="c-val">"Vessel Name"</span>
+  <span class="c-attr">placeholder</span>=<span class="c-val">"Enter vessel name"</span>
+&gt;&lt;/<span class="c-tag">gs-textfield</span>&gt;
+
+<span class="c-cmt">&lt;!-- With hint --&gt;</span>
+&lt;<span class="c-tag">gs-textfield</span>
+  <span class="c-attr">label</span>=<span class="c-val">"Port of Departure"</span>
+  <span class="c-attr">placeholder</span>=<span class="c-val">"e.g. Singapore"</span>
+  <span class="c-attr">hint</span>=<span class="c-val">"Enter the LOCODE or full port name"</span>
+&gt;&lt;/<span class="c-tag">gs-textfield</span>&gt;
+
+<span class="c-cmt">&lt;!-- With error --&gt;</span>
+&lt;<span class="c-tag">gs-textfield</span>
+  <span class="c-attr">label</span>=<span class="c-val">"IMO Number"</span>
+  [<span class="c-attr">error</span>]=<span class="c-val">"'IMO number is required'"</span>
+&gt;&lt;/<span class="c-tag">gs-textfield</span>&gt;
+
+<span class="c-cmt">&lt;!-- Disabled --&gt;</span>
+&lt;<span class="c-tag">gs-textfield</span>
+  <span class="c-attr">label</span>=<span class="c-val">"Vessel Class"</span>
+  [<span class="c-attr">disabled</span>]=<span class="c-val">"true"</span>
+  <span class="c-attr">placeholder</span>=<span class="c-val">"Auto-detected"</span>
+&gt;&lt;/<span class="c-tag">gs-textfield</span>&gt;</pre></div>
+          </div>
+
+          <p class="ds-label-upper">Reactive Forms integration</p>
+          <div class="btn-code-block" style="margin-bottom:20px;">
+            <div class="btn-code-head"><span class="btn-code-lang">TypeScript · Component</span><button class="btn-copy-btn" onclick="copyTfCode('ng-tf-reactive-ts',this)">Copy</button></div>
+            <div class="btn-code-body"><pre id="ng-tf-reactive-ts"><span class="c-kw">import</span> { Component } <span class="c-kw">from</span> <span class="c-val">'@angular/core'</span>;
+<span class="c-kw">import</span> { FormBuilder, Validators, ReactiveFormsModule } <span class="c-kw">from</span> <span class="c-val">'@angular/forms'</span>;
+<span class="c-kw">import</span> { TextfieldModule } <span class="c-kw">from</span> <span class="c-val">'./shared/textfield/textfield.module'</span>;
+
+@<span class="c-tag">Component</span>({
+  standalone: <span class="c-val">true</span>,
+  imports: [TextfieldModule, ReactiveFormsModule],
+  template: `
+    &lt;<span class="c-tag">form</span> [<span class="c-attr">formGroup</span>]=<span class="c-val">"form"</span> (<span class="c-attr">ngSubmit</span>)=<span class="c-val">"onSubmit()"</span>&gt;
+      &lt;<span class="c-tag">gs-textfield</span>
+        <span class="c-attr">label</span>=<span class="c-val">"Vessel Name"</span>
+        <span class="c-attr">formControlName</span>=<span class="c-val">"vesselName"</span>
+        [<span class="c-attr">error</span>]=<span class="c-val">"nameError"</span>
+      &gt;&lt;/<span class="c-tag">gs-textfield</span>&gt;
+      &lt;<span class="c-tag">gs-textfield</span>
+        <span class="c-attr">label</span>=<span class="c-val">"IMO Number"</span>
+        <span class="c-attr">formControlName</span>=<span class="c-val">"imoNumber"</span>
+        <span class="c-attr">hint</span>=<span class="c-val">"7-digit IMO identifier"</span>
+        [<span class="c-attr">error</span>]=<span class="c-val">"imoError"</span>
+      &gt;&lt;/<span class="c-tag">gs-textfield</span>&gt;
+    &lt;/<span class="c-tag">form</span>&gt;
+  `,
+})
+<span class="c-kw">export class</span> VesselFormComponent {
+  form = <span class="c-kw">this</span>.fb.group({
+    vesselName: [<span class="c-val">''</span>, Validators.required],
+    imoNumber:  [<span class="c-val">''</span>, [Validators.required, Validators.pattern(<span class="c-val">/^\d{7}$/</span>)]],
+  });
+
+  <span class="c-kw">get</span> nameError() {
+    <span class="c-kw">const</span> c = <span class="c-kw">this</span>.form.get(<span class="c-val">'vesselName'</span>);
+    <span class="c-kw">return</span> c?.invalid &amp;&amp; c?.touched ? <span class="c-val">'Vessel name is required'</span> : <span class="c-val">''</span>;
+  }
+  <span class="c-kw">get</span> imoError() {
+    <span class="c-kw">const</span> c = <span class="c-kw">this</span>.form.get(<span class="c-val">'imoNumber'</span>);
+    <span class="c-kw">if</span> (!c?.invalid || !c?.touched) <span class="c-kw">return</span> <span class="c-val">''</span>;
+    <span class="c-kw">return</span> c.errors?.['required'] ? <span class="c-val">'IMO number is required'</span> : <span class="c-val">'Must be 7 digits'</span>;
+  }
+
+  <span class="c-kw">constructor</span>(<span class="c-kw">private</span> fb: FormBuilder) {}
+  onSubmit() { <span class="c-kw">if</span> (<span class="c-kw">this</span>.form.valid) console.log(<span class="c-kw">this</span>.form.value); }
+}</pre></div>
+          </div>
+
+          <p class="ds-label-upper">With prefix / suffix</p>
+          <div class="btn-code-block">
+            <div class="btn-code-head"><span class="btn-code-lang">HTML · Angular template</span><button class="btn-copy-btn" onclick="copyTfCode('ng-tf-affixes',this)">Copy</button></div>
+            <div class="btn-code-body"><pre id="ng-tf-affixes"><span class="c-cmt">&lt;!-- Speed with knot unit --&gt;</span>
+&lt;<span class="c-tag">gs-textfield</span>
+  <span class="c-attr">label</span>=<span class="c-val">"Speed"</span>
+  <span class="c-attr">type</span>=<span class="c-val">"number"</span>
+  <span class="c-attr">suffix</span>=<span class="c-val">"kt"</span>
+  <span class="c-attr">placeholder</span>=<span class="c-val">"0"</span>
+&gt;&lt;/<span class="c-tag">gs-textfield</span>&gt;
+
+<span class="c-cmt">&lt;!-- Search with prefix icon --&gt;</span>
+&lt;<span class="c-tag">gs-textfield</span>
+  <span class="c-attr">placeholder</span>=<span class="c-val">"Search voyages…"</span>
+  <span class="c-attr">prefix</span>=<span class="c-val">"🔍"</span>
+&gt;&lt;/<span class="c-tag">gs-textfield</span>&gt;</pre></div>
+          </div>
+        </div>
+
+      </div><!-- /fw-angular -->
+
+      <!-- Props Reference -->
+      <h3 style="font-size:15px;font-weight:700;color:#0f172a;margin:32px 0 14px;">Props Reference</h3>
+      <div style="background:#fff;border-radius:12px;overflow:hidden;border:1px solid #e8ecf4;">
+        <table style="width:100%;border-collapse:collapse;font-size:13px;">
+          <thead>
+            <tr style="border-bottom:1px solid #e8ecf4;">
+              <th style="text-align:left;padding:10px 16px;font-size:11px;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:0.06em;background:#f8fafc;">Prop</th>
+              <th style="text-align:left;padding:10px 16px;font-size:11px;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:0.06em;background:#f8fafc;">Values</th>
+              <th style="text-align:left;padding:10px 16px;font-size:11px;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:0.06em;background:#f8fafc;">Default</th>
+              <th style="text-align:left;padding:10px 16px;font-size:11px;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:0.06em;background:#f8fafc;">Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="ds-tr-border">
+              <td class="ds-td-code-primary">size</td>
+              <td class="ds-td-code-muted">'lg' · 'sm'</td>
+              <td class="ds-td-code-warn">'lg'</td>
+              <td class="ds-td-value">Controls height - Large (40 px) for forms, Small (32 px) for compact UIs.</td>
+            </tr>
+            <tr class="ds-tr-border">
+              <td class="ds-td-code-primary">status</td>
+              <td class="ds-td-code-muted">'default' · 'error' · 'success'</td>
+              <td class="ds-td-code-warn">'default'</td>
+              <td class="ds-td-value">Drives border colour, focus ring colour, and help-text colour via CSS tokens.</td>
+            </tr>
+            <tr class="ds-tr-border">
+              <td class="ds-td-code-primary">label</td>
+              <td class="ds-td-code-muted">string</td>
+              <td class="ds-td-faint">-</td>
+              <td class="ds-td-value">Rendered above the input. Omit for unlabelled compact fields.</td>
+            </tr>
+            <tr class="ds-tr-border">
+              <td class="ds-td-code-primary">required</td>
+              <td class="ds-td-code-muted">boolean</td>
+              <td class="ds-td-code-warn">false</td>
+              <td class="ds-td-value">Appends a red asterisk <code class="ds-inline-tag">*</code> to the label.</td>
+            </tr>
+            <tr class="ds-tr-border">
+              <td class="ds-td-code-primary">helpText</td>
+              <td class="ds-td-code-muted">string</td>
+              <td class="ds-td-faint">-</td>
+              <td class="ds-td-value">Renders below the input. Colour inherits from <code class="ds-inline-tag">status</code>.</td>
+            </tr>
+            <tr class="ds-tr-border">
+              <td class="ds-td-code-primary">prefix</td>
+              <td class="ds-td-code-muted">ReactNode</td>
+              <td class="ds-td-faint">-</td>
+              <td class="ds-td-value">Icon or text placed inside the input, before the value.</td>
+            </tr>
+            <tr class="ds-tr-border">
+              <td class="ds-td-code-primary">suffix</td>
+              <td class="ds-td-code-muted">ReactNode</td>
+              <td class="ds-td-faint">-</td>
+              <td class="ds-td-value">Icon or text placed inside the input, after the value.</td>
+            </tr>
+            <tr class="ds-tr-border">
+              <td class="ds-td-code-primary">addonBefore</td>
+              <td class="ds-td-code-muted">ReactNode</td>
+              <td class="ds-td-faint">-</td>
+              <td class="ds-td-value">Block addon rendered outside and to the left of the input box (e.g. <code class="ds-inline-tag">https://</code>).</td>
+            </tr>
+            <tr class="ds-tr-border">
+              <td class="ds-td-code-primary">addonAfter</td>
+              <td class="ds-td-code-muted">ReactNode</td>
+              <td class="ds-td-faint">-</td>
+              <td class="ds-td-value">Block addon rendered outside and to the right of the input box.</td>
+            </tr>
+            <tr class="ds-tr-border">
+              <td class="ds-td-code-primary">multiline</td>
+              <td class="ds-td-code-muted">boolean</td>
+              <td class="ds-td-code-warn">false</td>
+              <td class="ds-td-value">Switches the input to a resizable <code class="ds-inline-tag">TextArea</code>. Use with <code class="ds-inline-tag">rows</code>.</td>
+            </tr>
+            <tr class="ds-tr-border">
+              <td class="ds-td-code-primary">rows</td>
+              <td class="ds-td-code-muted">number</td>
+              <td class="ds-td-code-warn">3</td>
+              <td class="ds-td-value">Initial visible row count when <code class="ds-inline-tag">multiline</code> is true.</td>
+            </tr>
+            <tr>
+              <td class="ds-td-code-primary">...rest</td>
+              <td class="ds-td-code-muted">HTMLInputAttributes</td>
+              <td class="ds-td-faint">-</td>
+              <td class="ds-td-value">All native input props (<code class="ds-inline-tag">value</code>, <code class="ds-inline-tag">onChange</code>, <code class="ds-inline-tag">disabled</code>, <code class="ds-inline-tag">type</code>, etc.) are forwarded.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+        </div><!-- /code-tab-main -->
+        <div class="code-tab-qnav">
+          <div class="code-qnav-inner">
+            <p class="code-qnav-title">On This Page</p>
+            <ul class="code-qnav-list">
+              <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('tf-c-install')">Installation</button></li>
+              <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('tf-c-struct')">File Structure</button></li>
+              <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('tf-c-usage')">Usage Examples</button></li>
+            </ul>
+          </div>
+        </div>
+      </div><!-- /code-tab-layout -->
+    </div><!-- /code tab -->
+
+    <!-- ========== USAGE TAB ========== -->
+    <div id="tf-tab-usage" class="tf-tab-pane">
+      <div class="code-tab-layout">
+        <div class="code-tab-main">
+
+
+      <p style="font-size:15px;line-height:1.75;color:#475569;margin:0 0 32px;">Text fields are one of the most frequently used controls in any interface. Correct sizing, labelling, and validation feedback reduces form error rates and builds user trust.</p>
+
+      <!-- When to use - horizontal, compact -->
+      <h2 class="ds-section-heading" id="tf-u-when">When to Use Each Size</h2>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:32px;">
+        <div class="btn-when-card">
+          <div style="margin-bottom:10px;"><div class="gs-tf-box" style="max-width:180px;"><input class="gs-tf-input" placeholder="Large - type here…"></div></div>
+          <div class="btn-when-card-title">Large - 40 px</div>
+          <p class="btn-when-card-desc">Default for all standard forms - login, sign-up, settings, checkout. Comfortable touch target at any viewport.</p>
+          <div class="btn-when-examples">
+            <span class="btn-when-example-tag">Login forms</span>
+            <span class="btn-when-example-tag">Settings</span>
+            <span class="btn-when-example-tag">Checkout</span>
+          </div>
+        </div>
+        <div class="btn-when-card">
+          <div style="margin-bottom:10px;">
+            <div class="gs-tf-box size-sm" style="max-width:160px;">
+              <span class="gs-tf-icon"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><use href="#gsi-search2"/></svg></span>
+              <input class="gs-tf-input" placeholder="Small - type here…">
+            </div>
+          </div>
+          <div class="btn-when-card-title">Small - 32 px</div>
+          <p class="btn-when-card-desc">Dense UIs where vertical space is scarce. Toolbars, inline table filters, sidebars - never in primary data-entry flows.</p>
+          <div class="btn-when-examples">
+            <span class="btn-when-example-tag">Table filters</span>
+            <span class="btn-when-example-tag">Toolbars</span>
+            <span class="btn-when-example-tag">Sidebars</span>
+          </div>
+        </div>
+      </div><!-- /when-to-use grid -->
+
+      <!-- Form example - interactive -->
+      <h2 class="ds-section-heading" id="tf-u-example">Form Example</h2>
+      <div style="background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:28px;max-width:440px;margin-bottom:32px;">
+        <div style="font-size:15px;font-weight:700;color:#0f172a;margin-bottom:20px;">Create account</div>
+        <div style="display:flex;flex-direction:column;gap:16px;">
+          <div class="gs-tf-wrapper">
+            <div class="gs-tf-label-row"><span class="gs-tf-label">Full name</span><span class="gs-tf-required">*</span></div>
+            <div class="gs-tf-box"><input class="gs-tf-input" placeholder="Jane Doe"></div>
+          </div>
+          <div class="gs-tf-wrapper">
+            <div class="gs-tf-label-row"><span class="gs-tf-label">Email address</span><span class="gs-tf-required">*</span></div>
+            <div class="gs-tf-box status-error"><input class="gs-tf-input" value="janedoe@@"></div>
+            <div class="gs-tf-help is-error">Enter a valid email address</div>
+          </div>
+          <div class="gs-tf-wrapper">
+            <div class="gs-tf-label-row"><span class="gs-tf-label">Password</span><span class="gs-tf-required">*</span></div>
+            <div class="gs-tf-box">
+              <input class="gs-tf-input" type="password" value="mypassword">
+              <span class="gs-tf-icon" style="cursor:pointer;"><svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><use href="#gsi-eye-open"/></svg></span>
+            </div>
+            <div class="gs-tf-help">Must be at least 8 characters</div>
+          </div>
+          <div class="gs-tf-wrapper">
+            <div class="gs-tf-label-row"><span class="gs-tf-label">Username</span></div>
+            <div class="gs-tf-box status-success"><input class="gs-tf-input" value="janedoe"></div>
+            <div class="gs-tf-help is-success">Username is available</div>
+          </div>
+        </div>
+        <div style="margin-top:20px;display:flex;gap:10px;">
+          <button class="gs-btn gs-btn-neutral gs-btn-md">Cancel</button>
+          <button class="gs-btn gs-btn-primary gs-btn-md">Create account</button>
+        </div>
+      </div>
+
+      <!-- Dos & Don'ts -->
+      <h2 class="ds-section-heading" id="tf-u-dosdonts">Dos &amp; Don'ts</h2>
+      <div class="btn-dos-donts">
+        <div class="btn-do-card">
+          <h4>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            Do
+          </h4>
+          <ul>
+            <li>Always include a <strong>visible label</strong> above the field - never rely solely on placeholder text</li>
+            <li>Use <strong>error state</strong> with a descriptive <code>helpText</code> message immediately after form submission or real-time validation</li>
+            <li>Mark <strong>required fields</strong> with the asterisk <code>required</code> prop; mention optionality only for optional fields</li>
+            <li>Use <strong>Large</strong> size as the default; switch to Small only when space is genuinely constrained</li>
+            <li>Use <code>type="password"</code> with an eye-toggle suffix for password fields</li>
+            <li>Provide <strong>auto-complete</strong> hints (<code>autoComplete="email"</code>) to aid browser and password-manager support</li>
+          </ul>
+        </div>
+        <div class="btn-dont-card">
+          <h4>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            Don't
+          </h4>
+          <ul>
+            <li>Don't use placeholder text as a substitute for a label - it disappears on focus and fails contrast requirements</li>
+            <li>Don't show error state on an <strong>untouched</strong> field before the user has had a chance to interact</li>
+            <li>Don't mix Large and Small inputs in the same horizontal row - heights must be consistent</li>
+            <li>Don't truncate or wrap the label - use concise, single-line label copy</li>
+            <li>Don't use a textarea when a single line will do - reserve multiline for genuinely open-ended input</li>
+            <li>Don't disable a field without providing context; use a <code>helpText</code> or tooltip explaining why</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Accessibility -->
+      <h2 class="ds-section-heading" id="tf-u-a11y">Accessibility</h2>
+      <div class="btn-a11y-card">
+        <h3>WCAG 2.1 AA Checklist</h3>
+        <div class="btn-a11y-row">
+          <div class="btn-a11y-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+          <div class="btn-a11y-text">Every input must have an associated <code>&lt;label&gt;</code> element. Use the <code>label</code> prop - it renders a visible label. Never use <code>aria-label</code> as a replacement for visible text unless the field is icon-only.</div>
+        </div>
+        <div class="btn-a11y-row">
+          <div class="btn-a11y-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+          <div class="btn-a11y-text">Error messages rendered via <code>helpText</code> should be linked to the input with <code>aria-describedby</code> so screen readers announce the message on focus. Add <code>aria-invalid="true"</code> when <code>status="error"</code>.</div>
+        </div>
+        <div class="btn-a11y-row">
+          <div class="btn-a11y-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+          <div class="btn-a11y-text">Focus rings use <code>box-shadow</code> only - no <code>outline-offset</code> gap between the border and ring. The 3px glow passes WCAG 2.4.11 (Focus Appearance) at all sizes.</div>
+        </div>
+        <div class="btn-a11y-row">
+          <div class="btn-a11y-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+          <div class="btn-a11y-text">All text colours meet WCAG AA contrast: label (#334154 on #fff) 10.2:1 · placeholder (#64748b on #fff) 5.9:1 · error message (#b91c1b on #fff) 6.3:1 · success message (#147638 on #fff) 7.1:1.</div>
+        </div>
+        <div class="btn-a11y-row">
+          <div class="btn-a11y-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+          <div class="btn-a11y-text">Don't rely on colour alone to communicate error state - always pair the red border with an explicit <code>helpText</code> error message.</div>
+        </div>
+        <div class="btn-a11y-row">
+          <div class="btn-a11y-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+          <div class="btn-a11y-text">Minimum touch target for the Large size is 40×40px. For Small (32px height), ensure the surrounding tap area is padded to at least 40px on touch devices.</div>
+        </div>
+      </div>
+
+        </div><!-- /code-tab-main -->
+        <div class="code-tab-qnav">
+          <div class="code-qnav-inner">
+            <p class="code-qnav-title">Quick Access</p>
+            <ul class="code-qnav-list">
+              <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('tf-u-when')">When to Use Each Size</button></li>
+              <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('tf-u-example')">Form Example</button></li>
+              <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('tf-u-dosdonts')">Dos &amp; Don'ts</button></li>
+              <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('tf-u-a11y')">Accessibility</button></li>
+            </ul>
+          </div>
+        </div>
+      </div><!-- /code-tab-layout -->
+    </div><!-- /usage tab -->

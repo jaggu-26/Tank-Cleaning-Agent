@@ -1,0 +1,18 @@
+/**
+ * Pelagos Design System — Foundations Entry Point
+ * foundations/index.css
+ *
+ * Import this single file to get all design tokens:
+ *
+ *   @import 'foundations/index.css';
+ *
+ * Or import individual files for tree-shaking:
+ *
+ *   @import 'foundations/colors.css';
+ *   @import 'foundations/typography.css';
+ *   @import 'foundations/spacing.css';
+ */
+
+@import './colors.css';
+@import './typography.css';
+@import './spacing.css';

@@ -1,0 +1,1163 @@
+<!-- ═══════════════════════════════════════════════════════════════
+     TOOLTIP — Pelagos Design System
+     ═══════════════════════════════════════════════════════════════ -->
+
+<!-- Tooltip styles — Figma 6209-492 · Ant Design rotated-square arrow pattern -->
+<style>
+/* ══════════════════════════════════════════════════════════════════════════════
+   PELAGOS TOOLTIP — gs-tt
+   Ant Design arrow pattern: rotated 8×8px square with background:inherit.
+   The half inside the tooltip is invisible (same bg); the protruding half
+   forms the arrow tip. filter:drop-shadow on the tooltip wraps BOTH the
+   body and the arrow together — unlike box-shadow which ignores ::before.
+
+   Tokens used:
+     --prim-blue-900   #001e4c  dark bg
+     --prim-grey-800   #1e293b  light text
+     --color-text-secondary     muted text fallback
+═══════════════════════════════════════════════════════════════════════════════ */
+
+/* ── Wrapper ─────────────────────────────────────────────────────────────── */
+.gs-tt-wrap { position:relative; display:inline-flex; }
+
+/* ── Base tooltip ────────────────────────────────────────────────────────── */
+.gs-tt {
+  position:       absolute;
+  z-index:        9999;
+  max-width:      240px;
+  padding:        6px 10px;
+  border-radius:  6px;
+  font-family:    var(--prim-font-primary);
+  font-size:      12px;
+  font-weight:    var(--prim-font-weight-semibold);
+  line-height:    16px;
+  white-space:    nowrap;
+  pointer-events: none;
+  /* Hidden until .is-visible added */
+  opacity:    0;
+  visibility: hidden;
+  transition: opacity 120ms ease, visibility 120ms ease;
+}
+
+/* ── Dark theme (default) ─ token: --prim-blue-900 ──────────────────────── */
+.gs-tt--dark {
+  background: var(--prim-blue-900, #001e4c);
+  color:      #ffffff;
+  /* filter:drop-shadow applies to ::before arrow too — box-shadow doesn't */
+  filter:     drop-shadow(0 3px 8px rgba(0,0,0,0.25));
+}
+
+/* ── Light theme ─ token: white + --prim-grey-800 ───────────────────────── */
+.gs-tt--light {
+  background: #ffffff;
+  color:      var(--prim-grey-800, #1e293b);
+  filter:     drop-shadow(0 2px 8px rgba(0,0,0,0.13));
+}
+
+/* ── Visible state ───────────────────────────────────────────────────────── */
+.gs-tt.is-visible { opacity:1; visibility:visible; }
+
+/* ── Placements ──────────────────────────────────────────────────────────── */
+.gs-tt--top    { bottom:calc(100% + 10px); left:50%; transform:translateX(-50%); }
+.gs-tt--bottom { top:   calc(100% + 10px); left:50%; transform:translateX(-50%); }
+.gs-tt--left   { right: calc(100% + 10px); top: 50%; transform:translateY(-50%); }
+.gs-tt--right  { left:  calc(100% + 10px); top: 50%; transform:translateY(-50%); }
+
+/* ── Entrance animations (Ant Design spring curve) ───────────────────────── */
+.gs-tt--top.is-visible    { animation: tt-in-top    160ms cubic-bezier(0.23,1,0.32,1) both; }
+.gs-tt--bottom.is-visible { animation: tt-in-bottom 160ms cubic-bezier(0.23,1,0.32,1) both; }
+.gs-tt--left.is-visible   { animation: tt-in-left   160ms cubic-bezier(0.23,1,0.32,1) both; }
+.gs-tt--right.is-visible  { animation: tt-in-right  160ms cubic-bezier(0.23,1,0.32,1) both; }
+
+@keyframes tt-in-top    { from{opacity:0;transform:translateX(-50%) translateY( 6px)} to{opacity:1;transform:translateX(-50%) translateY(0)} }
+@keyframes tt-in-bottom { from{opacity:0;transform:translateX(-50%) translateY(-6px)} to{opacity:1;transform:translateX(-50%) translateY(0)} }
+@keyframes tt-in-left   { from{opacity:0;transform:translateY(-50%) translateX( 6px)} to{opacity:1;transform:translateY(-50%) translateX(0)} }
+@keyframes tt-in-right  { from{opacity:0;transform:translateY(-50%) translateX(-6px)} to{opacity:1;transform:translateY(-50%) translateX(0)} }
+
+/* ── Arrow — Ant Design rotated-square pattern ───────────────────────────────
+   8×8px square, rotated 45°, background:inherit.
+   The half inside the tooltip disappears (same bg). The half outside = arrow.
+   filter:drop-shadow on the parent wraps everything correctly.
+   Radius on the protruding corner matches Ant Design's subtle softening.
+──────────────────────────────────────────────────────────────────────────── */
+.gs-tt--arrow::before {
+  content:''; position:absolute;
+  width:8px; height:8px;
+  background:inherit;             /* matches dark or light bg automatically */
+  transform:rotate(45deg);
+}
+
+/* placement=top   → tooltip above  → arrow at BOTTOM, points ↓ */
+.gs-tt--arrow.gs-tt--top::before    { bottom:-4px; left:50%; margin-left:-4px; border-radius:0 0 2px 0; }
+
+/* placement=bottom → tooltip below → arrow at TOP, points ↑ */
+.gs-tt--arrow.gs-tt--bottom::before { top:-4px;    left:50%; margin-left:-4px; border-radius:2px 0 0 0; }
+
+/* placement=left   → tooltip left  → arrow at RIGHT, points → */
+.gs-tt--arrow.gs-tt--left::before   { right:-4px;  top:50%;  margin-top:-4px;  border-radius:0 2px 0 0; }
+
+/* placement=right  → tooltip right → arrow at LEFT, points ← */
+.gs-tt--arrow.gs-tt--right::before  { left:-4px;   top:50%;  margin-top:-4px;  border-radius:0 0 0 2px; }
+
+/* ── Demo helpers ────────────────────────────────────────────────────────── */
+.gs-ttdemo { position:relative; display:inline-flex; flex-direction:column; align-items:center; gap:0; }
+.gs-ttdemo-trigger { cursor:pointer; }
+.gs-ttdemo-trigger:focus-visible { outline:2px solid var(--color-brand); outline-offset:2px; }
+
+/* variant comparison grid */
+.tt-variant-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(180px,1fr)); gap:16px; margin-top:16px; }
+.tt-variant-cell {
+  display:flex; flex-direction:column; align-items:center; justify-content:flex-end;
+  gap:0; padding:28px 16px 16px;
+  background:var(--color-surface-subtle); border:1px solid var(--color-border-default);
+  border-radius:var(--radius-md); min-height:120px;
+}
+.tt-variant-cell--dark-bg {
+  background:var(--prim-grey-900,#0f172a); border-color:var(--prim-grey-800,#1e293b);
+}
+.tt-variant-cell-label {
+  margin-top:14px; font-family:var(--prim-font-primary);
+  font-size:11px; color:var(--color-text-placeholder); font-weight:500;
+  text-align:center;
+}
+</style>
+
+<!-- BANNER -->
+<div class="page-header">
+  <h1 class="ds-hero-title">Tooltip</h1>
+</div>
+
+<!-- TAB BAR -->
+<div class="btn-tab-bar">
+  <button class="btn-tab-btn tt-tab-btn active" data-tab="design" onclick="switchTooltipTab('design')">Design</button>
+  <button class="btn-tab-btn tt-tab-btn" data-tab="code"   onclick="switchTooltipTab('code')">Code</button>
+  <button class="btn-tab-btn tt-tab-btn" data-tab="usage"  onclick="switchTooltipTab('usage')">Usage</button>
+</div>
+
+<!-- ═══ DESIGN TAB ═══════════════════════════════════════════════════ -->
+<div id="tt-tab-design" class="btn-tab-pane tt-tab-pane active">
+  <div class="code-tab-layout">
+    <div class="code-tab-main">
+
+      <!-- OVERVIEW -->
+      <div id="tt-s-overview" class="btn-family-card">
+        <div class="btn-family-title">Overview</div>
+        <p class="btn-family-desc">Tooltips are small, transient informational pop-overs that appear when users hover over, focus on, or tap a trigger element. They surface supplementary context — labels for icon-only buttons, keyboard shortcuts, truncated text — without cluttering the UI. Pelagos tooltips support 12 placement positions, a dark and a light theme, and optional rich content (title + description).</p>
+
+        <div class="btn-preview-strip" style="display:flex;gap:48px;align-items:center;flex-wrap:wrap;padding:52px 32px;background:var(--color-surface-subtle);border:1px solid var(--color-border-default);border-radius:var(--radius-lg);margin-top:16px;justify-content:center;">
+
+          <!-- Dark tooltip — top -->
+          <div class="gs-ttdemo">
+            <div class="gs-tt gs-tt--top gs-tt--dark gs-tt--arrow" id="tt-p1"
+              style="background:var(--prim-grey-700);color:var(--prim-white);font-family:var(--prim-font-primary);font-size:var(--prim-font-size-sm);font-weight:var(--prim-font-weight-medium);padding:6px 10px;border-radius:var(--radius-sm);">
+              Save changes
+              <span class="gs-ttdemo-arrow--up" style="border-top-color:var(--prim-grey-700);"></span>
+            </div>
+            <button class="gs-ttdemo-trigger"
+              style="background:var(--color-brand);color:var(--prim-white);border:none;border-radius:var(--radius-sm);padding:8px 16px;font-family:var(--prim-font-primary);font-size:var(--prim-font-size-md);font-weight:var(--prim-font-weight-semibold);"
+              onmouseenter="gsShowTooltipDemo('tt-p1')" onmouseleave="gsHideTooltipDemo('tt-p1')"
+              onfocus="gsShowTooltipDemo('tt-p1')" onblur="gsHideTooltipDemo('tt-p1')">
+              Hover me ↑
+            </button>
+          </div>
+
+          <!-- Dark tooltip — right -->
+          <div style="display:flex;align-items:center;gap:0;">
+            <div class="gs-ttdemo" style="flex-direction:row;align-items:center;gap:0;">
+              <button class="gs-ttdemo-trigger"
+                style="width:36px;height:36px;background:var(--color-surface-overlay);border:1px solid var(--color-border-default);border-radius:var(--radius-md);display:flex;align-items:center;justify-content:center;"
+                onmouseenter="gsShowTooltipDemo('tt-p2')" onmouseleave="gsHideTooltipDemo('tt-p2')"
+                onfocus="gsShowTooltipDemo('tt-p2')" onblur="gsHideTooltipDemo('tt-p2')"
+                aria-label="More information">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--color-text-secondary)" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+              </button>
+              <div class="gs-tt gs-tt--right gs-tt--dark gs-tt--arrow" id="tt-p2"
+                style="background:var(--prim-grey-700);color:var(--prim-white);font-family:var(--prim-font-primary);font-size:var(--prim-font-size-sm);font-weight:var(--prim-font-weight-medium);padding:6px 10px;border-radius:var(--radius-sm);">
+                More information
+                <span class="gs-ttdemo-arrow--left" style="border-right-color:var(--prim-grey-700);"></span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Light tooltip — bottom -->
+          <div class="gs-ttdemo">
+            <button class="gs-ttdemo-trigger"
+              style="background:var(--color-surface-default);color:var(--color-text-secondary);border:1px solid var(--color-border-default);border-radius:var(--radius-sm);padding:8px 16px;font-family:var(--prim-font-primary);font-size:var(--prim-font-size-md);font-weight:var(--prim-font-weight-semibold);"
+              onmouseenter="gsShowTooltipDemo('tt-p3')" onmouseleave="gsHideTooltipDemo('tt-p3')"
+              onfocus="gsShowTooltipDemo('tt-p3')" onblur="gsHideTooltipDemo('tt-p3')">
+              Hover me ↓
+            </button>
+            <div class="gs-tt gs-tt--bottom gs-tt--dark gs-tt--arrow" id="tt-p3"
+              style="background:var(--color-surface-default);color:var(--color-text-default);font-family:var(--prim-font-primary);font-size:var(--prim-font-size-sm);font-weight:var(--prim-font-weight-medium);padding:6px 10px;border-radius:var(--radius-sm);border:1px solid var(--color-border-default);box-shadow:var(--prim-shadow-md);">
+              Light theme tooltip
+              <span class="gs-ttdemo-arrow--down" style="border-bottom-color:var(--color-border-default);"></span>
+            </div>
+          </div>
+
+        </div>
+        <p style="font-size:var(--prim-font-size-sm);color:var(--color-text-secondary);margin:8px 0 0;">Hover or focus each button to see the tooltip appear.</p>
+
+        <div class="btn-when-examples" style="margin-top:16px;">
+          <span class="btn-when-example-tag">12 Placements</span>
+          <span class="btn-when-example-tag">2 Themes</span>
+          <span class="btn-when-example-tag">Hover + Focus</span>
+          <span class="btn-when-example-tag">WCAG AA</span>
+        </div>
+      </div>
+
+      <!-- ANATOMY -->
+      <div id="tt-s-anatomy" class="btn-family-card">
+        <div class="btn-family-title">Anatomy</div>
+        <p class="btn-family-desc">A tooltip has two parts: the trigger element (any interactive or focusable element) and the floating content panel with an optional directional arrow.</p>
+
+        <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:12px;padding:32px;display:flex;justify-content:center;margin-top:8px;overflow:auto;">
+          <svg width="540" height="240" viewBox="0 0 540 240" fill="none" xmlns="http://www.w3.org/2000/svg" style="min-width:460px;">
+            <!-- Trigger button -->
+            <rect x="200" y="160" width="100" height="36" rx="6" fill="#1852fe"/>
+            <text x="250" y="183" font-size="13" font-weight="600" fill="white" text-anchor="middle" font-family="Helvetica,Arial,sans-serif">Save</text>
+
+            <!-- Tooltip panel -->
+            <rect x="175" y="72" width="150" height="32" rx="6" fill="#1e293b"/>
+            <text x="250" y="92" font-size="12" font-weight="500" fill="white" text-anchor="middle" font-family="Helvetica,Arial,sans-serif">Save changes</text>
+
+            <!-- Arrow -->
+            <polygon points="242,104 258,104 250,114" fill="#1e293b"/>
+
+            <!-- Leader lines -->
+            <!-- 1 Tooltip panel -->
+            <line x1="325" y1="88" x2="400" y2="88" stroke="#cbd5e1" stroke-width="1"/>
+            <circle cx="410" cy="88" r="10" fill="#1852fe"/>
+            <text x="410" y="92" font-size="11" font-weight="700" fill="white" text-anchor="middle" font-family="Helvetica,Arial,sans-serif">1</text>
+            <text x="426" y="92" font-size="11" fill="#475569" font-family="Helvetica,Arial,sans-serif">Tooltip panel</text>
+
+            <!-- 2 Label text -->
+            <line x1="250" y1="72" x2="250" y2="40" stroke="#cbd5e1" stroke-width="1"/>
+            <line x1="250" y1="40" x2="410" y2="40" stroke="#cbd5e1" stroke-width="1"/>
+            <circle cx="410" cy="40" r="10" fill="#1852fe"/>
+            <text x="410" y="44" font-size="11" font-weight="700" fill="white" text-anchor="middle" font-family="Helvetica,Arial,sans-serif">2</text>
+            <text x="426" y="44" font-size="11" fill="#475569" font-family="Helvetica,Arial,sans-serif">Label (required)</text>
+
+            <!-- 3 Arrow -->
+            <line x1="250" y1="114" x2="250" y2="148" stroke="#cbd5e1" stroke-width="1"/>
+            <line x1="250" y1="148" x2="100" y2="148" stroke="#cbd5e1" stroke-width="1"/>
+            <circle cx="90" cy="148" r="10" fill="#1852fe"/>
+            <text x="90" y="152" font-size="11" font-weight="700" fill="white" text-anchor="middle" font-family="Helvetica,Arial,sans-serif">3</text>
+            <text x="0" y="152" font-size="11" fill="#475569" font-family="Helvetica,Arial,sans-serif">Arrow (optional)</text>
+
+            <!-- 4 Trigger -->
+            <line x1="300" y1="178" x2="410" y2="178" stroke="#cbd5e1" stroke-width="1"/>
+            <circle cx="410" cy="178" r="10" fill="#1852fe"/>
+            <text x="410" y="182" font-size="11" font-weight="700" fill="white" text-anchor="middle" font-family="Helvetica,Arial,sans-serif">4</text>
+            <text x="426" y="182" font-size="11" fill="#475569" font-family="Helvetica,Arial,sans-serif">Trigger element</text>
+
+            <!-- Offset annotation -->
+            <line x1="250" y1="114" x2="250" y2="160" stroke="#94a3b8" stroke-width="1" stroke-dasharray="3,2"/>
+            <text x="256" y="140" font-size="10" fill="#94a3b8" font-family="Helvetica,Arial,sans-serif">8px gap</text>
+          </svg>
+        </div>
+
+        <ol style="margin-top:20px;display:flex;flex-direction:column;gap:8px;padding-left:20px;">
+          <li><strong>Tooltip panel</strong> — Floating container. Background: #1e293b (dark) / #fff (light). Border-radius: 6px. Padding: 6px 10px. Max-width: 240px.</li>
+          <li><strong>Label</strong> — 12px / 500 weight text. Single line preferred; wraps to max-width if needed. Color: #fff (dark theme), #1e293b (light theme).</li>
+          <li><strong>Arrow</strong> — 10×5px directional caret pointing toward the trigger. Optional; omit for placements without clear direction. Color matches panel background.</li>
+          <li><strong>Trigger element</strong> — Any interactive or focusable element: button, link, icon, input. The tooltip panel is positioned relative to this element with an 8px gap.</li>
+        </ol>
+      </div>
+
+      <!-- VARIANTS -->
+      <div id="tt-s-variants" class="btn-family-card">
+        <div class="btn-family-title">Variants</div>
+        <p class="btn-family-desc">Two themes and 12 placement positions. Use dark theme (default) on light backgrounds; use light theme when the trigger is on a dark or coloured surface.</p>
+
+        <!-- Themes -->
+        <div class="btn-sub-label" style="margin-bottom:12px;">Themes</div>
+        <div style="display:flex;gap:24px;flex-wrap:wrap;pointer-events:none;">
+          <div style="display:flex;flex-direction:column;align-items:center;gap:8px;">
+            <div style="background:#1e293b;color:#fff;font-size:12px;font-weight:500;padding:6px 12px;border-radius:6px;">Dark (default)</div>
+            <span style="font-size:11px;color:#64748b;">bg #1e293b · text #fff</span>
+          </div>
+          <div style="display:flex;flex-direction:column;align-items:center;gap:8px;">
+            <div style="background:#fff;color:#1e293b;font-size:12px;font-weight:500;padding:6px 12px;border-radius:6px;border:1px solid #e2e8f0;box-shadow:0 2px 8px rgba(0,0,0,0.07);">Light</div>
+            <span style="font-size:11px;color:#64748b;">bg #fff · border #e2e8f0 · shadow</span>
+          </div>
+        </div>
+
+        <!-- Placements -->
+        <div class="btn-sub-label" style="margin-top:24px;margin-bottom:12px;">12 Placement Positions</div>
+        <div style="pointer-events:none;background:#f0f4ff;border-radius:12px;padding:32px;display:flex;align-items:center;justify-content:center;">
+          <svg width="380" height="280" viewBox="0 0 380 280" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <!-- Centre trigger -->
+            <rect x="155" y="120" width="70" height="36" rx="6" fill="#1852fe"/>
+            <text x="190" y="143" font-size="12" font-weight="600" fill="white" text-anchor="middle" font-family="Helvetica,Arial,sans-serif">Trigger</text>
+
+            <!-- Top positions -->
+            <rect x="80" y="20" width="56" height="22" rx="4" fill="#1e293b"/><text x="108" y="35" font-size="9.5" fill="white" text-anchor="middle" font-family="Helvetica,Arial,sans-serif">top-start</text>
+            <rect x="162" y="20" width="56" height="22" rx="4" fill="#1e293b"/><text x="190" y="35" font-size="9.5" fill="white" text-anchor="middle" font-family="Helvetica,Arial,sans-serif">top</text>
+            <rect x="244" y="20" width="56" height="22" rx="4" fill="#1e293b"/><text x="272" y="35" font-size="9.5" fill="white" text-anchor="middle" font-family="Helvetica,Arial,sans-serif">top-end</text>
+
+            <!-- Bottom positions -->
+            <rect x="80" y="238" width="56" height="22" rx="4" fill="#1e293b"/><text x="108" y="253" font-size="9.5" fill="white" text-anchor="middle" font-family="Helvetica,Arial,sans-serif">bottom-start</text>
+            <rect x="162" y="238" width="56" height="22" rx="4" fill="#1e293b"/><text x="190" y="253" font-size="9.5" fill="white" text-anchor="middle" font-family="Helvetica,Arial,sans-serif">bottom</text>
+            <rect x="244" y="238" width="56" height="22" rx="4" fill="#1e293b"/><text x="272" y="253" font-size="9.5" fill="white" text-anchor="middle" font-family="Helvetica,Arial,sans-serif">bottom-end</text>
+
+            <!-- Left positions -->
+            <rect x="4" y="108" width="56" height="22" rx="4" fill="#1e293b"/><text x="32" y="123" font-size="9.5" fill="white" text-anchor="middle" font-family="Helvetica,Arial,sans-serif">left-start</text>
+            <rect x="4" y="129" width="56" height="22" rx="4" fill="#475569"/><text x="32" y="144" font-size="9.5" fill="white" text-anchor="middle" font-family="Helvetica,Arial,sans-serif">left</text>
+            <rect x="4" y="150" width="56" height="22" rx="4" fill="#1e293b"/><text x="32" y="165" font-size="9.5" fill="white" text-anchor="middle" font-family="Helvetica,Arial,sans-serif">left-end</text>
+
+            <!-- Right positions -->
+            <rect x="320" y="108" width="56" height="22" rx="4" fill="#1e293b"/><text x="348" y="123" font-size="9.5" fill="white" text-anchor="middle" font-family="Helvetica,Arial,sans-serif">right-start</text>
+            <rect x="320" y="129" width="56" height="22" rx="4" fill="#475569"/><text x="348" y="144" font-size="9.5" fill="white" text-anchor="middle" font-family="Helvetica,Arial,sans-serif">right</text>
+            <rect x="320" y="150" width="56" height="22" rx="4" fill="#1e293b"/><text x="348" y="165" font-size="9.5" fill="white" text-anchor="middle" font-family="Helvetica,Arial,sans-serif">right-end</text>
+
+            <!-- Connector lines -->
+            <line x1="108" y1="42" x2="165" y2="120" stroke="#94a3b8" stroke-width="0.75" stroke-dasharray="3,2"/>
+            <line x1="190" y1="42" x2="190" y2="120" stroke="#94a3b8" stroke-width="0.75" stroke-dasharray="3,2"/>
+            <line x1="272" y1="42" x2="215" y2="120" stroke="#94a3b8" stroke-width="0.75" stroke-dasharray="3,2"/>
+            <line x1="108" y1="238" x2="165" y2="156" stroke="#94a3b8" stroke-width="0.75" stroke-dasharray="3,2"/>
+            <line x1="190" y1="238" x2="190" y2="156" stroke="#94a3b8" stroke-width="0.75" stroke-dasharray="3,2"/>
+            <line x1="272" y1="238" x2="215" y2="156" stroke="#94a3b8" stroke-width="0.75" stroke-dasharray="3,2"/>
+            <line x1="60" y1="130" x2="155" y2="134" stroke="#94a3b8" stroke-width="0.75" stroke-dasharray="3,2"/>
+            <line x1="320" y1="140" x2="225" y2="140" stroke="#94a3b8" stroke-width="0.75" stroke-dasharray="3,2"/>
+          </svg>
+        </div>
+      </div>
+
+      <!-- ARROW VARIANTS -->
+      <div id="tt-s-arrows" class="btn-family-card">
+        <div class="btn-family-title">Variants — Arrow · No Arrow · Dark · Light</div>
+        <p class="btn-family-desc">
+          The arrow uses the <strong>Ant Design rotated-square pattern</strong> — an 8×8 px element with
+          <code>background:inherit</code> and <code>transform:rotate(45deg)</code>. The half inside the
+          tooltip is invisible (same bg); the protruding half forms the arrow tip.
+          <code>filter:drop-shadow</code> on the tooltip wraps both body and arrow together.
+          Figma: <code>node-id=6209-492</code>.
+        </p>
+
+        <!-- ── Dark · With arrow ── -->
+        <div class="btn-sub-label" style="margin-top:20px;margin-bottom:12px;">Dark · With arrow — hover each trigger</div>
+        <div class="tt-variant-grid" style="grid-template-columns:repeat(4,1fr);max-width:640px;">
+
+          <div class="tt-variant-cell">
+            <div class="gs-ttdemo" style="align-items:center;justify-content:flex-end;">
+              <button class="gs-btn gs-btn-secondary gs-btn-sm gs-ttdemo-trigger"
+                style="position:relative;"
+                onmouseenter="gsShowTooltipDemo('d-top')" onmouseleave="gsHideTooltipDemo('d-top')"
+                onfocus="gsShowTooltipDemo('d-top')" onblur="gsHideTooltipDemo('d-top')">
+                Top
+                <span class="gs-tt gs-tt--top gs-tt--dark gs-tt--arrow" id="d-top" role="tooltip">Geo Tooltip</span>
+              </button>
+            </div>
+            <div class="tt-variant-cell-label">placement=top · arrow ↓</div>
+          </div>
+
+          <div class="tt-variant-cell">
+            <div class="gs-ttdemo" style="padding-top:20px;">
+              <button class="gs-btn gs-btn-secondary gs-btn-sm gs-ttdemo-trigger"
+                style="position:relative;"
+                onmouseenter="gsShowTooltipDemo('d-bot')" onmouseleave="gsHideTooltipDemo('d-bot')"
+                onfocus="gsShowTooltipDemo('d-bot')" onblur="gsHideTooltipDemo('d-bot')">
+                Bottom
+                <span class="gs-tt gs-tt--bottom gs-tt--dark gs-tt--arrow" id="d-bot" role="tooltip">Geo Tooltip</span>
+              </button>
+            </div>
+            <div class="tt-variant-cell-label">placement=bottom · arrow ↑</div>
+          </div>
+
+          <div class="tt-variant-cell">
+            <div style="display:flex;align-items:center;padding-right:16px;">
+              <button class="gs-btn gs-btn-secondary gs-btn-sm gs-ttdemo-trigger"
+                style="position:relative;"
+                onmouseenter="gsShowTooltipDemo('d-lft')" onmouseleave="gsHideTooltipDemo('d-lft')"
+                onfocus="gsShowTooltipDemo('d-lft')" onblur="gsHideTooltipDemo('d-lft')">
+                Left
+                <span class="gs-tt gs-tt--left gs-tt--dark gs-tt--arrow" id="d-lft" role="tooltip">Tooltip</span>
+              </button>
+            </div>
+            <div class="tt-variant-cell-label">placement=left · arrow →</div>
+          </div>
+
+          <div class="tt-variant-cell">
+            <div style="display:flex;align-items:center;padding-left:16px;">
+              <button class="gs-btn gs-btn-secondary gs-btn-sm gs-ttdemo-trigger"
+                style="position:relative;"
+                onmouseenter="gsShowTooltipDemo('d-rgt')" onmouseleave="gsHideTooltipDemo('d-rgt')"
+                onfocus="gsShowTooltipDemo('d-rgt')" onblur="gsHideTooltipDemo('d-rgt')">
+                Right
+                <span class="gs-tt gs-tt--right gs-tt--dark gs-tt--arrow" id="d-rgt" role="tooltip">Tooltip</span>
+              </button>
+            </div>
+            <div class="tt-variant-cell-label">placement=right · arrow ←</div>
+          </div>
+        </div>
+
+        <!-- ── Light · With arrow ── -->
+        <div class="btn-sub-label" style="margin-top:24px;margin-bottom:12px;">Light · With arrow</div>
+        <div class="tt-variant-grid" style="grid-template-columns:repeat(4,1fr);max-width:640px;">
+
+          <div class="tt-variant-cell tt-variant-cell--dark-bg">
+            <div class="gs-ttdemo" style="align-items:center;">
+              <button class="gs-btn gs-btn-secondary gs-btn-sm gs-ttdemo-trigger"
+                style="position:relative;background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.25);color:#fff;"
+                onmouseenter="gsShowTooltipDemo('l-top')" onmouseleave="gsHideTooltipDemo('l-top')"
+                onfocus="gsShowTooltipDemo('l-top')" onblur="gsHideTooltipDemo('l-top')">
+                Top
+                <span class="gs-tt gs-tt--top gs-tt--light gs-tt--arrow" id="l-top" role="tooltip">Geo Tooltip</span>
+              </button>
+            </div>
+            <div class="tt-variant-cell-label" style="color:#475569;">placement=top · arrow ↓</div>
+          </div>
+
+          <div class="tt-variant-cell tt-variant-cell--dark-bg" style="justify-content:flex-start;padding-top:16px;">
+            <button class="gs-btn gs-btn-secondary gs-btn-sm gs-ttdemo-trigger"
+              style="position:relative;background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.25);color:#fff;"
+              onmouseenter="gsShowTooltipDemo('l-bot')" onmouseleave="gsHideTooltipDemo('l-bot')"
+              onfocus="gsShowTooltipDemo('l-bot')" onblur="gsHideTooltipDemo('l-bot')">
+              Bottom
+              <span class="gs-tt gs-tt--bottom gs-tt--light gs-tt--arrow" id="l-bot" role="tooltip">Geo Tooltip</span>
+            </button>
+            <div class="tt-variant-cell-label" style="color:#475569;margin-top:auto;">placement=bottom · arrow ↑</div>
+          </div>
+
+          <div class="tt-variant-cell tt-variant-cell--dark-bg">
+            <div style="display:flex;align-items:center;padding-right:16px;">
+              <button class="gs-btn gs-btn-secondary gs-btn-sm gs-ttdemo-trigger"
+                style="position:relative;background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.25);color:#fff;"
+                onmouseenter="gsShowTooltipDemo('l-lft')" onmouseleave="gsHideTooltipDemo('l-lft')"
+                onfocus="gsShowTooltipDemo('l-lft')" onblur="gsHideTooltipDemo('l-lft')">
+                Left
+                <span class="gs-tt gs-tt--left gs-tt--light gs-tt--arrow" id="l-lft" role="tooltip">Tooltip</span>
+              </button>
+            </div>
+            <div class="tt-variant-cell-label" style="color:#475569;">placement=left · arrow →</div>
+          </div>
+
+          <div class="tt-variant-cell tt-variant-cell--dark-bg">
+            <div style="display:flex;align-items:center;padding-left:16px;">
+              <button class="gs-btn gs-btn-secondary gs-btn-sm gs-ttdemo-trigger"
+                style="position:relative;background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.25);color:#fff;"
+                onmouseenter="gsShowTooltipDemo('l-rgt')" onmouseleave="gsHideTooltipDemo('l-rgt')"
+                onfocus="gsShowTooltipDemo('l-rgt')" onblur="gsHideTooltipDemo('l-rgt')">
+                Right
+                <span class="gs-tt gs-tt--right gs-tt--light gs-tt--arrow" id="l-rgt" role="tooltip">Tooltip</span>
+              </button>
+            </div>
+            <div class="tt-variant-cell-label" style="color:#475569;">placement=right · arrow ←</div>
+          </div>
+        </div>
+
+        <!-- ── Without arrow ── -->
+        <div class="btn-sub-label" style="margin-top:24px;margin-bottom:12px;">Without arrow — both themes</div>
+        <div style="display:flex;gap:16px;flex-wrap:wrap;align-items:center;">
+          <div style="display:flex;flex-direction:column;align-items:center;gap:8px;">
+            <button class="gs-btn gs-btn-secondary gs-btn-sm gs-ttdemo-trigger"
+              style="position:relative;"
+              onmouseenter="gsShowTooltipDemo('no-dark')" onmouseleave="gsHideTooltipDemo('no-dark')"
+              onfocus="gsShowTooltipDemo('no-dark')" onblur="gsHideTooltipDemo('no-dark')">
+              Dark · no arrow
+              <span class="gs-tt gs-tt--top gs-tt--dark" id="no-dark" role="tooltip">Geo Tooltip</span>
+            </button>
+            <span style="font-family:var(--prim-font-primary);font-size:11px;color:var(--color-text-placeholder);">showArrow=false</span>
+          </div>
+          <div style="display:flex;flex-direction:column;align-items:center;gap:8px;">
+            <button class="gs-btn gs-btn-secondary gs-btn-sm gs-ttdemo-trigger"
+              style="position:relative;"
+              onmouseenter="gsShowTooltipDemo('no-light')" onmouseleave="gsHideTooltipDemo('no-light')"
+              onfocus="gsShowTooltipDemo('no-light')" onblur="gsHideTooltipDemo('no-light')">
+              Light · no arrow
+              <span class="gs-tt gs-tt--top gs-tt--light" id="no-light" role="tooltip">Geo Tooltip</span>
+            </button>
+            <span style="font-family:var(--prim-font-primary);font-size:11px;color:var(--color-text-placeholder);">showArrow=false</span>
+          </div>
+        </div>
+
+        <!-- ── Arrow spec ── -->
+        <div class="btn-sub-label" style="margin-top:24px;margin-bottom:8px;">Arrow implementation (Ant Design pattern)</div>
+        <table>
+          <thead><tr><th>Aspect</th><th>Value</th><th>Notes</th></tr></thead>
+          <tbody>
+            <tr class="ds-tr-border"><td>Arrow element</td><td><code>::before</code> pseudo-element</td><td>8×8 px square, <code>transform:rotate(45deg)</code></td></tr>
+            <tr class="ds-tr-border"><td>Arrow background</td><td><code>background:inherit</code></td><td>Automatically matches dark (#001e4c) or light (#fff)</td></tr>
+            <tr class="ds-tr-border"><td>Shadow</td><td><code>filter:drop-shadow()</code> on parent</td><td>Wraps body + arrow as one shape — <code>box-shadow</code> doesn't reach <code>::before</code></td></tr>
+            <tr class="ds-tr-border"><td>Protrusion</td><td>4 px outside tooltip edge</td><td>Half of 8px square = 4px visible arrow tip</td></tr>
+            <tr class="ds-tr-border"><td>Animation</td><td>160ms <code>cubic-bezier(0.23,1,0.32,1)</code></td><td>Ant Design spring curve — slides 6px from trigger direction</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- STATES -->      <!-- STATES -->
+      <div id="tt-s-states" class="btn-family-card">
+        <div class="btn-family-title">States</div>
+        <p class="btn-family-desc">Tooltips themselves are stateless — they appear or disappear. The trigger element has the usual interactive states; the tooltip is shown on hover and focus.</p>
+
+        <div class="btn-sub-label" style="margin-bottom:12px;">Visibility States — hover or focus the buttons below</div>
+        <div class="btn-states-grid" style="grid-template-columns:repeat(3,1fr);">
+          <!-- Hidden — interactive -->
+          <div class="btn-state-cell">
+            <div class="gs-ttdemo">
+              <div class="gs-tt gs-tt--top gs-tt--dark gs-tt--arrow" id="tt-s1"
+                style="background:var(--prim-grey-700);color:var(--prim-white);font-size:var(--prim-font-size-xs);padding:4px 8px;border-radius:var(--radius-sm);">
+                Save changes<span class="gs-ttdemo-arrow--up" style="border-top-color:var(--prim-grey-700);"></span>
+              </div>
+              <button class="gs-ttdemo-trigger"
+                style="background:var(--color-brand);color:var(--prim-white);border:none;border-radius:var(--radius-sm);padding:7px 14px;font-size:var(--prim-font-size-sm);font-weight:var(--prim-font-weight-semibold);font-family:var(--prim-font-primary);"
+                onmouseenter="gsShowTooltipDemo('tt-s1')" onmouseleave="gsHideTooltipDemo('tt-s1')"
+                onfocus="gsShowTooltipDemo('tt-s1')" onblur="gsHideTooltipDemo('tt-s1')">Save</button>
+            </div>
+            <span class="btn-state-label">Hidden → hover/focus</span>
+          </div>
+          <!-- Visible (always-on for docs) -->
+          <div class="btn-state-cell">
+            <div style="display:flex;flex-direction:column;align-items:center;gap:6px;">
+              <div style="background:var(--prim-grey-700);color:var(--prim-white);font-size:var(--prim-font-size-xs);font-weight:var(--prim-font-weight-medium);padding:4px 8px;border-radius:var(--radius-sm);white-space:nowrap;position:relative;">
+                Save changes
+                <span style="position:absolute;bottom:-4px;left:50%;transform:translateX(-50%);width:0;height:0;border-left:4px solid transparent;border-right:4px solid transparent;border-top:4px solid var(--prim-grey-700);"></span>
+              </div>
+              <div style="pointer-events:none;">
+                <button style="background:var(--color-brand-hover,#1242d4);color:var(--prim-white);border:none;border-radius:var(--radius-sm);padding:7px 14px;font-size:var(--prim-font-size-sm);font-weight:var(--prim-font-weight-semibold);font-family:var(--prim-font-primary);">Save</button>
+              </div>
+            </div>
+            <span class="btn-state-label">Visible (hover state)</span>
+          </div>
+          <!-- Visible on focus -->
+          <div class="btn-state-cell">
+            <div class="gs-ttdemo">
+              <div class="gs-tt gs-tt--top gs-tt--dark gs-tt--arrow" id="tt-s3"
+                style="background:var(--prim-grey-700);color:var(--prim-white);font-size:var(--prim-font-size-xs);padding:4px 8px;border-radius:var(--radius-sm);">
+                Save changes<span class="gs-ttdemo-arrow--up" style="border-top-color:var(--prim-grey-700);"></span>
+              </div>
+              <button class="gs-ttdemo-trigger"
+                style="background:var(--color-brand);color:var(--prim-white);border:none;border-radius:var(--radius-sm);padding:7px 14px;font-size:var(--prim-font-size-sm);font-weight:var(--prim-font-weight-semibold);font-family:var(--prim-font-primary);"
+                onfocus="gsShowTooltipDemo('tt-s3')" onblur="gsHideTooltipDemo('tt-s3')"
+                onmouseenter="gsShowTooltipDemo('tt-s3')" onmouseleave="gsHideTooltipDemo('tt-s3')">Save</button>
+            </div>
+            <span class="btn-state-label">Visible (focus / Tab)</span>
+          </div>
+        </div>
+
+        <div class="btn-sub-label" style="margin-top:20px;margin-bottom:12px;">Rich Tooltip (optional title + description)</div>
+        <div style="pointer-events:none;display:flex;justify-content:center;padding:16px 0;">
+          <div style="background:#1e293b;color:#fff;padding:10px 14px;border-radius:6px;max-width:220px;">
+            <div style="font-size:12px;font-weight:700;margin-bottom:4px;">Keyboard shortcut</div>
+            <div style="font-size:11px;color:#94a3b8;line-height:1.5;">Press <kbd style="background:#334155;padding:1px 5px;border-radius:3px;font-size:10px;color:#e2e8f0;">⌘S</kbd> to save without clicking this button.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- INTERACTIONS -->
+      <div id="tt-s-interaction" class="btn-family-card">
+        <div class="btn-family-title">Interactions</div>
+        <table>
+          <thead><tr><th>Trigger</th><th>Behaviour</th><th>Timing</th></tr></thead>
+          <tbody>
+            <tr class="ds-tr-border"><td>Mouse enter trigger</td><td>Tooltip fades in after a 300ms delay. Delay prevents flicker during fast cursor sweeps.</td><td>300ms delay · 150ms fade-in</td></tr>
+            <tr class="ds-tr-border"><td>Mouse leave trigger</td><td>Tooltip fades out.</td><td>100ms fade-out</td></tr>
+            <tr class="ds-tr-border"><td>Mouse enter tooltip panel</td><td>Tooltip stays visible (allows users to read long text).</td><td>—</td></tr>
+            <tr class="ds-tr-border"><td>Focus trigger (<kbd>Tab</kbd>)</td><td>Tooltip appears immediately (no delay) to assist keyboard users.</td><td>0ms delay · 150ms fade-in</td></tr>
+            <tr class="ds-tr-border"><td>Blur trigger (<kbd>Shift+Tab</kbd> / click elsewhere)</td><td>Tooltip hides.</td><td>100ms fade-out</td></tr>
+            <tr class="ds-tr-border"><td><kbd>Escape</kbd></td><td>Dismisses the tooltip and returns focus to trigger.</td><td>—</td></tr>
+            <tr class="ds-tr-border"><td>Touch (mobile)</td><td>First tap shows tooltip; second tap activates the trigger. Tooltip auto-dismisses after 3s or on outside tap.</td><td>3s auto-dismiss</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- ACCESSIBILITY -->
+      <div id="tt-s-a11y" class="btn-family-card">
+        <div class="btn-family-title">Accessibility</div>
+
+        <div class="btn-sub-label">Semantic Element</div>
+        <p class="btn-family-desc">The tooltip panel uses <code>role="tooltip"</code>. The trigger element references it via <code>aria-describedby</code> so screen readers announce the tooltip text after the trigger label. The panel is rendered in the DOM but visually hidden when not active — not removed — ensuring screen readers can access it.</p>
+
+        <div class="btn-sub-label" style="margin-top:16px;">ARIA Attributes</div>
+        <table>
+          <thead><tr><th>Attribute</th><th>Value</th><th>Where</th></tr></thead>
+          <tbody>
+            <tr class="ds-tr-border"><td><code>role="tooltip"</code></td><td>—</td><td>Tooltip panel</td></tr>
+            <tr class="ds-tr-border"><td><code>id</code></td><td>Unique string, e.g. <code>tt-save-1</code></td><td>Tooltip panel</td></tr>
+            <tr class="ds-tr-border"><td><code>aria-describedby</code></td><td>Tooltip panel <code>id</code></td><td>Trigger element</td></tr>
+            <tr class="ds-tr-border"><td><code>aria-label</code></td><td>Same text as tooltip, for icon-only buttons</td><td>Trigger element (fallback)</td></tr>
+          </tbody>
+        </table>
+
+        <div class="btn-sub-label" style="margin-top:16px;">Keyboard Navigation</div>
+        <table>
+          <thead><tr><th>Key</th><th>Action</th></tr></thead>
+          <tbody>
+            <tr class="ds-tr-border"><td><kbd>Tab</kbd></td><td>Focus moves to trigger; tooltip appears immediately</td></tr>
+            <tr class="ds-tr-border"><td><kbd>Shift+Tab</kbd></td><td>Focus leaves trigger; tooltip hides</td></tr>
+            <tr class="ds-tr-border"><td><kbd>Escape</kbd></td><td>Dismisses tooltip; focus stays on trigger</td></tr>
+          </tbody>
+        </table>
+
+        <div class="btn-sub-label" style="margin-top:16px;">Contrast Ratios</div>
+        <table>
+          <thead><tr><th>Theme</th><th>Text</th><th>Background</th><th>Ratio</th><th>WCAG</th></tr></thead>
+          <tbody>
+            <tr class="ds-tr-border"><td>Dark</td><td>#ffffff</td><td>#1e293b</td><td>15.8:1</td><td>AA ✓</td></tr>
+            <tr class="ds-tr-border"><td>Light</td><td>#1e293b</td><td>#ffffff</td><td>15.8:1</td><td>AA ✓</td></tr>
+            <tr class="ds-tr-border"><td>Dark (muted desc)</td><td>#94a3b8</td><td>#1e293b</td><td>4.6:1</td><td>AA ✓</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- RESPONSIVE -->
+      <div id="tt-s-responsive" class="btn-family-card">
+        <div class="btn-family-title">Responsive Behaviour</div>
+        <table>
+          <thead><tr><th>Breakpoint</th><th>Behaviour</th></tr></thead>
+          <tbody>
+            <tr class="ds-tr-border"><td>&gt; 1024px</td><td>Standard hover + focus behaviour. All 12 placements available. Tooltip auto-flips if it would overflow the viewport.</td></tr>
+            <tr class="ds-tr-border"><td>768px – 1024px</td><td>Same as desktop. Touch events begin to take priority on hybrid devices.</td></tr>
+            <tr class="ds-tr-border"><td>&lt; 768px</td><td>Hover events are absent on pure touch devices. First tap reveals tooltip; second activates trigger. Auto-dismiss after 3s. Tooltip max-width constrained to viewport width − 32px.</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- DO / DON'T -->
+      <div id="tt-s-dosdonts" class="btn-family-card">
+        <div class="btn-family-title">Do / Don't</div>
+        <div class="btn-dos-donts">
+          <div class="btn-do-card">
+            <div class="btn-do-header">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
+              Do
+            </div>
+            <ul>
+              <li>
+                <div class="btn-do-example" style="pointer-events:none;display:flex;align-items:center;gap:10px;padding:4px 0;">
+                  <div style="display:flex;flex-direction:column;align-items:center;gap:6px;">
+                    <div style="background:#1e293b;color:#fff;font-size:11px;font-weight:500;padding:4px 9px;border-radius:5px;white-space:nowrap;">Delete item</div>
+                    <button style="width:32px;height:32px;background:#fee2e2;border:1px solid #fca5a5;border-radius:6px;display:flex;align-items:center;justify-content:center;cursor:pointer;">
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#dc2625" stroke-width="2" stroke-linecap="round"><path d="M3 6h18M19 6l-1 14H6L5 6M10 11v6M14 11v6M9 6V4h6v2"/></svg>
+                    </button>
+                  </div>
+                </div>
+                <p>Add tooltips to icon-only buttons so keyboard and screen-reader users understand the action without visible label text.</p>
+              </li>
+            </ul>
+          </div>
+          <div class="btn-dont-card">
+            <div class="btn-dont-header">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+              Don't
+            </div>
+            <ul>
+              <li>
+                <div class="btn-dont-example" style="pointer-events:none;display:flex;align-items:center;gap:10px;padding:4px 0;">
+                  <div style="display:flex;flex-direction:column;align-items:center;gap:6px;">
+                    <div style="background:#1e293b;color:#fff;font-size:10px;font-weight:400;padding:6px 10px;border-radius:5px;max-width:180px;line-height:1.5;">Clicking this button will permanently delete the selected item and remove it from all associated projects. This cannot be undone.</div>
+                    <button style="background:#fee2e2;border:1px solid #fca5a5;border-radius:6px;padding:6px 12px;font-size:12px;color:#dc2625;cursor:pointer;">Delete</button>
+                  </div>
+                </div>
+                <p>Don't put critical, long-form content in a tooltip. Multi-sentence text should live in a popover, modal, or inline on the page — tooltips are for brief supplementary labels only.</p>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- RELATED -->
+      <div id="tt-s-related" class="btn-family-card">
+        <div class="btn-family-title">Related Components</div>
+        <ul class="btn-related-list">
+          <li><button class="btn-inline-link" onclick="navigate('panel-popover')">Popover</button> — Use when you need richer content (forms, links, images) triggered on click, not hover. Popovers are interactive; tooltips are not.</li>
+          <li><button class="btn-inline-link" onclick="navigate('panel-modals')">Modal</button> — Use when the user must read and act on content before continuing.</li>
+          <li><button class="btn-inline-link" onclick="navigate('prim-toasts')">Toast</button> — Use for system-initiated feedback after an action, not triggered by hover.</li>
+        </ul>
+      </div>
+
+    </div>
+
+    <div class="code-tab-qnav">
+      <div class="code-qnav-inner">
+        <p class="code-qnav-title">On This Page</p>
+        <ul class="code-qnav-list">
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('tt-s-overview')">Overview</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('tt-s-anatomy')">Anatomy</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('tt-s-variants')">Variants</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('tt-s-arrows')">Arrow Variants</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('tt-s-states')">States</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('tt-s-interaction')">Interactions</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('tt-s-a11y')">Accessibility</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('tt-s-responsive')">Responsive</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('tt-s-dosdonts')">Do / Don't</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('tt-s-related')">Related</button></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ CODE TAB ═══════════════════════════════════════════════════════ -->
+<div id="tt-tab-code" class="btn-tab-pane tt-tab-pane">
+  <div class="code-tab-layout">
+    <div class="code-tab-main">
+
+      <div class="fw-toggle-bar">
+        <button class="fw-toggle-bar-btn active" data-fw="react" onclick="switchFw('tt-tab-code','react')">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="2.5" fill="#61dafb"/><ellipse cx="12" cy="12" rx="10" ry="4.5" stroke="#61dafb" stroke-width="1.5" fill="none"/><ellipse cx="12" cy="12" rx="10" ry="4.5" stroke="#61dafb" stroke-width="1.5" fill="none" transform="rotate(60 12 12)"/><ellipse cx="12" cy="12" rx="10" ry="4.5" stroke="#61dafb" stroke-width="1.5" fill="none" transform="rotate(120 12 12)"/></svg>
+          React
+        </button>
+        <button class="fw-toggle-bar-btn" data-fw="angular" onclick="switchFw('tt-tab-code','angular')">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M12 2L2 6.5l1.5 12.5L12 22l8.5-3L22 6.5 12 2z" fill="#dd0031"/><path d="M12 2v20M12 2L6 17h12L12 2z" fill="none" stroke="#fff" stroke-width="1.2"/></svg>
+          Angular
+        </button>
+      </div>
+
+      <!-- 1 -->
+      <div id="tt-c-overview" class="btn-family-card">
+        <div class="ds-step-row"><span class="ds-step-num">1</span><div class="btn-family-title" style="margin:0;">Overview</div></div>
+        <div class="fw-react"><p class="btn-family-desc">Wrap any element with <code>&lt;Tooltip&gt;</code>. The child element becomes the trigger. Use the <code>title</code> prop for label text and <code>placement</code> for position. Built on Floating UI for automatic overflow detection.</p></div>
+        <div class="fw-angular" style="display:none;"><p class="btn-family-desc">Use the <code>gsTooltip</code> directive on any element. Pass <code>[gsTooltipTitle]</code> for label text and <code>[gsTooltipPlacement]</code> for position.</p></div>
+      </div>
+
+      <!-- 2 -->
+      <div id="tt-c-install" class="btn-family-card">
+        <div class="ds-step-row"><span class="ds-step-num">2</span><div class="btn-family-title" style="margin:0;">Install / Setup</div></div>
+        <div class="fw-react">
+          <div class="btn-code-block">
+            <div class="btn-code-head"><span class="btn-code-lang">bash</span><button class="btn-copy-btn" onclick="copyBtnCode('tt-install-react',this)">Copy</button></div>
+            <div class="btn-code-body"><pre id="tt-install-react"><code>npm install @pelagos/react-components</code></pre></div>
+          </div>
+        </div>
+        <div class="fw-angular" style="display:none;">
+          <div class="btn-code-block">
+            <div class="btn-code-head"><span class="btn-code-lang">bash</span><button class="btn-copy-btn" onclick="copyBtnCode('tt-install-ng',this)">Copy</button></div>
+            <div class="btn-code-body"><pre id="tt-install-ng"><code>npm install @pelagos/angular-components</code></pre></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3 -->
+      <div id="tt-c-imports" class="btn-family-card">
+        <div class="ds-step-row"><span class="ds-step-num">3</span><div class="btn-family-title" style="margin:0;">Import</div></div>
+        <div class="fw-react">
+          <div class="btn-code-block">
+            <div class="btn-code-head"><span class="btn-code-lang">JSX</span><button class="btn-copy-btn" onclick="copyBtnCode('tt-import-react',this)">Copy</button></div>
+            <div class="btn-code-body"><pre id="tt-import-react"><code><span class="c-kw">import</span> { <span class="c-type">Tooltip</span> } <span class="c-kw">from</span> <span class="c-val">'@pelagos/react-components'</span>;</code></pre></div>
+          </div>
+        </div>
+        <div class="fw-angular" style="display:none;">
+          <div class="btn-code-block">
+            <div class="btn-code-head"><span class="btn-code-lang">TS</span><button class="btn-copy-btn" onclick="copyBtnCode('tt-import-ng',this)">Copy</button></div>
+            <div class="btn-code-body"><pre id="tt-import-ng"><code><span class="c-kw">import</span> { <span class="c-type">TooltipModule</span> } <span class="c-kw">from</span> <span class="c-val">'@pelagos/angular-components'</span>;</code></pre></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 4 -->
+      <div id="tt-c-api" class="btn-family-card">
+        <div class="ds-step-row"><span class="ds-step-num">4</span><div class="btn-family-title" style="margin:0;">API / Props</div></div>
+        <div class="fw-react">
+          <table>
+            <thead><tr><th>Prop</th><th>Type</th><th>Default</th><th>Required</th><th>Description</th></tr></thead>
+            <tbody>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">title</td><td class="ds-td-code-muted">ReactNode</td><td class="ds-td-code-muted">—</td><td>Yes</td><td class="ds-td-value">Tooltip label content. Pass a string or ReactNode for rich content.</td></tr>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">placement</td><td class="ds-td-code-muted">'top' | 'top-start' | 'top-end' | 'bottom' | 'bottom-start' | 'bottom-end' | 'left' | 'left-start' | 'left-end' | 'right' | 'right-start' | 'right-end'</td><td class="ds-td-code-muted">'top'</td><td>No</td><td class="ds-td-value">Preferred position. Auto-flips if it would overflow viewport.</td></tr>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">theme</td><td class="ds-td-code-muted">'dark' | 'light'</td><td class="ds-td-code-muted">'dark'</td><td>No</td><td class="ds-td-value">Visual theme of the tooltip panel.</td></tr>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">delay</td><td class="ds-td-code-muted">number | [number, number]</td><td class="ds-td-code-muted">300</td><td>No</td><td class="ds-td-value">Show/hide delay in ms. Pass a tuple [show, hide] for independent delays.</td></tr>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">arrow</td><td class="ds-td-code-muted">boolean</td><td class="ds-td-code-muted">true</td><td>No</td><td class="ds-td-value">Show directional arrow on the tooltip panel.</td></tr>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">disabled</td><td class="ds-td-code-muted">boolean</td><td class="ds-td-code-muted">false</td><td>No</td><td class="ds-td-value">Prevent tooltip from showing.</td></tr>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">open</td><td class="ds-td-code-muted">boolean</td><td class="ds-td-code-muted">—</td><td>No</td><td class="ds-td-value">Controlled visibility override.</td></tr>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">onOpenChange</td><td class="ds-td-code-muted">(open: boolean) =&gt; void</td><td class="ds-td-code-muted">—</td><td>No</td><td class="ds-td-value">Callback when visibility changes.</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="fw-angular" style="display:none;">
+          <table>
+            <thead><tr><th>Input</th><th>Type</th><th>Default</th><th>Required</th><th>Description</th></tr></thead>
+            <tbody>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">[gsTooltipTitle]</td><td class="ds-td-code-muted">string | TemplateRef</td><td class="ds-td-code-muted">—</td><td>Yes</td><td class="ds-td-value">Tooltip label content</td></tr>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">[gsTooltipPlacement]</td><td class="ds-td-code-muted">TooltipPlacement</td><td class="ds-td-code-muted">'top'</td><td>No</td><td class="ds-td-value">Position preference</td></tr>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">[gsTooltipTheme]</td><td class="ds-td-code-muted">'dark' | 'light'</td><td class="ds-td-code-muted">'dark'</td><td>No</td><td class="ds-td-value">Visual theme</td></tr>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">[gsTooltipDisabled]</td><td class="ds-td-code-muted">boolean</td><td class="ds-td-code-muted">false</td><td>No</td><td class="ds-td-value">Disable tooltip display</td></tr>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">[gsTooltipDelay]</td><td class="ds-td-code-muted">number</td><td class="ds-td-code-muted">300</td><td>No</td><td class="ds-td-value">Show delay in ms</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- 5 -->
+      <div id="tt-c-variants" class="btn-family-card">
+        <div class="ds-step-row"><span class="ds-step-num">5</span><div class="btn-family-title" style="margin:0;">Variants</div></div>
+        <div class="fw-react">
+          <div class="btn-code-block">
+            <div class="btn-code-head"><span class="btn-code-lang">JSX</span><button class="btn-copy-btn" onclick="copyBtnCode('tt-variants-react',this)">Copy</button></div>
+            <div class="btn-code-body"><pre id="tt-variants-react"><code><span class="c-cmt">// Default (dark, top)</span>
+&lt;<span class="c-tag">Tooltip</span> <span class="c-attr">title</span>=<span class="c-val">"Save changes"</span>&gt;
+  &lt;<span class="c-tag">button</span>&gt;Save&lt;/<span class="c-tag">button</span>&gt;
+&lt;/<span class="c-tag">Tooltip</span>&gt;
+
+<span class="c-cmt">// Light theme, right placement</span>
+&lt;<span class="c-tag">Tooltip</span> <span class="c-attr">title</span>=<span class="c-val">"More info"</span> <span class="c-attr">theme</span>=<span class="c-val">"light"</span> <span class="c-attr">placement</span>=<span class="c-val">"right"</span>&gt;
+  &lt;<span class="c-tag">InfoIcon</span> /&gt;
+&lt;/<span class="c-tag">Tooltip</span>&gt;
+
+<span class="c-cmt">// Rich content (title + description)</span>
+&lt;<span class="c-tag">Tooltip</span>
+  <span class="c-attr">title</span>={
+    &lt;<span class="c-tag">div</span>&gt;
+      &lt;<span class="c-tag">strong</span>&gt;Keyboard shortcut&lt;/<span class="c-tag">strong</span>&gt;
+      &lt;<span class="c-tag">p</span>&gt;Press ⌘S to save.&lt;/<span class="c-tag">p</span>&gt;
+    &lt;/<span class="c-tag">div</span>&gt;
+  }
+  <span class="c-attr">placement</span>=<span class="c-val">"bottom"</span>
+&gt;
+  &lt;<span class="c-tag">button</span>&gt;Save&lt;/<span class="c-tag">button</span>&gt;
+&lt;/<span class="c-tag">Tooltip</span>&gt;
+
+<span class="c-cmt">// Disabled</span>
+&lt;<span class="c-tag">Tooltip</span> <span class="c-attr">title</span>=<span class="c-val">"Hidden"</span> <span class="c-attr">disabled</span>&gt;
+  &lt;<span class="c-tag">button</span>&gt;No tooltip&lt;/<span class="c-tag">button</span>&gt;
+&lt;/<span class="c-tag">Tooltip</span>&gt;
+
+<span class="c-cmt">// No arrow</span>
+&lt;<span class="c-tag">Tooltip</span> <span class="c-attr">title</span>=<span class="c-val">"Clean"</span> <span class="c-attr">arrow</span>={<span class="c-kw">false</span>}&gt;
+  &lt;<span class="c-tag">button</span>&gt;Hover me&lt;/<span class="c-tag">button</span>&gt;
+&lt;/<span class="c-tag">Tooltip</span>&gt;</code></pre></div>
+          </div>
+        </div>
+        <div class="fw-angular" style="display:none;">
+          <div class="btn-code-block">
+            <div class="btn-code-head"><span class="btn-code-lang">HTML</span><button class="btn-copy-btn" onclick="copyBtnCode('tt-variants-ng',this)">Copy</button></div>
+            <div class="btn-code-body"><pre id="tt-variants-ng"><code><span class="c-cmt">&lt;!-- Default --&gt;</span>
+&lt;<span class="c-tag">button</span> <span class="c-attr">gsTooltip</span> [<span class="c-attr">gsTooltipTitle</span>]=<span class="c-val">"'Save changes'"</span>&gt;Save&lt;/<span class="c-tag">button</span>&gt;
+
+<span class="c-cmt">&lt;!-- Light, right --&gt;</span>
+&lt;<span class="c-tag">span</span>
+  <span class="c-attr">gsTooltip</span>
+  [<span class="c-attr">gsTooltipTitle</span>]=<span class="c-val">"'More info'"</span>
+  [<span class="c-attr">gsTooltipTheme</span>]=<span class="c-val">"'light'"</span>
+  [<span class="c-attr">gsTooltipPlacement</span>]=<span class="c-val">"'right'"</span>
+&gt;&lt;/<span class="c-tag">span</span>&gt;</code></pre></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 6 -->
+      <div id="tt-c-states" class="btn-family-card">
+        <div class="ds-step-row"><span class="ds-step-num">6</span><div class="btn-family-title" style="margin:0;">States</div></div>
+        <div class="fw-react">
+          <div class="btn-code-block">
+            <div class="btn-code-head"><span class="btn-code-lang">JSX</span><button class="btn-copy-btn" onclick="copyBtnCode('tt-states-react',this)">Copy</button></div>
+            <div class="btn-code-body"><pre id="tt-states-react"><code><span class="c-cmt">// Controlled visibility</span>
+<span class="c-kw">const</span> [open, setOpen] = useState(<span class="c-kw">false</span>);
+
+&lt;<span class="c-tag">Tooltip</span>
+  <span class="c-attr">title</span>=<span class="c-val">"Controlled tooltip"</span>
+  <span class="c-attr">open</span>={open}
+  <span class="c-attr">onOpenChange</span>={setOpen}
+&gt;
+  &lt;<span class="c-tag">button</span> <span class="c-attr">onClick</span>={() =&gt; setOpen(!open)}&gt;Toggle&lt;/<span class="c-tag">button</span>&gt;
+&lt;/<span class="c-tag">Tooltip</span>&gt;</code></pre></div>
+          </div>
+        </div>
+        <div class="fw-angular" style="display:none;">
+          <div class="btn-code-block">
+            <div class="btn-code-head"><span class="btn-code-lang">TS</span><button class="btn-copy-btn" onclick="copyBtnCode('tt-states-ng',this)">Copy</button></div>
+            <div class="btn-code-body"><pre id="tt-states-ng"><code><span class="c-kw">export class</span> <span class="c-type">MyComponent</span> {
+  tooltipVisible = <span class="c-kw">false</span>;
+}</code></pre></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 7 -->
+      <div id="tt-c-a11y" class="btn-family-card">
+        <div class="ds-step-row"><span class="ds-step-num">7</span><div class="btn-family-title" style="margin:0;">Accessibility</div></div>
+        <div class="fw-react">
+          <div class="btn-code-block">
+            <div class="btn-code-head"><span class="btn-code-lang">HTML</span><button class="btn-copy-btn" onclick="copyBtnCode('tt-a11y-react',this)">Copy</button></div>
+            <div class="btn-code-body"><pre id="tt-a11y-react"><code><span class="c-cmt">&lt;!-- Generated output --&gt;</span>
+&lt;<span class="c-tag">button</span> <span class="c-attr">aria-describedby</span>=<span class="c-val">"tt-1"</span>&gt;
+  &lt;<span class="c-tag">svg</span>&gt;...&lt;/<span class="c-tag">svg</span>&gt;
+&lt;/<span class="c-tag">button</span>&gt;
+&lt;<span class="c-tag">div</span>
+  <span class="c-attr">id</span>=<span class="c-val">"tt-1"</span>
+  <span class="c-attr">role</span>=<span class="c-val">"tooltip"</span>
+  <span class="c-attr">aria-hidden</span>=<span class="c-val">"true"</span>
+&gt;Save changes&lt;/<span class="c-tag">div</span>&gt;
+
+<span class="c-cmt">&lt;!-- Icon-only button: provide aria-label --&gt;</span>
+&lt;<span class="c-tag">Tooltip</span> <span class="c-attr">title</span>=<span class="c-val">"Delete item"</span>&gt;
+  &lt;<span class="c-tag">button</span> <span class="c-attr">aria-label</span>=<span class="c-val">"Delete item"</span>&gt;
+    &lt;<span class="c-tag">TrashIcon</span> /&gt;
+  &lt;/<span class="c-tag">button</span>&gt;
+&lt;/<span class="c-tag">Tooltip</span>&gt;</code></pre></div>
+          </div>
+        </div>
+        <div class="fw-angular" style="display:none;"><p class="btn-family-desc">The <code>gsTooltip</code> directive auto-generates <code>role="tooltip"</code> and <code>aria-describedby</code>. For icon-only elements also add <code>aria-label</code> on the host.</p></div>
+      </div>
+
+      <!-- 8 -->
+      <div id="tt-c-files" class="btn-family-card">
+        <div class="ds-step-row"><span class="ds-step-num">8</span><div class="btn-family-title" style="margin:0;">File Structure</div></div>
+        <div class="fw-react">
+          <div class="btn-code-block">
+            <div class="btn-code-head"><span class="btn-code-lang">tree</span><button class="btn-copy-btn" onclick="copyBtnCode('tt-files-react',this)">Copy</button></div>
+            <div class="btn-code-body"><pre id="tt-files-react"><code>src/components/Tooltip/
+├── Tooltip.tsx
+├── Tooltip.module.scss
+├── Tooltip.types.ts
+└── index.ts</code></pre></div>
+          </div>
+        </div>
+        <div class="fw-angular" style="display:none;">
+          <div class="btn-code-block">
+            <div class="btn-code-head"><span class="btn-code-lang">tree</span><button class="btn-copy-btn" onclick="copyBtnCode('tt-files-ng',this)">Copy</button></div>
+            <div class="btn-code-body"><pre id="tt-files-ng"><code>src/lib/tooltip/
+├── tooltip.directive.ts
+├── tooltip.component.ts
+├── tooltip.module.ts
+└── tooltip.component.scss</code></pre></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 9 -->
+      <div id="tt-c-patterns" class="btn-family-card">
+        <div class="ds-step-row"><span class="ds-step-num">9</span><div class="btn-family-title" style="margin:0;">Usage Patterns</div></div>
+        <div class="fw-react">
+          <div class="btn-code-block">
+            <div class="btn-code-head"><span class="btn-code-lang">JSX</span><button class="btn-copy-btn" onclick="copyBtnCode('tt-patterns-react',this)">Copy</button></div>
+            <div class="btn-code-body"><pre id="tt-patterns-react"><code><span class="c-cmt">// Icon-only action bar</span>
+<span class="c-kw">function</span> <span class="c-type">ActionBar</span>() {
+  <span class="c-kw">return</span> (
+    &lt;<span class="c-tag">div</span> <span class="c-attr">className</span>=<span class="c-val">"action-bar"</span>&gt;
+      &lt;<span class="c-tag">Tooltip</span> <span class="c-attr">title</span>=<span class="c-val">"Edit"</span> <span class="c-attr">placement</span>=<span class="c-val">"bottom"</span>&gt;
+        &lt;<span class="c-tag">button</span> <span class="c-attr">aria-label</span>=<span class="c-val">"Edit"</span>&gt;&lt;<span class="c-tag">EditIcon</span> /&gt;&lt;/<span class="c-tag">button</span>&gt;
+      &lt;/<span class="c-tag">Tooltip</span>&gt;
+      &lt;<span class="c-tag">Tooltip</span> <span class="c-attr">title</span>=<span class="c-val">"Duplicate"</span> <span class="c-attr">placement</span>=<span class="c-val">"bottom"</span>&gt;
+        &lt;<span class="c-tag">button</span> <span class="c-attr">aria-label</span>=<span class="c-val">"Duplicate"</span>&gt;&lt;<span class="c-tag">CopyIcon</span> /&gt;&lt;/<span class="c-tag">button</span>&gt;
+      &lt;/<span class="c-tag">Tooltip</span>&gt;
+      &lt;<span class="c-tag">Tooltip</span> <span class="c-attr">title</span>=<span class="c-val">"Delete"</span> <span class="c-attr">placement</span>=<span class="c-val">"bottom"</span>&gt;
+        &lt;<span class="c-tag">button</span> <span class="c-attr">aria-label</span>=<span class="c-val">"Delete"</span>&gt;&lt;<span class="c-tag">TrashIcon</span> /&gt;&lt;/<span class="c-tag">button</span>&gt;
+      &lt;/<span class="c-tag">Tooltip</span>&gt;
+    &lt;/<span class="c-tag">div</span>&gt;
+  );
+}</code></pre></div>
+          </div>
+        </div>
+        <div class="fw-angular" style="display:none;">
+          <div class="btn-code-block">
+            <div class="btn-code-head"><span class="btn-code-lang">HTML</span><button class="btn-copy-btn" onclick="copyBtnCode('tt-patterns-ng',this)">Copy</button></div>
+            <div class="btn-code-body"><pre id="tt-patterns-ng"><code>&lt;<span class="c-tag">div</span> <span class="c-attr">class</span>=<span class="c-val">"action-bar"</span>&gt;
+  &lt;<span class="c-tag">button</span> <span class="c-attr">gsTooltip</span> [<span class="c-attr">gsTooltipTitle</span>]=<span class="c-val">"'Edit'"</span> <span class="c-attr">aria-label</span>=<span class="c-val">"Edit"</span>&gt;
+    &lt;<span class="c-tag">gs-icon</span> <span class="c-attr">name</span>=<span class="c-val">"edit"</span>/&gt;
+  &lt;/<span class="c-tag">button</span>&gt;
+  &lt;<span class="c-tag">button</span> <span class="c-attr">gsTooltip</span> [<span class="c-attr">gsTooltipTitle</span>]=<span class="c-val">"'Delete'"</span> <span class="c-attr">aria-label</span>=<span class="c-val">"Delete"</span>&gt;
+    &lt;<span class="c-tag">gs-icon</span> <span class="c-attr">name</span>=<span class="c-val">"trash"</span>/&gt;
+  &lt;/<span class="c-tag">button</span>&gt;
+&lt;/<span class="c-tag">div</span>&gt;</code></pre></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 10 -->
+      <div id="tt-c-tokens" class="btn-family-card">
+        <div class="ds-step-row"><span class="ds-step-num">10</span><div class="btn-family-title" style="margin:0;">Theming</div></div>
+        <div class="fw-react">
+          <div class="btn-code-block">
+            <div class="btn-code-head"><span class="btn-code-lang">SCSS</span><button class="btn-copy-btn" onclick="copyBtnCode('tt-tokens-react',this)">Copy</button></div>
+            <div class="btn-code-body"><pre id="tt-tokens-react"><code><span class="c-cmt">/* All values reference Pelagos foundation tokens */</span>
+:root {
+  <span class="c-attr">--tooltip-bg-dark</span>:     <span class="c-val">var(--prim-grey-700)</span>;           <span class="c-cmt">/* #1e293b */</span>
+  <span class="c-attr">--tooltip-bg-light</span>:    <span class="c-val">var(--color-surface-default)</span>;   <span class="c-cmt">/* #ffffff */</span>
+  <span class="c-attr">--tooltip-text-dark</span>:   <span class="c-val">var(--prim-white)</span>;              <span class="c-cmt">/* #ffffff */</span>
+  <span class="c-attr">--tooltip-text-light</span>:  <span class="c-val">var(--color-text-default)</span>;      <span class="c-cmt">/* --prim-grey-900 */</span>
+  <span class="c-attr">--tooltip-border-light</span>:<span class="c-val">var(--color-border-default)</span>;    <span class="c-cmt">/* --prim-grey-100 */</span>
+  <span class="c-attr">--tooltip-shadow-light</span>:<span class="c-val">var(--prim-shadow-md)</span>;           <span class="c-cmt">/* 0 4px 16px … */</span>
+  <span class="c-attr">--tooltip-radius</span>:      <span class="c-val">var(--radius-sm)</span>;               <span class="c-cmt">/* 4px */</span>
+  <span class="c-attr">--tooltip-padding</span>:     <span class="c-val">var(--prim-space-2) var(--prim-space-3)</span>; <span class="c-cmt">/* 6px 10px */</span>
+  <span class="c-attr">--tooltip-font-size</span>:   <span class="c-val">var(--prim-font-size-sm)</span>;       <span class="c-cmt">/* 12px */</span>
+  <span class="c-attr">--tooltip-font-weight</span>: <span class="c-val">var(--prim-font-weight-medium)</span>; <span class="c-cmt">/* 500 */</span>
+  <span class="c-attr">--tooltip-max-width</span>:   <span class="c-val">240px</span>;
+  <span class="c-attr">--tooltip-gap</span>:         <span class="c-val">var(--prim-space-2)</span>;            <span class="c-cmt">/* 8px */</span>
+  <span class="c-attr">--tooltip-z-index</span>:     <span class="c-val">9999</span>;
+  <span class="c-attr">--tooltip-delay-show</span>:  <span class="c-val">300ms</span>;
+  <span class="c-attr">--tooltip-delay-hide</span>:  <span class="c-val">100ms</span>;
+}</code></pre></div>
+          </div>
+        </div>
+        <div class="fw-angular" style="display:none;"><p class="btn-family-desc">Same CSS custom properties apply globally. Override in your app's root stylesheet.</p></div>
+      </div>
+
+      <!-- 11 -->
+      <div id="tt-c-example" class="btn-family-card">
+        <div class="ds-step-row"><span class="ds-step-num">11</span><div class="btn-family-title" style="margin:0;">Full Example</div></div>
+        <div class="fw-react">
+          <div class="btn-code-block">
+            <div class="btn-code-head"><span class="btn-code-lang">JSX</span><button class="btn-copy-btn" onclick="copyBtnCode('tt-example-react',this)">Copy</button></div>
+            <div class="btn-code-body"><pre id="tt-example-react"><code><span class="c-kw">import</span> { <span class="c-type">Tooltip</span> } <span class="c-kw">from</span> <span class="c-val">'@pelagos/react-components'</span>;
+
+<span class="c-kw">export function</span> <span class="c-type">TableActionRow</span>({ item }: { item: <span class="c-type">Item</span> }) {
+  <span class="c-kw">return</span> (
+    &lt;<span class="c-tag">div</span> <span class="c-attr">style</span>={{ display: <span class="c-val">'flex'</span>, gap: <span class="c-val">8</span> }}&gt;
+      &lt;<span class="c-tag">Tooltip</span> <span class="c-attr">title</span>=<span class="c-val">"Edit row"</span> <span class="c-attr">placement</span>=<span class="c-val">"top"</span>&gt;
+        &lt;<span class="c-tag">button</span> <span class="c-attr">aria-label</span>=<span class="c-val">"Edit row"</span> <span class="c-attr">onClick</span>={() =&gt; onEdit(item)}&gt;
+          &lt;<span class="c-tag">EditIcon</span> /&gt;
+        &lt;/<span class="c-tag">button</span>&gt;
+      &lt;/<span class="c-tag">Tooltip</span>&gt;
+
+      &lt;<span class="c-tag">Tooltip</span>
+        <span class="c-attr">title</span>={
+          &lt;<span class="c-tag">span</span>&gt;
+            &lt;<span class="c-tag">strong</span>&gt;Delete&lt;/<span class="c-tag">strong</span>&gt;&lt;<span class="c-tag">br</span>/&gt;This action cannot be undone.
+          &lt;/<span class="c-tag">span</span>&gt;
+        }
+        <span class="c-attr">placement</span>=<span class="c-val">"top"</span>
+        <span class="c-attr">theme</span>=<span class="c-val">"dark"</span>
+      &gt;
+        &lt;<span class="c-tag">button</span> <span class="c-attr">aria-label</span>=<span class="c-val">"Delete row"</span> <span class="c-attr">onClick</span>={() =&gt; onDelete(item)}&gt;
+          &lt;<span class="c-tag">TrashIcon</span> /&gt;
+        &lt;/<span class="c-tag">button</span>&gt;
+      &lt;/<span class="c-tag">Tooltip</span>&gt;
+    &lt;/<span class="c-tag">div</span>&gt;
+  );
+}</code></pre></div>
+          </div>
+        </div>
+        <div class="fw-angular" style="display:none;">
+          <div class="btn-code-block">
+            <div class="btn-code-head"><span class="btn-code-lang">HTML</span><button class="btn-copy-btn" onclick="copyBtnCode('tt-example-ng',this)">Copy</button></div>
+            <div class="btn-code-body"><pre id="tt-example-ng"><code>&lt;<span class="c-tag">div</span> <span class="c-attr">class</span>=<span class="c-val">"action-row"</span>&gt;
+  &lt;<span class="c-tag">button</span>
+    <span class="c-attr">gsTooltip</span>
+    [<span class="c-attr">gsTooltipTitle</span>]=<span class="c-val">"'Edit row'"</span>
+    [<span class="c-attr">gsTooltipPlacement</span>]=<span class="c-val">"'top'"</span>
+    <span class="c-attr">aria-label</span>=<span class="c-val">"Edit row"</span>
+    (<span class="c-attr">click</span>)=<span class="c-val">"onEdit(item)"</span>
+  &gt;&lt;<span class="c-tag">gs-icon</span> <span class="c-attr">name</span>=<span class="c-val">"edit"</span>/&gt;&lt;/<span class="c-tag">button</span>&gt;
+
+  &lt;<span class="c-tag">button</span>
+    <span class="c-attr">gsTooltip</span>
+    [<span class="c-attr">gsTooltipTitle</span>]=<span class="c-val">"'Delete — cannot be undone'"</span>
+    [<span class="c-attr">gsTooltipPlacement</span>]=<span class="c-val">"'top'"</span>
+    <span class="c-attr">aria-label</span>=<span class="c-val">"Delete row"</span>
+    (<span class="c-attr">click</span>)=<span class="c-val">"onDelete(item)"</span>
+  &gt;&lt;<span class="c-tag">gs-icon</span> <span class="c-attr">name</span>=<span class="c-val">"trash"</span>/&gt;&lt;/<span class="c-tag">button</span>&gt;
+&lt;/<span class="c-tag">div</span>&gt;</code></pre></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="code-tab-qnav">
+      <div class="code-qnav-inner">
+        <p class="code-qnav-title">On This Page</p>
+        <ul class="code-qnav-list">
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('tt-c-overview')">1 · Overview</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('tt-c-install')">2 · Install</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('tt-c-imports')">3 · Import</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('tt-c-api')">4 · API / Props</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('tt-c-variants')">5 · Variants</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('tt-c-states')">6 · States</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('tt-c-a11y')">7 · Accessibility</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('tt-c-files')">8 · File Structure</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('tt-c-patterns')">9 · Usage Patterns</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('tt-c-tokens')">10 · Theming</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('tt-c-example')">11 · Full Example</button></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ USAGE TAB ═══════════════════════════════════════════════════════ -->
+<div id="tt-tab-usage" class="btn-tab-pane tt-tab-pane">
+  <div class="code-tab-layout">
+    <div class="code-tab-main">
+
+      <div id="tt-u-when" class="btn-family-card">
+        <div class="btn-family-title">When to Use</div>
+        <ul class="btn-usage-list">
+          <li><strong>Icon-only buttons and controls</strong> — Provide a visible label on hover/focus so sighted keyboard users and screen reader users can identify the action without decoding the icon alone.</li>
+          <li><strong>Truncated text in tables or cards</strong> — Show the full string in a tooltip when overflow is ellipsed due to constrained layout.</li>
+          <li><strong>Keyboard shortcuts</strong> — Surface the shortcut key combo in the tooltip of a toolbar button (e.g., "Bold — ⌘B").</li>
+          <li><strong>Supplementary labels on form inputs</strong> — A short clarification alongside an input field label, where inline helper text would be too verbose.</li>
+          <li><strong>Status badges or colour indicators</strong> — Provide semantic meaning when colour alone is used to convey status (e.g., a coloured dot with a tooltip "Active").</li>
+        </ul>
+      </div>
+
+      <div id="tt-u-when-not" class="btn-family-card">
+        <div class="btn-family-title">When Not to Use</div>
+        <ul class="btn-usage-list">
+          <li><strong>Long-form or interactive content</strong> — Use <button onclick="navigate('panel-popover')" class="btn-inline-link">Popover</button> instead. Tooltips cannot contain clickable links, form fields, or multi-paragraph text.</li>
+          <li><strong>Error messages on inputs</strong> — Error text should be persistent and inline beneath the field, not hidden behind hover. Users on mobile may never discover hover-only errors.</li>
+          <li><strong>Critical information the user must act on</strong> — If the user must read and respond to content, use a <button onclick="navigate('panel-modals')" class="btn-inline-link">Modal</button>.</li>
+          <li><strong>On touch-only devices where hover is absent</strong> — If your primary audience is mobile, consider whether an inline label or persistent secondary text is more accessible.</li>
+        </ul>
+      </div>
+
+      <div id="tt-u-best" class="btn-family-card">
+        <div class="btn-family-title">Best Practices</div>
+        <ul class="btn-usage-list">
+          <li><strong>Keep label text brief</strong> — One short phrase or sentence maximum. If you need more, use a popover.</li>
+          <li><strong>Always pair tooltips with aria-label on icon-only controls</strong> — <code>aria-describedby</code> supplements the button label; it doesn't replace it. Icon-only buttons still need <code>aria-label</code> for screen readers that read the button label first.</li>
+          <li><strong>Don't disable the 300ms hover delay</strong> — The delay prevents tooltip flicker as users move the cursor across the UI. Reducing it below 200ms causes poor UX.</li>
+          <li><strong>Prefer <code>placement="top"</code> or <code>"bottom"</code></strong> — These positions are least likely to obscure surrounding content and work better on narrow viewports where side placements clip.</li>
+          <li><strong>Test on touch devices</strong> — Validate the tap-then-activate flow on iOS and Android to ensure icon-only buttons are still reachable without the tooltip.</li>
+        </ul>
+      </div>
+
+      <div id="tt-u-patterns" class="btn-family-card">
+        <div class="btn-family-title">Patterns</div>
+        <ul class="btn-usage-list">
+          <li><strong>Icon Action Bar</strong> — Place tooltips on each icon button in a toolbar or table action row with <code>placement="bottom"</code> so tooltips open downward and don't overlap the toolbar.</li>
+          <li><strong>Truncation Reveal</strong> — Use <code>placement="top"</code> and set <code>title={fullText}</code> on the truncated element. Combine with an <code>onMouseEnter</code> check to only show the tooltip when text is actually truncated.</li>
+          <li><strong>Shortcut Hint</strong> — Format as rich content: bold action name on the first line, keyboard shortcut in a <code>&lt;kbd&gt;</code> element on the second.</li>
+          <li><strong>Disabled Button Explanation</strong> — Wrap a disabled button in a non-disabled <code>&lt;span&gt;</code> to show a tooltip explaining why the button is disabled.</li>
+        </ul>
+      </div>
+
+      <div id="tt-u-mistakes" class="btn-family-card">
+        <div class="btn-family-title">Anti-patterns</div>
+        <ul class="btn-usage-list">
+          <li>
+            <strong>❌ Putting required info only in a tooltip</strong> — Hover-only content is inaccessible on touch devices and may be missed.
+            <br><strong>✅ Fix:</strong> Use inline helper text for important guidance; use tooltip only for supplementary context.
+          </li>
+          <li>
+            <strong>❌ Tooltip on a non-focusable element (e.g., plain div)</strong> — Keyboard users can't reach it, violating WCAG 2.1.
+            <br><strong>✅ Fix:</strong> Ensure the trigger is natively focusable (button, a, input) or add <code>tabindex="0"</code> and an appropriate role.
+          </li>
+          <li>
+            <strong>❌ Multi-paragraph text inside a tooltip</strong> — Tooltips are for labels, not documentation. Long content overflows and becomes unreadable.
+            <br><strong>✅ Fix:</strong> Use a Popover for rich or interactive content.
+          </li>
+          <li>
+            <strong>❌ Tooltip with zero delay on a dense button bar</strong> — Tooltips fire on every button as the cursor sweeps across, causing visual chaos.
+            <br><strong>✅ Fix:</strong> Keep the 300ms show delay. Set hide delay to 100ms for snappy dismissal.
+          </li>
+        </ul>
+      </div>
+
+      <div id="tt-u-refs" class="btn-family-card">
+        <div class="btn-family-title">References</div>
+        <ul class="btn-related-list">
+          <li><a href="https://www.figma.com/design/TOLfBpRePgynqwvDVp6fg3/Design-System?node-id=660-7014" target="_blank" rel="noopener">Figma — Tooltip component frame</a></li>
+          <li><a href="https://ant.design/components/tooltip" target="_blank" rel="noopener">Ant Design — Tooltip reference</a></li>
+          <li><a href="https://www.w3.org/WAI/ARIA/apg/patterns/tooltip/" target="_blank" rel="noopener">ARIA Authoring Practices — Tooltip Pattern</a></li>
+          <li><a href="https://www.w3.org/WAI/WCAG21/Understanding/content-on-hover-or-focus.html" target="_blank" rel="noopener">WCAG 2.1 — 1.4.13 Content on Hover or Focus</a></li>
+          <li><a href="https://floating-ui.com/" target="_blank" rel="noopener">Floating UI — positioning engine used internally</a></li>
+        </ul>
+      </div>
+
+    </div>
+
+    <div class="code-tab-qnav">
+      <div class="code-qnav-inner">
+        <p class="code-qnav-title">On This Page</p>
+        <ul class="code-qnav-list">
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('tt-u-when')">When to Use</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('tt-u-when-not')">When Not to Use</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('tt-u-best')">Best Practices</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('tt-u-patterns')">Patterns</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('tt-u-mistakes')">Anti-patterns</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('tt-u-refs')">References</button></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,67 @@
+<div class="page-header"><h1 class="ds-hero-title">Elevation</h1></div>
+
+    <div class="content-area">
+
+      <div class="ds-card">
+        <p style="font-size:15px;line-height:1.7;color:#001e4c;margin:0;">Elevation addresses dimensional hierarchy and content relationships. Surface and shadow give the impression of lift or depth. Elevations can guide focus through layering, or indicate that the UI can be scrolled or dragged.</p>
+      </div>
+
+      <div class="ds-card">
+        <div style="font-size:16px;font-weight:700;color:#0f172a;margin-bottom:6px;">Shadow Hierarchy</div>
+        <p style="font-size:13px;color:#64748b;margin:0 0 24px;">Shadow levels emphasise how components appear as overlays. The screen and default UI sit at the base level.</p>
+
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:20px;margin-bottom:28px;">
+          <div style="background:#f8fafc;border-radius:10px;padding:20px;display:flex;flex-direction:column;align-items:center;gap:16px;">
+            <div style="width:100%;height:80px;background:#fff;border-radius:8px;box-shadow:0 1px 2px rgba(0,0,30,0.24);"></div>
+            <div style="text-align:center;">
+              <div style="font-size:13px;font-weight:700;color:#0f172a;margin-bottom:4px;">Shadow XS</div>
+              <div style="font-size:12px;color:#64748b;">X:0 Y:1 Blur:2</div>
+              <div style="font-size:12px;color:#64748b;">Navy 24%</div>
+              <div style="font-size:11px;color:#94a3b8;margin-top:6px;">Widget cards</div>
+            </div>
+          </div>
+          <div style="background:#f8fafc;border-radius:10px;padding:20px;display:flex;flex-direction:column;align-items:center;gap:16px;">
+            <div style="width:100%;height:80px;background:#fff;border-radius:8px;box-shadow:0 2px 8px rgba(0,0,30,0.20);"></div>
+            <div style="text-align:center;">
+              <div style="font-size:13px;font-weight:700;color:#0f172a;margin-bottom:4px;">Shadow SM</div>
+              <div style="font-size:12px;color:#64748b;">X:0 Y:2 Blur:8</div>
+              <div style="font-size:12px;color:#64748b;">Navy 20%</div>
+              <div style="font-size:11px;color:#94a3b8;margin-top:6px;">Popovers, panels</div>
+            </div>
+          </div>
+          <div style="background:#f8fafc;border-radius:10px;padding:20px;display:flex;flex-direction:column;align-items:center;gap:16px;">
+            <div style="width:100%;height:80px;background:#fff;border-radius:8px;box-shadow:0 4px 16px rgba(0,0,30,0.16);"></div>
+            <div style="text-align:center;">
+              <div style="font-size:13px;font-weight:700;color:#0f172a;margin-bottom:4px;">Shadow MD</div>
+              <div style="font-size:12px;color:#64748b;">X:0 Y:4 Blur:16</div>
+              <div style="font-size:12px;color:#64748b;">Navy 16%</div>
+              <div style="font-size:11px;color:#94a3b8;margin-top:6px;">Notifications</div>
+            </div>
+          </div>
+          <div style="background:#f8fafc;border-radius:10px;padding:20px;display:flex;flex-direction:column;align-items:center;gap:16px;">
+            <div style="width:100%;height:80px;background:#fff;border-radius:8px;box-shadow:0 16px 32px rgba(0,0,30,0.12);"></div>
+            <div style="text-align:center;">
+              <div style="font-size:13px;font-weight:700;color:#0f172a;margin-bottom:4px;">Shadow LG</div>
+              <div style="font-size:12px;color:#64748b;">X:0 Y:16 Blur:32</div>
+              <div style="font-size:12px;color:#64748b;">Navy 12%</div>
+              <div style="font-size:11px;color:#94a3b8;margin-top:6px;">Modals, slideouts</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="ds-card">
+        <div style="font-size:16px;font-weight:700;color:#0f172a;margin-bottom:16px;">Shadow Tokens</div>
+        <table class="token-table">
+          <thead><tr><th>Token</th><th>Value</th><th>Usage</th></tr></thead>
+          <tbody>
+            <tr><td class="token-name">--shadow-xs</td><td class="token-value">0 1px 2px rgba(0,0,30,.24)</td><td class="ds-td-muted">Widget cards in dashboard</td></tr>
+            <tr><td class="token-name">--shadow-sm</td><td class="token-value">0 2px 8px rgba(0,0,30,.20)</td><td class="ds-td-muted">Popovers, sheets, scroll indication</td></tr>
+            <tr><td class="token-name">--shadow-md</td><td class="token-value">0 4px 16px rgba(0,0,30,.16)</td><td class="ds-td-muted">Notification panels</td></tr>
+            <tr><td class="token-name">--shadow-lg</td><td class="token-value">0 16px 32px rgba(0,0,30,.12)</td><td class="ds-td-muted">Modals, slideouts, toast banners</td></tr>
+            <tr><td class="token-name">--shadow-focus</td><td class="token-value">0 0 0 3px rgba(24,82,254,.35)</td><td class="ds-td-muted">Focus rings on interactive elements</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+    </div>

@@ -1,0 +1,1152 @@
+<!-- Banner -->
+    <div class="page-header"><h1 class="ds-hero-title">Badge</h1></div>
+
+    <!-- Tab bar -->
+    <div class="btn-tab-bar">
+      <button class="btn-tab-btn badge-tab-btn active" data-tab="design" onclick="switchBadgeTab('design')">Design</button>
+      <button class="btn-tab-btn badge-tab-btn" data-tab="code" onclick="switchBadgeTab('code')">Code</button>
+      <button class="btn-tab-btn badge-tab-btn" data-tab="usage" onclick="switchBadgeTab('usage')">Usage</button>
+    </div>
+
+    <!-- ========== DESIGN TAB ========== -->
+    <div id="badge-tab-design" class="btn-tab-pane badge-tab-pane active">
+      <div class="code-tab-layout">
+        <div class="code-tab-main">
+
+          <p style="font-size:15px;line-height:1.75;color:#475569;margin:0 0 32px;">Badges are compact, non-interactive indicators that communicate count, notification state, or product novelty. They attach to icons, avatars, or nav items without requiring any user action.</p>
+
+          <!-- ── TYPES ── -->
+          <div class="btn-family-card" id="bdg-s-types">
+            <div class="btn-family-title">Types</div>
+            <p class="btn-family-desc">Three distinct badge types, each with a fixed visual contract: <strong>Count</strong> badges show a number; <strong>Dot</strong> badges signal presence without a count; <strong>New</strong> badges announce first-time availability.</p>
+
+            <!-- COUNT BADGES -->
+            <div style="margin-bottom:32px;">
+              <div style="font-size:12px;font-weight:600;color:#94a3b8;text-transform:uppercase;letter-spacing:.08em;margin-bottom:16px;">Count</div>
+              <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:12px;padding:36px 28px;">
+                <div style="display:flex;flex-wrap:wrap;align-items:flex-start;gap:40px;">
+
+                  <!-- Count-Neutral -->
+                  <div style="display:flex;flex-direction:column;align-items:center;gap:16px;">
+                    <div style="position:relative;display:inline-flex;width:40px;height:40px;background:#cbd5e1;border-radius:10px;align-items:center;justify-content:center;">
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#64748b" stroke-width="2" stroke-linecap="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+                      <span class="gs-count-badge">2</span>
+                    </div>
+                    <div style="text-align:center;">
+                      <div style="font-size:12px;font-weight:600;color:#1e293b;margin-bottom:3px;">Count-Neutral</div>
+                      <div style="font-size:11px;color:#94a3b8;">18×18px · #e2e8f0</div>
+                    </div>
+                  </div>
+
+                  <!-- Count-Alert (Dot-Alert in Figma — red count) -->
+                  <div style="display:flex;flex-direction:column;align-items:center;gap:16px;">
+                    <div style="position:relative;display:inline-flex;width:40px;height:40px;background:#cbd5e1;border-radius:10px;align-items:center;justify-content:center;">
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#64748b" stroke-width="2" stroke-linecap="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+                      <span class="gs-count-badge gs-count-badge--alert">2</span>
+                    </div>
+                    <div style="text-align:center;">
+                      <div style="font-size:12px;font-weight:600;color:#1e293b;margin-bottom:3px;">Count-Alert</div>
+                      <div style="font-size:11px;color:#94a3b8;">18×18px · #dc2625</div>
+                    </div>
+                  </div>
+
+                  <!-- Overflow -->
+                  <div style="display:flex;flex-direction:column;align-items:center;gap:16px;">
+                    <div style="position:relative;display:inline-flex;width:40px;height:40px;background:#cbd5e1;border-radius:10px;align-items:center;justify-content:center;">
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#64748b" stroke-width="2" stroke-linecap="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+                      <span class="gs-count-badge gs-count-badge--alert" style="font-size:10px;min-width:22px;">99+</span>
+                    </div>
+                    <div style="text-align:center;">
+                      <div style="font-size:12px;font-weight:600;color:#1e293b;margin-bottom:3px;">Overflow</div>
+                      <div style="font-size:11px;color:#94a3b8;">renders "99+"</div>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+
+            <!-- DOT BADGES -->
+            <div style="margin-bottom:32px;">
+              <div style="font-size:12px;font-weight:600;color:#94a3b8;text-transform:uppercase;letter-spacing:.08em;margin-bottom:16px;">Dot</div>
+              <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:12px;padding:36px 28px;">
+                <div style="display:flex;flex-wrap:wrap;align-items:flex-start;gap:40px;">
+
+                  <!-- Dot-Alert -->
+                  <div style="display:flex;flex-direction:column;align-items:center;gap:16px;">
+                    <div style="position:relative;display:inline-flex;width:40px;height:40px;background:#cbd5e1;border-radius:10px;align-items:center;justify-content:center;">
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#64748b" stroke-width="2" stroke-linecap="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+                      <span class="gs-dot-badge gs-dot-badge--alert" style="position:absolute;top:-2px;right:-2px;"></span>
+                    </div>
+                    <div style="text-align:center;">
+                      <div style="font-size:12px;font-weight:600;color:#1e293b;margin-bottom:3px;">Dot-Alert</div>
+                      <div style="font-size:11px;color:#94a3b8;">12×12px · #dc2625</div>
+                    </div>
+                  </div>
+
+                  <!-- Dot-Success -->
+                  <div style="display:flex;flex-direction:column;align-items:center;gap:16px;">
+                    <div style="position:relative;display:inline-flex;width:40px;height:40px;background:#cbd5e1;border-radius:10px;align-items:center;justify-content:center;">
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#64748b" stroke-width="2" stroke-linecap="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+                      <span class="gs-dot-badge gs-dot-badge--success" style="position:absolute;top:-2px;right:-2px;"></span>
+                    </div>
+                    <div style="text-align:center;">
+                      <div style="font-size:12px;font-weight:600;color:#1e293b;margin-bottom:3px;">Dot-Success</div>
+                      <div style="font-size:11px;color:#94a3b8;">12×12px · #22c55e</div>
+                    </div>
+                  </div>
+
+                  <!-- Dot-Warning -->
+                  <div style="display:flex;flex-direction:column;align-items:center;gap:16px;">
+                    <div style="position:relative;display:inline-flex;width:40px;height:40px;background:#cbd5e1;border-radius:10px;align-items:center;justify-content:center;">
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#64748b" stroke-width="2" stroke-linecap="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+                      <span class="gs-dot-badge gs-dot-badge--warning" style="position:absolute;top:-2px;right:-2px;"></span>
+                    </div>
+                    <div style="text-align:center;">
+                      <div style="font-size:12px;font-weight:600;color:#1e293b;margin-bottom:3px;">Dot-Warning</div>
+                      <div style="font-size:11px;color:#94a3b8;">12×12px · #eab305</div>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+
+            <!-- NEW BADGE -->
+            <div>
+              <div style="font-size:12px;font-weight:600;color:#94a3b8;text-transform:uppercase;letter-spacing:.08em;margin-bottom:16px;">New</div>
+              <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:12px;padding:36px 28px;">
+                <div style="display:flex;flex-wrap:wrap;align-items:flex-start;gap:40px;">
+
+                  <!-- NEW inline with nav label -->
+                  <div style="display:flex;flex-direction:column;align-items:flex-start;gap:16px;">
+                    <div style="display:flex;align-items:center;gap:8px;padding:10px 14px;background:#fff;border:1px solid #e2e8f0;border-radius:8px;">
+                      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#64748b" stroke-width="2" stroke-linecap="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+                      <span style="font-size:13px;font-weight:500;color:#1e293b;font-family:'Gilroy',sans-serif;">Analytics</span>
+                      <span class="gs-new-badge">NEW</span>
+                    </div>
+                    <div>
+                      <div style="font-size:12px;font-weight:600;color:#1e293b;margin-bottom:3px;">Inline (nav item)</div>
+                      <div style="font-size:11px;color:#94a3b8;">gradient · 4px radius</div>
+                    </div>
+                  </div>
+
+                  <!-- NEW on standalone label -->
+                  <div style="display:flex;flex-direction:column;align-items:flex-start;gap:16px;">
+                    <div style="display:flex;align-items:center;gap:8px;padding:10px 14px;background:#fff;border:1px solid #e2e8f0;border-radius:8px;">
+                      <span style="font-size:13px;font-weight:500;color:#1e293b;font-family:'Gilroy',sans-serif;">Dark mode</span>
+                      <span class="gs-new-badge">NEW</span>
+                    </div>
+                    <div>
+                      <div style="font-size:12px;font-weight:600;color:#1e293b;margin-bottom:3px;">Inline (feature label)</div>
+                      <div style="font-size:11px;color:#94a3b8;">#1c4ed8 → #3b81f6</div>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- ── ANATOMY ── -->
+          <div class="btn-family-card" id="bdg-s-anatomy">
+            <div class="btn-family-title">Anatomy</div>
+            <p class="btn-family-desc">Count and Dot badges share a circular container. Count adds a numeric label; Dot replaces it with a solid fill and a white separation border. The NEW badge uses a rectangular gradient pill.</p>
+
+            <!-- Count anatomy -->
+            <div style="margin-bottom:32px;">
+              <div style="font-size:12px;font-weight:600;color:#94a3b8;text-transform:uppercase;letter-spacing:.08em;margin-bottom:20px;">Count badge</div>
+              <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:12px;padding:48px 28px 56px;display:flex;justify-content:center;">
+                <div style="position:relative;display:inline-flex;">
+                  <!-- The badge itself -->
+                  <span style="display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;background:#e2e8f0;border-radius:999px;font-size:14px;font-weight:700;color:#475569;font-family:'Gilroy',sans-serif;outline:2px dashed #da1e28;outline-offset:5px;position:relative;z-index:2;">2</span>
+                  <!-- Annotation 1: Container -->
+                  <div style="position:absolute;bottom:-44px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:3px;white-space:nowrap;">
+                    <div style="width:1px;height:16px;background:#da1e28;"></div>
+                    <div style="display:flex;align-items:center;gap:5px;">
+                      <div style="width:18px;height:18px;border-radius:50%;background:#da1e28;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#fff;flex-shrink:0;">1</div>
+                      <span style="font-size:11px;font-weight:600;color:#374151;">Container — 18×18px, radius 999px</span>
+                    </div>
+                  </div>
+                  <!-- Annotation 2: Label — floated right -->
+                  <div style="position:absolute;top:-44px;left:50%;transform:translateX(8px);display:flex;flex-direction:column;align-items:flex-start;gap:3px;white-space:nowrap;">
+                    <div style="display:flex;align-items:center;gap:5px;">
+                      <div style="width:18px;height:18px;border-radius:50%;background:#da1e28;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#fff;flex-shrink:0;">2</div>
+                      <span style="font-size:11px;font-weight:600;color:#374151;">Label — 12px / SemiBold / center</span>
+                    </div>
+                    <div style="width:1px;height:16px;background:#da1e28;margin-left:9px;"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Dot anatomy -->
+            <div style="margin-bottom:32px;">
+              <div style="font-size:12px;font-weight:600;color:#94a3b8;text-transform:uppercase;letter-spacing:.08em;margin-bottom:20px;">Dot badge</div>
+              <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:12px;padding:48px 28px 56px;display:flex;justify-content:center;">
+                <div style="position:relative;display:inline-flex;">
+                  <span style="display:inline-block;width:20px;height:20px;border-radius:999px;background:#dc2625;border:3px solid #fff;box-shadow:0 0 0 2px #da1e28;box-sizing:border-box;"></span>
+                  <div style="position:absolute;bottom:-44px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:3px;white-space:nowrap;">
+                    <div style="width:1px;height:16px;background:#da1e28;"></div>
+                    <div style="display:flex;align-items:center;gap:5px;">
+                      <div style="width:18px;height:18px;border-radius:50%;background:#da1e28;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#fff;flex-shrink:0;">1</div>
+                      <span style="font-size:11px;font-weight:600;color:#374151;">Fill — 12×12px total</span>
+                    </div>
+                  </div>
+                  <div style="position:absolute;top:-44px;left:50%;transform:translateX(8px);display:flex;flex-direction:column;align-items:flex-start;gap:3px;white-space:nowrap;">
+                    <div style="display:flex;align-items:center;gap:5px;">
+                      <div style="width:18px;height:18px;border-radius:50%;background:#da1e28;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#fff;flex-shrink:0;">2</div>
+                      <span style="font-size:11px;font-weight:600;color:#374151;">Separation border — 2px solid white</span>
+                    </div>
+                    <div style="width:1px;height:16px;background:#da1e28;margin-left:9px;"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- NEW anatomy -->
+            <div>
+              <div style="font-size:12px;font-weight:600;color:#94a3b8;text-transform:uppercase;letter-spacing:.08em;margin-bottom:20px;">NEW badge</div>
+              <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:12px;padding:48px 28px 56px;display:flex;justify-content:center;">
+                <div style="position:relative;display:inline-flex;">
+                  <span style="display:inline-flex;align-items:center;justify-content:center;padding:4px;background:linear-gradient(90deg,#1c4ed8,#3b81f6);border-radius:4px;font-size:12px;font-weight:600;line-height:16px;color:#fff;font-family:'Gilroy',sans-serif;outline:2px dashed #da1e28;outline-offset:4px;">NEW</span>
+                  <div style="position:absolute;bottom:-44px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:3px;white-space:nowrap;">
+                    <div style="width:1px;height:16px;background:#da1e28;"></div>
+                    <div style="display:flex;align-items:center;gap:5px;">
+                      <div style="width:18px;height:18px;border-radius:50%;background:#da1e28;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#fff;flex-shrink:0;">1</div>
+                      <span style="font-size:11px;font-weight:600;color:#374151;">Container — gradient bg, 4px radius, 4px padding</span>
+                    </div>
+                  </div>
+                  <div style="position:absolute;top:-44px;left:50%;transform:translateX(8px);display:flex;flex-direction:column;align-items:flex-start;gap:3px;white-space:nowrap;">
+                    <div style="display:flex;align-items:center;gap:5px;">
+                      <div style="width:18px;height:18px;border-radius:50%;background:#da1e28;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#fff;flex-shrink:0;">2</div>
+                      <span style="font-size:11px;font-weight:600;color:#374151;">Label — 12px / SemiBold / white / "NEW" (all caps)</span>
+                    </div>
+                    <div style="width:1px;height:16px;background:#da1e28;margin-left:9px;"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Legend -->
+            <div style="margin-top:20px;display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px;">
+              <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;padding:16px 18px;">
+                <div style="font-size:12px;font-weight:600;color:#94a3b8;text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px;">Count</div>
+                <div style="font-size:13px;color:#64748b;line-height:1.6;">18×18px min, radius 999px. Padding 4px expands width for double-digit numbers. Text: 12px SemiBold, centered.</div>
+              </div>
+              <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;padding:16px 18px;">
+                <div style="font-size:12px;font-weight:600;color:#94a3b8;text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px;">Dot</div>
+                <div style="font-size:13px;color:#64748b;line-height:1.6;">Fixed 12×12px. The 2px white border creates visual separation from the parent surface — it is not optional.</div>
+              </div>
+              <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;padding:16px 18px;">
+                <div style="font-size:12px;font-weight:600;color:#94a3b8;text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px;">New</div>
+                <div style="font-size:13px;color:#64748b;line-height:1.6;">Gradient pill (not circle). 4px radius, 4px all-side padding. Gradient is always horizontal: blue/600 → blue/400.</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- ── STATES ── -->
+          <div class="btn-family-card" id="bdg-s-states">
+            <div class="btn-family-title">States</div>
+            <p class="btn-family-desc">Badges are non-interactive. They inherit visual state from their parent element only.</p>
+
+            <div style="overflow-x:auto;">
+              <table style="width:100%;border-collapse:collapse;font-size:13px;">
+                <thead>
+                  <tr style="background:#f8fafc;">
+                    <th style="text-align:left;padding:10px 14px;font-weight:600;color:#374151;border-bottom:1px solid #e2e8f0;white-space:nowrap;">State</th>
+                    <th style="text-align:left;padding:10px 14px;font-weight:600;color:#374151;border-bottom:1px solid #e2e8f0;">Count</th>
+                    <th style="text-align:left;padding:10px 14px;font-weight:600;color:#374151;border-bottom:1px solid #e2e8f0;">Dot</th>
+                    <th style="text-align:left;padding:10px 14px;font-weight:600;color:#374151;border-bottom:1px solid #e2e8f0;">Visual behaviour</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td style="padding:12px 14px;border-bottom:1px solid #f1f5f9;font-weight:500;color:#1e293b;">Default</td>
+                    <td style="padding:12px 14px;border-bottom:1px solid #f1f5f9;">
+                      <div style="position:relative;display:inline-flex;width:28px;height:28px;background:#e2e8f0;border-radius:8px;">
+                        <span class="gs-count-badge">3</span>
+                      </div>
+                    </td>
+                    <td style="padding:12px 14px;border-bottom:1px solid #f1f5f9;">
+                      <div style="position:relative;display:inline-flex;width:20px;height:20px;background:#e2e8f0;border-radius:50%;">
+                        <span class="gs-dot-badge gs-dot-badge--alert" style="position:absolute;top:-2px;right:-2px;"></span>
+                      </div>
+                    </td>
+                    <td style="padding:12px 14px;border-bottom:1px solid #f1f5f9;color:#64748b;">Full opacity and color. Resting state.</td>
+                  </tr>
+                  <tr>
+                    <td style="padding:12px 14px;border-bottom:1px solid #f1f5f9;font-weight:500;color:#1e293b;">Disabled</td>
+                    <td style="padding:12px 14px;border-bottom:1px solid #f1f5f9;">
+                      <div style="position:relative;display:inline-flex;width:28px;height:28px;background:#e2e8f0;border-radius:8px;opacity:0.4;">
+                        <span class="gs-count-badge">3</span>
+                      </div>
+                    </td>
+                    <td style="padding:12px 14px;border-bottom:1px solid #f1f5f9;">
+                      <div style="position:relative;display:inline-flex;width:20px;height:20px;background:#e2e8f0;border-radius:50%;opacity:0.4;">
+                        <span class="gs-dot-badge gs-dot-badge--success" style="position:absolute;top:-2px;right:-2px;"></span>
+                      </div>
+                    </td>
+                    <td style="padding:12px 14px;border-bottom:1px solid #f1f5f9;color:#64748b;">Inherits <code style="font-size:11px;background:#f1f5f9;padding:1px 5px;border-radius:3px;">opacity: 0.4</code> from disabled parent wrapper.</td>
+                  </tr>
+                  <tr>
+                    <td style="padding:12px 14px;font-weight:500;color:#1e293b;">Loading</td>
+                    <td style="padding:12px 14px;" colspan="2">
+                      <span style="display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;background:#f1f5f9;border-radius:999px;"></span>
+                    </td>
+                    <td style="padding:12px 14px;color:#64748b;">Show empty neutral placeholder while count data loads. Never show stale value.</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- ── INTERACTION BEHAVIOUR ── -->
+          <div class="btn-family-card" id="bdg-s-behavior">
+            <div class="btn-family-title">Interaction Behaviour</div>
+            <p class="btn-family-desc">Badges have no interactive behaviour of their own. All visual feedback derives from the parent element.</p>
+            <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px;">
+              <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;padding:20px;">
+                <div style="font-size:13px;font-weight:600;color:#1e293b;margin-bottom:8px;">No direct interaction</div>
+                <p style="font-size:13px;color:#64748b;line-height:1.6;margin:0;">Set <code style="font-size:11px;background:#f1f5f9;padding:1px 5px;border-radius:3px;">pointer-events: none</code>. Clicks pass through to parent icon or button.</p>
+              </div>
+              <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;padding:20px;">
+                <div style="font-size:13px;font-weight:600;color:#1e293b;margin-bottom:8px;">Count overflow</div>
+                <p style="font-size:13px;color:#64748b;line-height:1.6;margin:0;">1–99: show exact number. 100+: show <code style="font-size:11px;background:#f1f5f9;padding:1px 5px;border-radius:3px;">99+</code>. Never "1K". Never show 0 — hide the badge entirely.</p>
+              </div>
+              <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;padding:20px;">
+                <div style="font-size:13px;font-weight:600;color:#1e293b;margin-bottom:8px;">Live updates</div>
+                <p style="font-size:13px;color:#64748b;line-height:1.6;margin:0;">Update count value instantly on data change. Pair count badge with <code style="font-size:11px;background:#f1f5f9;padding:1px 5px;border-radius:3px;">aria-live="polite"</code> for screen readers.</p>
+              </div>
+              <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;padding:20px;">
+                <div style="font-size:13px;font-weight:600;color:#1e293b;margin-bottom:8px;">NEW badge lifecycle</div>
+                <p style="font-size:13px;color:#64748b;line-height:1.6;margin:0;">Show NEW badge only for features released in the past 30 days. Remove it after the user has visited the feature or after 30 days, whichever comes first.</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- ── MOTION ── -->
+          <div class="btn-family-card" id="bdg-s-motion">
+            <div class="btn-family-title">Motion &amp; Animation</div>
+            <p class="btn-family-desc">Minimal motion. Entry animation for count badges only — dot and NEW badges appear instantly.</p>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px;">
+              <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;padding:20px;">
+                <div style="font-size:13px;font-weight:600;color:#1e293b;margin-bottom:10px;">Count badge — entry</div>
+                <div style="font-size:12px;color:#475569;line-height:1.8;">
+                  <div>duration: <strong>150ms</strong></div>
+                  <div>easing: <strong>cubic-bezier(0.34, 1.56, 0.64, 1)</strong></div>
+                  <div>from: <strong>scale(0.6) opacity(0)</strong></div>
+                  <div>to: <strong>scale(1) opacity(1)</strong></div>
+                </div>
+              </div>
+              <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;padding:20px;">
+                <div style="font-size:13px;font-weight:600;color:#1e293b;margin-bottom:10px;">Count update</div>
+                <div style="font-size:12px;color:#475569;line-height:1.8;">
+                  <div>duration: <strong>120ms</strong></div>
+                  <div>easing: <strong>ease-out</strong></div>
+                  <div>from: <strong>translateY(-4px) opacity(0)</strong></div>
+                  <div>to: <strong>translateY(0) opacity(1)</strong></div>
+                </div>
+              </div>
+            </div>
+            <div style="background:#fff8e1;border:1px solid #ffe082;border-radius:8px;padding:14px 16px;font-size:13px;color:#856404;line-height:1.6;">
+              <strong>Reduced motion:</strong> Respect <code style="font-size:11px;background:rgba(0,0,0,0.06);padding:1px 5px;border-radius:3px;">prefers-reduced-motion</code>. Drop scale/translate — update value instantly.
+            </div>
+          </div>
+
+          <!-- ── RESPONSIVE ── -->
+          <div class="btn-family-card" id="bdg-s-responsive">
+            <div class="btn-family-title">Responsive Behaviour</div>
+            <p class="btn-family-desc">Badge sizes are fixed at all breakpoints. The parent element is responsible for touch target sizing.</p>
+            <div style="overflow-x:auto;">
+              <table style="width:100%;border-collapse:collapse;font-size:13px;">
+                <thead>
+                  <tr style="background:#f8fafc;">
+                    <th style="text-align:left;padding:10px 14px;font-weight:600;color:#374151;border-bottom:1px solid #e2e8f0;">Breakpoint</th>
+                    <th style="text-align:left;padding:10px 14px;font-weight:600;color:#374151;border-bottom:1px solid #e2e8f0;">Count</th>
+                    <th style="text-align:left;padding:10px 14px;font-weight:600;color:#374151;border-bottom:1px solid #e2e8f0;">Dot</th>
+                    <th style="text-align:left;padding:10px 14px;font-weight:600;color:#374151;border-bottom:1px solid #e2e8f0;">NEW</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr><td style="padding:11px 14px;border-bottom:1px solid #f1f5f9;font-weight:500;color:#1e293b;">Mobile (&lt;768px)</td><td style="padding:11px 14px;border-bottom:1px solid #f1f5f9;color:#64748b;">18×18px unchanged. Parent icon ≥44×44px touch target.</td><td style="padding:11px 14px;border-bottom:1px solid #f1f5f9;color:#64748b;">12×12px unchanged.</td><td style="padding:11px 14px;border-bottom:1px solid #f1f5f9;color:#64748b;">Hidden on &lt;480px if space is tight.</td></tr>
+                  <tr><td style="padding:11px 14px;font-weight:500;color:#1e293b;">Tablet / Desktop</td><td style="padding:11px 14px;color:#64748b;">18×18px default.</td><td style="padding:11px 14px;color:#64748b;">12×12px default.</td><td style="padding:11px 14px;color:#64748b;">Always visible.</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- ── ACCESSIBILITY ── -->
+          <div class="btn-family-card" id="bdg-s-a11y">
+            <div class="btn-family-title">Accessibility</div>
+            <p class="btn-family-desc">Badges must never be the sole carrier of information. The parent interactive element must always expose a complete accessible label.</p>
+            <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px;">
+              <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;padding:20px;">
+                <div style="font-size:13px;font-weight:600;color:#1e293b;margin-bottom:8px;">Parent carries the label</div>
+                <p style="font-size:13px;color:#64748b;line-height:1.6;margin:0;">The icon button wrapping a count badge must have <code style="font-size:11px;background:#f1f5f9;padding:1px 5px;border-radius:3px;">aria-label="Notifications, 3 unread"</code>. The badge itself uses <code style="font-size:11px;background:#f1f5f9;padding:1px 5px;border-radius:3px;">aria-hidden="true"</code>.</p>
+              </div>
+              <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;padding:20px;">
+                <div style="font-size:13px;font-weight:600;color:#1e293b;margin-bottom:8px;">Dynamic count updates</div>
+                <p style="font-size:13px;color:#64748b;line-height:1.6;margin:0;">Use a visually hidden <code style="font-size:11px;background:#f1f5f9;padding:1px 5px;border-radius:3px;">aria-live="polite"</code> region that mirrors the count for screen reader announcement on change.</p>
+              </div>
+              <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;padding:20px;">
+                <div style="font-size:13px;font-weight:600;color:#1e293b;margin-bottom:8px;">Color contrast</div>
+                <p style="font-size:13px;color:#64748b;line-height:1.6;margin:0;">Count-Neutral: #475569 on #e2e8f0 = 4.6:1 ✓. Count-Alert / dots: white on #dc2625 = 5.2:1 ✓. NEW badge white on gradient ≥ 4.5:1 ✓.</p>
+              </div>
+              <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;padding:20px;">
+                <div style="font-size:13px;font-weight:600;color:#1e293b;margin-bottom:8px;">Focus exclusion</div>
+                <p style="font-size:13px;color:#64748b;line-height:1.6;margin:0;">All badge types use <code style="font-size:11px;background:#f1f5f9;padding:1px 5px;border-radius:3px;">pointer-events: none</code>. Tab order skips them entirely.</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- ── DESIGN TOKENS ── -->
+          <div class="btn-family-card" id="bdg-s-tokens">
+            <div class="btn-family-title">Design Tokens</div>
+            <p class="btn-family-desc">All values sourced directly from the Figma component spec.</p>
+            <div style="overflow-x:auto;">
+              <table style="width:100%;border-collapse:collapse;font-size:13px;">
+                <thead>
+                  <tr style="background:#f8fafc;">
+                    <th style="text-align:left;padding:10px 14px;font-weight:600;color:#374151;border-bottom:1px solid #e2e8f0;">Token</th>
+                    <th style="text-align:left;padding:10px 14px;font-weight:600;color:#374151;border-bottom:1px solid #e2e8f0;">Value</th>
+                    <th style="text-align:left;padding:10px 14px;font-weight:600;color:#374151;border-bottom:1px solid #e2e8f0;">Usage</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr><td style="padding:10px 14px;border-bottom:1px solid #f1f5f9;font-family:monospace;font-size:12px;color:#1852fe;">$badge-count-size</td><td style="padding:10px 14px;border-bottom:1px solid #f1f5f9;color:#64748b;">18px</td><td style="padding:10px 14px;border-bottom:1px solid #f1f5f9;color:#64748b;">Count badge min-width + height</td></tr>
+                  <tr><td style="padding:10px 14px;border-bottom:1px solid #f1f5f9;font-family:monospace;font-size:12px;color:#1852fe;">$badge-count-padding</td><td style="padding:10px 14px;border-bottom:1px solid #f1f5f9;color:#64748b;">4px</td><td style="padding:10px 14px;border-bottom:1px solid #f1f5f9;color:#64748b;">Horizontal padding (allows expansion)</td></tr>
+                  <tr><td style="padding:10px 14px;border-bottom:1px solid #f1f5f9;font-family:monospace;font-size:12px;color:#1852fe;">$badge-count-font-size</td><td style="padding:10px 14px;border-bottom:1px solid #f1f5f9;color:#64748b;">12px</td><td style="padding:10px 14px;border-bottom:1px solid #f1f5f9;color:#64748b;">Count label — Gilroy SemiBold</td></tr>
+                  <tr><td style="padding:10px 14px;border-bottom:1px solid #f1f5f9;font-family:monospace;font-size:12px;color:#1852fe;">$badge-count-radius</td><td style="padding:10px 14px;border-bottom:1px solid #f1f5f9;color:#64748b;">999px</td><td style="padding:10px 14px;border-bottom:1px solid #f1f5f9;color:#64748b;">Full pill</td></tr>
+                  <tr><td style="padding:10px 14px;border-bottom:1px solid #f1f5f9;font-family:monospace;font-size:12px;color:#1852fe;">$badge-neutral-bg</td><td style="padding:10px 14px;border-bottom:1px solid #f1f5f9;"><span style="display:inline-flex;align-items:center;gap:6px;"><span style="width:12px;height:12px;border-radius:3px;background:#e2e8f0;border:1px solid #cbd5e1;"></span>#e2e8f0 (grey/100)</span></td><td style="padding:10px 14px;border-bottom:1px solid #f1f5f9;color:#64748b;">Count-Neutral background</td></tr>
+                  <tr><td style="padding:10px 14px;border-bottom:1px solid #f1f5f9;font-family:monospace;font-size:12px;color:#1852fe;">$badge-neutral-color</td><td style="padding:10px 14px;border-bottom:1px solid #f1f5f9;"><span style="display:inline-flex;align-items:center;gap:6px;"><span style="width:12px;height:12px;border-radius:3px;background:#475569;"></span>#475569 (grey/500)</span></td><td style="padding:10px 14px;border-bottom:1px solid #f1f5f9;color:#64748b;">Count-Neutral text</td></tr>
+                  <tr><td style="padding:10px 14px;border-bottom:1px solid #f1f5f9;font-family:monospace;font-size:12px;color:#1852fe;">$badge-alert-bg</td><td style="padding:10px 14px;border-bottom:1px solid #f1f5f9;"><span style="display:inline-flex;align-items:center;gap:6px;"><span style="width:12px;height:12px;border-radius:3px;background:#dc2625;"></span>#dc2625 (red/500)</span></td><td style="padding:10px 14px;border-bottom:1px solid #f1f5f9;color:#64748b;">Count-Alert + Dot-Alert background</td></tr>
+                  <tr><td style="padding:10px 14px;border-bottom:1px solid #f1f5f9;font-family:monospace;font-size:12px;color:#1852fe;">$badge-success-bg</td><td style="padding:10px 14px;border-bottom:1px solid #f1f5f9;"><span style="display:inline-flex;align-items:center;gap:6px;"><span style="width:12px;height:12px;border-radius:3px;background:#22c55e;"></span>#22c55e (green/500)</span></td><td style="padding:10px 14px;border-bottom:1px solid #f1f5f9;color:#64748b;">Dot-Success background</td></tr>
+                  <tr><td style="padding:10px 14px;border-bottom:1px solid #f1f5f9;font-family:monospace;font-size:12px;color:#1852fe;">$badge-warning-bg</td><td style="padding:10px 14px;border-bottom:1px solid #f1f5f9;"><span style="display:inline-flex;align-items:center;gap:6px;"><span style="width:12px;height:12px;border-radius:3px;background:#eab305;"></span>#eab305 (yellow/400)</span></td><td style="padding:10px 14px;border-bottom:1px solid #f1f5f9;color:#64748b;">Dot-Warning background</td></tr>
+                  <tr><td style="padding:10px 14px;border-bottom:1px solid #f1f5f9;font-family:monospace;font-size:12px;color:#1852fe;">$badge-dot-size</td><td style="padding:10px 14px;border-bottom:1px solid #f1f5f9;color:#64748b;">12px</td><td style="padding:10px 14px;border-bottom:1px solid #f1f5f9;color:#64748b;">Dot badge width + height</td></tr>
+                  <tr><td style="padding:10px 14px;border-bottom:1px solid #f1f5f9;font-family:monospace;font-size:12px;color:#1852fe;">$badge-dot-border</td><td style="padding:10px 14px;border-bottom:1px solid #f1f5f9;color:#64748b;">2px solid #fff</td><td style="padding:10px 14px;border-bottom:1px solid #f1f5f9;color:#64748b;">Dot separation border — always white</td></tr>
+                  <tr><td style="padding:10px 14px;border-bottom:1px solid #f1f5f9;font-family:monospace;font-size:12px;color:#1852fe;">$badge-new-gradient-from</td><td style="padding:10px 14px;border-bottom:1px solid #f1f5f9;"><span style="display:inline-flex;align-items:center;gap:6px;"><span style="width:12px;height:12px;border-radius:3px;background:#1c4ed8;"></span>#1c4ed8 (blue/600)</span></td><td style="padding:10px 14px;border-bottom:1px solid #f1f5f9;color:#64748b;">NEW badge gradient start</td></tr>
+                  <tr><td style="padding:10px 14px;border-bottom:1px solid #f1f5f9;font-family:monospace;font-size:12px;color:#1852fe;">$badge-new-gradient-to</td><td style="padding:10px 14px;border-bottom:1px solid #f1f5f9;"><span style="display:inline-flex;align-items:center;gap:6px;"><span style="width:12px;height:12px;border-radius:3px;background:#3b81f6;"></span>#3b81f6 (blue/400)</span></td><td style="padding:10px 14px;border-bottom:1px solid #f1f5f9;color:#64748b;">NEW badge gradient end</td></tr>
+                  <tr><td style="padding:10px 14px;font-family:monospace;font-size:12px;color:#1852fe;">$badge-new-radius</td><td style="padding:10px 14px;color:#64748b;">4px (radius-sm)</td><td style="padding:10px 14px;color:#64748b;">NEW badge border radius</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+        </div><!-- /code-tab-main -->
+
+        <!-- Quick Access -->
+        <div class="code-tab-qnav">
+          <div class="code-qnav-inner" id="bdg-design-qnav">
+            <div class="code-qnav-title">Quick Access</div>
+            <button class="code-qnav-link active" onclick="scrollToSection('bdg-s-types')">Types</button>
+            <button class="code-qnav-link" onclick="scrollToSection('bdg-s-anatomy')">Anatomy</button>
+            <button class="code-qnav-link" onclick="scrollToSection('bdg-s-states')">States</button>
+            <button class="code-qnav-link" onclick="scrollToSection('bdg-s-behavior')">Interaction</button>
+            <button class="code-qnav-link" onclick="scrollToSection('bdg-s-motion')">Motion</button>
+            <button class="code-qnav-link" onclick="scrollToSection('bdg-s-responsive')">Responsive</button>
+            <button class="code-qnav-link" onclick="scrollToSection('bdg-s-a11y')">Accessibility</button>
+            <button class="code-qnav-link" onclick="scrollToSection('bdg-s-tokens')">Design Tokens</button>
+          </div>
+        </div>
+
+      </div>
+    </div><!-- /DESIGN TAB -->
+
+    <!-- ========== CODE TAB ========== -->
+    <div id="badge-tab-code" class="btn-tab-pane badge-tab-pane">
+      <div class="code-tab-layout">
+        <div class="code-tab-main">
+
+          <!-- Framework switcher -->
+          <div class="fw-toggle-bar">
+            <button class="fw-toggle-bar-btn active" data-fw="react" onclick="switchFw('badge-tab-code','react')">
+              <svg width="14" height="14" viewBox="-11.5 -10.23174 23 20.46348" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="0" cy="0" r="2.05" fill="#61dafb"/><g stroke="#61dafb" stroke-width="1" fill="none"><ellipse rx="11" ry="4.2"/><ellipse rx="11" ry="4.2" transform="rotate(60)"/><ellipse rx="11" ry="4.2" transform="rotate(120)"/></g></svg>
+              React
+            </button>
+            <button class="fw-toggle-bar-btn" data-fw="angular" onclick="switchFw('badge-tab-code','angular')">
+              <svg width="14" height="14" viewBox="0 0 250 250" xmlns="http://www.w3.org/2000/svg"><polygon fill="#DD0031" points="125,30 125,30 125,30 31.9,63.2 46.1,186.3 125,230 125,230 125,230 203.9,186.3 218.1,63.2"/><polygon fill="#C3002F" points="125,30 125,52.2 125,52.1 125,153.4 125,153.4 125,230 125,230 203.9,186.3 218.1,63.2"/><path fill="#FFFFFF" d="M125,52.1L66.8,182.6h0h21.7h0l11.7-29.2h49.4l11.7,29.2h0h21.7h0L125,52.1L125,52.1z M142,135.4H108l17-40.9L142,135.4z"/></svg>
+              Angular
+            </button>
+          </div>
+
+          <!-- 1. Overview -->
+          <div id="bdg-c-overview" class="btn-family-card">
+            <div class="ds-step-row"><span class="ds-step-num">1</span><h3 class="ds-prop-title">Overview</h3></div>
+            <p class="btn-family-desc">Badge is a non-interactive indicator from <code>@pelagos/components</code> that attaches to icons, avatars, and nav items. It ships in three structural types — Count, Dot, and NEW — each with a fixed visual and semantic contract. All badge variants carry <code>pointer-events: none</code> and <code>aria-hidden="true"</code>; the parent element is responsible for accessible labelling.</p>
+            <div class="fw-react">
+              <p class="btn-family-desc">The React component renders the correct markup based on the <code>type</code> prop. Count badges accept a <code>count</code> prop and render an overflow label when <code>count &gt; max</code>.</p>
+            </div>
+            <div class="fw-angular" style="display:none;">
+              <p class="btn-family-desc">The Angular component is a standalone component using <code>ChangeDetectionStrategy.OnPush</code>. Bind inputs via <code>[type]</code>, <code>[count]</code>, and <code>[animate]</code>.</p>
+            </div>
+          </div>
+
+          <!-- 2. Install -->
+          <div id="bdg-c-install" class="btn-family-card">
+            <div class="ds-step-row"><span class="ds-step-num">2</span><h3 class="ds-prop-title">Install</h3></div>
+            <div class="fw-react">
+              <div class="btn-code-block">
+                <div class="btn-code-head"><span class="btn-code-lang">bash · React</span><button class="btn-copy-btn" onclick="copyBtnCode('bdg-install-react',this)">Copy</button></div>
+                <div class="btn-code-body"><pre id="bdg-install-react">npm install @pelagos/components</pre></div>
+              </div>
+            </div>
+            <div class="fw-angular" style="display:none;">
+              <div class="btn-code-block">
+                <div class="btn-code-head"><span class="btn-code-lang">bash · Angular</span><button class="btn-copy-btn" onclick="copyBtnCode('bdg-install-ng',this)">Copy</button></div>
+                <div class="btn-code-body"><pre id="bdg-install-ng">npm install @pelagos/angular</pre></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 3. Imports -->
+          <div id="bdg-c-imports" class="btn-family-card">
+            <div class="ds-step-row"><span class="ds-step-num">3</span><h3 class="ds-prop-title">Imports</h3></div>
+            <div class="fw-react">
+              <div class="btn-code-block">
+                <div class="btn-code-head"><span class="btn-code-lang">tsx · React</span><button class="btn-copy-btn" onclick="copyBtnCode('bdg-import-react',this)">Copy</button></div>
+                <div class="btn-code-body"><pre id="bdg-import-react"><span class="c-kw">import</span> { <span class="c-type">Badge</span> } <span class="c-kw">from</span> <span class="c-val">'@pelagos/components'</span>;
+<span class="c-cmt">// tree-shakeable:</span>
+<span class="c-kw">import</span> { <span class="c-type">Badge</span> } <span class="c-kw">from</span> <span class="c-val">'@pelagos/components/primitives/badge'</span>;
+<span class="c-cmt">// Types:</span>
+<span class="c-kw">import type</span> { <span class="c-type">BadgeProps</span>, <span class="c-type">BadgeType</span> } <span class="c-kw">from</span> <span class="c-val">'@pelagos/components/primitives/badge'</span>;</pre></div>
+              </div>
+            </div>
+            <div class="fw-angular" style="display:none;">
+              <div class="btn-code-block">
+                <div class="btn-code-head"><span class="btn-code-lang">typescript · Angular</span><button class="btn-copy-btn" onclick="copyBtnCode('bdg-import-ng',this)">Copy</button></div>
+                <div class="btn-code-body"><pre id="bdg-import-ng"><span class="c-kw">import</span> { <span class="c-type">BadgeModule</span> } <span class="c-kw">from</span> <span class="c-val">'@pelagos/angular'</span>;
+
+<span class="c-cmt">// In NgModule or standalone component:</span>
+<span class="c-attr">imports</span>: [<span class="c-type">BadgeModule</span>]</pre></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 4. API / Props -->
+          <div id="bdg-c-api" class="btn-family-card">
+            <div class="ds-step-row"><span class="ds-step-num">4</span><h3 class="ds-prop-title">API / Props</h3></div>
+            <div class="fw-react">
+              <table>
+                <thead><tr><th>Prop</th><th>Type</th><th>Default</th><th>Required</th><th>Description</th></tr></thead>
+                <tbody>
+                  <tr><td><code>type</code></td><td><code>BadgeType</code></td><td><code>'Count-Neutral'</code></td><td>No</td><td>Badge variant. One of <code>'Count-Neutral' | 'Count-Alert' | 'Dot-Alert' | 'Dot-Success' | 'Dot-Warning' | 'new'</code>.</td></tr>
+                  <tr><td><code>count</code></td><td><code>number</code></td><td>—</td><td>No</td><td>Numeric value to display. Count-Neutral and Count-Alert only. Omit for Dot and NEW types.</td></tr>
+                  <tr><td><code>max</code></td><td><code>number</code></td><td><code>99</code></td><td>No</td><td>Overflow threshold. Renders <code>{max}+</code> when <code>count</code> exceeds this value.</td></tr>
+                  <tr><td><code>animate</code></td><td><code>boolean</code></td><td><code>false</code></td><td>No</td><td>Plays a spring-based scale-in animation on mount. Count badges only. Respects <code>prefers-reduced-motion</code>.</td></tr>
+                  <tr><td><code>className</code></td><td><code>string</code></td><td>—</td><td>No</td><td>Additional CSS class appended to the badge element for custom overrides.</td></tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="fw-angular" style="display:none;">
+              <table>
+                <thead><tr><th>Input</th><th>Type</th><th>Default</th><th>Description</th></tr></thead>
+                <tbody>
+                  <tr><td><code>[type]</code></td><td><code>BadgeType</code></td><td><code>'Count-Neutral'</code></td><td>Badge variant. Matches React prop values exactly.</td></tr>
+                  <tr><td><code>[count]</code></td><td><code>number</code></td><td>—</td><td>Numeric value. Count types only.</td></tr>
+                  <tr><td><code>[max]</code></td><td><code>number</code></td><td><code>99</code></td><td>Overflow threshold.</td></tr>
+                  <tr><td><code>[animate]</code></td><td><code>boolean</code></td><td><code>false</code></td><td>Entry animation. Count badges only.</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- 5. Variants -->
+          <div id="bdg-c-variants" class="btn-family-card">
+            <div class="ds-step-row"><span class="ds-step-num">5</span><h3 class="ds-prop-title">Variants</h3></div>
+            <div class="fw-react">
+              <div class="btn-code-block">
+                <div class="btn-code-head"><span class="btn-code-lang">tsx · React — all types</span><button class="btn-copy-btn" onclick="copyBtnCode('bdg-variants-react',this)">Copy</button></div>
+                <div class="btn-code-body"><pre id="bdg-variants-react"><span class="c-cmt">{/* Count — neutral (default) */}</span>
+&lt;<span class="c-tag">Badge</span> <span class="c-attr">type</span>=<span class="c-val">"Count-Neutral"</span> <span class="c-attr">count</span>={7} /&gt;
+
+<span class="c-cmt">{/* Count — alert (red, urgent) */}</span>
+&lt;<span class="c-tag">Badge</span> <span class="c-attr">type</span>=<span class="c-val">"Count-Alert"</span> <span class="c-attr">count</span>={3} /&gt;
+
+<span class="c-cmt">{/* Dot — alert */}</span>
+&lt;<span class="c-tag">Badge</span> <span class="c-attr">type</span>=<span class="c-val">"Dot-Alert"</span> /&gt;
+
+<span class="c-cmt">{/* Dot — success (online / active) */}</span>
+&lt;<span class="c-tag">Badge</span> <span class="c-attr">type</span>=<span class="c-val">"Dot-Success"</span> /&gt;
+
+<span class="c-cmt">{/* Dot — warning */}</span>
+&lt;<span class="c-tag">Badge</span> <span class="c-attr">type</span>=<span class="c-val">"Dot-Warning"</span> /&gt;
+
+<span class="c-cmt">{/* NEW badge — fixed "NEW" label, gradient blue */}</span>
+&lt;<span class="c-tag">Badge</span> <span class="c-attr">type</span>=<span class="c-val">"new"</span> /&gt;</pre></div>
+              </div>
+            </div>
+            <div class="fw-angular" style="display:none;">
+              <div class="btn-code-block">
+                <div class="btn-code-head"><span class="btn-code-lang">html · Angular — all types</span><button class="btn-copy-btn" onclick="copyBtnCode('bdg-variants-ng',this)">Copy</button></div>
+                <div class="btn-code-body"><pre id="bdg-variants-ng"><span class="c-cmt">&lt;!-- Count — neutral --&gt;</span>
+&lt;<span class="c-tag">gs-badge</span> <span class="c-attr">type</span>=<span class="c-val">"Count-Neutral"</span> [<span class="c-attr">count</span>]="<span class="c-val">7</span>"&gt;&lt;/<span class="c-tag">gs-badge</span>&gt;
+
+<span class="c-cmt">&lt;!-- Count — alert --&gt;</span>
+&lt;<span class="c-tag">gs-badge</span> <span class="c-attr">type</span>=<span class="c-val">"Count-Alert"</span> [<span class="c-attr">count</span>]="<span class="c-val">3</span>"&gt;&lt;/<span class="c-tag">gs-badge</span>&gt;
+
+<span class="c-cmt">&lt;!-- Dot — alert --&gt;</span>
+&lt;<span class="c-tag">gs-badge</span> <span class="c-attr">type</span>=<span class="c-val">"Dot-Alert"</span>&gt;&lt;/<span class="c-tag">gs-badge</span>&gt;
+
+<span class="c-cmt">&lt;!-- Dot — success --&gt;</span>
+&lt;<span class="c-tag">gs-badge</span> <span class="c-attr">type</span>=<span class="c-val">"Dot-Success"</span>&gt;&lt;/<span class="c-tag">gs-badge</span>&gt;
+
+<span class="c-cmt">&lt;!-- Dot — warning --&gt;</span>
+&lt;<span class="c-tag">gs-badge</span> <span class="c-attr">type</span>=<span class="c-val">"Dot-Warning"</span>&gt;&lt;/<span class="c-tag">gs-badge</span>&gt;
+
+<span class="c-cmt">&lt;!-- NEW badge --&gt;</span>
+&lt;<span class="c-tag">gs-badge</span> <span class="c-attr">type</span>=<span class="c-val">"new"</span>&gt;&lt;/<span class="c-tag">gs-badge</span>&gt;</pre></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 6. States -->
+          <div id="bdg-c-states" class="btn-family-card">
+            <div class="ds-step-row"><span class="ds-step-num">6</span><h3 class="ds-prop-title">States</h3></div>
+            <div class="fw-react">
+              <div class="btn-code-block">
+                <div class="btn-code-head"><span class="btn-code-lang">tsx · React — conditional render + overflow</span><button class="btn-copy-btn" onclick="copyBtnCode('bdg-states-react',this)">Copy</button></div>
+                <div class="btn-code-body"><pre id="bdg-states-react"><span class="c-cmt">{/* Hidden when count = 0 — never show an empty badge */}</span>
+{count &gt; 0 &amp;&amp; &lt;<span class="c-tag">Badge</span> <span class="c-attr">type</span>=<span class="c-val">"Count-Neutral"</span> <span class="c-attr">count</span>={count} /&gt;}
+
+<span class="c-cmt">{/* Overflow: renders "99+" when count exceeds max */}</span>
+&lt;<span class="c-tag">Badge</span> <span class="c-attr">type</span>=<span class="c-val">"Count-Alert"</span> <span class="c-attr">count</span>={120} <span class="c-attr">max</span>={99} /&gt;
+<span class="c-cmt">{/* ↑ displays "99+" */}</span>
+
+<span class="c-cmt">{/* Custom overflow threshold */}</span>
+&lt;<span class="c-tag">Badge</span> <span class="c-attr">type</span>=<span class="c-val">"Count-Neutral"</span> <span class="c-attr">count</span>={500} <span class="c-attr">max</span>={999} /&gt;
+<span class="c-cmt">{/* ↑ displays "999+" */}</span>
+
+<span class="c-cmt">{/* Animate on mount (spring scale-in) */}</span>
+&lt;<span class="c-tag">Badge</span> <span class="c-attr">type</span>=<span class="c-val">"Count-Neutral"</span> <span class="c-attr">count</span>={count} <span class="c-attr">animate</span> /&gt;</pre></div>
+              </div>
+            </div>
+            <div class="fw-angular" style="display:none;">
+              <div class="btn-code-block">
+                <div class="btn-code-head"><span class="btn-code-lang">html · Angular — conditional + overflow</span><button class="btn-copy-btn" onclick="copyBtnCode('bdg-states-ng',this)">Copy</button></div>
+                <div class="btn-code-body"><pre id="bdg-states-ng"><span class="c-cmt">&lt;!-- Hidden when count = 0 --&gt;</span>
+&lt;<span class="c-tag">gs-badge</span>
+  *<span class="c-attr">ngIf</span>=<span class="c-val">"count &gt; 0"</span>
+  <span class="c-attr">type</span>=<span class="c-val">"Count-Neutral"</span>
+  [<span class="c-attr">count</span>]="<span class="c-val">count</span>"
+&gt;&lt;/<span class="c-tag">gs-badge</span>&gt;
+
+<span class="c-cmt">&lt;!-- Overflow: renders "99+" --&gt;</span>
+&lt;<span class="c-tag">gs-badge</span> <span class="c-attr">type</span>=<span class="c-val">"Count-Alert"</span> [<span class="c-attr">count</span>]="<span class="c-val">120</span>" [<span class="c-attr">max</span>]="<span class="c-val">99</span>"&gt;&lt;/<span class="c-tag">gs-badge</span>&gt;
+
+<span class="c-cmt">&lt;!-- Animate on mount --&gt;</span>
+&lt;<span class="c-tag">gs-badge</span> <span class="c-attr">type</span>=<span class="c-val">"Count-Neutral"</span> [<span class="c-attr">count</span>]="<span class="c-val">count</span>" [<span class="c-attr">animate</span>]="<span class="c-val">true</span>"&gt;&lt;/<span class="c-tag">gs-badge</span>&gt;</pre></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 7. Accessibility -->
+          <div id="bdg-c-a11y" class="btn-family-card">
+            <div class="ds-step-row"><span class="ds-step-num">7</span><h3 class="ds-prop-title">Accessibility</h3></div>
+            <div class="fw-react">
+              <div class="btn-code-block">
+                <div class="btn-code-head"><span class="btn-code-lang">tsx · React — a11y patterns</span><button class="btn-copy-btn" onclick="copyBtnCode('bdg-a11y-react',this)">Copy</button></div>
+                <div class="btn-code-body"><pre id="bdg-a11y-react"><span class="c-cmt">{/* Parent carries the full accessible label — badge is aria-hidden */}</span>
+&lt;<span class="c-tag">button</span>
+  <span class="c-attr">style</span>={{ <span class="c-attr">position</span>: <span class="c-val">'relative'</span> }}
+  <span class="c-attr">aria-label</span>={`Notifications, ${count} unread`}
+&gt;
+  &lt;<span class="c-tag">BellIcon</span> <span class="c-attr">aria-hidden</span>=<span class="c-val">"true"</span> /&gt;
+  &lt;<span class="c-tag">Badge</span> <span class="c-attr">type</span>=<span class="c-val">"Count-Neutral"</span> <span class="c-attr">count</span>={count} /&gt;
+<span class="c-cmt">{/* Badge renders with aria-hidden="true" internally */}</span>
+&lt;/<span class="c-tag">button</span>&gt;
+
+<span class="c-cmt">{/* Live region — announce count changes to screen readers */}</span>
+&lt;<span class="c-tag">span</span>
+  <span class="c-attr">className</span>=<span class="c-val">"sr-only"</span>
+  <span class="c-attr">aria-live</span>=<span class="c-val">"polite"</span>
+  <span class="c-attr">aria-atomic</span>=<span class="c-val">"true"</span>
+&gt;
+  {count &gt; 0 ? `${count} unread notifications` : <span class="c-val">'No new notifications'</span>}
+&lt;/<span class="c-tag">span</span>&gt;
+
+<span class="c-cmt">{/* Dot badge — parent provides full context */}</span>
+&lt;<span class="c-tag">div</span> <span class="c-attr">style</span>={{ <span class="c-attr">position</span>: <span class="c-val">'relative'</span>, <span class="c-attr">display</span>: <span class="c-val">'inline-flex'</span> }}&gt;
+  &lt;<span class="c-tag">Avatar</span> <span class="c-attr">src</span>={user.avatar} <span class="c-attr">aria-label</span>={`${user.name}, online`} /&gt;
+  &lt;<span class="c-tag">Badge</span> <span class="c-attr">type</span>=<span class="c-val">"Dot-Success"</span> /&gt;
+&lt;/<span class="c-tag">div</span>&gt;
+
+<span class="c-cmt">{/* NEW badge — screen readers skip it; nav item label is sufficient */}</span>
+&lt;<span class="c-tag">NavItem</span> <span class="c-attr">label</span>=<span class="c-val">"Analytics (new feature)"</span>&gt;
+  Analytics
+  &lt;<span class="c-tag">Badge</span> <span class="c-attr">type</span>=<span class="c-val">"new"</span> /&gt;
+&lt;/<span class="c-tag">NavItem</span>&gt;</pre></div>
+              </div>
+            </div>
+            <div class="fw-angular" style="display:none;">
+              <div class="btn-code-block">
+                <div class="btn-code-head"><span class="btn-code-lang">html · Angular — a11y patterns</span><button class="btn-copy-btn" onclick="copyBtnCode('bdg-a11y-ng',this)">Copy</button></div>
+                <div class="btn-code-body"><pre id="bdg-a11y-ng"><span class="c-cmt">&lt;!-- Parent carries the full label — badge is aria-hidden internally --&gt;</span>
+&lt;<span class="c-tag">button</span>
+  <span class="c-attr">style</span>=<span class="c-val">"position:relative"</span>
+  [<span class="c-attr">attr.aria-label</span>]="<span class="c-val">'Notifications, ' + count + ' unread'</span>"
+&gt;
+  &lt;<span class="c-tag">mat-icon</span> <span class="c-attr">aria-hidden</span>=<span class="c-val">"true"</span>&gt;notifications&lt;/<span class="c-tag">mat-icon</span>&gt;
+  &lt;<span class="c-tag">gs-badge</span> <span class="c-attr">type</span>=<span class="c-val">"Count-Neutral"</span> [<span class="c-attr">count</span>]="<span class="c-val">count</span>"&gt;&lt;/<span class="c-tag">gs-badge</span>&gt;
+&lt;/<span class="c-tag">button</span>&gt;
+
+<span class="c-cmt">&lt;!-- Live region for screen reader announcements --&gt;</span>
+&lt;<span class="c-tag">span</span> <span class="c-attr">class</span>=<span class="c-val">"sr-only"</span> <span class="c-attr">aria-live</span>=<span class="c-val">"polite"</span> <span class="c-attr">aria-atomic</span>=<span class="c-val">"true"</span>&gt;
+  {{ count &gt; 0 ? count + ' unread notifications' : 'No new notifications' }}
+&lt;/<span class="c-tag">span</span>&gt;</pre></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 8. File Structure -->
+          <div id="bdg-c-struct" class="btn-family-card">
+            <div class="ds-step-row"><span class="ds-step-num">8</span><h3 class="ds-prop-title">File Structure</h3></div>
+            <div class="btn-code-block">
+              <div class="btn-code-head"><span class="btn-code-lang">tree</span></div>
+              <div class="btn-code-body"><pre>components/
+└── primitives/
+    └── badge/
+        ├── Badge.tsx           ← React component
+        ├── Badge.module.scss   ← Scoped styles using foundation tokens
+        ├── Badge.types.ts      ← BadgeType union + BadgeProps interface
+        └── index.ts            ← Barrel export
+foundations/
+├── colors.css                  ← Color tokens (--prim-red-500, --prim-green-500)
+└── spacing.css                 ← Spacing tokens (--spacing-2)</pre></div>
+            </div>
+          </div>
+
+          <!-- 9. Usage Patterns -->
+          <div id="bdg-c-usage" class="btn-family-card">
+            <div class="ds-step-row"><span class="ds-step-num">9</span><h3 class="ds-prop-title">Usage Patterns</h3></div>
+            <div class="fw-react">
+              <div class="btn-code-block">
+                <div class="btn-code-head"><span class="btn-code-lang">tsx · Count badge on icon button</span><button class="btn-copy-btn" onclick="copyBtnCode('bdg-pat-count-r',this)">Copy</button></div>
+                <div class="btn-code-body"><pre id="bdg-pat-count-r"><span class="c-kw">function</span> <span class="c-type">NotificationButton</span>({ count }: { count: <span class="c-type">number</span> }) {
+  <span class="c-kw">return</span> (
+    &lt;<span class="c-tag">button</span>
+      <span class="c-attr">style</span>={{ <span class="c-attr">position</span>: <span class="c-val">'relative'</span>, <span class="c-attr">display</span>: <span class="c-val">'inline-flex'</span> }}
+      <span class="c-attr">aria-label</span>={count &gt; 0 ? `${count} unread notifications` : <span class="c-val">'Notifications'</span>}
+    &gt;
+      &lt;<span class="c-tag">BellIcon</span> <span class="c-attr">aria-hidden</span>=<span class="c-val">"true"</span> /&gt;
+      {count &gt; 0 &amp;&amp; (
+        &lt;<span class="c-tag">Badge</span>
+          <span class="c-attr">type</span>=<span class="c-val">"Count-Neutral"</span>
+          <span class="c-attr">count</span>={count}
+          <span class="c-attr">max</span>={99}
+          <span class="c-attr">animate</span>
+        /&gt;
+      )}
+    &lt;/<span class="c-tag">button</span>&gt;
+  );
+}</pre></div>
+              </div>
+              <div class="btn-code-block" style="margin-top:12px;">
+                <div class="btn-code-head"><span class="btn-code-lang">tsx · Dot badge on avatar</span><button class="btn-copy-btn" onclick="copyBtnCode('bdg-pat-dot-r',this)">Copy</button></div>
+                <div class="btn-code-body"><pre id="bdg-pat-dot-r"><span class="c-kw">const</span> statusType = {
+  online:  <span class="c-val">'Dot-Success'</span>,
+  warning: <span class="c-val">'Dot-Warning'</span>,
+  offline: <span class="c-val">'Dot-Alert'</span>,
+} <span class="c-kw">as const</span>;
+
+<span class="c-kw">function</span> <span class="c-type">UserAvatar</span>({ user }: { user: <span class="c-type">User</span> }) {
+  <span class="c-kw">return</span> (
+    &lt;<span class="c-tag">div</span> <span class="c-attr">style</span>={{ <span class="c-attr">position</span>: <span class="c-val">'relative'</span>, <span class="c-attr">display</span>: <span class="c-val">'inline-flex'</span> }}&gt;
+      &lt;<span class="c-tag">img</span>
+        <span class="c-attr">src</span>={user.avatar}
+        <span class="c-attr">alt</span>={`${user.name}, ${user.status}`}
+        <span class="c-attr">style</span>={{ <span class="c-attr">width</span>: <span class="c-val">40</span>, <span class="c-attr">height</span>: <span class="c-val">40</span>, <span class="c-attr">borderRadius</span>: <span class="c-val">'50%'</span> }}
+      /&gt;
+      &lt;<span class="c-tag">Badge</span> <span class="c-attr">type</span>={statusType[user.status]} /&gt;
+    &lt;/<span class="c-tag">div</span>&gt;
+  );
+}</pre></div>
+              </div>
+              <div class="btn-code-block" style="margin-top:12px;">
+                <div class="btn-code-head"><span class="btn-code-lang">tsx · NEW badge in nav item</span><button class="btn-copy-btn" onclick="copyBtnCode('bdg-pat-new-r',this)">Copy</button></div>
+                <div class="btn-code-body"><pre id="bdg-pat-new-r"><span class="c-kw">const</span> FEATURE_LAUNCH_DATE = <span class="c-kw">new</span> <span class="c-type">Date</span>(<span class="c-val">'2025-04-01'</span>);
+<span class="c-kw">const</span> THIRTY_DAYS_MS = 30 * 24 * 60 * 60 * 1000;
+
+<span class="c-kw">function</span> <span class="c-type">NavItem</span>({ label, featureLaunch }: <span class="c-type">NavItemProps</span>) {
+  <span class="c-kw">const</span> isNew = featureLaunch
+    ? <span class="c-type">Date</span>.now() - featureLaunch.getTime() &lt; THIRTY_DAYS_MS
+    : <span class="c-kw">false</span>;
+
+  <span class="c-kw">return</span> (
+    &lt;<span class="c-tag">li</span> <span class="c-attr">className</span>=<span class="c-val">"nav-item"</span>&gt;
+      &lt;<span class="c-tag">span</span>&gt;{label}&lt;/<span class="c-tag">span</span>&gt;
+      {isNew &amp;&amp; &lt;<span class="c-tag">Badge</span> <span class="c-attr">type</span>=<span class="c-val">"new"</span> /&gt;}
+    &lt;/<span class="c-tag">li</span>&gt;
+  );
+}</pre></div>
+              </div>
+            </div>
+            <div class="fw-angular" style="display:none;">
+              <div class="btn-code-block">
+                <div class="btn-code-head"><span class="btn-code-lang">html · Count badge on icon button</span><button class="btn-copy-btn" onclick="copyBtnCode('bdg-pat-count-ng',this)">Copy</button></div>
+                <div class="btn-code-body"><pre id="bdg-pat-count-ng">&lt;<span class="c-tag">button</span>
+  <span class="c-attr">style</span>=<span class="c-val">"position:relative;display:inline-flex;"</span>
+  [<span class="c-attr">attr.aria-label</span>]="<span class="c-val">count &gt; 0 ? count + ' unread notifications' : 'Notifications'</span>"
+&gt;
+  &lt;<span class="c-tag">mat-icon</span> <span class="c-attr">aria-hidden</span>=<span class="c-val">"true"</span>&gt;notifications&lt;/<span class="c-tag">mat-icon</span>&gt;
+  &lt;<span class="c-tag">gs-badge</span>
+    *<span class="c-attr">ngIf</span>=<span class="c-val">"count &gt; 0"</span>
+    <span class="c-attr">type</span>=<span class="c-val">"Count-Neutral"</span>
+    [<span class="c-attr">count</span>]="<span class="c-val">count</span>"
+    [<span class="c-attr">animate</span>]="<span class="c-val">true</span>"
+  &gt;&lt;/<span class="c-tag">gs-badge</span>&gt;
+&lt;/<span class="c-tag">button</span>&gt;</pre></div>
+              </div>
+              <div class="btn-code-block" style="margin-top:12px;">
+                <div class="btn-code-head"><span class="btn-code-lang">html · Dot badge on avatar</span><button class="btn-copy-btn" onclick="copyBtnCode('bdg-pat-dot-ng',this)">Copy</button></div>
+                <div class="btn-code-body"><pre id="bdg-pat-dot-ng">&lt;<span class="c-tag">div</span> <span class="c-attr">style</span>=<span class="c-val">"position:relative;display:inline-flex;"</span>&gt;
+  &lt;<span class="c-tag">img</span>
+    [<span class="c-attr">src</span>]="<span class="c-val">user.avatar</span>"
+    [<span class="c-attr">alt</span>]="<span class="c-val">user.name + ', ' + user.status</span>"
+    <span class="c-attr">style</span>=<span class="c-val">"width:40px;height:40px;border-radius:50%;"</span>
+  /&gt;
+  &lt;<span class="c-tag">gs-badge</span> [<span class="c-attr">type</span>]="<span class="c-val">statusBadgeType</span>"&gt;&lt;/<span class="c-tag">gs-badge</span>&gt;
+&lt;/<span class="c-tag">div</span>&gt;</pre></div>
+              </div>
+              <div class="btn-code-block" style="margin-top:12px;">
+                <div class="btn-code-head"><span class="btn-code-lang">html · NEW badge in nav item</span><button class="btn-copy-btn" onclick="copyBtnCode('bdg-pat-new-ng',this)">Copy</button></div>
+                <div class="btn-code-body"><pre id="bdg-pat-new-ng">&lt;<span class="c-tag">li</span> <span class="c-attr">class</span>=<span class="c-val">"nav-item"</span>&gt;
+  &lt;<span class="c-tag">span</span>&gt;Analytics&lt;/<span class="c-tag">span</span>&gt;
+  &lt;<span class="c-tag">gs-badge</span> *<span class="c-attr">ngIf</span>=<span class="c-val">"isNewFeature"</span> <span class="c-attr">type</span>=<span class="c-val">"new"</span>&gt;&lt;/<span class="c-tag">gs-badge</span>&gt;
+&lt;/<span class="c-tag">li</span>&gt;</pre></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 10. Theming -->
+          <div id="bdg-c-theming" class="btn-family-card">
+            <div class="ds-step-row"><span class="ds-step-num">10</span><h3 class="ds-prop-title">Theming</h3></div>
+            <div class="btn-code-block">
+              <div class="btn-code-head"><span class="btn-code-lang">scss · Override badge tokens</span><button class="btn-copy-btn" onclick="copyBtnCode('bdg-theming',this)">Copy</button></div>
+              <div class="btn-code-body"><pre id="bdg-theming"><span class="c-cmt">// In your project's main.scss, after @use 'foundations/index'</span>
+
+<span class="c-cmt">// ── Override brand primitive — cascades to all alert badges ──</span>
+:<span class="c-attr">root</span> {
+  <span class="c-attr">--badge-alert-bg</span>: <span class="c-val">var(--prim-red-600)</span>;  <span class="c-cmt">// escalate alert colour</span>
+}
+
+<span class="c-cmt">// ── Override individual badge tokens ──</span>
+:<span class="c-attr">root</span> {
+  <span class="c-attr">--badge-count-size</span>:       <span class="c-val">20px</span>;                      <span class="c-cmt">// larger pill for dense-data views</span>
+  <span class="c-attr">--badge-count-radius</span>:     <span class="c-val">var(--radius-full)</span>;        <span class="c-cmt">// default: 9999px pill</span>
+  <span class="c-attr">--badge-count-font-size</span>:  <span class="c-val">12px</span>;                      <span class="c-cmt">// default: var(--prim-font-size-sm)</span>
+  <span class="c-attr">--badge-neutral-bg</span>:       <span class="c-val">var(--prim-blue-50)</span>;       <span class="c-cmt">// brand-aligned neutral</span>
+  <span class="c-attr">--badge-neutral-color</span>:    <span class="c-val">var(--prim-blue-600)</span>;      <span class="c-cmt">// blue-600 on blue-50</span>
+  <span class="c-attr">--badge-new-radius</span>:       <span class="c-val">var(--radius-sm)</span>;          <span class="c-cmt">// default: 4px</span>
+  <span class="c-attr">--badge-new-from</span>:         <span class="c-val">var(--prim-blue-700)</span>;      <span class="c-cmt">// deeper gradient start</span>
+  <span class="c-attr">--badge-new-to</span>:           <span class="c-val">var(--prim-blue-500)</span>;      <span class="c-cmt">// gradient end</span>
+}
+
+<span class="c-cmt">// ── Scope override to one feature area ──</span>
+.<span class="c-attr">sidebar-nav</span> {
+  <span class="c-attr">--badge-count-size</span>:      <span class="c-val">16px</span>;              <span class="c-cmt">// compact size inside narrow nav</span>
+  <span class="c-attr">--badge-count-font-size</span>: <span class="c-val">10px</span>;
+  <span class="c-attr">--badge-count-radius</span>:    <span class="c-val">var(--radius-full)</span>; <span class="c-cmt">// keep pill at smaller size</span>
+}
+
+<span class="c-cmt">// ── SCSS variable bridge (optional) ──</span>
+$badge-count-size:    <span class="c-val">20px</span>;
+$badge-neutral-bg:    <span class="c-val">var(--prim-blue-50)</span>;
+
+:<span class="c-attr">root</span> {
+  <span class="c-attr">--badge-count-size</span>:  #{$badge-count-size};
+  <span class="c-attr">--badge-neutral-bg</span>:  #{$badge-neutral-bg};
+}</pre></div>
+            </div>
+            <p class="btn-family-desc" style="margin-top:12px;">Token override chain: <code>--badge-alert-bg → --color-danger → --prim-red-500 → #DC2625</code>. Override <code>--badge-alert-bg</code> to retheme alert badges in isolation; override <code>--prim-red-500</code> to cascade across all danger-colored primitives.</p>
+          </div>
+
+          <!-- 11. Full Working Example -->
+          <div id="bdg-c-examples" class="btn-family-card">
+            <div class="ds-step-row"><span class="ds-step-num">11</span><h3 class="ds-prop-title">Full Working Example</h3></div>
+            <div class="fw-react">
+              <div class="btn-code-block">
+                <div class="btn-code-head"><span class="btn-code-lang">tsx · React — toolbar with all badge types</span><button class="btn-copy-btn" onclick="copyBtnCode('bdg-full-react',this)">Copy</button></div>
+                <div class="btn-code-body"><pre id="bdg-full-react"><span class="c-kw">import</span> { useState } <span class="c-kw">from</span> <span class="c-val">'react'</span>;
+<span class="c-kw">import</span> { <span class="c-type">Badge</span> } <span class="c-kw">from</span> <span class="c-val">'@pelagos/components'</span>;
+<span class="c-kw">import</span> <span class="c-val">'@pelagos/foundations/index.css'</span>;
+
+<span class="c-kw">export default function</span> <span class="c-type">AppHeader</span>() {
+  <span class="c-kw">const</span> [notifications, setNotifications] = useState(5);
+  <span class="c-kw">const</span> [messages, setMessages] = useState(120);
+
+  <span class="c-kw">return</span> (
+    &lt;<span class="c-tag">header</span> <span class="c-attr">style</span>={{ <span class="c-attr">display</span>: <span class="c-val">'flex'</span>, <span class="c-attr">alignItems</span>: <span class="c-val">'center'</span>, <span class="c-attr">gap</span>: <span class="c-val">16</span>, <span class="c-attr">padding</span>: <span class="c-val">'12px 24px'</span> }}&gt;
+
+      {<span class="c-cmt">/* Count-Neutral on bell icon */</span>}
+      &lt;<span class="c-tag">button</span>
+        <span class="c-attr">style</span>={{ <span class="c-attr">position</span>: <span class="c-val">'relative'</span>, <span class="c-attr">display</span>: <span class="c-val">'inline-flex'</span> }}
+        <span class="c-attr">aria-label</span>={`Notifications, ${notifications} unread`}
+        <span class="c-attr">onClick</span>={() =&gt; setNotifications(0)}
+      &gt;
+        &lt;<span class="c-tag">BellIcon</span> /&gt;
+        {notifications &gt; 0 &amp;&amp; (
+          &lt;<span class="c-tag">Badge</span> <span class="c-attr">type</span>=<span class="c-val">"Count-Neutral"</span> <span class="c-attr">count</span>={notifications} <span class="c-attr">animate</span> /&gt;
+        )}
+      &lt;/<span class="c-tag">button</span>&gt;
+
+      {<span class="c-cmt">/* Count-Alert (overflow demo) */</span>}
+      &lt;<span class="c-tag">button</span>
+        <span class="c-attr">style</span>={{ <span class="c-attr">position</span>: <span class="c-val">'relative'</span>, <span class="c-attr">display</span>: <span class="c-val">'inline-flex'</span> }}
+        <span class="c-attr">aria-label</span>={`Messages, ${messages &gt; 99 ? '99+' : messages} unread`}
+      &gt;
+        &lt;<span class="c-tag">MailIcon</span> /&gt;
+        {messages &gt; 0 &amp;&amp; (
+          &lt;<span class="c-tag">Badge</span> <span class="c-attr">type</span>=<span class="c-val">"Count-Alert"</span> <span class="c-attr">count</span>={messages} <span class="c-attr">max</span>={99} /&gt;
+        )}
+      &lt;/<span class="c-tag">button</span>&gt;
+
+      {<span class="c-cmt">/* Dot-Success on avatar */</span>}
+      &lt;<span class="c-tag">div</span> <span class="c-attr">style</span>={{ <span class="c-attr">position</span>: <span class="c-val">'relative'</span>, <span class="c-attr">display</span>: <span class="c-val">'inline-flex'</span> }}&gt;
+        &lt;<span class="c-tag">img</span> <span class="c-attr">src</span>=<span class="c-val">"/avatar.png"</span> <span class="c-attr">alt</span>=<span class="c-val">"Alex Kim, online"</span>
+          <span class="c-attr">style</span>={{ <span class="c-attr">width</span>: <span class="c-val">32</span>, <span class="c-attr">height</span>: <span class="c-val">32</span>, <span class="c-attr">borderRadius</span>: <span class="c-val">'50%'</span> }} /&gt;
+        &lt;<span class="c-tag">Badge</span> <span class="c-attr">type</span>=<span class="c-val">"Dot-Success"</span> /&gt;
+      &lt;/<span class="c-tag">div</span>&gt;
+
+      {<span class="c-cmt">/* NEW badge in nav label */</span>}
+      &lt;<span class="c-tag">span</span> <span class="c-attr">style</span>={{ <span class="c-attr">display</span>: <span class="c-val">'inline-flex'</span>, <span class="c-attr">alignItems</span>: <span class="c-val">'center'</span>, <span class="c-attr">gap</span>: <span class="c-val">6</span> }}&gt;
+        Analytics
+        &lt;<span class="c-tag">Badge</span> <span class="c-attr">type</span>=<span class="c-val">"new"</span> /&gt;
+      &lt;/<span class="c-tag">span</span>&gt;
+
+    &lt;/<span class="c-tag">header</span>&gt;
+  );
+}</pre></div>
+              </div>
+            </div>
+            <div class="fw-angular" style="display:none;">
+              <div class="btn-code-block">
+                <div class="btn-code-head"><span class="btn-code-lang">typescript · Angular — full component</span><button class="btn-copy-btn" onclick="copyBtnCode('bdg-full-ng',this)">Copy</button></div>
+                <div class="btn-code-body"><pre id="bdg-full-ng">@<span class="c-type">Component</span>({
+  selector: <span class="c-val">'app-header'</span>,
+  standalone: <span class="c-kw">true</span>,
+  imports: [<span class="c-type">BadgeModule</span>, <span class="c-type">NgIf</span>],
+  template: `
+    &lt;<span class="c-tag">header</span> <span class="c-attr">class</span>=<span class="c-val">"app-header"</span>&gt;
+
+      &lt;<span class="c-cmt">&lt;!-- Count-Neutral --&gt;</span>
+      &lt;<span class="c-tag">button</span>
+        <span class="c-attr">style</span>=<span class="c-val">"position:relative;display:inline-flex"</span>
+        [<span class="c-attr">attr.aria-label</span>]="<span class="c-val">notifications + ' unread notifications'</span>"
+        (<span class="c-attr">click</span>)="<span class="c-val">clearNotifications()</span>"
+      &gt;
+        &lt;<span class="c-tag">mat-icon</span>&gt;notifications&lt;/<span class="c-tag">mat-icon</span>&gt;
+        &lt;<span class="c-tag">gs-badge</span>
+          *<span class="c-attr">ngIf</span>=<span class="c-val">"notifications &gt; 0"</span>
+          <span class="c-attr">type</span>=<span class="c-val">"Count-Neutral"</span>
+          [<span class="c-attr">count</span>]="<span class="c-val">notifications</span>"
+          [<span class="c-attr">animate</span>]="<span class="c-val">true</span>"
+        &gt;&lt;/<span class="c-tag">gs-badge</span>&gt;
+      &lt;/<span class="c-tag">button</span>&gt;
+
+      &lt;<span class="c-cmt">&lt;!-- Dot-Success on avatar --&gt;</span>
+      &lt;<span class="c-tag">div</span> <span class="c-attr">style</span>=<span class="c-val">"position:relative;display:inline-flex"</span>&gt;
+        &lt;<span class="c-tag">img</span> <span class="c-attr">src</span>=<span class="c-val">"/avatar.png"</span> <span class="c-attr">alt</span>=<span class="c-val">"Alex Kim, online"</span>
+          <span class="c-attr">style</span>=<span class="c-val">"width:32px;height:32px;border-radius:50%"</span> /&gt;
+        &lt;<span class="c-tag">gs-badge</span> <span class="c-attr">type</span>=<span class="c-val">"Dot-Success"</span>&gt;&lt;/<span class="c-tag">gs-badge</span>&gt;
+      &lt;/<span class="c-tag">div</span>&gt;
+
+      &lt;<span class="c-cmt">&lt;!-- NEW badge in nav --&gt;</span>
+      &lt;<span class="c-tag">span</span> <span class="c-attr">style</span>=<span class="c-val">"display:inline-flex;align-items:center;gap:6px"</span>&gt;
+        Analytics
+        &lt;<span class="c-tag">gs-badge</span> *<span class="c-attr">ngIf</span>=<span class="c-val">"isNewFeature"</span> <span class="c-attr">type</span>=<span class="c-val">"new"</span>&gt;&lt;/<span class="c-tag">gs-badge</span>&gt;
+      &lt;/<span class="c-tag">span</span>&gt;
+
+    &lt;/<span class="c-tag">header</span>&gt;
+  `,
+})
+<span class="c-kw">export class</span> <span class="c-type">AppHeaderComponent</span> {
+  notifications = 5;
+  isNewFeature = <span class="c-kw">true</span>;
+  clearNotifications() { <span class="c-kw">this</span>.notifications = 0; }
+}</pre></div>
+              </div>
+            </div>
+          </div>
+
+        </div><!-- /code-tab-main -->
+
+        <!-- Code Quick-nav -->
+        <div class="code-tab-qnav">
+          <div class="code-qnav-inner">
+            <p class="code-qnav-title">Quick Access</p>
+            <ul class="code-qnav-list">
+              <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('bdg-c-overview')">Overview</button></li>
+              <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('bdg-c-install')">Install</button></li>
+              <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('bdg-c-imports')">Imports</button></li>
+              <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('bdg-c-api')">API</button></li>
+              <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('bdg-c-variants')">Variants</button></li>
+              <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('bdg-c-states')">States</button></li>
+              <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('bdg-c-a11y')">Accessibility</button></li>
+              <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('bdg-c-struct')">File Structure</button></li>
+              <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('bdg-c-usage')">Usage</button></li>
+              <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('bdg-c-theming')">Theming</button></li>
+              <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('bdg-c-examples')">Examples</button></li>
+            </ul>
+          </div>
+        </div>
+
+      </div>
+    </div><!-- /CODE TAB -->
+
+    <!-- ========== USAGE TAB ========== -->
+    <div id="badge-tab-usage" class="btn-tab-pane badge-tab-pane">
+
+      <p style="font-size:15px;line-height:1.75;color:#475569;margin:0 0 32px;">Badges communicate presence, count, or novelty. They are always attached to another element — never freestanding.</p>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:24px;">
+
+        <div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:12px;padding:24px;">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:16px;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            <span style="font-size:14px;font-weight:700;color:#15803d;">When to use</span>
+          </div>
+          <ul style="margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:12px;">
+            <li style="display:flex;gap:10px;align-items:flex-start;"><span style="width:5px;height:5px;border-radius:50%;background:#16a34a;flex-shrink:0;margin-top:7px;"></span><span style="font-size:13px;color:#166534;line-height:1.6;"><strong>Count-Neutral:</strong> Unread items that don't require immediate action — messages, comments, updates.</span></li>
+            <li style="display:flex;gap:10px;align-items:flex-start;"><span style="width:5px;height:5px;border-radius:50%;background:#16a34a;flex-shrink:0;margin-top:7px;"></span><span style="font-size:13px;color:#166534;line-height:1.6;"><strong>Count-Alert:</strong> Urgent unread items that require attention — errors, critical alerts, action required.</span></li>
+            <li style="display:flex;gap:10px;align-items:flex-start;"><span style="width:5px;height:5px;border-radius:50%;background:#16a34a;flex-shrink:0;margin-top:7px;"></span><span style="font-size:13px;color:#166534;line-height:1.6;"><strong>Dot-Success:</strong> Active / online presence on avatars or status indicators.</span></li>
+            <li style="display:flex;gap:10px;align-items:flex-start;"><span style="width:5px;height:5px;border-radius:50%;background:#16a34a;flex-shrink:0;margin-top:7px;"></span><span style="font-size:13px;color:#166534;line-height:1.6;"><strong>Dot-Alert / Dot-Warning:</strong> Error or degraded state on system health icons, connection status.</span></li>
+            <li style="display:flex;gap:10px;align-items:flex-start;"><span style="width:5px;height:5px;border-radius:50%;background:#16a34a;flex-shrink:0;margin-top:7px;"></span><span style="font-size:13px;color:#166534;line-height:1.6;"><strong>NEW badge:</strong> Feature released in the last 30 days. Attach to nav items or feature labels.</span></li>
+          </ul>
+        </div>
+
+        <div style="background:#fff5f5;border:1px solid #fecaca;border-radius:12px;padding:24px;">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:16px;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#dc2625" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
+            <span style="font-size:14px;font-weight:700;color:#b91c1c;">When not to use</span>
+          </div>
+          <ul style="margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:12px;">
+            <li style="display:flex;gap:10px;align-items:flex-start;"><span style="width:5px;height:5px;border-radius:50%;background:#dc2625;flex-shrink:0;margin-top:7px;"></span><span style="font-size:13px;color:#991b1b;line-height:1.6;">As a standalone label or status chip — badges always overlay a parent element.</span></li>
+            <li style="display:flex;gap:10px;align-items:flex-start;"><span style="width:5px;height:5px;border-radius:50%;background:#dc2625;flex-shrink:0;margin-top:7px;"></span><span style="font-size:13px;color:#991b1b;line-height:1.6;">As a button or interactive trigger — badges are <code style="font-size:11px;background:rgba(0,0,0,0.06);padding:1px 4px;border-radius:3px;">pointer-events:none</code> by design.</span></li>
+            <li style="display:flex;gap:10px;align-items:flex-start;"><span style="width:5px;height:5px;border-radius:50%;background:#dc2625;flex-shrink:0;margin-top:7px;"></span><span style="font-size:13px;color:#991b1b;line-height:1.6;">To show 0 — hide the badge entirely when count is zero.</span></li>
+            <li style="display:flex;gap:10px;align-items:flex-start;"><span style="width:5px;height:5px;border-radius:50%;background:#dc2625;flex-shrink:0;margin-top:7px;"></span><span style="font-size:13px;color:#991b1b;line-height:1.6;">Count-Alert for low-priority info — reserve red for genuinely urgent items only.</span></li>
+            <li style="display:flex;gap:10px;align-items:flex-start;"><span style="width:5px;height:5px;border-radius:50%;background:#dc2625;flex-shrink:0;margin-top:7px;"></span><span style="font-size:13px;color:#991b1b;line-height:1.6;">NEW badge after 30 days — stale badges erode trust in the "new" signal.</span></li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Content hierarchy -->
+      <div class="btn-family-card">
+        <div class="btn-family-title">Content Hierarchy</div>
+        <p class="btn-family-desc">Each badge type has a fixed content contract. Do not mix or repurpose them.</p>
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:16px;">
+          <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;padding:18px;">
+            <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;">
+              <span class="gs-count-badge" style="position:static;min-width:18px;height:18px;">7</span>
+              <span style="font-size:13px;font-weight:600;color:#1e293b;">Count-Neutral</span>
+            </div>
+            <div style="font-size:12px;color:#64748b;line-height:1.6;">Number only. 1–99 exact, 100+ shows "99+". Never 0, never text.</div>
+          </div>
+          <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;padding:18px;">
+            <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;">
+              <span class="gs-count-badge gs-count-badge--alert" style="position:static;min-width:18px;height:18px;">3</span>
+              <span style="font-size:13px;font-weight:600;color:#1e293b;">Count-Alert</span>
+            </div>
+            <div style="font-size:12px;color:#64748b;line-height:1.6;">Same rules as Neutral. Red signals urgency — use sparingly.</div>
+          </div>
+          <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;padding:18px;">
+            <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;">
+              <span class="gs-dot-badge gs-dot-badge--success" style="position:static;width:12px;height:12px;border-color:#e2e8f0;"></span>
+              <span style="font-size:13px;font-weight:600;color:#1e293b;">Dot badges</span>
+            </div>
+            <div style="font-size:12px;color:#64748b;line-height:1.6;">No text. Fixed 12px. Color alone carries the semantic — always pair with accessible parent label.</div>
+          </div>
+          <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;padding:18px;">
+            <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;">
+              <span class="gs-new-badge">NEW</span>
+              <span style="font-size:13px;font-weight:600;color:#1e293b;">NEW badge</span>
+            </div>
+            <div style="font-size:12px;color:#64748b;line-height:1.6;">Always "NEW" — all caps, white. Never change the label text. Gradient is fixed.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Common mistakes -->
+      <div class="btn-family-card">
+        <div class="btn-family-title">Common Mistakes</div>
+        <div style="display:flex;flex-direction:column;gap:16px;">
+
+          <div style="border:1px solid #e2e8f0;border-radius:10px;overflow:hidden;">
+            <div style="display:grid;grid-template-columns:1fr 1fr;">
+              <div style="padding:20px;border-right:1px solid #e2e8f0;">
+                <div style="display:flex;align-items:center;gap:6px;margin-bottom:12px;"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#dc2625" stroke-width="2.5"><path d="M18 6 6 18M6 6l12 12"/></svg><span style="font-size:12px;font-weight:600;color:#dc2625;">Don't</span></div>
+                <div style="padding:10px 14px;background:#fce8e8;border-radius:8px;display:flex;align-items:center;gap:10px;">
+                  <div style="width:40px;height:40px;background:#e2e8f0;border-radius:10px;"></div>
+                  <span class="gs-count-badge gs-count-badge--alert" style="position:static;min-width:18px;height:18px;">0</span>
+                </div>
+                <p style="font-size:12px;color:#64748b;margin:10px 0 0;line-height:1.5;">Showing a badge with count = 0 clutters the UI with empty noise.</p>
+              </div>
+              <div style="padding:20px;">
+                <div style="display:flex;align-items:center;gap:6px;margin-bottom:12px;"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg><span style="font-size:12px;font-weight:600;color:#16a34a;">Do</span></div>
+                <div style="padding:10px 14px;background:#f0fdf4;border-radius:8px;">
+                  <div style="width:40px;height:40px;background:#e2e8f0;border-radius:10px;"></div>
+                </div>
+                <p style="font-size:12px;color:#64748b;margin:10px 0 0;line-height:1.5;">Hide the badge entirely when count is 0. Only show when there is something to act on.</p>
+              </div>
+            </div>
+          </div>
+
+          <div style="border:1px solid #e2e8f0;border-radius:10px;overflow:hidden;">
+            <div style="display:grid;grid-template-columns:1fr 1fr;">
+              <div style="padding:20px;border-right:1px solid #e2e8f0;">
+                <div style="display:flex;align-items:center;gap:6px;margin-bottom:12px;"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#dc2625" stroke-width="2.5"><path d="M18 6 6 18M6 6l12 12"/></svg><span style="font-size:12px;font-weight:600;color:#dc2625;">Don't</span></div>
+                <div style="padding:10px 14px;background:#fce8e8;border-radius:8px;display:flex;align-items:center;gap:6px;">
+                  <span style="font-size:13px;font-weight:500;color:#1e293b;font-family:'Gilroy',sans-serif;">Analytics</span>
+                  <span class="gs-count-badge gs-count-badge--alert" style="position:static;min-width:18px;height:18px;">3</span>
+                </div>
+                <p style="font-size:12px;color:#64748b;margin:10px 0 0;line-height:1.5;">Using Count-Alert red for non-urgent unread items trains users to ignore red badges.</p>
+              </div>
+              <div style="padding:20px;">
+                <div style="display:flex;align-items:center;gap:6px;margin-bottom:12px;"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg><span style="font-size:12px;font-weight:600;color:#16a34a;">Do</span></div>
+                <div style="padding:10px 14px;background:#f0fdf4;border-radius:8px;display:flex;align-items:center;gap:6px;">
+                  <span style="font-size:13px;font-weight:500;color:#1e293b;font-family:'Gilroy',sans-serif;">Analytics</span>
+                  <span class="gs-count-badge" style="position:static;min-width:18px;height:18px;">3</span>
+                </div>
+                <p style="font-size:12px;color:#64748b;margin:10px 0 0;line-height:1.5;">Use Count-Neutral for low-priority counts. Reserve Count-Alert for genuinely urgent states.</p>
+              </div>
+            </div>
+          </div>
+
+          <div style="border:1px solid #e2e8f0;border-radius:10px;overflow:hidden;">
+            <div style="display:grid;grid-template-columns:1fr 1fr;">
+              <div style="padding:20px;border-right:1px solid #e2e8f0;">
+                <div style="display:flex;align-items:center;gap:6px;margin-bottom:12px;"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#dc2625" stroke-width="2.5"><path d="M18 6 6 18M6 6l12 12"/></svg><span style="font-size:12px;font-weight:600;color:#dc2625;">Don't</span></div>
+                <div style="padding:12px 14px;background:#fce8e8;border-radius:8px;display:inline-flex;align-items:center;gap:6px;">
+                  <span style="font-size:13px;color:#475569;">Dark mode</span>
+                  <span style="display:inline-flex;align-items:center;justify-content:center;padding:4px 8px;background:linear-gradient(90deg,#1c4ed8,#3b81f6);border-radius:4px;font-size:11px;font-weight:700;color:#fff;font-family:'Gilroy',sans-serif;">Just released</span>
+                </div>
+                <p style="font-size:12px;color:#64748b;margin:10px 0 0;line-height:1.5;">Custom text in the NEW badge breaks the visual contract. It will no longer be instantly recognisable.</p>
+              </div>
+              <div style="padding:20px;">
+                <div style="display:flex;align-items:center;gap:6px;margin-bottom:12px;"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg><span style="font-size:12px;font-weight:600;color:#16a34a;">Do</span></div>
+                <div style="padding:12px 14px;background:#f0fdf4;border-radius:8px;display:inline-flex;align-items:center;gap:6px;">
+                  <span style="font-size:13px;color:#475569;">Dark mode</span>
+                  <span class="gs-new-badge">NEW</span>
+                </div>
+                <p style="font-size:12px;color:#64748b;margin:10px 0 0;line-height:1.5;">Always use the exact "NEW" label. The gradient + all-caps text is the recognition pattern.</p>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Accessibility checklist -->
+      <div class="btn-family-card">
+        <div class="btn-family-title">Accessibility Checklist</div>
+        <div style="display:flex;flex-direction:column;gap:10px;">
+          <div style="display:flex;align-items:flex-start;gap:12px;"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2.5" style="flex-shrink:0;margin-top:2px;"><polyline points="20 6 9 17 4 12"/></svg><span style="font-size:13px;color:#475569;line-height:1.6;">Icon/avatar parent carries complete <code style="font-size:11px;background:#f1f5f9;padding:1px 5px;border-radius:3px;">aria-label</code> including count (e.g. "3 unread notifications").</span></div>
+          <div style="display:flex;align-items:flex-start;gap:12px;"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2.5" style="flex-shrink:0;margin-top:2px;"><polyline points="20 6 9 17 4 12"/></svg><span style="font-size:13px;color:#475569;line-height:1.6;">Dynamic count updates announced via a visually-hidden <code style="font-size:11px;background:#f1f5f9;padding:1px 5px;border-radius:3px;">aria-live="polite"</code> region.</span></div>
+          <div style="display:flex;align-items:flex-start;gap:12px;"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2.5" style="flex-shrink:0;margin-top:2px;"><polyline points="20 6 9 17 4 12"/></svg><span style="font-size:13px;color:#475569;line-height:1.6;">All badge elements use <code style="font-size:11px;background:#f1f5f9;padding:1px 5px;border-radius:3px;">aria-hidden="true"</code> — the parent provides the semantic context.</span></div>
+          <div style="display:flex;align-items:flex-start;gap:12px;"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2.5" style="flex-shrink:0;margin-top:2px;"><polyline points="20 6 9 17 4 12"/></svg><span style="font-size:13px;color:#475569;line-height:1.6;">All badge color pairs meet WCAG AA 4.5:1 minimum contrast.</span></div>
+          <div style="display:flex;align-items:flex-start;gap:12px;"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2.5" style="flex-shrink:0;margin-top:2px;"><polyline points="20 6 9 17 4 12"/></svg><span style="font-size:13px;color:#475569;line-height:1.6;">Tab order skips all badge elements — <code style="font-size:11px;background:#f1f5f9;padding:1px 5px;border-radius:3px;">pointer-events: none</code> applied on all types.</span></div>
+          <div style="display:flex;align-items:flex-start;gap:12px;"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2.5" style="flex-shrink:0;margin-top:2px;"><polyline points="20 6 9 17 4 12"/></svg><span style="font-size:13px;color:#475569;line-height:1.6;"><code style="font-size:11px;background:#f1f5f9;padding:1px 5px;border-radius:3px;">prefers-reduced-motion</code> removes count badge entry animation.</span></div>
+        </div>
+      </div>
+
+    </div><!-- /USAGE TAB -->

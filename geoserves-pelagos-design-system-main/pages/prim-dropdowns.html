@@ -1,0 +1,1298 @@
+<style>
+:root {
+  --dd-trigger-h:       40px;
+  --dd-trigger-h-sm:    32px;
+  --dd-border-default:  var(--prim-grey-200, #CBD5E1);
+  --dd-border-open:     var(--prim-blue-500, #2463EB);
+  --dd-border-error:    var(--prim-red-500,  #DC2625);
+  --dd-focus-ring:      0 0 0 3px rgba(36,99,235,.18);
+  --dd-bg:              var(--color-surface-default, #FFFFFF);
+  --dd-item-hover-bg:   var(--prim-blue-10,  #EEF6FF);
+  --dd-item-sel-bg:     var(--prim-blue-10,  #EEF6FF);
+  --dd-panel-shadow:    0 4px 16px rgba(0,0,0,.16);
+  --dd-panel-radius:    4px;
+  --dd-label-color:     var(--prim-grey-600, #334154);
+  --dd-value-color:     var(--prim-grey-900, #10172A);
+  --dd-placeholder:     var(--prim-grey-400, #64748B);
+  --dd-disabled-bg:     var(--prim-grey-10,  #F7FAFC);
+  --dd-disabled-text:   var(--prim-grey-300, #94A3B8);
+}
+.gs-dd { position:relative; display:flex; flex-direction:column; gap:4px; font-family:var(--font-sans,'Gilroy',sans-serif); }
+.gs-dd__label { font-size:12px; font-weight:600; line-height:16px; color:var(--dd-label-color); display:flex; align-items:center; gap:4px; }
+.gs-dd__required { color:var(--prim-red-500,#DC2625); }
+.gs-dd__help { font-size:12px; color:var(--prim-grey-400,#64748B); line-height:1.4; margin-top:2px; }
+.gs-dd__help.is-error { color:var(--prim-red-600,#B91C1B); }
+.gs-dd__trigger {
+  height:var(--dd-trigger-h); width:100%; display:flex; align-items:center; gap:8px;
+  padding:0 12px; border:1.5px solid var(--dd-border-default); border-radius:var(--radius-sm,4px);
+  background:var(--dd-bg); cursor:pointer; transition:border-color .15s,box-shadow .15s;
+  position:relative; outline:none; user-select:none;
+}
+.gs-dd__trigger:hover:not(.is-disabled) { border-color:var(--prim-grey-300,#94A3B8); }
+.gs-dd__trigger.is-disabled { background:var(--dd-disabled-bg); color:var(--dd-disabled-text); cursor:not-allowed; pointer-events:none; }
+.gs-dd.is-open .gs-dd__trigger { border-color:var(--dd-border-open); box-shadow:var(--dd-focus-ring); outline:none; }
+.gs-dd.is-error .gs-dd__trigger { border-color:var(--dd-border-error); }
+.gs-dd.is-error.is-open .gs-dd__trigger { box-shadow:0 0 0 3px rgba(220,38,37,.15); }
+.gs-dd--sm .gs-dd__trigger { height:var(--dd-trigger-h-sm); }
+.gs-dd__value-area { flex:1; min-width:0; display:flex; align-items:center; overflow:hidden; }
+.gs-dd__display { font-size:14px; line-height:20px; color:var(--dd-value-color); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; flex:1; }
+.gs-dd__display.is-placeholder { color:var(--dd-placeholder); font-weight:400; }
+.gs-dd__search { display:none; border:none; outline:none; background:transparent; font-family:inherit; font-size:14px; font-weight:400; color:var(--dd-value-color); flex:1; min-width:0; width:100%; caret-color:var(--dd-border-open); }
+.gs-dd__search::placeholder { color:var(--dd-placeholder); }
+.gs-dd.is-open .gs-dd__display  { display:none; }
+.gs-dd.is-open .gs-dd__search   { display:block; }
+.gs-dd.is-open .gs-dd__chevron  { display:none; }
+.gs-dd.is-open .gs-dd__mag      { display:flex; }
+.gs-dd__chevron, .gs-dd__mag { flex-shrink:0; width:20px; height:20px; display:flex; align-items:center; justify-content:center; color:var(--prim-grey-400,#64748B); transition:transform .2s; }
+.gs-dd__mag { display:none; }
+.gs-dd__chevron svg, .gs-dd__mag svg { stroke:currentColor; fill:none; stroke-width:2; stroke-linecap:round; }
+.gs-dd__clear { flex-shrink:0; width:18px; height:18px; border-radius:50%; border:none; background:var(--prim-grey-200,#CBD5E1); display:none; align-items:center; justify-content:center; cursor:pointer; padding:0; color:var(--prim-grey-500,#475569); transition:background .1s; }
+.gs-dd__clear:hover { background:var(--prim-grey-300,#94A3B8); }
+.gs-dd__clear svg { stroke:currentColor; fill:none; stroke-width:2.5; stroke-linecap:round; }
+.gs-dd.has-value .gs-dd__clear { display:flex; }
+.gs-dd__chips { display:flex; flex-wrap:wrap; align-items:center; gap:4px; flex:1; min-width:0; }
+.gs-dd__chip { display:inline-flex; align-items:center; gap:4px; height:22px; padding:0 8px 0 10px; background:var(--prim-blue-10,#EEF6FF); border:1px solid var(--prim-blue-100,#BFDBFE); border-radius:999px; font-size:12px; font-weight:600; color:var(--prim-blue-700,#1D40AF); white-space:nowrap; }
+.gs-dd__chip-del { width:14px; height:14px; border-radius:50%; border:none; background:rgba(29,64,175,.12); cursor:pointer; padding:0; display:flex; align-items:center; justify-content:center; color:var(--prim-blue-700,#1D40AF); font-size:10px; line-height:1; transition:background .1s; }
+.gs-dd__chip-del:hover { background:rgba(29,64,175,.25); }
+.gs-dd__panel { position:absolute; top:calc(100% + 3px); left:0; right:0; z-index:500; background:var(--dd-bg); border:1px solid var(--prim-grey-100,#E2E8F0); border-radius:var(--dd-panel-radius); box-shadow:var(--dd-panel-shadow); display:none; flex-direction:column; max-height:320px; overflow:hidden; animation:ddPanelIn 140ms cubic-bezier(0.2,0,0.38,0.9) both; }
+.gs-dd.is-open .gs-dd__panel { display:flex; }
+@keyframes ddPanelIn { from{opacity:0;transform:translateY(-4px)} to{opacity:1;transform:translateY(0)} }
+.gs-dd__list { flex:1; overflow-y:auto; padding:8px; display:flex; flex-direction:column; gap:2px; overscroll-behavior:contain; }
+.gs-dd__empty { padding:24px 12px; text-align:center; font-size:13px; color:var(--prim-grey-400,#64748B); }
+.gs-dd__item { display:flex; align-items:center; gap:12px; min-height:40px; padding:8px 12px; border-radius:4px; cursor:pointer; transition:background .1s; font-size:14px; font-weight:500; color:var(--prim-grey-900,#10172A); font-family:var(--font-sans,'Gilroy',sans-serif); user-select:none; }
+.gs-dd__item:hover:not(.is-disabled) { background:var(--dd-item-hover-bg); }
+.gs-dd__item.is-selected { background:var(--dd-item-sel-bg); font-weight:600; }
+.gs-dd__item.is-disabled { color:var(--dd-disabled-text); cursor:not-allowed; pointer-events:none; opacity:.6; }
+.gs-dd__item.is-hidden { display:none; }
+.gs-dd__item-icon { width:24px; height:24px; flex-shrink:0; display:flex; align-items:center; justify-content:center; color:var(--prim-grey-500,#475569); }
+.gs-dd__item-icon svg { stroke:currentColor; fill:none; stroke-width:1.8; stroke-linecap:round; }
+/* Text-only item: item-text has flex:1 */
+.gs-dd__item-text { flex:1; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; line-height:20px; }
+/* Item content column (label + optional description sub-line) */
+.gs-dd__item-content { flex:1; min-width:0; display:flex; flex-direction:column; gap:1px; }
+.gs-dd__item-content .gs-dd__item-text { flex:none; }
+.gs-dd__item-sub { font-size:12px; color:var(--prim-grey-400,#64748B); font-weight:400; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; line-height:16px; }
+/* Right-slot — accepts any inline element (chip, badge, count, etc.) */
+.gs-dd__item-right { flex-shrink:0; margin-left:auto; display:flex; align-items:center; gap:4px; }
+
+/* ── Multi-select trigger (Figma 7111-13865) ──────────────────────── */
+/* Trigger grows to fit chips, max-height 136px per Figma spec        */
+.gs-dd--multi .gs-dd__trigger {
+  height: auto !important;
+  min-height: var(--dd-trigger-h, 40px);
+  max-height: 136px;
+  flex-wrap: wrap;
+  align-items: center;
+  padding: 8px;
+  gap: 6px;
+  overflow-y: auto;
+  cursor: pointer;
+}
+/* Chips wrap (replaces value-area in multi mode) */
+.gs-dd__chips-wrap {
+  display: flex; flex-wrap: wrap; align-items: center;
+  gap: 6px; flex: 1; min-width: 0;
+}
+/* Inline chip — Figma: blue-10 bg, 999px radius, 4px padding, 12px Medium #1E293B */
+.gs-dd__chip {
+  display: inline-flex; align-items: center; gap: 4px;
+  background: var(--prim-blue-10, #EEF6FF);
+  border-radius: 999px;
+  padding: 4px 6px 4px 8px;
+  font-size: 12px; font-weight: 500; line-height: 16px;
+  color: var(--prim-grey-800, #1E293B);
+  white-space: nowrap; flex-shrink: 0;
+}
+.gs-dd__chip-del {
+  width: 14px; height: 14px; border-radius: 50%; border: none;
+  background: rgba(30,41,59,.12); cursor: pointer; padding: 0;
+  display: inline-flex; align-items: center; justify-content: center;
+  color: var(--prim-grey-500, #475569); font-size: 10px; line-height: 1;
+  transition: background .1s; flex-shrink: 0;
+}
+.gs-dd__chip-del:hover { background: rgba(30,41,59,.22); }
+/* Label row: label text + optional info + spacer + Clear All link */
+.gs-dd__label-row {
+  display: flex; align-items: center; gap: 4px; width: 100%;
+}
+.gs-dd__label-spacer { flex: 1; }
+/* "Clear All" — shown only when has-value on a multi dropdown */
+.gs-dd__clear-all-btn {
+  font-size: 12px; font-weight: 600;
+  color: var(--prim-marine, #1852FE);
+  text-decoration: underline; text-underline-offset: 2px;
+  background: none; border: none; cursor: pointer;
+  font-family: inherit; padding: 0; white-space: nowrap;
+  display: none;
+  transition: color .12s;
+}
+.gs-dd__clear-all-btn:hover { color: var(--color-brand-hover, #1242D4); }
+.gs-dd.has-value .gs-dd__clear-all-btn { display: inline; }
+/* Loading skeleton */
+.gs-dd__loading { display:flex; flex-direction:column; gap:2px; padding:8px; }
+.gs-dd__skel-row { display:flex; align-items:center; gap:10px; min-height:40px; padding:8px 12px; }
+.gs-dd__skel-icon { width:20px; height:20px; border-radius:50%; flex-shrink:0; background:linear-gradient(90deg,#F1F5F9 25%,#E2E8F0 50%,#F1F5F9 75%); background-size:400px 100%; animation:ddSkelShimmer 1.5s ease-in-out infinite; }
+.gs-dd__skel-line { height:12px; border-radius:4px; background:linear-gradient(90deg,#F1F5F9 25%,#E2E8F0 50%,#F1F5F9 75%); background-size:400px 100%; animation:ddSkelShimmer 1.5s ease-in-out infinite; }
+.gs-dd__skel-line-sm { height:10px; border-radius:3px; background:linear-gradient(90deg,#F1F5F9 25%,#E2E8F0 50%,#F1F5F9 75%); background-size:400px 100%; animation:ddSkelShimmer 1.5s ease-in-out infinite; margin-top:3px; }
+@keyframes ddSkelShimmer { 0%{background-position:-400px 0} 100%{background-position:400px 0} }
+.gs-dd__item-check { width:16px; height:16px; flex-shrink:0; margin-left:auto; color:var(--prim-marine,#1852FE); opacity:0; }
+.gs-dd__item.is-selected .gs-dd__item-check { opacity:1; }
+.gs-dd__item-check svg { stroke:currentColor; fill:none; stroke-width:2.5; stroke-linecap:round; }
+.gs-dd__item-cb { width:16px; height:16px; border-radius:3px; border:1.5px solid var(--prim-grey-300,#94A3B8); flex-shrink:0; display:flex; align-items:center; justify-content:center; background:#fff; transition:background .1s,border-color .1s; }
+.gs-dd__item.is-selected .gs-dd__item-cb { background:var(--prim-marine,#1852FE); border-color:var(--prim-marine,#1852FE); }
+.gs-dd__item-cb svg { stroke:#fff; fill:none; stroke-width:2.5; stroke-linecap:round; opacity:0; }
+.gs-dd__item.is-selected .gs-dd__item-cb svg { opacity:1; }
+.gs-dd__footer { flex-shrink:0; padding:8px; border-top:1px solid var(--prim-grey-100,#E2E8F0); background:#fff; }
+.gs-dd__apply { width:100%; height:40px; border:none; border-radius:4px; background:var(--prim-marine,#1852FE); color:#fff; font-family:inherit; font-size:14px; font-weight:600; cursor:pointer; transition:background .12s; }
+.gs-dd__apply:hover { background:var(--color-brand-hover,#1242D4); }
+.gs-dd__group-label { font-size:11px; font-weight:700; color:var(--prim-grey-300,#94A3B8); text-transform:uppercase; letter-spacing:.06em; padding:8px 12px 4px; }
+.gs-dd__divider { height:1px; background:var(--prim-grey-50,#F1F5F9); margin:4px 8px; }
+.dd-demo-item { display:flex; flex-direction:column; gap:8px; }
+.dd-state-label { font-size:11px; font-weight:700; color:var(--prim-grey-300,#94A3B8); text-transform:uppercase; letter-spacing:.06em; }
+</style>
+
+<!-- BANNER -->
+<div class="page-header"><h1 class="ds-hero-title">Dropdown</h1></div>
+
+<!-- TAB BAR -->
+<div class="btn-tab-bar">
+  <button class="btn-tab-btn dd-tab-btn active" data-tab="design" onclick="switchDdTab('design')">Design</button>
+  <button class="btn-tab-btn dd-tab-btn" data-tab="code"   onclick="switchDdTab('code')">Code</button>
+  <button class="btn-tab-btn dd-tab-btn" data-tab="usage"  onclick="switchDdTab('usage')">Usage</button>
+</div>
+
+<!-- ═══ DESIGN TAB ══════════════════════════════════════════════════ -->
+<div id="dd-tab-design" class="btn-tab-pane dd-tab-pane active">
+<div class="code-tab-layout">
+<div class="code-tab-main">
+
+  <p style="font-size:15px;line-height:1.75;color:#475569;margin:0 0 32px;">The Dropdown is built on the <strong>Text Field</strong> (<code>gs-tf-box</code>) as its trigger base. When opened, the field transforms into an inline search bar — the trailing chevron swaps to a magnifier icon and the input becomes live-filterable. Three selection modes cover every use case.</p>
+
+  <!-- TRIGGER STATES -->
+  <div class="btn-family-card" id="dd-d-trigger">
+    <div class="btn-family-title">Trigger States</div>
+    <p class="btn-family-desc">The trigger is identical to a Text Field in closed state. When opened it becomes a search input — the chevron icon is replaced by a magnifier and typing filters the list in real time.</p>
+
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:20px;padding:24px;background:#f8fafc;border:1px solid #e2e8f0;border-radius:12px;">
+      <div class="dd-demo-item">
+        <div class="dd-state-label">Default</div>
+        <div class="gs-dd">
+          <div class="gs-dd__label">Label</div>
+          <div class="gs-dd__trigger" tabindex="0">
+            <div class="gs-dd__value-area"><span class="gs-dd__display is-placeholder">Select an option…</span></div>
+            <span class="gs-dd__chevron"><svg width="16" height="16" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></span>
+          </div>
+        </div>
+      </div>
+
+      <div class="dd-demo-item">
+        <div class="dd-state-label">Filled (value selected)</div>
+        <div class="gs-dd has-value">
+          <div class="gs-dd__label">Label</div>
+          <div class="gs-dd__trigger" tabindex="0">
+            <div class="gs-dd__value-area"><span class="gs-dd__display">Singapore, SGP</span></div>
+            <button class="gs-dd__clear" aria-label="Clear"><svg width="9" height="9" viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></svg></button>
+            <span class="gs-dd__chevron"><svg width="16" height="16" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></span>
+          </div>
+        </div>
+      </div>
+
+      <div class="dd-demo-item">
+        <div class="dd-state-label">Open → Search mode</div>
+        <div class="gs-dd is-open" style="pointer-events:none;">
+          <div class="gs-dd__label">Label</div>
+          <div class="gs-dd__trigger" tabindex="0">
+            <div class="gs-dd__value-area">
+              <span class="gs-dd__display">Singapore</span>
+              <input class="gs-dd__search" value="" placeholder="Type to filter…" readonly/>
+            </div>
+            <span class="gs-dd__chevron"><svg width="16" height="16" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></span>
+            <span class="gs-dd__mag"><svg width="16" height="16" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="15.65" y2="15.65"/></svg></span>
+          </div>
+        </div>
+      </div>
+
+      <div class="dd-demo-item">
+        <div class="dd-state-label">Error</div>
+        <div class="gs-dd is-error">
+          <div class="gs-dd__label">Label</div>
+          <div class="gs-dd__trigger" tabindex="0">
+            <div class="gs-dd__value-area"><span class="gs-dd__display is-placeholder">Select an option…</span></div>
+            <span class="gs-dd__chevron"><svg width="16" height="16" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></span>
+          </div>
+          <div class="gs-dd__help is-error">This field is required</div>
+        </div>
+      </div>
+
+      <div class="dd-demo-item">
+        <div class="dd-state-label">Disabled</div>
+        <div class="gs-dd">
+          <div class="gs-dd__label" style="opacity:.5;">Label</div>
+          <div class="gs-dd__trigger is-disabled" tabindex="-1">
+            <div class="gs-dd__value-area"><span class="gs-dd__display is-placeholder">Not available</span></div>
+            <span class="gs-dd__chevron"><svg width="16" height="16" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></span>
+          </div>
+        </div>
+      </div>
+
+      <div class="dd-demo-item">
+        <div class="dd-state-label">Small — 32px</div>
+        <div class="gs-dd gs-dd--sm">
+          <div class="gs-dd__trigger" tabindex="0">
+            <div class="gs-dd__value-area"><span class="gs-dd__display is-placeholder">Select…</span></div>
+            <span class="gs-dd__chevron"><svg width="14" height="14" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- LIST ITEM STATES -->
+  <div class="btn-family-card" id="dd-d-items">
+    <div class="btn-family-title">List Item States</div>
+    <p class="btn-family-desc">Items are 40px tall (12px h-pad, 8px v-pad, 4px radius). Selected = Blue/10 bg + checkmark. Disabled = non-interactive at 60% opacity.</p>
+
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:16px;">
+      <!-- Default -->
+      <div class="dd-demo-item"><div class="dd-state-label">Default</div>
+        <div style="border:1px solid #e2e8f0;border-radius:4px;padding:4px;background:#fff;">
+          <div class="gs-dd__item">
+            <div class="gs-dd__item-icon"><svg width="16" height="16" viewBox="0 0 24 24" stroke-width="1.8"><circle cx="12" cy="12" r="8"/><polyline points="10 14 11.8 16 14 12.5"/></svg></div>
+            <span class="gs-dd__item-text">Rotterdam, NLD</span>
+            <span class="gs-dd__item-check"><svg width="12" height="12" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>
+          </div>
+        </div>
+      </div>
+      <!-- Hover -->
+      <div class="dd-demo-item"><div class="dd-state-label">Hover</div>
+        <div style="border:1px solid #e2e8f0;border-radius:4px;padding:4px;background:#fff;">
+          <div class="gs-dd__item" style="background:var(--prim-blue-10,#EEF6FF);">
+            <div class="gs-dd__item-icon"><svg width="16" height="16" viewBox="0 0 24 24" stroke-width="1.8"><circle cx="12" cy="12" r="8"/><polyline points="10 14 11.8 16 14 12.5"/></svg></div>
+            <span class="gs-dd__item-text">Rotterdam, NLD</span>
+            <span class="gs-dd__item-check"><svg width="12" height="12" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>
+          </div>
+        </div>
+      </div>
+      <!-- Selected -->
+      <div class="dd-demo-item"><div class="dd-state-label">Selected</div>
+        <div style="border:1px solid #e2e8f0;border-radius:4px;padding:4px;background:#fff;">
+          <div class="gs-dd__item is-selected">
+            <div class="gs-dd__item-icon"><svg width="16" height="16" viewBox="0 0 24 24" stroke-width="1.8"><circle cx="12" cy="12" r="8"/><polyline points="10 14 11.8 16 14 12.5"/></svg></div>
+            <span class="gs-dd__item-text">Rotterdam, NLD</span>
+            <span class="gs-dd__item-check"><svg width="12" height="12" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>
+          </div>
+        </div>
+      </div>
+      <!-- Disabled -->
+      <div class="dd-demo-item"><div class="dd-state-label">Disabled</div>
+        <div style="border:1px solid #e2e8f0;border-radius:4px;padding:4px;background:#fff;">
+          <div class="gs-dd__item is-disabled">
+            <div class="gs-dd__item-icon"><svg width="16" height="16" viewBox="0 0 24 24" stroke-width="1.8"><circle cx="12" cy="12" r="8"/><polyline points="10 14 11.8 16 14 12.5"/></svg></div>
+            <span class="gs-dd__item-text">Unavailable port</span>
+            <span class="gs-dd__item-check"><svg width="12" height="12" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- LIST ITEM ANATOMY -->
+  <div class="btn-family-card" id="dd-d-anatomy">
+    <div class="btn-family-title">List Item Anatomy</div>
+    <p class="btn-family-desc">Items support three layout slots: an optional <strong>leading icon</strong>, a <strong>text content column</strong> (label + optional description), and an optional <strong>right-side element</strong> (chip, badge, count…). Mix and match as needed.</p>
+
+    <!-- Row A: Without icon vs With icon -->
+    <div class="btn-sub-label" style="margin-top:20px;margin-bottom:8px;">Leading icon — optional</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+      <!-- Without icon -->
+      <div class="dd-demo-item"><div class="dd-state-label">Without icon</div>
+        <div style="border:1px solid #e2e8f0;border-radius:4px;padding:4px;background:#fff;">
+          <div class="gs-dd__item">
+            <span class="gs-dd__item-text">Rotterdam, NLD</span>
+            <span class="gs-dd__item-check"><svg width="12" height="12" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>
+          </div>
+          <div class="gs-dd__item is-selected">
+            <span class="gs-dd__item-text">Singapore, SGP</span>
+            <span class="gs-dd__item-check"><svg width="12" height="12" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>
+          </div>
+        </div>
+      </div>
+      <!-- With icon -->
+      <div class="dd-demo-item"><div class="dd-state-label">With leading icon (24×24)</div>
+        <div style="border:1px solid #e2e8f0;border-radius:4px;padding:4px;background:#fff;">
+          <div class="gs-dd__item">
+            <div class="gs-dd__item-icon"><svg width="16" height="16" viewBox="0 0 24 24" stroke-width="1.8"><circle cx="12" cy="12" r="8"/><polyline points="10 14 11.8 16 14 12.5"/></svg></div>
+            <span class="gs-dd__item-text">Rotterdam, NLD</span>
+            <span class="gs-dd__item-check"><svg width="12" height="12" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>
+          </div>
+          <div class="gs-dd__item is-selected">
+            <div class="gs-dd__item-icon" style="color:var(--prim-marine,#1852FE);"><svg width="16" height="16" viewBox="0 0 24 24" stroke-width="1.8"><circle cx="12" cy="12" r="8"/><polyline points="10 14 11.8 16 14 12.5"/></svg></div>
+            <span class="gs-dd__item-text">Singapore, SGP</span>
+            <span class="gs-dd__item-check"><svg width="12" height="12" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Row B: Label only vs Label + description -->
+    <div class="btn-sub-label" style="margin-top:20px;margin-bottom:8px;">Description sub-line — optional</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+      <!-- Label only -->
+      <div class="dd-demo-item"><div class="dd-state-label">Label only</div>
+        <div style="border:1px solid #e2e8f0;border-radius:4px;padding:4px;background:#fff;">
+          <div class="gs-dd__item">
+            <span class="gs-dd__item-text">Spot</span>
+            <span class="gs-dd__item-check"><svg width="12" height="12" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>
+          </div>
+          <div class="gs-dd__item">
+            <span class="gs-dd__item-text">Contract</span>
+            <span class="gs-dd__item-check"><svg width="12" height="12" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>
+          </div>
+        </div>
+      </div>
+      <!-- Label + description -->
+      <div class="dd-demo-item"><div class="dd-state-label">Label + description (<code>gs-dd__item-content</code>)</div>
+        <div style="border:1px solid #e2e8f0;border-radius:4px;padding:4px;background:#fff;">
+          <div class="gs-dd__item" style="min-height:48px;">
+            <div class="gs-dd__item-icon"><svg width="16" height="16" viewBox="0 0 24 24" stroke-width="1.8"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg></div>
+            <div class="gs-dd__item-content">
+              <span class="gs-dd__item-text">Bruce Wayne</span>
+              <span class="gs-dd__item-sub">bruce@gotham.com</span>
+            </div>
+            <span class="gs-dd__item-check"><svg width="12" height="12" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>
+          </div>
+          <div class="gs-dd__item is-selected" style="min-height:48px;">
+            <div class="gs-dd__item-icon" style="color:var(--prim-marine,#1852FE);"><svg width="16" height="16" viewBox="0 0 24 24" stroke-width="1.8"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg></div>
+            <div class="gs-dd__item-content">
+              <span class="gs-dd__item-text">Mubeen Ahmed</span>
+              <span class="gs-dd__item-sub">mubeen@geoserve.com</span>
+            </div>
+            <span class="gs-dd__item-check"><svg width="12" height="12" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Row C: Right-side elements -->
+    <div class="btn-sub-label" style="margin-top:20px;margin-bottom:8px;">Right-side element — <code>gs-dd__item-right</code> slot (chip, badge, count…)</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+      <!-- With chip -->
+      <div class="dd-demo-item"><div class="dd-state-label">With small chip</div>
+        <div style="border:1px solid #e2e8f0;border-radius:4px;padding:4px;background:#fff;">
+          <div class="gs-dd__item">
+            <span class="gs-dd__item-text">VLSFO 0.5%</span>
+            <div class="gs-dd__item-right">
+              <span class="gs-ci gs-ci--sm gs-ci--light gs-ci--blue">Spot</span>
+            </div>
+            <span class="gs-dd__item-check"><svg width="12" height="12" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>
+          </div>
+          <div class="gs-dd__item is-selected">
+            <span class="gs-dd__item-text">HSFO 3.5%</span>
+            <div class="gs-dd__item-right">
+              <span class="gs-ci gs-ci--sm gs-ci--light gs-ci--red">Contract</span>
+            </div>
+            <span class="gs-dd__item-check"><svg width="12" height="12" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>
+          </div>
+          <div class="gs-dd__item">
+            <span class="gs-dd__item-text">LSMGO 0.1%</span>
+            <div class="gs-dd__item-right">
+              <span class="gs-ci gs-ci--sm gs-ci--light gs-ci--green">Term</span>
+            </div>
+            <span class="gs-dd__item-check"><svg width="12" height="12" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>
+          </div>
+        </div>
+      </div>
+      <!-- With count badge -->
+      <div class="dd-demo-item"><div class="dd-state-label">With count / status badge</div>
+        <div style="border:1px solid #e2e8f0;border-radius:4px;padding:4px;background:#fff;">
+          <div class="gs-dd__item">
+            <span class="gs-dd__item-text">Pending Credit Approval</span>
+            <div class="gs-dd__item-right">
+              <span style="font-size:11px;font-weight:700;color:#854D0E;background:#FEF9C3;padding:2px 7px;border-radius:20px;">128</span>
+            </div>
+            <span class="gs-dd__item-check"><svg width="12" height="12" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>
+          </div>
+          <div class="gs-dd__item is-selected">
+            <span class="gs-dd__item-text">Active</span>
+            <div class="gs-dd__item-right">
+              <span style="font-size:11px;font-weight:700;color:#166534;background:#DCFCE7;padding:2px 7px;border-radius:20px;">89</span>
+            </div>
+            <span class="gs-dd__item-check"><svg width="12" height="12" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>
+          </div>
+          <div class="gs-dd__item">
+            <span class="gs-dd__item-text">Booked</span>
+            <div class="gs-dd__item-right">
+              <span style="font-size:11px;font-weight:700;color:#115E59;background:#CCFBF1;padding:2px 7px;border-radius:20px;">215</span>
+            </div>
+            <span class="gs-dd__item-check"><svg width="12" height="12" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MULTI-SELECT FILLED STATE (Figma 7111-13865) -->
+  <div class="btn-family-card" id="dd-d-multi-filled">
+    <div class="btn-family-title">Multi-select — Filled State</div>
+    <p class="btn-family-desc">When items are selected, chips appear inline inside the trigger. The container grows up to <strong>136px</strong> max-height (Figma spec), then scrolls. A <strong>Clear All</strong> link appears right-aligned next to the label. Each chip has its own × remove button.</p>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:24px;margin-top:20px;align-items:start;">
+
+      <!-- Default / empty -->
+      <div class="dd-demo-item">
+        <div class="dd-state-label">Default — empty</div>
+        <div class="gs-dd gs-dd--multi" style="pointer-events:none;">
+          <div class="gs-dd__label-row">
+            <span class="gs-dd__label">Label</span>
+          </div>
+          <div class="gs-dd__trigger" tabindex="-1">
+            <div class="gs-dd__chips-wrap">
+              <span class="gs-dd__display is-placeholder">Select</span>
+            </div>
+            <span class="gs-dd__chevron"><svg width="16" height="16" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></span>
+          </div>
+          <div style="font-size:12px;color:#475569;margin-top:4px;">Help Text</div>
+        </div>
+      </div>
+
+      <!-- Filled — 2 chips (matches Figma exactly) -->
+      <div class="dd-demo-item">
+        <div class="dd-state-label">Filled — chips in trigger</div>
+        <div class="gs-dd gs-dd--multi has-value" style="pointer-events:none;">
+          <div class="gs-dd__label-row">
+            <span class="gs-dd__label">Label</span>
+            <span class="gs-dd__label-spacer"></span>
+            <span class="gs-dd__clear-all-btn" style="display:inline;">Clear All</span>
+          </div>
+          <div class="gs-dd__trigger" tabindex="-1">
+            <div class="gs-dd__chips-wrap">
+              <span class="gs-dd__chip">VLSFO 0.5%<button class="gs-dd__chip-del" tabindex="-1">&times;</button></span>
+              <span class="gs-dd__chip">HSFO 3.5%<button class="gs-dd__chip-del" tabindex="-1">&times;</button></span>
+            </div>
+            <span class="gs-dd__chevron" style="align-self:flex-start;margin-top:2px;"><svg width="16" height="16" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></span>
+          </div>
+          <div style="font-size:12px;color:#475569;margin-top:4px;">Help Text</div>
+        </div>
+      </div>
+
+      <!-- Many chips — hits max-height, scrollable -->
+      <div class="dd-demo-item">
+        <div class="dd-state-label">Many selections — scrollable at 136px</div>
+        <div class="gs-dd gs-dd--multi has-value" style="pointer-events:none;">
+          <div class="gs-dd__label-row">
+            <span class="gs-dd__label">Label</span>
+            <span class="gs-dd__label-spacer"></span>
+            <span class="gs-dd__clear-all-btn" style="display:inline;">Clear All</span>
+          </div>
+          <div class="gs-dd__trigger" tabindex="-1">
+            <div class="gs-dd__chips-wrap">
+              <span class="gs-dd__chip">VLSFO 0.5%<button class="gs-dd__chip-del" tabindex="-1">&times;</button></span>
+              <span class="gs-dd__chip">HSFO 3.5%<button class="gs-dd__chip-del" tabindex="-1">&times;</button></span>
+              <span class="gs-dd__chip">LSMGO 0.1%<button class="gs-dd__chip-del" tabindex="-1">&times;</button></span>
+              <span class="gs-dd__chip">MDO<button class="gs-dd__chip-del" tabindex="-1">&times;</button></span>
+              <span class="gs-dd__chip">LFO<button class="gs-dd__chip-del" tabindex="-1">&times;</button></span>
+              <span class="gs-dd__chip">IFO 380<button class="gs-dd__chip-del" tabindex="-1">&times;</button></span>
+            </div>
+            <span class="gs-dd__chevron" style="align-self:flex-start;margin-top:2px;"><svg width="16" height="16" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- BACKEND / DATA-DRIVEN ─────────────────────────────────────── -->
+  <div class="btn-family-card" id="dd-d-backend">
+    <div class="btn-family-title">Backend / Data-Driven</div>
+    <p class="btn-family-desc">In production, options are fetched from an API. Use <code>gsDdSetOptions(id, options[])</code> to populate any dropdown from a JS array, or <code>gsDdFetch(id, url, mapper)</code> to hit a REST endpoint directly. The option shape is framework-agnostic — replace the placeholder text with your real field names.</p>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:20px;align-items:start;">
+
+      <!-- Live backend simulation demo -->
+      <div>
+        <div class="dd-state-label" style="margin-bottom:8px;">Simulated backend fetch → "List Item" placeholders</div>
+        <div class="gs-dd" id="dd-backend-demo" data-dd-type="single">
+          <div class="gs-dd__label">Select Vessel</div>
+          <div class="gs-dd__trigger" tabindex="0"
+               onclick="gsDdBackendDemo('dd-backend-demo')"
+               onkeydown="if(event.key==='Enter'||event.key===' ')gsDdBackendDemo('dd-backend-demo')">
+            <div class="gs-dd__value-area">
+              <span class="gs-dd__display is-placeholder">Click to load from API…</span>
+              <input class="gs-dd__search" placeholder="Search…"
+                     oninput="gsDdFilter('dd-backend-demo',this.value)"
+                     onkeydown="gsDdKeydown(event,'dd-backend-demo')" autocomplete="off"/>
+            </div>
+            <button class="gs-dd__clear" onclick="event.stopPropagation();gsDdClear('dd-backend-demo')" aria-label="Clear">
+              <svg width="9" height="9" viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></svg>
+            </button>
+            <span class="gs-dd__chevron"><svg width="16" height="16" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></span>
+            <span class="gs-dd__mag"><svg width="16" height="16" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="15.65" y2="15.65"/></svg></span>
+          </div>
+          <div class="gs-dd__panel">
+            <!-- Skeleton shown during fetch -->
+            <div class="gs-dd__loading" id="dd-backend-skel" style="display:none;">
+              <div class="gs-dd__skel-row"><div class="gs-dd__skel-icon"></div><div style="flex:1"><div class="gs-dd__skel-line" style="width:65%"></div></div></div>
+              <div class="gs-dd__skel-row"><div class="gs-dd__skel-icon"></div><div style="flex:1"><div class="gs-dd__skel-line" style="width:80%"></div></div></div>
+              <div class="gs-dd__skel-row"><div class="gs-dd__skel-icon"></div><div style="flex:1"><div class="gs-dd__skel-line" style="width:55%"></div></div></div>
+              <div class="gs-dd__skel-row"><div class="gs-dd__skel-icon"></div><div style="flex:1"><div class="gs-dd__skel-line" style="width:72%"></div></div></div>
+            </div>
+            <!-- List populated by gsDdSetOptions — empty at render time -->
+            <div class="gs-dd__list" id="dd-backend-list" style="display:none;">
+              <div class="gs-dd__empty" style="display:none;">No results found</div>
+            </div>
+          </div>
+        </div>
+        <p style="font-size:11.5px;color:#94a3b8;margin-top:6px;">Opens → 1.2s skeleton → 5 "List Item" options from mock API</p>
+      </div>
+
+      <!-- Option shape reference card -->
+      <div>
+        <div class="dd-state-label" style="margin-bottom:8px;">Option shape — replace with your API fields</div>
+        <div style="background:#0f172a;border-radius:8px;padding:16px;font-family:'SF Mono','Fira Code',monospace;font-size:12px;line-height:1.7;color:#e2e8f0;">
+          <span style="color:#4b5563;">// Every field except value + label is optional</span><br>
+          <span style="color:#7dd3fc;">const</span> <span style="color:#e2e8f0;">options</span> = [{<br>
+          &nbsp;&nbsp;<span style="color:#86efac;">value</span>: <span style="color:#fbbf24;">'list-1'</span>,&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#4b5563;">// required</span><br>
+          &nbsp;&nbsp;<span style="color:#86efac;">label</span>: <span style="color:#fbbf24;">'List Item 1'</span>,&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#4b5563;">// required — display text</span><br>
+          &nbsp;&nbsp;<span style="color:#86efac;">sub</span>:&nbsp;&nbsp; <span style="color:#fbbf24;">'Sub-label text'</span>,&nbsp;&nbsp;<span style="color:#4b5563;">// description line</span><br>
+          &nbsp;&nbsp;<span style="color:#86efac;">icon</span>:&nbsp; <span style="color:#fbbf24;">'&lt;svg …&gt;'</span>,&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#4b5563;">// leading icon HTML</span><br>
+          &nbsp;&nbsp;<span style="color:#86efac;">right</span>: <span style="color:#fbbf24;">'&lt;span class="gs-cs …"&gt;'</span>,<br>
+          &nbsp;&nbsp;<span style="color:#86efac;">group</span>: <span style="color:#fbbf24;">'Group Name'</span>,&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#4b5563;">// section header</span><br>
+          &nbsp;&nbsp;<span style="color:#86efac;">disabled</span>: <span style="color:#7dd3fc;">false</span>,<br>
+          }];<br><br>
+          <span style="color:#4b5563;">// Populate from array:</span><br>
+          <span style="color:#c4b5fd;">gsDdSetOptions</span>(<span style="color:#fbbf24;">'my-dd'</span>, options);<br><br>
+          <span style="color:#4b5563;">// Or fetch from REST API:</span><br>
+          <span style="color:#c4b5fd;">gsDdFetch</span>(<span style="color:#fbbf24;">'my-dd'</span>, <span style="color:#fbbf24;">'/api/vessels'</span>,<br>
+          &nbsp;&nbsp;<span style="color:#7dd3fc;">v</span> =&gt; ({ value: v.id, label: v.name,<br>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;sub: v.flag, right: v.badge }));<br>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- LOADING STATE -->
+  <div class="btn-family-card" id="dd-d-loading">
+    <div class="btn-family-title">Loading State</div>
+    <p class="btn-family-desc">When options are being fetched asynchronously, replace the list with skeleton shimmer rows. Call <code>gsDdSetLoading(id, true)</code> to show the skeleton and <code>gsDdSetLoading(id, false)</code> to restore the list. The trigger shows "Loading…" placeholder text.</p>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:24px;margin-top:20px;align-items:start;">
+
+      <!-- Static loading preview -->
+      <div class="dd-demo-item">
+        <div class="dd-state-label">Loading panel (static preview)</div>
+        <div style="background:#fff;border:1px solid #e2e8f0;border-radius:4px;box-shadow:var(--dd-panel-shadow,0 4px 16px rgba(0,0,0,.16));overflow:hidden;">
+          <div class="gs-dd__loading">
+            <div class="gs-dd__skel-row">
+              <div class="gs-dd__skel-icon"></div>
+              <div style="flex:1;display:flex;flex-direction:column;gap:4px;">
+                <div class="gs-dd__skel-line" style="width:72%;"></div>
+              </div>
+            </div>
+            <div class="gs-dd__skel-row">
+              <div class="gs-dd__skel-icon"></div>
+              <div style="flex:1;">
+                <div class="gs-dd__skel-line" style="width:55%;"></div>
+              </div>
+            </div>
+            <div class="gs-dd__skel-row">
+              <div class="gs-dd__skel-icon"></div>
+              <div style="flex:1;">
+                <div class="gs-dd__skel-line" style="width:80%;"></div>
+              </div>
+            </div>
+            <div class="gs-dd__skel-row">
+              <div class="gs-dd__skel-icon"></div>
+              <div style="flex:1;">
+                <div class="gs-dd__skel-line" style="width:60%;"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Loading with description sub-line -->
+      <div class="dd-demo-item">
+        <div class="dd-state-label">Loading — with description rows</div>
+        <div style="background:#fff;border:1px solid #e2e8f0;border-radius:4px;box-shadow:var(--dd-panel-shadow,0 4px 16px rgba(0,0,0,.16));overflow:hidden;">
+          <div class="gs-dd__loading">
+            <div class="gs-dd__skel-row" style="min-height:48px;align-items:center;">
+              <div class="gs-dd__skel-icon"></div>
+              <div style="flex:1;display:flex;flex-direction:column;gap:4px;">
+                <div class="gs-dd__skel-line" style="width:65%;"></div>
+                <div class="gs-dd__skel-line-sm" style="width:45%;"></div>
+              </div>
+            </div>
+            <div class="gs-dd__skel-row" style="min-height:48px;align-items:center;">
+              <div class="gs-dd__skel-icon"></div>
+              <div style="flex:1;display:flex;flex-direction:column;gap:4px;">
+                <div class="gs-dd__skel-line" style="width:75%;"></div>
+                <div class="gs-dd__skel-line-sm" style="width:50%;"></div>
+              </div>
+            </div>
+            <div class="gs-dd__skel-row" style="min-height:48px;align-items:center;">
+              <div class="gs-dd__skel-icon"></div>
+              <div style="flex:1;display:flex;flex-direction:column;gap:4px;">
+                <div class="gs-dd__skel-line" style="width:55%;"></div>
+                <div class="gs-dd__skel-line-sm" style="width:40%;"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Interactive loading demo -->
+      <div class="dd-demo-item">
+        <div class="dd-state-label">Interactive — click to simulate fetch</div>
+        <div class="gs-dd" id="dd-loading-demo" data-dd-type="single">
+          <div class="gs-dd__label">Assignee</div>
+          <div class="gs-dd__trigger" tabindex="0" onclick="gsDdToggleLoading('dd-loading-demo')" onkeydown="if(event.key==='Enter'||event.key===' ')gsDdToggleLoading('dd-loading-demo')">
+            <div class="gs-dd__value-area">
+              <span class="gs-dd__display is-placeholder">Click to load options…</span>
+              <input class="gs-dd__search" placeholder="Search…" oninput="gsDdFilter('dd-loading-demo',this.value)" onkeydown="gsDdKeydown(event,'dd-loading-demo')" autocomplete="off"/>
+            </div>
+            <span class="gs-dd__chevron"><svg width="16" height="16" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></span>
+            <span class="gs-dd__mag"><svg width="16" height="16" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="15.65" y2="15.65"/></svg></span>
+          </div>
+          <div class="gs-dd__panel">
+            <!-- Loading skeleton (shown during fetch) -->
+            <div class="gs-dd__loading" id="dd-loading-skel" style="display:none;">
+              <div class="gs-dd__skel-row"><div class="gs-dd__skel-icon"></div><div style="flex:1;"><div class="gs-dd__skel-line" style="width:60%;"></div></div></div>
+              <div class="gs-dd__skel-row"><div class="gs-dd__skel-icon"></div><div style="flex:1;"><div class="gs-dd__skel-line" style="width:75%;"></div></div></div>
+              <div class="gs-dd__skel-row"><div class="gs-dd__skel-icon"></div><div style="flex:1;"><div class="gs-dd__skel-line" style="width:50%;"></div></div></div>
+              <div class="gs-dd__skel-row"><div class="gs-dd__skel-icon"></div><div style="flex:1;"><div class="gs-dd__skel-line" style="width:68%;"></div></div></div>
+            </div>
+            <!-- Actual list (shown after load) -->
+            <div class="gs-dd__list" id="dd-loading-list" style="display:none;">
+              <div class="gs-dd__item" data-value="bruce" onclick="gsDdSelect('dd-loading-demo','Bruce Wayne')">
+                <div class="gs-dd__item-icon"><svg width="16" height="16" viewBox="0 0 24 24" stroke-width="1.8"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
+                <div class="gs-dd__item-content"><span class="gs-dd__item-text">Bruce Wayne</span><span class="gs-dd__item-sub">bruce@gotham.com</span></div>
+                <span class="gs-dd__item-check"><svg width="12" height="12" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>
+              </div>
+              <div class="gs-dd__item" data-value="mubeen" onclick="gsDdSelect('dd-loading-demo','Mubeen Ahmed')">
+                <div class="gs-dd__item-icon"><svg width="16" height="16" viewBox="0 0 24 24" stroke-width="1.8"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
+                <div class="gs-dd__item-content"><span class="gs-dd__item-text">Mubeen Ahmed</span><span class="gs-dd__item-sub">mubeen@geoserve.com</span></div>
+                <span class="gs-dd__item-check"><svg width="12" height="12" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>
+              </div>
+              <div class="gs-dd__item" data-value="sarah" onclick="gsDdSelect('dd-loading-demo','Sarah Chen')">
+                <div class="gs-dd__item-icon"><svg width="16" height="16" viewBox="0 0 24 24" stroke-width="1.8"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
+                <div class="gs-dd__item-content"><span class="gs-dd__item-text">Sarah Chen</span><span class="gs-dd__item-sub">sarah@pelagos.io</span></div>
+                <span class="gs-dd__item-check"><svg width="12" height="12" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>
+              </div>
+              <div class="gs-dd__empty" style="display:none;">No assignees found</div>
+            </div>
+          </div>
+        </div>
+        <p style="font-size:11.5px;color:#94a3b8;margin-top:6px;">Opens → shows skeleton for 1.4s → reveals list</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- VARIANTS — INTERACTIVE -->
+  <div class="btn-family-card" id="dd-d-variants">
+    <div class="btn-family-title">Variants — Interactive</div>
+    <p class="btn-family-desc">Click any trigger to open it. Start typing to filter. Press <kbd>Esc</kbd> or click outside to close.</p>
+
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:20px;align-items:start;">
+
+      <!-- Single select -->
+      <div>
+        <div class="dd-state-label" style="margin-bottom:8px;">Single select</div>
+        <div class="gs-dd" id="dd-single" data-dd-type="single">
+          <div class="gs-dd__label">Port of Loading</div>
+          <div class="gs-dd__trigger" tabindex="0" onclick="gsDdToggle('dd-single')" onkeydown="if(event.key==='Enter'||event.key===' ')gsDdToggle('dd-single')">
+            <div class="gs-dd__value-area">
+              <span class="gs-dd__display is-placeholder">Select port…</span>
+              <input class="gs-dd__search" placeholder="Search ports…" oninput="gsDdFilter('dd-single',this.value)" onkeydown="gsDdKeydown(event,'dd-single')" autocomplete="off"/>
+            </div>
+            <button class="gs-dd__clear" onclick="event.stopPropagation();gsDdClear('dd-single')" aria-label="Clear"><svg width="9" height="9" viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></svg></button>
+            <span class="gs-dd__chevron"><svg width="16" height="16" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></span>
+            <span class="gs-dd__mag"><svg width="16" height="16" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="15.65" y2="15.65"/></svg></span>
+          </div>
+          <div class="gs-dd__panel">
+            <div class="gs-dd__list">
+              <div class="gs-dd__item" data-value="singapore" onclick="gsDdSelect('dd-single','Singapore, SGP')">
+                <div class="gs-dd__item-icon"><svg width="16" height="16" viewBox="0 0 24 24" stroke-width="1.8"><circle cx="12" cy="12" r="8"/><polyline points="10 14 11.8 16 14 12.5"/></svg></div>
+                <span class="gs-dd__item-text">Singapore, SGP</span>
+                <span class="gs-dd__item-check"><svg width="12" height="12" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>
+              </div>
+              <div class="gs-dd__item" data-value="rotterdam" onclick="gsDdSelect('dd-single','Rotterdam, NLD')">
+                <div class="gs-dd__item-icon"><svg width="16" height="16" viewBox="0 0 24 24" stroke-width="1.8"><circle cx="12" cy="12" r="8"/><polyline points="10 14 11.8 16 14 12.5"/></svg></div>
+                <span class="gs-dd__item-text">Rotterdam, NLD</span>
+                <span class="gs-dd__item-check"><svg width="12" height="12" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>
+              </div>
+              <div class="gs-dd__item" data-value="dubai" onclick="gsDdSelect('dd-single','Dubai, UAE')">
+                <div class="gs-dd__item-icon"><svg width="16" height="16" viewBox="0 0 24 24" stroke-width="1.8"><circle cx="12" cy="12" r="8"/><polyline points="10 14 11.8 16 14 12.5"/></svg></div>
+                <span class="gs-dd__item-text">Dubai, UAE</span>
+                <span class="gs-dd__item-check"><svg width="12" height="12" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>
+              </div>
+              <div class="gs-dd__item" data-value="antwerp" onclick="gsDdSelect('dd-single','Antwerp, BEL')">
+                <div class="gs-dd__item-icon"><svg width="16" height="16" viewBox="0 0 24 24" stroke-width="1.8"><circle cx="12" cy="12" r="8"/><polyline points="10 14 11.8 16 14 12.5"/></svg></div>
+                <span class="gs-dd__item-text">Antwerp, BEL</span>
+                <span class="gs-dd__item-check"><svg width="12" height="12" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>
+              </div>
+              <div class="gs-dd__item" data-value="hamburg" onclick="gsDdSelect('dd-single','Hamburg, DEU')">
+                <div class="gs-dd__item-icon"><svg width="16" height="16" viewBox="0 0 24 24" stroke-width="1.8"><circle cx="12" cy="12" r="8"/><polyline points="10 14 11.8 16 14 12.5"/></svg></div>
+                <span class="gs-dd__item-text">Hamburg, DEU</span>
+                <span class="gs-dd__item-check"><svg width="12" height="12" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>
+              </div>
+              <div class="gs-dd__item is-disabled" data-value="disabled">
+                <div class="gs-dd__item-icon"><svg width="16" height="16" viewBox="0 0 24 24" stroke-width="1.8"><circle cx="12" cy="12" r="8"/><polyline points="10 14 11.8 16 14 12.5"/></svg></div>
+                <span class="gs-dd__item-text">Unavailable Port</span>
+                <span class="gs-dd__item-check"><svg width="12" height="12" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>
+              </div>
+              <div class="gs-dd__empty" style="display:none;">No ports found</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Multi-select (chips-in-trigger, Figma 7111-13865) -->
+      <div>
+        <div class="dd-state-label" style="margin-bottom:8px;">Multi-select</div>
+        <div class="gs-dd gs-dd--multi" id="dd-multi" data-dd-type="multi">
+          <!-- Label row — "Clear All" appears right when values are selected -->
+          <div class="gs-dd__label-row">
+            <span class="gs-dd__label">Fuel Types</span>
+            <span class="gs-dd__label-spacer"></span>
+            <button class="gs-dd__clear-all-btn" onclick="gsDdClear('dd-multi');event.stopPropagation()">Clear All</button>
+          </div>
+          <!-- Trigger: chips wrap inline inside the box, max-height 136px -->
+          <div class="gs-dd__trigger" tabindex="0"
+               onclick="gsDdToggle('dd-multi')"
+               onkeydown="if(event.key==='Enter'||event.key===' ')gsDdToggle('dd-multi')">
+            <div class="gs-dd__chips-wrap" id="dd-multi-chips">
+              <!-- Placeholder shown when no chips -->
+              <span class="gs-dd__display is-placeholder">Select fuel types…</span>
+              <!-- Chips inserted here by JS when items are selected -->
+              <!-- Search input (shown when open) -->
+              <input class="gs-dd__search" placeholder="Search…"
+                     oninput="gsDdFilter('dd-multi',this.value)"
+                     onkeydown="gsDdKeydown(event,'dd-multi')" autocomplete="off"/>
+            </div>
+            <span class="gs-dd__chevron" style="align-self:flex-start;margin-top:2px;"><svg width="16" height="16" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></span>
+            <span class="gs-dd__mag" style="align-self:flex-start;margin-top:2px;"><svg width="16" height="16" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="15.65" y2="15.65"/></svg></span>
+          </div>
+          <!-- Panel -->
+          <div class="gs-dd__panel">
+            <div class="gs-dd__list">
+              <div class="gs-dd__item" data-value="vlsfo" onclick="gsDdMultiToggle('dd-multi',this,'VLSFO 0.5%')">
+                <span class="gs-dd__item-cb"><svg width="9" height="9" viewBox="0 0 12 12"><polyline points="2 6 5 9 10 3"/></svg></span>
+                <span class="gs-dd__item-text">VLSFO 0.5%</span>
+              </div>
+              <div class="gs-dd__item" data-value="hsfo" onclick="gsDdMultiToggle('dd-multi',this,'HSFO 3.5%')">
+                <span class="gs-dd__item-cb"><svg width="9" height="9" viewBox="0 0 12 12"><polyline points="2 6 5 9 10 3"/></svg></span>
+                <span class="gs-dd__item-text">HSFO 3.5%</span>
+              </div>
+              <div class="gs-dd__item" data-value="lsmgo" onclick="gsDdMultiToggle('dd-multi',this,'LSMGO 0.1%')">
+                <span class="gs-dd__item-cb"><svg width="9" height="9" viewBox="0 0 12 12"><polyline points="2 6 5 9 10 3"/></svg></span>
+                <span class="gs-dd__item-text">LSMGO 0.1%</span>
+              </div>
+              <div class="gs-dd__item" data-value="mdo" onclick="gsDdMultiToggle('dd-multi',this,'MDO')">
+                <span class="gs-dd__item-cb"><svg width="9" height="9" viewBox="0 0 12 12"><polyline points="2 6 5 9 10 3"/></svg></span>
+                <span class="gs-dd__item-text">MDO</span>
+              </div>
+              <div class="gs-dd__item" data-value="lfo" onclick="gsDdMultiToggle('dd-multi',this,'LFO')">
+                <span class="gs-dd__item-cb"><svg width="9" height="9" viewBox="0 0 12 12"><polyline points="2 6 5 9 10 3"/></svg></span>
+                <span class="gs-dd__item-text">LFO</span>
+              </div>
+              <div class="gs-dd__empty" style="display:none;">No fuel types found</div>
+            </div>
+            <div class="gs-dd__footer">
+              <button class="gs-dd__apply" onclick="gsDdApply('dd-multi')">Apply</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- With groups -->
+      <div>
+        <div class="dd-state-label" style="margin-bottom:8px;">With group labels</div>
+        <div class="gs-dd" id="dd-groups" data-dd-type="single">
+          <div class="gs-dd__label">Trade Route</div>
+          <div class="gs-dd__trigger" tabindex="0" onclick="gsDdToggle('dd-groups')" onkeydown="if(event.key==='Enter'||event.key===' ')gsDdToggle('dd-groups')">
+            <div class="gs-dd__value-area">
+              <span class="gs-dd__display is-placeholder">Select route…</span>
+              <input class="gs-dd__search" placeholder="Search routes…" oninput="gsDdFilter('dd-groups',this.value)" onkeydown="gsDdKeydown(event,'dd-groups')" autocomplete="off"/>
+            </div>
+            <button class="gs-dd__clear" onclick="event.stopPropagation();gsDdClear('dd-groups')" aria-label="Clear"><svg width="9" height="9" viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></svg></button>
+            <span class="gs-dd__chevron"><svg width="16" height="16" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></span>
+            <span class="gs-dd__mag"><svg width="16" height="16" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="15.65" y2="15.65"/></svg></span>
+          </div>
+          <div class="gs-dd__panel">
+            <div class="gs-dd__list">
+              <div class="gs-dd__group-label">Asia Pacific</div>
+              <div class="gs-dd__item" data-value="sin-hkg" onclick="gsDdSelect('dd-groups','Singapore → Hong Kong')"><span class="gs-dd__item-text">Singapore → Hong Kong</span><span class="gs-dd__item-check"><svg width="12" height="12" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span></div>
+              <div class="gs-dd__item" data-value="sin-sha" onclick="gsDdSelect('dd-groups','Singapore → Shanghai')"><span class="gs-dd__item-text">Singapore → Shanghai</span><span class="gs-dd__item-check"><svg width="12" height="12" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span></div>
+              <div class="gs-dd__divider"></div>
+              <div class="gs-dd__group-label">Europe</div>
+              <div class="gs-dd__item" data-value="rtm-ant" onclick="gsDdSelect('dd-groups','Rotterdam → Antwerp')"><span class="gs-dd__item-text">Rotterdam → Antwerp</span><span class="gs-dd__item-check"><svg width="12" height="12" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span></div>
+              <div class="gs-dd__item" data-value="rtm-ham" onclick="gsDdSelect('dd-groups','Rotterdam → Hamburg')"><span class="gs-dd__item-text">Rotterdam → Hamburg</span><span class="gs-dd__item-check"><svg width="12" height="12" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span></div>
+              <div class="gs-dd__divider"></div>
+              <div class="gs-dd__group-label">Middle East</div>
+              <div class="gs-dd__item" data-value="dxb-fuj" onclick="gsDdSelect('dd-groups','Dubai → Fujairah')"><span class="gs-dd__item-text">Dubai → Fujairah</span><span class="gs-dd__item-check"><svg width="12" height="12" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span></div>
+              <div class="gs-dd__empty" style="display:none;">No routes found</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOKENS -->
+  <div class="btn-family-card" id="dd-d-tokens">
+    <div class="btn-family-title">Design Tokens</div>
+    <div style="border:1px solid #e2e8f0;border-radius:10px;overflow:hidden;margin-top:8px;">
+      <table style="width:100%;border-collapse:collapse;">
+        <thead><tr style="background:#f8fafc;"><th style="padding:8px 14px;font-size:11px;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:.05em;text-align:left;border-bottom:1px solid #e2e8f0;">Token</th><th style="padding:8px 14px;font-size:11px;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:.05em;text-align:left;border-bottom:1px solid #e2e8f0;">Value</th><th style="padding:8px 14px;font-size:11px;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:.05em;text-align:left;border-bottom:1px solid #e2e8f0;">Foundation</th></tr></thead>
+        <tbody>
+          <tr style="border-bottom:1px solid #f1f5f9;"><td style="padding:9px 14px;"><code style="background:#f1f5f9;padding:1px 6px;border-radius:4px;font-size:11.5px;">--dd-border-default</code></td><td style="padding:9px 14px;font-size:12.5px;"><span style="display:inline-block;width:10px;height:10px;background:#CBD5E1;border-radius:3px;vertical-align:middle;margin-right:5px;"></span>#CBD5E1</td><td style="padding:9px 14px;font-size:12px;color:#64748b;"><code style="font-size:11px;">--prim-grey-200</code></td></tr>
+          <tr style="border-bottom:1px solid #f1f5f9;"><td style="padding:9px 14px;"><code style="background:#f1f5f9;padding:1px 6px;border-radius:4px;font-size:11.5px;">--dd-border-open</code></td><td style="padding:9px 14px;font-size:12.5px;"><span style="display:inline-block;width:10px;height:10px;background:#2463EB;border-radius:3px;vertical-align:middle;margin-right:5px;"></span>#2463EB</td><td style="padding:9px 14px;font-size:12px;color:#64748b;"><code style="font-size:11px;">--prim-blue-500</code></td></tr>
+          <tr style="border-bottom:1px solid #f1f5f9;"><td style="padding:9px 14px;"><code style="background:#f1f5f9;padding:1px 6px;border-radius:4px;font-size:11.5px;">--dd-focus-ring</code></td><td style="padding:9px 14px;font-size:12.5px;color:#374151;">0 0 0 3px rgba(36,99,235,.18)</td><td style="padding:9px 14px;font-size:12px;color:#64748b;">Matches text field focus</td></tr>
+          <tr style="border-bottom:1px solid #f1f5f9;"><td style="padding:9px 14px;"><code style="background:#f1f5f9;padding:1px 6px;border-radius:4px;font-size:11.5px;">--dd-item-hover-bg</code></td><td style="padding:9px 14px;font-size:12.5px;"><span style="display:inline-block;width:10px;height:10px;background:#EEF6FF;border-radius:3px;vertical-align:middle;margin-right:5px;"></span>#EEF6FF</td><td style="padding:9px 14px;font-size:12px;color:#64748b;"><code style="font-size:11px;">--prim-blue-10</code></td></tr>
+          <tr style="border-bottom:1px solid #f1f5f9;"><td style="padding:9px 14px;"><code style="background:#f1f5f9;padding:1px 6px;border-radius:4px;font-size:11.5px;">--dd-panel-shadow</code></td><td style="padding:9px 14px;font-size:12.5px;color:#374151;">0 4px 16px rgba(0,0,0,.16)</td><td style="padding:9px 14px;font-size:12px;color:#64748b;"><code style="font-size:11px;">shadow-md</code></td></tr>
+          <tr><td style="padding:9px 14px;"><code style="background:#f1f5f9;padding:1px 6px;border-radius:4px;font-size:11.5px;">--dd-trigger-h / h-sm</code></td><td style="padding:9px 14px;font-size:12.5px;color:#374151;">40px / 32px</td><td style="padding:9px 14px;font-size:12px;color:#64748b;">Matches text field heights</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</div>
+<div class="code-tab-qnav">
+  <div class="code-qnav-inner">
+    <p class="code-qnav-title">On this page</p>
+    <ul class="code-qnav-list">
+      <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('dd-d-trigger')">Trigger States</button></li>
+      <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('dd-d-items')">List Item States</button></li>
+      <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('dd-d-anatomy')">Item Anatomy</button></li>
+      <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('dd-d-multi-filled')">Multi Filled State</button></li>
+      <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('dd-d-backend')">Backend / Data-driven</button></li>
+      <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('dd-d-loading')">Loading State</button></li>
+      <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('dd-d-variants')">Variants</button></li>
+      <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('dd-d-tokens')">Tokens</button></li>
+    </ul>
+  </div>
+</div>
+</div>
+</div>
+
+<!-- ═══ CODE TAB ════════════════════════════════════════════════════ -->
+<div id="dd-tab-code" class="btn-tab-pane dd-tab-pane">
+
+  <!-- Framework toggle — mirrors spinner/badge pattern -->
+  <div class="fw-toggle-bar">
+    <button class="fw-toggle-bar-btn active" data-fw="react" onclick="switchFw('dd-tab-code','react')">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="2.05" fill="#61DAFB"/><ellipse cx="12" cy="12" rx="10" ry="3.8" stroke="#61DAFB" stroke-width="1.3" fill="none"/><ellipse cx="12" cy="12" rx="10" ry="3.8" stroke="#61DAFB" stroke-width="1.3" fill="none" transform="rotate(60 12 12)"/><ellipse cx="12" cy="12" rx="10" ry="3.8" stroke="#61DAFB" stroke-width="1.3" fill="none" transform="rotate(120 12 12)"/></svg>
+      React
+    </button>
+    <button class="fw-toggle-bar-btn" data-fw="angular" onclick="switchFw('dd-tab-code','angular')">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none"><polygon points="12,2 22,5.5 20,18 12,22 4,18 2,5.5" fill="#DD0031"/><polygon points="12,2 12,22 4,18 2,5.5" fill="#C3002F"/><polygon points="12,5.5 8,15.5 9.5,15.5 10.5,13 13.5,13 14.5,15.5 16,15.5 12,5.5" fill="white"/></svg>
+      Angular / HTML
+    </button>
+  </div>
+
+  <div class="code-tab-layout">
+  <div class="code-tab-main">
+
+    <!-- 1. Overview -->
+    <div id="dd-c-overview" class="btn-family-card">
+      <div class="ds-step-row"><span class="ds-step-num">1</span><div class="btn-family-title" style="margin:0;">Overview</div></div>
+      <div class="fw-react">
+        <p class="btn-family-desc">The <code>Dropdown</code> component wraps the <strong>Text Field</strong> (<button class="btn-inline-link" onclick="navigate('prim-textfields')">gs-tf-box</button>) as its trigger base and adds a searchable panel. It is fully controlled — pass <code>value</code> and <code>onChange</code>. When <code>multiple</code> is set, selections render as <strong>inline chips</strong> (<button class="btn-inline-link" onclick="navigate('prim-chips')">Chip Field</button>) inside the trigger and wrap at max-height 136px.</p>
+      </div>
+      <div class="fw-angular" style="display:none;">
+        <p class="btn-family-desc">In Angular or plain HTML, use the <code>gs-dd</code> CSS class family directly. All behaviour is wired via <code>gsDdToggle</code>, <code>gsDdSelect</code>, <code>gsDdFilter</code> etc. defined in <code>script.js</code>. Add <code>gs-dd--multi</code> for multi-select chip behaviour.</p>
+      </div>
+    </div>
+
+    <!-- 2. Install -->
+    <div id="dd-c-install" class="btn-family-card">
+      <div class="ds-step-row"><span class="ds-step-num">2</span><div class="btn-family-title" style="margin:0;">Install</div></div>
+      <div class="fw-react">
+        <div class="btn-code-block"><div class="btn-code-head"><span class="btn-code-lang">bash</span><button class="btn-copy-btn" onclick="copyBtnCode('dd-install-r',this)">Copy</button></div>
+        <div class="btn-code-body"><pre id="dd-install-r">npm install @pelagos/components</pre></div></div>
+      </div>
+      <div class="fw-angular" style="display:none;">
+        <div class="btn-code-block"><div class="btn-code-head"><span class="btn-code-lang">bash</span><button class="btn-copy-btn" onclick="copyBtnCode('dd-install-ng',this)">Copy</button></div>
+        <div class="btn-code-body"><pre id="dd-install-ng">npm install @pelagos/angular</pre></div></div>
+        <p class="btn-family-desc" style="margin-top:10px;">Or use the standalone CSS — all <code>.gs-dd*</code> classes are included in the global <code>styles.css</code>.</p>
+      </div>
+    </div>
+
+    <!-- 3. Import -->
+    <div id="dd-c-import" class="btn-family-card">
+      <div class="ds-step-row"><span class="ds-step-num">3</span><div class="btn-family-title" style="margin:0;">Import</div></div>
+      <div class="fw-react">
+        <div class="btn-code-block"><div class="btn-code-head"><span class="btn-code-lang">tsx · React</span><button class="btn-copy-btn" onclick="copyBtnCode('dd-import-r',this)">Copy</button></div>
+        <div class="btn-code-body"><pre id="dd-import-r"><code><span class="c-kw">import</span> { <span class="c-type">Dropdown</span> } <span class="c-kw">from</span> <span class="c-val">'@pelagos/components'</span>;
+<span class="c-cmt">// Tree-shakeable deep import:</span>
+<span class="c-kw">import</span> { <span class="c-type">Dropdown</span> } <span class="c-kw">from</span> <span class="c-val">'@pelagos/components/primitives/dropdown'</span>;
+<span class="c-cmt">// Types:</span>
+<span class="c-kw">import type</span> { <span class="c-type">DropdownProps</span>, <span class="c-type">DropdownOption</span> } <span class="c-kw">from</span> <span class="c-val">'@pelagos/components/primitives/dropdown'</span>;</code></pre></div></div>
+      </div>
+      <div class="fw-angular" style="display:none;">
+        <div class="btn-code-block"><div class="btn-code-head"><span class="btn-code-lang">typescript · Angular</span><button class="btn-copy-btn" onclick="copyBtnCode('dd-import-ng',this)">Copy</button></div>
+        <div class="btn-code-body"><pre id="dd-import-ng"><code><span class="c-kw">import</span> { <span class="c-type">DropdownComponent</span> } <span class="c-kw">from</span> <span class="c-val">'@pelagos/angular'</span>;
+
+<span class="c-cmt">// app.module.ts or standalone component:</span>
+<span class="c-attr">@NgModule</span>({ imports: [<span class="c-type">DropdownComponent</span>] })</code></pre></div></div>
+      </div>
+    </div>
+
+    <!-- 4. Props -->
+    <div id="dd-c-props" class="btn-family-card">
+      <div class="ds-step-row"><span class="ds-step-num">4</span><div class="btn-family-title" style="margin:0;">Props / Inputs</div></div>
+      <div class="fw-react">
+        <table>
+          <thead><tr><th>Prop</th><th>Type</th><th>Default</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr class="ds-tr-border"><td class="ds-td-code-primary">options</td><td class="ds-td-code-muted">DropdownOption[]</td><td class="ds-td-code-muted">—</td><td><code>&#123; value, label, icon?, disabled?, group? &#125;</code></td></tr>
+            <tr class="ds-tr-border"><td class="ds-td-code-primary">value</td><td class="ds-td-code-muted">string | string[]</td><td class="ds-td-code-muted">—</td><td>Controlled selected value(s)</td></tr>
+            <tr class="ds-tr-border"><td class="ds-td-code-primary">onChange</td><td class="ds-td-code-muted">(v: string | string[]) =&gt; void</td><td class="ds-td-code-muted">—</td><td>Fires on every selection change</td></tr>
+            <tr class="ds-tr-border"><td class="ds-td-code-primary">multiple</td><td class="ds-td-code-muted">boolean</td><td class="ds-td-code-muted">false</td><td>Multi-select — chips appear inline, max-height 136px scrollable</td></tr>
+            <tr class="ds-tr-border"><td class="ds-td-code-primary">label</td><td class="ds-td-code-muted">string</td><td class="ds-td-code-muted">—</td><td>Caption label above the trigger (12px SemiBold, <button class="btn-inline-link" onclick="navigate('found-tokens')">--dd-label-color</button>)</td></tr>
+            <tr class="ds-tr-border"><td class="ds-td-code-primary">placeholder</td><td class="ds-td-code-muted">string</td><td class="ds-td-code-muted">'Select…'</td><td>Trigger placeholder text</td></tr>
+            <tr class="ds-tr-border"><td class="ds-td-code-primary">size</td><td class="ds-td-code-muted">'lg' | 'sm'</td><td class="ds-td-code-muted">'lg'</td><td>40px (lg) or 32px (sm) trigger height — matches <button class="btn-inline-link" onclick="navigate('prim-textfields')">Text Field</button> sizes</td></tr>
+            <tr class="ds-tr-border"><td class="ds-td-code-primary">disabled</td><td class="ds-td-code-muted">boolean</td><td class="ds-td-code-muted">false</td><td>Disables interaction; applies <code>--dd-disabled-bg</code></td></tr>
+            <tr class="ds-tr-border"><td class="ds-td-code-primary">error</td><td class="ds-td-code-muted">string</td><td class="ds-td-code-muted">—</td><td>Error message below trigger; applies <code>--dd-border-error</code> ring</td></tr>
+            <tr class="ds-tr-border"><td class="ds-td-code-primary">clearable</td><td class="ds-td-code-muted">boolean</td><td class="ds-td-code-muted">true</td><td>Show × clear button when <code>has-value</code> is set</td></tr>
+            <tr class="ds-tr-border"><td class="ds-td-code-primary">loading</td><td class="ds-td-code-muted">boolean</td><td class="ds-td-code-muted">false</td><td>Shows skeleton shimmer rows while options are fetching</td></tr>
+            <tr class="ds-tr-border"><td class="ds-td-code-primary">helpText</td><td class="ds-td-code-muted">string</td><td class="ds-td-code-muted">—</td><td>Helper caption below the trigger</td></tr>
+            <tr class="ds-tr-border"><td class="ds-td-code-primary">className</td><td class="ds-td-code-muted">string</td><td class="ds-td-code-muted">—</td><td>Extra classes on the root <code>gs-dd</code> element</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="fw-angular" style="display:none;">
+        <table>
+          <thead><tr><th>Input</th><th>Type</th><th>Default</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr class="ds-tr-border"><td class="ds-td-code-primary">[options]</td><td class="ds-td-code-muted">DropdownOption[]</td><td class="ds-td-code-muted">—</td><td>Option array</td></tr>
+            <tr class="ds-tr-border"><td class="ds-td-code-primary">[(value)]</td><td class="ds-td-code-muted">string | string[]</td><td class="ds-td-code-muted">—</td><td>Two-way bound selection</td></tr>
+            <tr class="ds-tr-border"><td class="ds-td-code-primary">[multiple]</td><td class="ds-td-code-muted">boolean</td><td class="ds-td-code-muted">false</td><td>Multi-select chips mode</td></tr>
+            <tr class="ds-tr-border"><td class="ds-td-code-primary">[label]</td><td class="ds-td-code-muted">string</td><td class="ds-td-code-muted">—</td><td>Field label</td></tr>
+            <tr class="ds-tr-border"><td class="ds-td-code-primary">[size]</td><td class="ds-td-code-muted">'lg' | 'sm'</td><td class="ds-td-code-muted">'lg'</td><td>Trigger height</td></tr>
+            <tr class="ds-tr-border"><td class="ds-td-code-primary">[disabled]</td><td class="ds-td-code-muted">boolean</td><td class="ds-td-code-muted">false</td><td>Disabled state</td></tr>
+            <tr class="ds-tr-border"><td class="ds-td-code-primary">[error]</td><td class="ds-td-code-muted">string</td><td class="ds-td-code-muted">—</td><td>Error message</td></tr>
+            <tr class="ds-tr-border"><td class="ds-td-code-primary">(valueChange)</td><td class="ds-td-code-muted">EventEmitter</td><td class="ds-td-code-muted">—</td><td>Output — fires on change</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- 5. Usage examples -->
+    <div id="dd-c-usage" class="btn-family-card">
+      <div class="ds-step-row"><span class="ds-step-num">5</span><div class="btn-family-title" style="margin:0;">Usage Examples</div></div>
+
+      <!-- Single select -->
+      <div class="btn-sub-label" style="margin-bottom:8px;">Single select</div>
+      <div class="fw-react">
+        <div class="btn-code-block"><div class="btn-code-head"><span class="btn-code-lang">tsx</span><button class="btn-copy-btn" onclick="copyBtnCode('dd-ex-single-r',this)">Copy</button></div>
+        <div class="btn-code-body"><pre id="dd-ex-single-r"><code><span class="c-kw">const</span> PORTS: <span class="c-type">DropdownOption</span>[] = [
+  &#123; value: <span class="c-val">'sin'</span>, label: <span class="c-val">'Singapore, SGP'</span> &#125;,
+  &#123; value: <span class="c-val">'rtm'</span>, label: <span class="c-val">'Rotterdam, NLD'</span> &#125;,
+  &#123; value: <span class="c-val">'dxb'</span>, label: <span class="c-val">'Dubai, UAE'</span>,    disabled: <span class="c-kw">true</span> &#125;,
+];
+
+<span class="c-tag">&lt;Dropdown</span>
+  <span class="c-attr">label</span>=<span class="c-val">"Port of Loading"</span>
+  <span class="c-attr">options</span>=&#123;PORTS&#125;
+  <span class="c-attr">value</span>=&#123;port&#125;
+  <span class="c-attr">onChange</span>=&#123;setPort&#125;
+  <span class="c-attr">placeholder</span>=<span class="c-val">"Select port…"</span>
+  <span class="c-attr">clearable</span>
+<span class="c-tag">/&gt;</span></code></pre></div></div>
+      </div>
+      <div class="fw-angular" style="display:none;">
+        <div class="btn-code-block"><div class="btn-code-head"><span class="btn-code-lang">html · Angular</span><button class="btn-copy-btn" onclick="copyBtnCode('dd-ex-single-ng',this)">Copy</button></div>
+        <div class="btn-code-body"><pre id="dd-ex-single-ng"><code><span class="c-tag">&lt;gs-dropdown</span>
+  <span class="c-attr">[options]</span>=<span class="c-val">"ports"</span>
+  <span class="c-attr">[(value)]</span>=<span class="c-val">"selectedPort"</span>
+  <span class="c-attr">label</span>=<span class="c-val">"Port of Loading"</span>
+  <span class="c-attr">placeholder</span>=<span class="c-val">"Select port…"</span>
+<span class="c-tag">&gt;&lt;/gs-dropdown&gt;</span></code></pre></div></div>
+      </div>
+
+      <!-- Multi-select -->
+      <div class="btn-sub-label" style="margin-top:20px;margin-bottom:8px;">Multi-select — chips inline, max-height 136px</div>
+      <div class="fw-react">
+        <div class="btn-code-block"><div class="btn-code-head"><span class="btn-code-lang">tsx</span><button class="btn-copy-btn" onclick="copyBtnCode('dd-ex-multi-r',this)">Copy</button></div>
+        <div class="btn-code-body"><pre id="dd-ex-multi-r"><code><span class="c-cmt">// Chips appear inside the trigger immediately on selection.
+// "Clear All" link shown when has-value. Panel max-height 136px scrollable.</span>
+<span class="c-tag">&lt;Dropdown</span>
+  <span class="c-attr">label</span>=<span class="c-val">"Fuel Types"</span>
+  <span class="c-attr">options</span>=&#123;FUELS&#125;
+  <span class="c-attr">value</span>=&#123;selectedFuels&#125;  <span class="c-cmt">// string[]</span>
+  <span class="c-attr">onChange</span>=&#123;setSelectedFuels&#125;
+  <span class="c-attr">multiple</span>
+<span class="c-tag">/&gt;</span></code></pre></div></div>
+      </div>
+      <div class="fw-angular" style="display:none;">
+        <div class="btn-code-block"><div class="btn-code-head"><span class="btn-code-lang">html · Angular</span><button class="btn-copy-btn" onclick="copyBtnCode('dd-ex-multi-ng',this)">Copy</button></div>
+        <div class="btn-code-body"><pre id="dd-ex-multi-ng"><code><span class="c-tag">&lt;gs-dropdown</span>
+  <span class="c-attr">[options]</span>=<span class="c-val">"fuels"</span>
+  <span class="c-attr">[(value)]</span>=<span class="c-val">"selectedFuels"</span>
+  <span class="c-attr">[multiple]</span>=<span class="c-val">"true"</span>
+  <span class="c-attr">label</span>=<span class="c-val">"Fuel Types"</span>
+<span class="c-tag">&gt;&lt;/gs-dropdown&gt;</span></code></pre></div></div>
+      </div>
+
+      <!-- With description + right chip -->
+      <div class="btn-sub-label" style="margin-top:20px;margin-bottom:8px;">Item with description + right-side <button class="btn-inline-link" onclick="navigate('prim-chips')">Chip</button></div>
+      <div class="fw-react">
+        <div class="btn-code-block"><div class="btn-code-head"><span class="btn-code-lang">tsx</span><button class="btn-copy-btn" onclick="copyBtnCode('dd-ex-desc-r',this)">Copy</button></div>
+        <div class="btn-code-body"><pre id="dd-ex-desc-r"><code><span class="c-kw">const</span> ASSIGNEES: <span class="c-type">DropdownOption</span>[] = [
+  &#123;
+    value: <span class="c-val">'bruce'</span>,
+    label: <span class="c-val">'Bruce Wayne'</span>,
+    description: <span class="c-val">'bruce@gotham.com'</span>,  <span class="c-cmt">// renders as gs-dd__item-sub</span>
+    right: <span class="c-tag">&lt;span</span> <span class="c-attr">className</span>=<span class="c-val">"gs-cs gs-cs--blue"</span><span class="c-tag">&gt;</span>Admin<span class="c-tag">&lt;/span&gt;</span>,
+  &#125;,
+];</code></pre></div></div>
+      </div>
+      <div class="fw-angular" style="display:none;">
+        <div class="btn-code-block"><div class="btn-code-head"><span class="btn-code-lang">html</span><button class="btn-copy-btn" onclick="copyBtnCode('dd-ex-desc-ng',this)">Copy</button></div>
+        <div class="btn-code-body"><pre id="dd-ex-desc-ng"><code><span class="c-cmt">&lt;!-- Item with description uses gs-dd__item-content wrapper --&gt;</span>
+<span class="c-tag">&lt;div</span> <span class="c-attr">class</span>=<span class="c-val">"gs-dd__item"</span><span class="c-tag">&gt;</span>
+  <span class="c-tag">&lt;div</span> <span class="c-attr">class</span>=<span class="c-val">"gs-dd__item-content"</span><span class="c-tag">&gt;</span>
+    <span class="c-tag">&lt;span</span> <span class="c-attr">class</span>=<span class="c-val">"gs-dd__item-text"</span><span class="c-tag">&gt;</span>Bruce Wayne<span class="c-tag">&lt;/span&gt;</span>
+    <span class="c-tag">&lt;span</span> <span class="c-attr">class</span>=<span class="c-val">"gs-dd__item-sub"</span><span class="c-tag">&gt;</span>bruce@gotham.com<span class="c-tag">&lt;/span&gt;</span>
+  <span class="c-tag">&lt;/div&gt;</span>
+  <span class="c-cmt">&lt;!-- Right slot: any ds chip/badge --&gt;</span>
+  <span class="c-tag">&lt;div</span> <span class="c-attr">class</span>=<span class="c-val">"gs-dd__item-right"</span><span class="c-tag">&gt;</span>
+    <span class="c-tag">&lt;span</span> <span class="c-attr">class</span>=<span class="c-val">"gs-cs gs-cs--blue"</span><span class="c-tag">&gt;</span>Admin<span class="c-tag">&lt;/span&gt;</span>
+  <span class="c-tag">&lt;/div&gt;</span>
+  <span class="c-tag">&lt;span</span> <span class="c-attr">class</span>=<span class="c-val">"gs-dd__item-check"</span><span class="c-tag">&gt;</span>…<span class="c-tag">&lt;/span&gt;</span>
+<span class="c-tag">&lt;/div&gt;</span></code></pre></div></div>
+      </div>
+    </div>
+
+    <!-- 6. HTML pattern (Angular always-visible) -->
+    <div id="dd-c-html" class="btn-family-card">
+      <div class="ds-step-row"><span class="ds-step-num">6</span><div class="btn-family-title" style="margin:0;">Full HTML Structure</div></div>
+      <div class="fw-react">
+        <p class="btn-family-desc">The React component generates this markup. You can also use the classes directly as shown in the Angular tab.</p>
+      </div>
+      <div class="fw-angular" style="display:none;">
+        <p class="btn-family-desc">Use <code>gsDdToggle(id)</code>, <code>gsDdSelect(id, label)</code>, <code>gsDdFilter(id, query)</code> from <code>script.js</code>. Add <code>gs-dd--multi</code> for multi-select.</p>
+      </div>
+      <div class="btn-code-block"><div class="btn-code-head"><span class="btn-code-lang">HTML — single select</span><button class="btn-copy-btn" onclick="copyBtnCode('dd-html-full',this)">Copy</button></div>
+      <div class="btn-code-body"><pre id="dd-html-full"><code><span class="c-cmt">&lt;!-- Single select. Add .gs-dd--multi + .gs-dd__chips-wrap for multi --&gt;</span>
+<span class="c-tag">&lt;div</span> <span class="c-attr">class</span>=<span class="c-val">"gs-dd"</span> <span class="c-attr">id</span>=<span class="c-val">"my-dd"</span><span class="c-tag">&gt;</span>
+
+  <span class="c-cmt">&lt;!-- Label (Caption 1 SB — 12px, --dd-label-color) --&gt;</span>
+  <span class="c-tag">&lt;div</span> <span class="c-attr">class</span>=<span class="c-val">"gs-dd__label"</span><span class="c-tag">&gt;</span>Port<span class="c-tag">&lt;/div&gt;</span>
+
+  <span class="c-cmt">&lt;!-- Trigger: extends gs-tf-box base from Text Fields --&gt;</span>
+  <span class="c-tag">&lt;div</span> <span class="c-attr">class</span>=<span class="c-val">"gs-dd__trigger"</span> <span class="c-attr">tabindex</span>=<span class="c-val">"0"</span>
+       <span class="c-attr">onclick</span>=<span class="c-val">"gsDdToggle('my-dd')"</span>
+       <span class="c-attr">aria-haspopup</span>=<span class="c-val">"listbox"</span> <span class="c-attr">aria-expanded</span>=<span class="c-val">"false"</span><span class="c-tag">&gt;</span>
+    <span class="c-tag">&lt;div</span> <span class="c-attr">class</span>=<span class="c-val">"gs-dd__value-area"</span><span class="c-tag">&gt;</span>
+      <span class="c-cmt">&lt;!-- Closed: display value / placeholder --&gt;</span>
+      <span class="c-tag">&lt;span</span> <span class="c-attr">class</span>=<span class="c-val">"gs-dd__display is-placeholder"</span><span class="c-tag">&gt;</span>Select port…<span class="c-tag">&lt;/span&gt;</span>
+      <span class="c-cmt">&lt;!-- Open: search input (--dd-border-open focus ring) --&gt;</span>
+      <span class="c-tag">&lt;input</span> <span class="c-attr">class</span>=<span class="c-val">"gs-dd__search"</span> <span class="c-attr">placeholder</span>=<span class="c-val">"Search ports…"</span>
+             <span class="c-attr">oninput</span>=<span class="c-val">"gsDdFilter('my-dd',this.value)"</span><span class="c-tag">/&gt;</span>
+    <span class="c-tag">&lt;/div&gt;</span>
+    <span class="c-cmt">&lt;!-- Clear btn — visible via .has-value --&gt;</span>
+    <span class="c-tag">&lt;button</span> <span class="c-attr">class</span>=<span class="c-val">"gs-dd__clear"</span>
+            <span class="c-attr">onclick</span>=<span class="c-val">"event.stopPropagation();gsDdClear('my-dd')"</span>
+            <span class="c-attr">aria-label</span>=<span class="c-val">"Clear"</span><span class="c-tag">&gt;</span>×<span class="c-tag">&lt;/button&gt;</span>
+    <span class="c-cmt">&lt;!-- Chevron (closed) / Magnifier (open) --&gt;</span>
+    <span class="c-tag">&lt;span</span> <span class="c-attr">class</span>=<span class="c-val">"gs-dd__chevron"</span><span class="c-tag">&gt;</span>↓<span class="c-tag">&lt;/span&gt;</span>
+    <span class="c-tag">&lt;span</span> <span class="c-attr">class</span>=<span class="c-val">"gs-dd__mag"</span><span class="c-tag">&gt;</span>🔍<span class="c-tag">&lt;/span&gt;</span>
+  <span class="c-tag">&lt;/div&gt;</span>
+
+  <span class="c-cmt">&lt;!-- Panel: shadow-md, 4px radius, max-height 320px --&gt;</span>
+  <span class="c-tag">&lt;div</span> <span class="c-attr">class</span>=<span class="c-val">"gs-dd__panel"</span> <span class="c-attr">role</span>=<span class="c-val">"listbox"</span><span class="c-tag">&gt;</span>
+    <span class="c-tag">&lt;div</span> <span class="c-attr">class</span>=<span class="c-val">"gs-dd__list"</span><span class="c-tag">&gt;</span>
+      <span class="c-cmt">&lt;!-- 40px item, Blue/10 hover, selected = .is-selected --&gt;</span>
+      <span class="c-tag">&lt;div</span> <span class="c-attr">class</span>=<span class="c-val">"gs-dd__item"</span> <span class="c-attr">role</span>=<span class="c-val">"option"</span>
+           <span class="c-attr">onclick</span>=<span class="c-val">"gsDdSelect('my-dd','Singapore, SGP')"</span><span class="c-tag">&gt;</span>
+        <span class="c-tag">&lt;span</span> <span class="c-attr">class</span>=<span class="c-val">"gs-dd__item-text"</span><span class="c-tag">&gt;</span>Singapore, SGP<span class="c-tag">&lt;/span&gt;</span>
+        <span class="c-tag">&lt;span</span> <span class="c-attr">class</span>=<span class="c-val">"gs-dd__item-check"</span> <span class="c-attr">aria-hidden</span>=<span class="c-val">"true"</span><span class="c-tag">&gt;</span>✓<span class="c-tag">&lt;/span&gt;</span>
+      <span class="c-tag">&lt;/div&gt;</span>
+      <span class="c-tag">&lt;div</span> <span class="c-attr">class</span>=<span class="c-val">"gs-dd__empty"</span> <span class="c-attr">style</span>=<span class="c-val">"display:none"</span><span class="c-tag">&gt;</span>No results<span class="c-tag">&lt;/div&gt;</span>
+    <span class="c-tag">&lt;/div&gt;</span>
+  <span class="c-tag">&lt;/div&gt;</span>
+<span class="c-tag">&lt;/div&gt;</span></code></pre></div></div>
+    </div>
+
+    <!-- 7. Backend integration -->
+    <div id="dd-c-backend" class="btn-family-card">
+      <div class="ds-step-row"><span class="ds-step-num">7</span><div class="btn-family-title" style="margin:0;">Backend Integration</div></div>
+      <p class="btn-family-desc">Use <code>gsDdSetOptions</code> or <code>gsDdFetch</code> to decouple the component from hardcoded HTML. All option fields except <code>value</code> and <code>label</code> are optional — add only what your data provides.</p>
+
+      <!-- gsDdSetOptions -->
+      <div class="btn-sub-label" style="margin-bottom:8px;">gsDdSetOptions — populate from any JS array</div>
+      <div class="fw-react">
+        <div class="btn-code-block"><div class="btn-code-head"><span class="btn-code-lang">tsx</span><button class="btn-copy-btn" onclick="copyBtnCode('dd-setopt-r',this)">Copy</button></div>
+        <div class="btn-code-body"><pre id="dd-setopt-r"><code><span class="c-cmt">// Option shape — every field except value + label is optional</span>
+<span class="c-kw">const</span> options: <span class="c-type">DropdownOption</span>[] = [
+  &#123; value: <span class="c-val">'list-1'</span>, label: <span class="c-val">'List Item 1'</span> &#125;,
+  &#123; value: <span class="c-val">'list-2'</span>, label: <span class="c-val">'List Item 2'</span>, sub:  <span class="c-val">'Sub-label'</span> &#125;,
+  &#123; value: <span class="c-val">'list-3'</span>, label: <span class="c-val">'List Item 3'</span>, right: <span class="c-val">'&lt;span class="gs-cs gs-cs--blue"&gt;Badge&lt;/span&gt;'</span> &#125;,
+  &#123; value: <span class="c-val">'list-4'</span>, label: <span class="c-val">'List Item 4'</span>, group: <span class="c-val">'Section A'</span> &#125;,
+  &#123; value: <span class="c-val">'list-5'</span>, label: <span class="c-val">'List Item 5'</span>, disabled: <span class="c-kw">true</span> &#125;,
+];
+
+<span class="c-cmt">// Link to backend — map your API response to this shape:</span>
+<span class="c-kw">const</span> mapped = apiResponse.map(<span class="c-kw">item</span> =&gt; (&#123;
+  value: item.id,
+  label: item.name,
+  sub:   item.description,
+  right: item.status ? <span class="c-val">`&lt;span class="gs-cs gs-cs--green"&gt;$&#123;item.status&#125;&lt;/span&gt;`</span> : <span class="c-kw">undefined</span>,
+&#125;));
+
+<span class="c-cmt">// Populate the dropdown — replaces all existing items</span>
+<span class="c-attr">gsDdSetOptions</span>(<span class="c-val">'my-dd'</span>, mapped);</code></pre></div></div>
+      </div>
+      <div class="fw-angular" style="display:none;">
+        <div class="btn-code-block"><div class="btn-code-head"><span class="btn-code-lang">javascript</span><button class="btn-copy-btn" onclick="copyBtnCode('dd-setopt-ng',this)">Copy</button></div>
+        <div class="btn-code-body"><pre id="dd-setopt-ng"><code><span class="c-cmt">// Works in any framework or vanilla JS</span>
+<span class="c-attr">gsDdSetOptions</span>(<span class="c-val">'my-dd'</span>, [
+  &#123; value: <span class="c-val">'list-1'</span>, label: <span class="c-val">'List Item 1'</span> &#125;,
+  &#123; value: <span class="c-val">'list-2'</span>, label: <span class="c-val">'List Item 2'</span>, sub: <span class="c-val">'Sub-label'</span> &#125;,
+]);
+
+<span class="c-cmt">// Re-call any time your data changes — items are fully replaced</span></code></pre></div></div>
+      </div>
+
+      <!-- gsDdFetch -->
+      <div class="btn-sub-label" style="margin-top:20px;margin-bottom:8px;">gsDdFetch — load directly from a REST endpoint</div>
+      <div class="fw-react">
+        <div class="btn-code-block"><div class="btn-code-head"><span class="btn-code-lang">tsx</span><button class="btn-copy-btn" onclick="copyBtnCode('dd-fetch-r',this)">Copy</button></div>
+        <div class="btn-code-body"><pre id="dd-fetch-r"><code><span class="c-cmt">// 1. Opens dropdown with loading skeleton automatically
+// 2. Fetches the URL, parses JSON
+// 3. Calls your mapper on each item → DropdownOption
+// 4. Populates the list (or shows error state on failure)</span>
+
+<span class="c-attr">gsDdFetch</span>(
+  <span class="c-val">'vessel-dropdown'</span>,
+  <span class="c-val">'/api/vessels?limit=50'</span>,
+  <span class="c-kw">vessel</span> =&gt; (&#123;
+    value: vessel.imo,
+    label: vessel.name,
+    sub:   vessel.flag + <span class="c-val">' · '</span> + vessel.type,
+    right: vessel.active
+      ? <span class="c-val">'&lt;span class="gs-cs gs-cs--green"&gt;Active&lt;/span&gt;'</span>
+      : <span class="c-val">'&lt;span class="gs-cs gs-cs--grey"&gt;Inactive&lt;/span&gt;'</span>,
+  &#125;)
+);
+
+<span class="c-cmt">// Supported envelope shapes (auto-detected):
+// { results: [...] }  { items: [...] }  { data: [...] }  [...] (root array)</span></code></pre></div></div>
+      </div>
+      <div class="fw-angular" style="display:none;">
+        <div class="btn-code-block"><div class="btn-code-head"><span class="btn-code-lang">javascript</span><button class="btn-copy-btn" onclick="copyBtnCode('dd-fetch-ng',this)">Copy</button></div>
+        <div class="btn-code-body"><pre id="dd-fetch-ng"><code><span class="c-attr">gsDdFetch</span>(
+  <span class="c-val">'vessel-dropdown'</span>,
+  <span class="c-val">'/api/vessels'</span>,
+  <span class="c-kw">function</span>(v) &#123;
+    <span class="c-kw">return</span> &#123; value: v.imo, label: v.name, sub: v.flag &#125;;
+  &#125;
+);
+
+<span class="c-cmt">// Error state: shown in the empty-state row if fetch fails</span></code></pre></div></div>
+      </div>
+    </div>
+
+    <!-- 8. Token map -->
+    <div id="dd-c-tokens" class="btn-family-card">
+      <div class="ds-step-row"><span class="ds-step-num">8</span><div class="btn-family-title" style="margin:0;">CSS Token Map</div></div>
+      <div class="ds-step-row"><span class="ds-step-num">7</span><div class="btn-family-title" style="margin:0;">CSS Token Map</div></div>
+      <p class="btn-family-desc">All colours reference <button class="btn-inline-link" onclick="navigate('found-color')">Colour Palette</button> foundation tokens. Override any token per-instance by setting it on the <code>.gs-dd</code> root element.</p>
+      <div class="btn-code-block"><div class="btn-code-head"><span class="btn-code-lang">CSS</span><button class="btn-copy-btn" onclick="copyBtnCode('dd-tokens-css',this)">Copy</button></div>
+      <div class="btn-code-body"><pre id="dd-tokens-css"><code><span class="c-cmt">/* All Dropdown tokens — override on .gs-dd to customise per-instance */</span>
+.gs-dd {
+  <span class="c-cmt">/* Trigger */</span>
+  --dd-trigger-h:       40px;                          <span class="c-cmt">/* lg size  */</span>
+  --dd-trigger-h-sm:    32px;                          <span class="c-cmt">/* sm size  */</span>
+  --dd-border-default:  var(--prim-grey-200, #CBD5E1);  <span class="c-cmt">/* → Colour: Grey/200  */</span>
+  --dd-border-open:     var(--prim-blue-500, #2463EB);  <span class="c-cmt">/* → Colour: Blue/500  */</span>
+  --dd-border-error:    var(--prim-red-500,  #DC2625);  <span class="c-cmt">/* → Colour: Red/500   */</span>
+  --dd-focus-ring:      0 0 0 3px rgba(36,99,235,.18); <span class="c-cmt">/* matches Text Field  */</span>
+  --dd-bg:              var(--color-surface-default);
+
+  <span class="c-cmt">/* Panel */</span>
+  --dd-panel-shadow:    0 4px 16px rgba(0,0,0,.16);    <span class="c-cmt">/* → Elevation: shadow-md */</span>
+  --dd-panel-radius:    4px;                           <span class="c-cmt">/* → Radius: radius-sm    */</span>
+
+  <span class="c-cmt">/* List items */</span>
+  --dd-item-hover-bg:   var(--prim-blue-10,  #EEF6FF); <span class="c-cmt">/* → Colour: Blue/10   */</span>
+  --dd-item-sel-bg:     var(--prim-blue-10,  #EEF6FF); <span class="c-cmt">/* → Colour: Blue/10   */</span>
+
+  <span class="c-cmt">/* Typography */</span>
+  --dd-label-color:     var(--prim-grey-600, #334154);  <span class="c-cmt">/* Caption 1 SB — 12px  */</span>
+  --dd-value-color:     var(--prim-grey-900, #10172A);  <span class="c-cmt">/* Body R — 14px        */</span>
+  --dd-placeholder:     var(--prim-grey-400, #64748B);  <span class="c-cmt">/* → Colour: Grey/400   */</span>
+
+  <span class="c-cmt">/* States */</span>
+  --dd-disabled-bg:     var(--prim-grey-10,  #F7FAFC);
+  --dd-disabled-text:   var(--prim-grey-300, #94A3B8);
+}</code></pre></div></div>
+      <p class="btn-family-desc" style="margin-top:12px;">Foundation token links: <button class="btn-inline-link" onclick="navigate('found-color')">Colour Palette</button> · <button class="btn-inline-link" onclick="navigate('found-elevation')">Elevation</button> · <button class="btn-inline-link" onclick="navigate('found-radius')">Radius</button> · <button class="btn-inline-link" onclick="navigate('found-spacing')">Spacing</button></p>
+    </div>
+
+  </div><!-- /code-tab-main -->
+  <div class="code-tab-qnav">
+    <div class="code-qnav-inner">
+      <p class="code-qnav-title">On this page</p>
+      <ul class="code-qnav-list">
+        <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('dd-c-overview')">1 · Overview</button></li>
+        <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('dd-c-install')">2 · Install</button></li>
+        <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('dd-c-import')">3 · Import</button></li>
+        <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('dd-c-props')">4 · Props</button></li>
+        <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('dd-c-usage')">5 · Examples</button></li>
+        <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('dd-c-html')">6 · HTML Structure</button></li>
+        <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('dd-c-backend')">7 · Backend</button></li>
+        <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('dd-c-tokens')">8 · Token Map</button></li>
+      </ul>
+    </div>
+  </div>
+  </div><!-- /code-tab-layout -->
+</div><!-- /dd-tab-code -->
+
+<!-- ═══ USAGE TAB ════════════════════════════════════════════════════ -->
+<div id="dd-tab-usage" class="btn-tab-pane dd-tab-pane">
+<div class="code-tab-layout">
+<div class="code-tab-main">
+  <div class="btn-family-card">
+    <div class="btn-family-title">When to Use</div>
+    <ul class="btn-usage-list">
+      <li><strong>5+ options</strong> — use Dropdown when there are 5 or more choices. For 2–4 use Radio group or Segmented Button instead.</li>
+      <li><strong>Search needed</strong> — the built-in search (chevron → magnifier on open) activates automatically for any length list.</li>
+      <li><strong>Multi-select</strong> — use the <code>multiple</code> prop when users need multiple values (fuel types, ports). Always shows an Apply footer.</li>
+    </ul>
+  </div>
+  <div class="btn-family-card">
+    <div class="btn-family-title">Open → Search behaviour</div>
+    <ul class="btn-usage-list">
+      <li><strong>Opening</strong> — clicking the trigger opens the panel. The chevron rotates 180° and is replaced by a magnifier. Focus moves to the hidden search input.</li>
+      <li><strong>Filtering</strong> — typing hides non-matching items in real time (case-insensitive). An empty state appears when zero items match.</li>
+      <li><strong>Selection</strong> — single: clicking an item closes the panel. Multi: items toggle checkboxes; panel stays open until Apply is clicked.</li>
+      <li><strong>Closing</strong> — Esc, clicking the backdrop, or Tab blur closes the panel and restores the chevron.</li>
+    </ul>
+  </div>
+  <div class="btn-family-card">
+    <div class="btn-family-title">Accessibility</div>
+    <ul class="btn-usage-list">
+      <li>Trigger is <code>tabindex="0"</code>; responds to Enter/Space to open.</li>
+      <li>Focus moves to the search input on open for immediate keyboard filtering.</li>
+      <li>Arrow keys navigate visible, non-disabled items.</li>
+      <li>Clear button has <code>aria-label="Clear selection"</code>.</li>
+      <li>Trigger reports <code>aria-expanded</code> state.</li>
+    </ul>
+  </div>
+</div>
+<div class="code-tab-qnav">
+  <div class="code-qnav-inner">
+    <p class="code-qnav-title">On this page</p>
+    <ul class="code-qnav-list">
+      <li class="code-qnav-item"><a class="code-qnav-link" href="#">When to Use</a></li>
+      <li class="code-qnav-item"><a class="code-qnav-link" href="#">Open → Search</a></li>
+      <li class="code-qnav-item"><a class="code-qnav-link" href="#">Accessibility</a></li>
+    </ul>
+  </div>
+</div>
+</div>
+</div>

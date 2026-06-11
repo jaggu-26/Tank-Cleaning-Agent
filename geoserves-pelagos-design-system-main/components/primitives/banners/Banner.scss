@@ -1,0 +1,231 @@
+// ─────────────────────────────────────────────────────────────────────────────
+// Pelagos Banners — primitives/banners/Banner.scss
+// Two components:
+//   .gs-alert   — Info Banner (contextual alert strip, 4 variants × 2 sizes)
+//   .gs-banner  — General Banner (announcement card)
+//
+// Figma: 7271-15730 (Alert) · 9192-1614 (General)
+// Animation: Ant Design smooth unmount — height→0, opacity→0, 300ms ease
+// ─────────────────────────────────────────────────────────────────────────────
+
+// ── Alert (Info Banner) ───────────────────────────────────────────────────────
+.gs-alert {
+  display:         flex;
+  align-items:     center;
+  gap:             12px;                      // Large default; overridden in --sm
+  border-radius:   5px;                       // Figma: 5px
+  border:          0.5px solid transparent;   // Figma: 0.5px border
+  font-family:     var(--prim-font-primary);
+  box-sizing:      border-box;
+  // Smooth dismiss (Ant Design pattern — JS sets height/opacity via inline style)
+  overflow:        visible;
+
+  // ── Sizes ──────────────────────────────────────────────────────────────────
+  &--lg {
+    padding:   12px;
+    min-height: 52px;
+    .gs-alert__title { font-size: 14px; line-height: 20px; }
+    .gs-alert__desc  { font-size: 14px; line-height: 20px; margin-top: 0; }
+  }
+  &--sm {
+    padding: 8px;
+    gap:     8px;
+    .gs-alert__title { font-size: 12px; line-height: 16px; }
+    .gs-alert__desc  { font-size: 12px; line-height: 16px; margin-top: 0; }
+  }
+
+  // ── Variants (Figma token values) ─────────────────────────────────────────
+  // Info   — blue/10 bg · blue/100 border · blue/700 text
+  &--info {
+    background:   #eef6ff;   // --prim-blue-10
+    border-color: #bedbfe;   // --prim-blue-100
+    color:        #1d40af;   // --prim-blue-700
+  }
+  // Success — teal/10 bg · teal/200 border · teal/700 text
+  &--success {
+    background:   #e6fefb;   // --prim-teal-10
+    border-color: #7cf7e8;   // --prim-teal-200
+    color:        #008475;   // --prim-teal-700
+  }
+  // Warning — yellow/10 bg · yellow/100 border · yellow/700 text
+  &--warning {
+    background:   #fefce8;   // --prim-yellow-10
+    border-color: #feef89;   // --prim-yellow-100
+    color:        #844d0f;   // --prim-yellow-700
+  }
+  // Error — red/10 bg · red/100 border · red/700 text
+  &--error {
+    background:   #fef1f2;   // --prim-red-10
+    border-color: #fecaca;   // --prim-red-100
+    color:        #981b1b;   // --prim-red-700
+  }
+
+  // ── Parts ─────────────────────────────────────────────────────────────────
+  &__icon {
+    display:     inline-flex;
+    align-items: center;
+    flex-shrink: 0;
+    width:       24px;
+    height:      24px;
+    svg { width: 100%; height: 100%; }
+  }
+
+  &__body {
+    flex:    1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap:     2px;
+  }
+
+  &__title {
+    font-weight: var(--prim-font-weight-semibold);
+    margin:      0;
+    color:       inherit;
+  }
+
+  &__desc {
+    margin:     0;
+    color:      inherit;
+    opacity:    0.85;
+    line-height: var(--prim-line-height-relaxed);
+  }
+
+  &__action {
+    flex-shrink: 0;
+  }
+
+  &__close {
+    background:  none;
+    border:      none;
+    cursor:      pointer;
+    color:       inherit;
+    opacity:     0.6;
+    padding:     0;
+    display:     inline-flex;
+    align-items: center;
+    flex-shrink: 0;
+    border-radius: 2px;
+    transition:  opacity 120ms ease;
+
+    &:hover { opacity: 1; }
+    &:focus-visible { outline: 2px solid currentColor; outline-offset: 2px; }
+  }
+}
+
+// ── General Banner ────────────────────────────────────────────────────────────
+.gs-banner {
+  background:    var(--color-surface-default, #ffffff);
+  border-radius: var(--radius-md, 8px);
+  border:        1px solid var(--color-border-default, #e2e8f0);
+  box-shadow:    0 1px 4px rgba(0, 0, 0, 0.06);
+  overflow:      visible;
+  box-sizing:    border-box;
+  font-family:   var(--prim-font-primary);
+
+  &__inner {
+    display:     flex;
+    align-items: center;
+    gap:         16px;                        // Figma: spacing-16
+    padding:     32px 16px;                   // Figma: 32px vertical, 16px horizontal
+  }
+
+  // Left icon — 42 × 42 px circle, blue/10 fill
+  &__icon {
+    display:         inline-flex;
+    align-items:     center;
+    justify-content: center;
+    width:           42px;
+    height:          42px;
+    border-radius:   50%;
+    background:      #eef6ff;                 // blue/10
+    flex-shrink:     0;
+
+    svg { width: 24px; height: 24px; color: var(--color-brand, #1852fe); }
+  }
+
+  &__body {
+    flex:       1;
+    min-width:  0;
+    display:    flex;
+    flex-direction: column;
+    gap:        12px;
+  }
+
+  // Title — 18px SemiBold, blue/700
+  &__title {
+    font-size:   18px;
+    font-weight: var(--prim-font-weight-semibold);
+    line-height: 24px;
+    color:       #1d40af;                     // blue/700
+    margin:      0;
+  }
+
+  // Description — 14px Regular, grey/500
+  &__desc {
+    font-size:   14px;
+    font-weight: var(--prim-font-weight-regular);
+    line-height: 20px;
+    color:       var(--prim-grey-500, #475569);
+    margin:      0;
+  }
+
+  // Action button group
+  &__actions {
+    display:     flex;
+    align-items: center;
+    gap:         4px;
+    flex-shrink: 0;
+  }
+
+  &__btn {
+    display:      inline-flex;
+    align-items:  center;
+    justify-content: center;
+    height:       48px;
+    padding:      12px 24px;
+    border-radius: var(--radius-sm, 4px);
+    font-family:  var(--prim-font-primary);
+    font-size:    14px;
+    font-weight:  var(--prim-font-weight-semibold);
+    line-height:  20px;
+    cursor:       pointer;
+    transition:   background 120ms ease, color 120ms ease;
+    white-space:  nowrap;
+    border:       none;
+
+    // Primary — marine fill, white text
+    &--primary {
+      background: var(--color-brand, #1852fe);
+      color:      var(--prim-white, #ffffff);
+      &:hover  { background: var(--color-brand-hover, #1242d4); }
+      &:active { background: var(--color-brand-active, #0d3299); }
+    }
+
+    // Secondary — outlined marine
+    &--secondary {
+      background: #eef6ff;                    // blue/10
+      border:     1px solid var(--color-brand, #1852fe);
+      color:      var(--color-brand, #1852fe);
+      &:hover  { background: var(--prim-blue-50, #dbeafe); }
+    }
+  }
+
+  // Close × button
+  &__close {
+    background:   none;
+    border:       none;
+    cursor:       pointer;
+    color:        var(--color-text-secondary, #475569);
+    opacity:      0.6;
+    padding:      0;
+    display:      inline-flex;
+    align-items:  center;
+    flex-shrink:  0;
+    border-radius: 4px;
+    transition:   opacity 120ms ease;
+
+    &:hover { opacity: 1; }
+    &:focus-visible { outline: 2px solid var(--color-brand); outline-offset: 2px; }
+  }
+}

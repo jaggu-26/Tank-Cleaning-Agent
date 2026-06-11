@@ -1,0 +1,155 @@
+<!-- Header banner -->
+    <div class="page-header"><h1 class="ds-hero-title">Icons</h1></div>
+
+    <!-- Tab bar -->
+    <div class="icon-tab-bar">
+      <button class="icon-tab-btn active" data-tab="overview" onclick="switchIconTab('overview')">Overview</button>
+      <button class="icon-tab-btn" data-tab="all" onclick="switchIconTab('all')">All Icons <span class="icon-count-badge">142</span></button>
+    </div>
+
+    <!-- OVERVIEW TAB -->
+    <div id="icon-tab-overview" class="icon-tab-pane active">
+
+      <p style="font-size:15px;line-height:1.75;color:#475569;margin:0 0 32px;">The Geoserve icon set is a custom library built for maritime operations software. Icons are available in <strong>line</strong> (outlined) and <strong>filled</strong> variants at 24×24px. All icons are delivered as optimised SVG and can be exported as PNG at any resolution.</p>
+
+      <!-- Stats row -->
+      <div class="icon-stats-row" style="margin-bottom:32px;">
+        <div class="icon-stat-card">
+          <div class="icon-stat-num">142</div>
+          <div class="icon-stat-label">Total Icons</div>
+        </div>
+        <div class="icon-stat-card">
+          <div class="icon-stat-num">9</div>
+          <div class="icon-stat-label">Categories</div>
+        </div>
+        <div class="icon-stat-card">
+          <div class="icon-stat-num">2</div>
+          <div class="icon-stat-label">Variants</div>
+        </div>
+        <div class="icon-stat-card">
+          <div class="icon-stat-num">SVG + PNG</div>
+          <div class="icon-stat-label">Formats</div>
+        </div>
+      </div>
+
+      <!-- Category cards -->
+      <h2 class="ds-section-heading">Categories</h2>
+      <div class="icon-cat-grid" id="icon-cat-overview-grid"><!-- JS renders --></div>
+
+      <!-- Usage guidelines -->
+      <h2 style="font-size:16px;font-weight:700;color:#0f172a;margin:32px 0 16px;">Usage Guidelines</h2>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px;">
+
+        <div class="icon-guide-card">
+          <div class="icon-guide-icon">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 9h6M9 12h6M9 15h4"/></svg>
+          </div>
+          <div class="icon-guide-title">24×24px default</div>
+          <div class="icon-guide-desc">Designed on a 24×24 grid with 1.8px stroke width for pixel-perfect rendering.</div>
+        </div>
+
+        <div class="icon-guide-card">
+          <div class="icon-guide-icon">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M8 12h8M12 8v8"/></svg>
+          </div>
+          <div class="icon-guide-title">Line for UI</div>
+          <div class="icon-guide-desc">Use the line variant in navigation, toolbars, and form controls.</div>
+        </div>
+
+        <div class="icon-guide-card">
+          <div class="icon-guide-icon">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          </div>
+          <div class="icon-guide-title">Filled for emphasis</div>
+          <div class="icon-guide-desc">Use filled for active states, selected items, and high-emphasis CTAs.</div>
+        </div>
+
+        <div class="icon-guide-card">
+          <div class="icon-guide-icon">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+          </div>
+          <div class="icon-guide-title">Consistent colour</div>
+          <div class="icon-guide-desc">Inherit colour via <code style="background:#f1f5f9;padding:1px 5px;border-radius:4px;font-size:11px;">currentColor</code> - never hardcode icon colours.</div>
+        </div>
+
+        <div class="icon-guide-card">
+          <div class="icon-guide-icon">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          </div>
+          <div class="icon-guide-title">Accessible labels</div>
+          <div class="icon-guide-desc">Pair icons with visible text or an <code style="background:#f1f5f9;padding:1px 5px;border-radius:4px;font-size:11px;">aria-label</code> for screen readers.</div>
+        </div>
+
+        <div class="icon-guide-card">
+          <div class="icon-guide-icon">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 21c.6.5 1.2 1 2.5 1 2.5 0 2.5-2 5-2s2.5 2 5 2 2.5-2 5-2c1.3 0 1.9.5 2.5 1"/><path d="M19.38 20A11.6 11.6 0 0 0 21 14l-9-4-9 4c0 2.1.58 4.12 1.62 5.78"/></svg>
+          </div>
+          <div class="icon-guide-title">Maritime icons</div>
+          <div class="icon-guide-desc">Ship, fleet, wave, cargo, and port icons are reserved for maritime-specific contexts.</div>
+        </div>
+
+      </div>
+
+      <!-- Variant showcase -->
+      <h2 style="font-size:16px;font-weight:700;color:#0f172a;margin:32px 0 16px;">Variants</h2>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;">
+        <div class="icon-usage-card">
+          <div style="font-size:13px;font-weight:700;color:#0f172a;margin-bottom:6px;">Line</div>
+          <div style="font-size:13px;color:#64748b;margin-bottom:20px;">Outlined strokes. Use for default/idle states in navigation, toolbars and lists.</div>
+          <div style="display:flex;gap:20px;align-items:center;flex-wrap:wrap;">
+            <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#1852fe" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#1852fe" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#1852fe" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#1852fe" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          </div>
+        </div>
+        <div class="icon-usage-card">
+          <div style="font-size:13px;font-weight:700;color:#0f172a;margin-bottom:6px;">Filled</div>
+          <div style="font-size:13px;color:#64748b;margin-bottom:20px;">Solid shapes. Use for active states, selected items, and high-emphasis actions.</div>
+          <div style="display:flex;gap:20px;align-items:center;flex-wrap:wrap;">
+            <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="#1852fe" stroke="none"><path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.9 2 2 2zm6-6v-5c0-3.07-1.63-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.64 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z"/></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="#1852fe" stroke="none"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="#1852fe" stroke="none"><path d="M15.5 14h-.79l-.28-.27A6.47 6.47 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="#1852fe" stroke="none"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5a2.5 2.5 0 0 1 0-5 2.5 2.5 0 0 1 0 5z"/></svg>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ALL ICONS TAB -->
+    <div id="icon-tab-all" class="icon-tab-pane">
+
+      <!-- Sticky controls: toolbar + category pills -->
+      <div class="icon-sticky-controls">
+        <div class="icon-toolbar">
+          <input class="icon-search-input" id="icon-search" type="text" placeholder="Search icons…" oninput="filterIcons()">
+          <div class="icon-variant-toggle">
+            <button class="icon-toggle-btn active" onclick="setIconVariant('line', this)">Line</button>
+            <button class="icon-toggle-btn" onclick="setIconVariant('filled', this)">Filled</button>
+          </div>
+          <button class="icon-download-all-btn" onclick="downloadAllIcons()">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Download All SVG
+          </button>
+        </div>
+
+        <!-- Category pills -->
+        <div class="icon-cat-filters" id="icon-cat-filters">
+          <button class="icon-cat-pill active" data-cat="all" onclick="filterByCategory('all')">All</button>
+          <button class="icon-cat-pill" data-cat="Navigation & Flow" onclick="filterByCategory('Navigation & Flow')">Navigation & Flow</button>
+          <button class="icon-cat-pill" data-cat="Actions & Editing" onclick="filterByCategory('Actions & Editing')">Actions & Editing</button>
+          <button class="icon-cat-pill" data-cat="Feedback & Status" onclick="filterByCategory('Feedback & Status')">Feedback & Status</button>
+          <button class="icon-cat-pill" data-cat="General" onclick="filterByCategory('General')">General</button>
+          <button class="icon-cat-pill" data-cat="Media & Communication" onclick="filterByCategory('Media & Communication')">Media & Communication</button>
+          <button class="icon-cat-pill" data-cat="User & Account" onclick="filterByCategory('User & Account')">User & Account</button>
+          <button class="icon-cat-pill" data-cat="File & Document" onclick="filterByCategory('File & Document')">File & Document</button>
+          <button class="icon-cat-pill" data-cat="Marine Icons" onclick="filterByCategory('Marine Icons')">Marine Icons</button>
+          <button class="icon-cat-pill" data-cat="Map & Layout" onclick="filterByCategory('Map & Layout')">Map & Layout</button>
+        </div>
+      </div>
+
+      <!-- Grid (JS renders) -->
+      <div id="icon-grid" class="icon-grid size-md" style="margin-top:24px;"></div>
+
+    </div>

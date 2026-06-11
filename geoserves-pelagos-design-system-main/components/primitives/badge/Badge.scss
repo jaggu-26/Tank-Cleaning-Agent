@@ -1,0 +1,21 @@
+.badge {
+  display: inline-flex; align-items: center; gap: 4px;
+  padding: 2px 8px; border-radius: var(--radius-full);
+  font-family: var(--prim-font-primary);
+  font-size: var(--prim-font-size-xs); font-weight: var(--prim-font-weight-semibold);
+  line-height: var(--prim-line-height-tight); white-space: nowrap;
+
+  &--default  { background: var(--prim-grey-100); color: var(--prim-grey-700); }
+  &--primary  { background: var(--color-brand-subtle); color: var(--color-brand); }
+  &--success  { background: var(--prim-green-10); color: var(--prim-green-700); }
+  &--warning  { background: var(--prim-yellow-10); color: var(--prim-yellow-700); }
+  &--danger   { background: var(--prim-red-10); color: var(--prim-red-700); }
+  &--info     { background: var(--prim-blue-10); color: var(--prim-blue-700); }
+
+  &--sm { font-size: 10px; padding: 1px 6px; }
+  &--lg { font-size: var(--prim-font-size-sm); padding: 4px 10px; }
+
+  &__dot {
+    width: 6px; height: 6px; border-radius: 50%; background: currentColor; flex-shrink: 0;
+  }
+}

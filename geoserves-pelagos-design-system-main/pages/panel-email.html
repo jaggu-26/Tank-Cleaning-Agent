@@ -1,0 +1,1020 @@
+<!-- ═══════════════════════════════════════════════════════════════
+     EMAIL PANEL — Pelagos Design System
+     Figma: 8240-5812 (Default) · 9638-3297 (text-tool-panel)
+     Variants: Modal overlay + Inline panel
+     ═══════════════════════════════════════════════════════════════ -->
+<style>
+/* ─── Email core tokens ──────────────────────────────────────────────── */
+:root {
+  --em-navy:           var(--prim-blue-900,  #001E4C);
+  --em-label:          var(--prim-grey-400,  #64748B);
+  --em-border:         var(--prim-grey-100,  #E2E8F0);
+  --em-bg:             #FFFFFF;
+  --em-brand:          var(--prim-marine,    #1852FE);
+  --em-brand-10:       var(--prim-blue-10,   #EEF6FF);
+  --em-grey-50:        var(--prim-grey-50,   #F1F5F9);
+  --em-grey-10:        var(--prim-grey-10,   #F7FAFC);
+  --em-grey-200:       var(--prim-grey-200,  #CBD5E1);
+  --em-grey-600:       var(--prim-grey-600,  #334154);
+  --em-radius:         12px;
+  --em-shadow:         0 16px 32px rgba(0,0,0,.12);
+}
+
+/* ─── Shared inner shell (used in both modal and panel) ──────────────── */
+.gs-email {
+  display: flex; flex-direction: column;
+  background: var(--em-bg); overflow: hidden;
+  font-family: var(--font-sans,'Gilroy',sans-serif);
+}
+.gs-email--modal {
+  border-radius: var(--em-radius);
+  box-shadow: 0 20px 60px rgba(0,0,0,.30);  /* matches gs-modal shadow-xl */
+  width: 100%; max-width: 800px;
+  height: calc(100vh - 64px);  /* fixed height so flex children can scroll */
+  max-height: calc(100vh - 64px);
+  overflow: hidden;             /* clips rounded corners                   */
+  /* Animation handled by gs-modal-in / gs-modal-out keyframes (from styles.css) */
+}
+.gs-email--panel {
+  border-radius: var(--em-radius);
+  border: 1px solid var(--em-border);
+  width: 100%;
+}
+
+/* ─── Modal overlay — uses design system modal tokens ────────────────── */
+/* Structure mirrors openGsModal/closeGsModal in script.js                */
+#em-modal-overlay {
+  position: fixed; inset: 0; z-index: 2000;
+  /* --modal-overlay-bg = rgba(31,41,55,0.70) — same as all design system modals */
+  background: var(--modal-overlay-bg, rgba(31,41,55,0.70));
+  display: none;                /* openGsModal sets display:flex              */
+  align-items: center; justify-content: center; padding: 24px;
+}
+/* Overlay fade-in when .is-open is applied by openGsModal */
+#em-modal-overlay.is-open {
+  animation: gs-overlay-in 160ms ease both;
+}
+/* Overlay fade-out when .is-closing is applied by closeGsModal */
+#em-modal-overlay.is-closing {
+  animation: gs-overlay-in 160ms ease reverse both;
+}
+/* Modal panel slide-in — triggered by .is-open on the .gs-modal child */
+#em-modal-overlay .gs-modal.is-open {
+  animation: gs-modal-in 180ms cubic-bezier(0,0,0.3,1) both;
+}
+/* Modal panel slide-out — triggered by .is-closing on the .gs-modal child */
+#em-modal-overlay .gs-modal.is-closing {
+  animation: gs-modal-out 160ms cubic-bezier(0.4,0,1,1) both;
+}
+
+/* ─── Header ─────────────────────────────────────────────────────────── */
+/* Figma: 24px h-padding, 12px v-padding, Title1 B 20px Navy */
+.gs-email__head {
+  display: flex; align-items: center; gap: 16px;
+  padding: 12px 24px; flex-shrink: 0;
+}
+.gs-email__title {
+  flex: 1; font-size: 20px; font-weight: 700; line-height: 24px;
+  color: var(--em-navy); font-family: var(--font-display,'Gilroy',sans-serif);
+}
+.gs-email__close {
+  width: 40px; height: 40px; border: none; background: none; padding: 8px;
+  border-radius: 4px; cursor: pointer; display: flex; align-items: center;
+  justify-content: center; color: var(--em-label); flex-shrink: 0;
+  transition: background .12s;
+}
+.gs-email__close:hover { background: var(--em-grey-50); }
+.gs-email__close svg { stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; }
+
+/* ─── Email info (To / Cc / Bcc / Subject rows) ──────────────────────── */
+/* Figma: 24px h-padding, 16px v-padding, border-bottom */
+.gs-email__info {
+  border-bottom: 1px solid var(--em-border);
+  padding: 0 24px; flex-shrink: 0;
+}
+.gs-email__row {
+  display: flex; align-items: flex-start; gap: 16px;
+  border-bottom: 1px solid var(--em-border); padding: 0;
+}
+.gs-email__row:last-child { border-bottom: none; }
+
+/* Label column — Figma: 100px, Title2 SB 18px grey */
+.gs-email__row-label {
+  width: 100px; flex-shrink: 0;
+  padding: 10px 0;
+  font-size: 18px; font-weight: 600; line-height: 24px;
+  color: var(--em-label);
+}
+/* Value column */
+.gs-email__row-value {
+  flex: 1; min-width: 0;
+  display: flex; align-items: center; gap: 12px;
+  flex-wrap: wrap;
+  padding: 8px 0;
+}
+.gs-email__row-value--subject { flex-wrap: nowrap; }
+
+/* Recipient chips + input */
+.gs-email__chips {
+  display: flex; align-items: center; flex-wrap: wrap; gap: 6px; flex: 1; min-width: 0;
+}
+.gs-email__chip {
+  display: inline-flex; align-items: center; gap: 4px;
+  background: var(--em-brand-10); border-radius: 999px;
+  padding: 4px 8px 4px 4px;
+  font-size: 16px; font-weight: 600; color: var(--em-navy);
+  white-space: nowrap;
+}
+.gs-email__chip-avatar {
+  width: 24px; height: 24px; border-radius: 50%;
+  background: var(--em-brand); display: flex; align-items: center; justify-content: center;
+  font-size: 11px; font-weight: 700; color: #fff; flex-shrink: 0;
+  overflow: hidden;
+}
+.gs-email__chip-close {
+  width: 16px; height: 16px; border: none; background: none;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; color: var(--em-label); padding: 0; border-radius: 50%;
+  flex-shrink: 0; transition: background .1s;
+}
+.gs-email__chip-close:hover { background: rgba(0,0,0,.08); }
+.gs-email__chip-close svg { stroke: currentColor; fill: none; stroke-width: 2.5; stroke-linecap: round; }
+
+/* Recipient email text input */
+.gs-email__recipient-input {
+  border: none; outline: none; background: transparent;
+  font-family: inherit; font-size: 18px; font-weight: 600;
+  color: var(--em-navy); min-width: 120px; flex: 1;
+  caret-color: var(--em-brand);
+}
+
+/* ─── Neutral Cc/Bcc buttons (Figma + screenshot 2) ─────────────────── */
+/* bg: grey-10 #F7FAFC · border: grey-200 #CBD5E1 · h: 32px · r: 4px     */
+.gs-email__cc-btn {
+  display: inline-flex; align-items: center; gap: 4px;
+  height: 32px; padding: 4px 12px;
+  background: var(--em-grey-10);
+  border: 1px solid var(--em-grey-200);
+  border-radius: 4px; cursor: pointer;
+  font-family: inherit; font-size: 14px; font-weight: 600;
+  color: var(--em-grey-600); white-space: nowrap; flex-shrink: 0;
+  transition: border-color .13s, background .13s;
+}
+.gs-email__cc-btn:hover { border-color: var(--em-brand); color: var(--em-brand); background: var(--em-brand-10); }
+.gs-email__cc-btn svg { stroke: currentColor; fill: none; stroke-width: 2.5; stroke-linecap: round; }
+
+/* Subject input */
+.gs-email__subject-input {
+  flex: 1; border: none; outline: none; background: transparent;
+  font-family: inherit; font-size: 18px; font-weight: 600;
+  color: var(--em-navy);
+}
+.gs-email__subject-input::placeholder { color: var(--em-label); font-weight: 400; }
+
+/* ─── Rich text toolbar (Figma text-tool-panel) ──────────────────────── */
+/* white bg, 12px padding, gap 12px between groups */
+.gs-email__toolbar {
+  display: flex; align-items: center; gap: 12px;
+  padding: 8px 12px; flex-shrink: 0;
+  border-bottom: 1px solid var(--em-border);
+}
+.gs-email__tb-group { display: flex; align-items: center; gap: 2px; }
+.gs-email__tb-sep {
+  width: 1px; height: 24px; background: var(--em-border); flex-shrink: 0;
+}
+/* Individual toolbar button — Figma: btn-neutral 32×32, radius 4px */
+.gs-email__tb-btn {
+  width: 32px; height: 32px; border: none; background: none;
+  border-radius: 4px; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--em-navy); padding: 4px;
+  transition: background .1s, color .1s;
+  flex-shrink: 0;
+}
+.gs-email__tb-btn:hover { background: var(--em-grey-50); }
+.gs-email__tb-btn.is-active { background: var(--em-brand-10); color: var(--em-brand); }
+.gs-email__tb-btn svg {
+  stroke: currentColor; fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round;
+  pointer-events: none;
+}
+
+/* ─── Content area ───────────────────────────────────────────────────── */
+.gs-email__content {
+  flex: 1 1 0;      /* flex-basis:0 so it fills exactly remaining space  */
+  min-height: 0;    /* CRITICAL: overrides min-height:auto default so     */
+                    /* the flex child can shrink and the scrollbar shows  */
+  overflow-y: auto;
+  overflow-x: hidden;
+  position: relative;
+  padding: 12px 20px;
+  /* Custom scrollbar — matches design system style */
+  scrollbar-width: thin;
+  scrollbar-color: var(--prim-grey-200,#CBD5E1) transparent;
+}
+.gs-email__content::-webkit-scrollbar        { width: 6px; }
+.gs-email__content::-webkit-scrollbar-track  { background: transparent; }
+.gs-email__content::-webkit-scrollbar-thumb  { background: var(--prim-grey-200,#CBD5E1); border-radius: 3px; }
+.gs-email__content::-webkit-scrollbar-thumb:hover { background: var(--prim-grey-300,#94A3B8); }
+
+.gs-email__editor {
+  outline: none; min-height: 120px;
+  font-size: 16px; font-weight: 600; line-height: 24px;
+  color: var(--em-navy);
+  font-family: var(--font-sans,'Gilroy',sans-serif);
+  word-break: break-word;  /* prevent horizontal overflow from long words */
+}
+.gs-email__editor:empty::before {
+  content: attr(data-placeholder); color: var(--em-label); font-weight: 400; pointer-events: none;
+}
+.gs-email__editor ul, .gs-email__editor ol { padding-left: 24px; margin: 4px 0; }
+.gs-email__editor li { margin-bottom: 2px; }
+.gs-email__editor blockquote { border-left: 3px solid var(--em-grey-200); padding-left: 12px; margin: 8px 0; color: var(--em-label); }
+.gs-email__editor a { color: var(--em-brand); text-decoration: underline; }
+.gs-email__editor code, .gs-email__editor pre { background: var(--em-grey-50); border-radius: 4px; padding: 2px 5px; font-size: 13px; font-family: monospace; }
+.gs-email__editor table { border-collapse: collapse; margin: 8px 0; }
+.gs-email__editor td, .gs-email__editor th { border: 1px solid var(--em-grey-200); padding: 4px 10px; min-width: 60px; }
+
+/* ─── Attachments ────────────────────────────────────────────────────── */
+/* Figma: grey-50 bg, 186×40px cards, 4px radius */
+.gs-email__attachments {
+  display: flex; flex-wrap: wrap; gap: 10px;
+  padding: 12px 20px; flex-shrink: 0;
+  border-top: 1px solid var(--em-border);
+}
+.gs-attach-card {
+  display: flex; align-items: center; gap: 8px;
+  height: 40px; padding: 8px;
+  background: var(--em-grey-50); border-radius: 4px;
+  max-width: 186px; flex-shrink: 0;
+}
+.gs-attach-card__icon {
+  width: 24px; height: 24px; border-radius: 20px; background: #fff;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0; padding: 2px;
+}
+.gs-attach-card__icon svg { stroke: var(--em-navy); fill: none; stroke-width: 1.8; stroke-linecap: round; }
+.gs-attach-card__name {
+  flex: 1; min-width: 0;
+  font-size: 14px; font-weight: 600; color: var(--em-navy);
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.gs-attach-card__del {
+  background: none; border: none; cursor: pointer; padding: 4px; border-radius: 4px;
+  color: var(--em-label); flex-shrink: 0; display: flex; align-items: center; justify-content: center;
+  transition: background .1s, color .1s;
+}
+.gs-attach-card__del:hover { background: var(--em-grey-200); color: var(--prim-red-500,#DC2625); }
+.gs-attach-card__del svg { stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; }
+
+/* ─── Footer ─────────────────────────────────────────────────────────── */
+/* Figma: 24px h, 16px v, border-top, Cancel (blue-10 bg + marine border/text) + Send (primary) */
+.gs-email__footer {
+  display: flex; gap: 12px; justify-content: flex-end;
+  padding: 16px 24px; border-top: 1px solid var(--em-border); flex-shrink: 0;
+}
+/* Cancel — Figma: bg blue-10, border marine, text marine, 40px, 16px h-pad */
+.gs-email__btn-cancel {
+  display: flex; align-items: center; justify-content: center;
+  height: 40px; padding: 8px 16px; border-radius: 4px;
+  background: var(--em-brand-10); border: 1px solid var(--em-brand);
+  font-family: inherit; font-size: 14px; font-weight: 600; color: var(--em-brand);
+  cursor: pointer; transition: background .12s;
+}
+.gs-email__btn-cancel:hover { background: #dbeafe; }
+/* Send — Figma: bg marine, text white, 40px, 16px h-pad */
+.gs-email__btn-send {
+  display: flex; align-items: center; justify-content: center;
+  height: 40px; padding: 8px 16px; border-radius: 4px;
+  background: var(--em-brand); border: none;
+  font-family: inherit; font-size: 14px; font-weight: 600; color: #fff;
+  cursor: pointer; transition: background .12s;
+}
+.gs-email__btn-send:hover { background: #1242d4; }
+.gs-email__btn-send svg { stroke: #fff; fill: none; stroke-width: 2; stroke-linecap: round; margin-right: 6px; }
+
+/* ─── Drag-and-drop state ────────────────────────────────────────────── */
+.gs-email--dragover .gs-email__content { background: var(--em-brand-10); }
+.gs-email__drag-hint {
+  display: none; position: absolute; inset: 0;
+  flex-direction: column; align-items: center; justify-content: center; gap: 8px;
+  pointer-events: none; z-index: 2;
+}
+.gs-email--dragover .gs-email__drag-hint { display: flex; }
+.gs-email--dragover .gs-email__editor { opacity: .3; }
+
+/* ─── Page demo canvas ───────────────────────────────────────────────── */
+.em-demo-canvas {
+  background: #E8EDF5; border-radius: 12px; padding: 32px;
+  display: flex; align-items: center; justify-content: center; min-height: 520px;
+}
+.em-demo-canvas--panel {
+  align-items: stretch; padding: 24px;
+  background: #f1f5f9;
+}
+.em-page-mock {
+  display: flex; width: 100%; gap: 0;
+  background: #fff; border-radius: 10px; overflow: hidden;
+  border: 1px solid var(--em-border);
+  min-height: 480px;
+}
+.em-page-mock__left {
+  flex: 1; min-width: 0; padding: 20px; border-right: 1px solid var(--em-border);
+}
+.em-page-mock__right {
+  width: 460px; flex-shrink: 0; display: flex; flex-direction: column;
+}
+.em-page-sidebar-label {
+  font-size: 11px; font-weight: 700; color: var(--em-label);
+  text-transform: uppercase; letter-spacing: .06em; padding: 12px 20px 8px;
+  border-bottom: 1px solid var(--em-border);
+}
+
+/* ─── Trigger button for modal demo ─────────────────────────────────── */
+#em-modal-trigger {
+  display: flex; align-items: center; gap: 8px; padding: 0 14px;
+  height: 38px; background: var(--em-brand); color: #fff;
+  border: none; border-radius: 6px; font-family: inherit; font-size: 13px;
+  font-weight: 600; cursor: pointer; transition: background .12s;
+}
+#em-modal-trigger:hover { background: #1242d4; }
+</style>
+
+<!-- BANNER -->
+<div class="page-header"><h1 class="ds-hero-title">Email</h1></div>
+
+<!-- TAB BAR -->
+<div class="btn-tab-bar">
+  <button class="btn-tab-btn em-tab-btn active" data-tab="design" onclick="switchEmTab('design')">Design</button>
+  <button class="btn-tab-btn em-tab-btn" data-tab="code"   onclick="switchEmTab('code')">Code</button>
+  <button class="btn-tab-btn em-tab-btn" data-tab="usage"  onclick="switchEmTab('usage')">Usage</button>
+</div>
+
+
+<!-- ═══ DESIGN TAB ══════════════════════════════════════════════════ -->
+<div id="em-tab-design" class="btn-tab-pane em-tab-pane active">
+<div class="code-tab-layout">
+<div class="code-tab-main">
+
+  <p style="font-size:15px;line-height:1.75;color:#475569;margin:0 0 32px;">The Email Panel is a multi-part compose surface used across GeoServe to send voyage summaries, SoF attachments, and operational notifications. It ships in two variants — <strong>Modal</strong> (floating, with backdrop) and <strong>Inline Panel</strong> (embedded directly in a page layout).</p>
+
+  <!-- ── MODAL VARIANT ─────────────────────────────────────────────── -->
+  <div class="btn-family-card" id="em-d-modal">
+    <div class="btn-family-title">Variant 1 · Modal</div>
+    <p class="btn-family-desc">The modal floats above the UI with a semi-transparent backdrop. Used when composition is a focused task that shouldn't interrupt the current page context. Max-width 800px, shadow-lg, border-radius 12px.</p>
+
+    <div class="em-demo-canvas" style="margin-top:16px;">
+      <div style="display:flex;flex-direction:column;align-items:center;gap:16px;">
+        <button id="em-modal-trigger" onclick="openEmModal()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          Compose Email
+        </button>
+        <span style="font-size:12.5px;color:#94a3b8;">↑ Click to open the modal</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── INLINE PANEL VARIANT ──────────────────────────────────────── -->
+  <div class="btn-family-card" id="em-d-panel">
+    <div class="btn-family-title">Variant 2 · Inline Panel</div>
+    <p class="btn-family-desc">The inline variant is embedded directly in the page layout — no overlay or backdrop. Matches the Back Office PC Summary screen: the compose surface occupies the right column of a split view. No modal shadow; bordered instead.</p>
+
+    <div class="em-demo-canvas em-demo-canvas--panel" style="margin-top:16px;">
+      <div class="em-page-mock">
+        <!-- Left: page content stub -->
+        <div class="em-page-mock__left">
+          <div style="font-size:13px;font-weight:700;color:#001e4c;margin-bottom:12px;">Summary</div>
+          <div style="display:flex;flex-direction:column;gap:10px;">
+            <div style="display:flex;gap:16px;">
+              <span style="font-size:12px;color:#94a3b8;width:80px;flex-shrink:0;">Vessel</span>
+              <span style="font-size:12px;font-weight:600;color:#0f1b35;">Al Wukir</span>
+            </div>
+            <div style="display:flex;gap:16px;">
+              <span style="font-size:12px;color:#94a3b8;width:80px;flex-shrink:0;">Voyage No</span>
+              <span style="font-size:12px;font-weight:600;color:#0f1b35;">10</span>
+            </div>
+            <div style="display:flex;gap:16px;">
+              <span style="font-size:12px;color:#94a3b8;width:80px;flex-shrink:0;">Port</span>
+              <span style="font-size:12px;font-weight:600;color:#0f1b35;">Ennore, IN</span>
+            </div>
+            <div style="display:flex;gap:16px;">
+              <span style="font-size:12px;color:#94a3b8;width:80px;flex-shrink:0;">ETA</span>
+              <span style="font-size:12px;font-weight:600;color:#0f1b35;">22 Dec 25</span>
+            </div>
+            <div style="margin-top:8px;height:1px;background:#e2e8f0;"></div>
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-top:4px;">
+              <span style="font-size:12px;font-weight:600;color:#0f1b35;">Send Nomination Email</span>
+              <span style="font-size:10px;background:#1b9e4b;color:#fff;padding:2px 8px;border-radius:4px;font-weight:600;">ON</span>
+            </div>
+          </div>
+        </div>
+        <!-- Right: inline email panel (no title label — embedded in page context) -->
+        <div class="em-page-mock__right">
+          <!-- Inline panel — no title header; context is provided by parent page -->
+          <div class="gs-email gs-email--panel" id="em-inline-demo" style="border:none;border-radius:0;flex:1;">
+            <!-- Email info -->
+            <div class="gs-email__info" style="padding:0 16px;">
+              <!-- To row -->
+              <div class="gs-email__row">
+                <div class="gs-email__row-label" style="font-size:14px;width:60px;">To</div>
+                <div class="gs-email__row-value" style="padding:6px 0;">
+                  <div class="gs-email__chips">
+                    <span class="gs-email__chip" style="font-size:13px;">
+                      <span class="gs-email__chip-avatar" style="width:20px;height:20px;font-size:9px;">BW</span>
+                      Bruce Wayne
+                      <button class="gs-email__chip-close" style="width:13px;height:13px;"><svg width="8" height="8" viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></svg></button>
+                    </span>
+                    <span style="font-size:13px;font-weight:600;color:#001e4c;">vishnu@gmail.com</span>
+                  </div>
+                  <button class="gs-email__cc-btn" style="height:28px;font-size:12px;padding:2px 8px;">
+                    <svg width="12" height="12" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                    Cc
+                  </button>
+                  <button class="gs-email__cc-btn" style="height:28px;font-size:12px;padding:2px 8px;">
+                    <svg width="12" height="12" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                    Bcc
+                  </button>
+                </div>
+              </div>
+              <!-- Subject row -->
+              <div class="gs-email__row" style="border-bottom:none;">
+                <div class="gs-email__row-label" style="font-size:14px;width:60px;">Subject</div>
+                <div class="gs-email__row-value gs-email__row-value--subject">
+                  <input class="gs-email__subject-input" style="font-size:14px;" value="Proposal Subject from naveen" readonly/>
+                </div>
+              </div>
+            </div>
+            <!-- Toolbar (compact) -->
+            <div class="gs-email__toolbar" style="padding:5px 10px;gap:2px;">
+              <div class="gs-email__tb-group">
+                <button class="gs-email__tb-btn" title="Bold" style="width:26px;height:26px;"><svg width="13" height="13" viewBox="0 0 24 24"><path d="M6 4h8a4 4 0 0 1 4 4 4 4 0 0 1-4 4H6z"/><path d="M6 12h9a4 4 0 0 1 4 4 4 4 0 0 1-4 4H6z"/></svg></button>
+                <button class="gs-email__tb-btn" title="Italic" style="width:26px;height:26px;"><svg width="13" height="13" viewBox="0 0 24 24"><line x1="19" y1="4" x2="10" y2="4"/><line x1="14" y1="20" x2="5" y2="20"/><line x1="15" y1="4" x2="9" y2="20"/></svg></button>
+                <button class="gs-email__tb-btn" title="Underline" style="width:26px;height:26px;"><svg width="13" height="13" viewBox="0 0 24 24"><path d="M6 3v7a6 6 0 0 0 6 6 6 6 0 0 0 6-6V3"/><line x1="4" y1="21" x2="20" y2="21"/></svg></button>
+                <button class="gs-email__tb-btn" title="Link" style="width:26px;height:26px;"><svg width="13" height="13" viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></button>
+                <button class="gs-email__tb-btn" title="Attachment" style="width:26px;height:26px;"><svg width="13" height="13" viewBox="0 0 24 24"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg></button>
+              </div>
+            </div>
+            <!-- Content -->
+            <div class="gs-email__content" style="padding:10px 14px;min-height:120px;flex:1;overflow-y:auto;">
+              <div class="gs-email__editor" style="font-size:14px;" contenteditable="true">
+                <p>Hi Mubeen</p><p><br></p>
+                <p>I hope this email finds you well.</p>
+              </div>
+            </div>
+            <!-- Footer -->
+            <div class="gs-email__footer" style="padding:10px 16px;">
+              <button class="gs-email__btn-cancel" style="height:36px;font-size:13px;" onclick="">Cancel</button>
+              <button class="gs-email__btn-send" style="height:36px;font-size:13px;" onclick="">
+                <svg width="13" height="13" viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+                Submit
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── ANATOMY ────────────────────────────────────────────────────── -->
+  <div class="btn-family-card" id="em-d-anatomy">
+    <div class="btn-family-title">Anatomy</div>
+    <p class="btn-family-desc">The email panel has five structural zones, each with a distinct role. The content area is the only scrollable zone — all other zones are sticky.</p>
+    <div style="display:flex;flex-direction:column;gap:12px;margin-top:16px;background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;padding:20px;">
+      <div style="display:flex;gap:12px;align-items:flex-start;">
+        <div style="width:26px;height:26px;border-radius:7px;background:#1852fe;color:#fff;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0;">1</div>
+        <div><div style="font-size:13px;font-weight:600;color:#0f1b35;margin-bottom:3px;">Header</div><p style="margin:0;font-size:12.5px;color:#475569;line-height:1.6;">Title "Compose Email" (Title1 B 20px Navy) + neutral close button (40×40px, icon only). In the inline variant the close button is omitted.</p></div>
+      </div>
+      <div style="display:flex;gap:12px;align-items:flex-start;">
+        <div style="width:26px;height:26px;border-radius:7px;background:#1852fe;color:#fff;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0;">2</div>
+        <div><div style="font-size:13px;font-weight:600;color:#0f1b35;margin-bottom:3px;">Email Info (To / Cc / Bcc / Subject)</div><p style="margin:0;font-size:12.5px;color:#475569;line-height:1.6;">100px label column (Title2 SB 18px grey) + value area. Recipients are rendered as chips with avatar, name, and a remove button. <strong>+Cc</strong> and <strong>+Bcc</strong> are neutral buttons (grey-10 bg, grey-200 border, 32px). Cc/Bcc rows expand on click.</p></div>
+      </div>
+      <div style="display:flex;gap:12px;align-items:flex-start;">
+        <div style="width:26px;height:26px;border-radius:7px;background:#1852fe;color:#fff;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0;">3</div>
+        <div><div style="font-size:13px;font-weight:600;color:#0f1b35;margin-bottom:3px;">Rich Text Toolbar</div><p style="margin:0;font-size:12.5px;color:#475569;line-height:1.6;">10 formatting buttons (Bold, Italic, Underline, Strikethrough, Link, Ordered List, Bullet List, Quote, Code, Table) + a vertical divider + an Attachment button. Each button is 32×32px, radius 4px, with hover state.</p></div>
+      </div>
+      <div style="display:flex;gap:12px;align-items:flex-start;">
+        <div style="width:26px;height:26px;border-radius:7px;background:#1852fe;color:#fff;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0;">4</div>
+        <div><div style="font-size:13px;font-weight:600;color:#0f1b35;margin-bottom:3px;">Content Area (scrollable)</div><p style="margin:0;font-size:12.5px;color:#475569;line-height:1.6;">A <code>contenteditable</code> div at 16px SB Navy. Flex-grow fills the remaining height. Supports drag-and-drop file upload (shows drag hint overlay).</p></div>
+      </div>
+      <div style="display:flex;gap:12px;align-items:flex-start;">
+        <div style="width:26px;height:26px;border-radius:7px;background:#1852fe;color:#fff;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0;">5</div>
+        <div><div style="font-size:13px;font-weight:600;color:#0f1b35;margin-bottom:3px;">Footer — Cancel + Send</div><p style="margin:0;font-size:12.5px;color:#475569;line-height:1.6;"><strong>Cancel</strong>: blue-10 background, marine border and text (Figma: btn-default outlined). <strong>Send / Submit</strong>: primary marine fill, white text. Both are 40px height, 16px h-padding.</p></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── TOKEN TABLE ───────────────────────────────────────────────── -->
+  <div class="btn-family-card" id="em-d-tokens">
+    <div class="btn-family-title">Design Tokens</div>
+    <div style="border:1px solid #e2e8f0;border-radius:10px;overflow:hidden;margin-top:8px;">
+      <table style="width:100%;border-collapse:collapse;">
+        <thead><tr style="background:#f8fafc;"><th style="padding:8px 14px;font-size:11px;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:.05em;text-align:left;border-bottom:1px solid #e2e8f0;">Element</th><th style="padding:8px 14px;font-size:11px;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:.05em;text-align:left;border-bottom:1px solid #e2e8f0;">Token</th><th style="padding:8px 14px;font-size:11px;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:.05em;text-align:left;border-bottom:1px solid #e2e8f0;">Value</th></tr></thead>
+        <tbody>
+          <tr style="border-bottom:1px solid #f1f5f9;"><td style="padding:9px 14px;font-size:12.5px;color:#374151;">Title</td><td style="padding:9px 14px;font-size:11.5px;"><code style="background:#f1f5f9;padding:1px 6px;border-radius:4px;">--em-navy</code></td><td style="padding:9px 14px;font-size:12.5px;"><span style="display:inline-block;width:10px;height:10px;background:#001e4c;border-radius:3px;vertical-align:middle;margin-right:5px;"></span>#001E4C · 20px Bold</td></tr>
+          <tr style="border-bottom:1px solid #f1f5f9;"><td style="padding:9px 14px;font-size:12.5px;color:#374151;">Row labels (To, Subject)</td><td style="padding:9px 14px;font-size:11.5px;"><code style="background:#f1f5f9;padding:1px 6px;border-radius:4px;">--em-label</code></td><td style="padding:9px 14px;font-size:12.5px;"><span style="display:inline-block;width:10px;height:10px;background:#64748b;border-radius:3px;vertical-align:middle;margin-right:5px;"></span>#64748B · 18px SB</td></tr>
+          <tr style="border-bottom:1px solid #f1f5f9;"><td style="padding:9px 14px;font-size:12.5px;color:#374151;">Cc/Bcc button bg</td><td style="padding:9px 14px;font-size:11.5px;"><code style="background:#f1f5f9;padding:1px 6px;border-radius:4px;">--em-grey-10</code></td><td style="padding:9px 14px;font-size:12.5px;"><span style="display:inline-block;width:10px;height:10px;background:#f7fafc;border:1px solid #e2e8f0;border-radius:3px;vertical-align:middle;margin-right:5px;"></span>#F7FAFC</td></tr>
+          <tr style="border-bottom:1px solid #f1f5f9;"><td style="padding:9px 14px;font-size:12.5px;color:#374151;">Cc/Bcc button border</td><td style="padding:9px 14px;font-size:11.5px;"><code style="background:#f1f5f9;padding:1px 6px;border-radius:4px;">--em-grey-200</code></td><td style="padding:9px 14px;font-size:12.5px;"><span style="display:inline-block;width:10px;height:10px;background:#CBD5E1;border-radius:3px;vertical-align:middle;margin-right:5px;"></span>#CBD5E1</td></tr>
+          <tr style="border-bottom:1px solid #f1f5f9;"><td style="padding:9px 14px;font-size:12.5px;color:#374151;">Recipient chip bg</td><td style="padding:9px 14px;font-size:11.5px;"><code style="background:#f1f5f9;padding:1px 6px;border-radius:4px;">--em-brand-10</code></td><td style="padding:9px 14px;font-size:12.5px;"><span style="display:inline-block;width:10px;height:10px;background:#EEF6FF;border-radius:3px;vertical-align:middle;margin-right:5px;"></span>#EEF6FF</td></tr>
+          <tr style="border-bottom:1px solid #f1f5f9;"><td style="padding:9px 14px;font-size:12.5px;color:#374151;">Attachment card bg</td><td style="padding:9px 14px;font-size:11.5px;"><code style="background:#f1f5f9;padding:1px 6px;border-radius:4px;">--em-grey-50</code></td><td style="padding:9px 14px;font-size:12.5px;"><span style="display:inline-block;width:10px;height:10px;background:#F1F5F9;border:1px solid #e2e8f0;border-radius:3px;vertical-align:middle;margin-right:5px;"></span>#F1F5F9 · 186×40px</td></tr>
+          <tr style="border-bottom:1px solid #f1f5f9;"><td style="padding:9px 14px;font-size:12.5px;color:#374151;">Cancel button</td><td style="padding:9px 14px;font-size:11.5px;"><code style="background:#f1f5f9;padding:1px 6px;border-radius:4px;">--em-brand-10 + --em-brand</code></td><td style="padding:9px 14px;font-size:12.5px;color:#374151;">Blue-10 bg, marine border + text · 40px</td></tr>
+          <tr><td style="padding:9px 14px;font-size:12.5px;color:#374151;">Send button</td><td style="padding:9px 14px;font-size:11.5px;"><code style="background:#f1f5f9;padding:1px 6px;border-radius:4px;">--em-brand</code></td><td style="padding:9px 14px;font-size:12.5px;"><span style="display:inline-block;width:10px;height:10px;background:#1852FE;border-radius:3px;vertical-align:middle;margin-right:5px;"></span>#1852FE bg, white text · 40px</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</div><!-- /code-tab-main -->
+<div class="code-tab-qnav">
+  <div class="code-qnav-inner">
+    <p class="code-qnav-title">On this page</p>
+    <ul class="code-qnav-list">
+      <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('em-d-modal')">Modal Variant</button></li>
+      <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('em-d-panel')">Inline Panel</button></li>
+      <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('em-d-anatomy')">Anatomy</button></li>
+      <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('em-d-tokens')">Tokens</button></li>
+    </ul>
+  </div>
+</div>
+</div>
+</div><!-- /design tab -->
+
+
+<!-- ═══ CODE TAB ════════════════════════════════════════════════════ -->
+<div id="em-tab-code" class="btn-tab-pane em-tab-pane">
+<div class="code-tab-layout">
+<div class="code-tab-main">
+
+  <div class="btn-family-card">
+    <div class="ds-step-row"><span class="ds-step-num">1</span><div class="btn-family-title" style="margin:0;">Import</div></div>
+    <div class="btn-code-block"><div class="btn-code-head"><span class="btn-code-lang">JSX</span><button class="btn-copy-btn" onclick="copyBtnCode('em-import',this)">Copy</button></div>
+    <div class="btn-code-body"><pre id="em-import"><code><span class="c-kw">import</span> { <span class="c-type">EmailPanel</span> } <span class="c-kw">from</span> <span class="c-val">'@pelagos/components/panels/email'</span>;</code></pre></div></div>
+  </div>
+
+  <div class="btn-family-card">
+    <div class="ds-step-row"><span class="ds-step-num">2</span><div class="btn-family-title" style="margin:0;">Props</div></div>
+    <table>
+      <thead><tr><th>Prop</th><th>Type</th><th>Default</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr class="ds-tr-border"><td class="ds-td-code-primary">variant</td><td class="ds-td-code-muted">'modal'|'panel'</td><td class="ds-td-code-muted">'modal'</td><td>Floating modal or inline panel</td></tr>
+        <tr class="ds-tr-border"><td class="ds-td-code-primary">open</td><td class="ds-td-code-muted">boolean</td><td class="ds-td-code-muted">false</td><td>Modal visibility (modal only)</td></tr>
+        <tr class="ds-tr-border"><td class="ds-td-code-primary">onClose</td><td class="ds-td-code-muted">() =&gt; void</td><td class="ds-td-code-muted">—</td><td>Called on X close or backdrop click</td></tr>
+        <tr class="ds-tr-border"><td class="ds-td-code-primary">onSend</td><td class="ds-td-code-muted">(data) =&gt; void</td><td class="ds-td-code-muted">—</td><td>Called with {to, cc, bcc, subject, body, attachments}</td></tr>
+        <tr class="ds-tr-border"><td class="ds-td-code-primary">defaultTo</td><td class="ds-td-code-muted">Recipient[]</td><td class="ds-td-code-muted">[]</td><td>Pre-filled To recipients</td></tr>
+        <tr class="ds-tr-border"><td class="ds-td-code-primary">defaultSubject</td><td class="ds-td-code-muted">string</td><td class="ds-td-code-muted">''</td><td>Pre-filled subject line</td></tr>
+        <tr class="ds-tr-border"><td class="ds-td-code-primary">defaultBody</td><td class="ds-td-code-muted">string (HTML)</td><td class="ds-td-code-muted">''</td><td>Pre-filled body HTML</td></tr>
+        <tr class="ds-tr-border"><td class="ds-td-code-primary">attachments</td><td class="ds-td-code-muted">File[]</td><td class="ds-td-code-muted">[]</td><td>Pre-attached files</td></tr>
+        <tr class="ds-tr-border"><td class="ds-td-code-primary">sendLabel</td><td class="ds-td-code-muted">string</td><td class="ds-td-code-muted">'Send'</td><td>Primary action label (Send / Submit)</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="btn-family-card">
+    <div class="ds-step-row"><span class="ds-step-num">3</span><div class="btn-family-title" style="margin:0;">Usage Examples</div></div>
+    <div class="btn-code-block"><div class="btn-code-head"><span class="btn-code-lang">JSX</span><button class="btn-copy-btn" onclick="copyBtnCode('em-examples',this)">Copy</button></div>
+    <div class="btn-code-body"><pre id="em-examples"><code><span class="c-cmt">// Modal variant — triggered by a button</span>
+<span class="c-tag">&lt;EmailPanel</span>
+  <span class="c-attr">open</span>={isOpen}
+  <span class="c-attr">onClose</span>={() =&gt; setOpen(false)}
+  <span class="c-attr">onSend</span>={handleSend}
+  <span class="c-attr">defaultTo</span>={[{ name: <span class="c-val">'Bruce Wayne'</span>, email: <span class="c-val">'bruce@gotham.com'</span> }]}
+  <span class="c-attr">defaultSubject</span>=<span class="c-val">"Voyage Summary — STI Rose (TOSE38)"</span>
+  <span class="c-attr">defaultBody</span>=<span class="c-val">"&lt;p&gt;Hi Mubeen,&lt;/p&gt;..."</span>
+  <span class="c-attr">attachments</span>={[sof1, sof2]}
+<span class="c-tag">/&gt;</span>
+
+<span class="c-cmt">// Inline panel variant — in a split-pane layout</span>
+<span class="c-tag">&lt;div</span> <span class="c-attr">className</span>=<span class="c-val">"split-layout"</span><span class="c-tag">&gt;</span>
+  <span class="c-tag">&lt;SummaryPane</span> <span class="c-attr">data</span>={portCall} <span class="c-tag">/&gt;</span>
+  <span class="c-tag">&lt;EmailPanel</span>
+    <span class="c-attr">variant</span>=<span class="c-val">"panel"</span>
+    <span class="c-attr">onSend</span>={handleSend}
+    <span class="c-attr">sendLabel</span>=<span class="c-val">"Submit"</span>
+    <span class="c-attr">defaultTo</span>={nominatedAgents}
+  <span class="c-tag">/&gt;</span>
+<span class="c-tag">&lt;/div&gt;</span></code></pre></div></div>
+  </div>
+
+  <div class="btn-family-card">
+    <div class="ds-step-row"><span class="ds-step-num">4</span><div class="btn-family-title" style="margin:0;">HTML Structure</div></div>
+    <div class="btn-code-block"><div class="btn-code-head"><span class="btn-code-lang">HTML</span><button class="btn-copy-btn" onclick="copyBtnCode('em-html',this)">Copy</button></div>
+    <div class="btn-code-body"><pre id="em-html"><code><span class="c-cmt">&lt;!-- Modal trigger + overlay wrapper --&gt;</span>
+<span class="c-tag">&lt;div</span> <span class="c-attr">class</span>=<span class="c-val">"gs-email-overlay is-open"</span><span class="c-tag">&gt;</span>
+  <span class="c-tag">&lt;div</span> <span class="c-attr">class</span>=<span class="c-val">"gs-email gs-email--modal"</span><span class="c-tag">&gt;</span>
+    <span class="c-cmt">&lt;!-- 1. Header --&gt;</span>
+    <span class="c-tag">&lt;div</span> <span class="c-attr">class</span>=<span class="c-val">"gs-email__head"</span><span class="c-tag">&gt;</span>
+      <span class="c-tag">&lt;span</span> <span class="c-attr">class</span>=<span class="c-val">"gs-email__title"</span><span class="c-tag">&gt;</span>Compose Email<span class="c-tag">&lt;/span&gt;</span>
+      <span class="c-tag">&lt;button</span> <span class="c-attr">class</span>=<span class="c-val">"gs-email__close"</span><span class="c-tag">&gt;</span>×<span class="c-tag">&lt;/button&gt;</span>
+    <span class="c-tag">&lt;/div&gt;</span>
+    <span class="c-cmt">&lt;!-- 2. Email info --&gt;</span>
+    <span class="c-tag">&lt;div</span> <span class="c-attr">class</span>=<span class="c-val">"gs-email__info"</span><span class="c-tag">&gt;</span>
+      <span class="c-tag">&lt;div</span> <span class="c-attr">class</span>=<span class="c-val">"gs-email__row"</span><span class="c-tag">&gt;</span>
+        <span class="c-tag">&lt;div</span> <span class="c-attr">class</span>=<span class="c-val">"gs-email__row-label"</span><span class="c-tag">&gt;</span>To<span class="c-tag">&lt;/div&gt;</span>
+        <span class="c-tag">&lt;div</span> <span class="c-attr">class</span>=<span class="c-val">"gs-email__row-value"</span><span class="c-tag">&gt;</span>
+          <span class="c-cmt">&lt;!-- chips + input --&gt;</span>
+          <span class="c-cmt">&lt;!-- neutral Cc/Bcc buttons (screenshot 2) --&gt;</span>
+          <span class="c-tag">&lt;button</span> <span class="c-attr">class</span>=<span class="c-val">"gs-email__cc-btn"</span><span class="c-tag">&gt;</span>+ Cc<span class="c-tag">&lt;/button&gt;</span>
+          <span class="c-tag">&lt;button</span> <span class="c-attr">class</span>=<span class="c-val">"gs-email__cc-btn"</span><span class="c-tag">&gt;</span>+ Bcc<span class="c-tag">&lt;/button&gt;</span>
+        <span class="c-tag">&lt;/div&gt;</span>
+      <span class="c-tag">&lt;/div&gt;</span>
+    <span class="c-tag">&lt;/div&gt;</span>
+    <span class="c-cmt">&lt;!-- 3. Rich text toolbar --&gt;</span>
+    <span class="c-tag">&lt;div</span> <span class="c-attr">class</span>=<span class="c-val">"gs-email__toolbar"</span><span class="c-tag">&gt;</span>...<span class="c-tag">&lt;/div&gt;</span>
+    <span class="c-cmt">&lt;!-- 4. Editable content area --&gt;</span>
+    <span class="c-tag">&lt;div</span> <span class="c-attr">class</span>=<span class="c-val">"gs-email__content"</span><span class="c-tag">&gt;</span>
+      <span class="c-tag">&lt;div</span> <span class="c-attr">class</span>=<span class="c-val">"gs-email__editor"</span> <span class="c-attr">contenteditable</span>=<span class="c-val">"true"</span><span class="c-tag">&gt;&lt;/div&gt;</span>
+    <span class="c-tag">&lt;/div&gt;</span>
+    <span class="c-cmt">&lt;!-- 5. Footer --&gt;</span>
+    <span class="c-tag">&lt;div</span> <span class="c-attr">class</span>=<span class="c-val">"gs-email__footer"</span><span class="c-tag">&gt;</span>
+      <span class="c-tag">&lt;button</span> <span class="c-attr">class</span>=<span class="c-val">"gs-email__btn-cancel"</span><span class="c-tag">&gt;</span>Cancel<span class="c-tag">&lt;/button&gt;</span>
+      <span class="c-tag">&lt;button</span> <span class="c-attr">class</span>=<span class="c-val">"gs-email__btn-send"</span><span class="c-tag">&gt;</span>Send<span class="c-tag">&lt;/button&gt;</span>
+    <span class="c-tag">&lt;/div&gt;</span>
+  <span class="c-tag">&lt;/div&gt;</span>
+<span class="c-tag">&lt;/div&gt;</span></code></pre></div></div>
+  </div>
+
+</div>
+<div class="code-tab-qnav">
+  <div class="code-qnav-inner">
+    <p class="code-qnav-title">On this page</p>
+    <ul class="code-qnav-list">
+      <li class="code-qnav-item"><a class="code-qnav-link" href="#">1 · Import</a></li>
+      <li class="code-qnav-item"><a class="code-qnav-link" href="#">2 · Props</a></li>
+      <li class="code-qnav-item"><a class="code-qnav-link" href="#">3 · Examples</a></li>
+      <li class="code-qnav-item"><a class="code-qnav-link" href="#">4 · HTML Structure</a></li>
+    </ul>
+  </div>
+</div>
+</div>
+</div><!-- /code tab -->
+
+
+<!-- ═══ USAGE TAB ════════════════════════════════════════════════════ -->
+<div id="em-tab-usage" class="btn-tab-pane em-tab-pane">
+<div class="code-tab-layout">
+<div class="code-tab-main">
+  <div class="btn-family-card">
+    <div class="btn-family-title">Modal vs Inline Panel</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:12px;">
+      <div style="border:1px solid #e2e8f0;border-radius:10px;overflow:hidden;">
+        <div style="background:#eef4ff;padding:10px 14px;font-size:12px;font-weight:700;color:#1852fe;text-transform:uppercase;letter-spacing:.05em;border-bottom:1px solid #bfdbfe;">Modal</div>
+        <div style="padding:14px;font-size:12.5px;color:#374151;line-height:1.6;">Use when the email composition is a <strong>primary task</strong> that the user initiates deliberately — e.g. clicking "Send Nomination" or "Compose Email" in a table action. The backdrop prevents accidental interaction with the background.</div>
+      </div>
+      <div style="border:1px solid #e2e8f0;border-radius:10px;overflow:hidden;">
+        <div style="background:#f0fdf4;padding:10px 14px;font-size:12px;font-weight:700;color:#15803d;text-transform:uppercase;letter-spacing:.05em;border-bottom:1px solid #bbf7d0;">Inline Panel</div>
+        <div style="padding:14px;font-size:12.5px;color:#374151;line-height:1.6;">Use when the compose panel lives <strong>alongside context data</strong> — like the Back Office PC Summary screen where the user needs to see vessel/port details while composing. No overlay; occupies a side column.</div>
+      </div>
+    </div>
+  </div>
+  <div class="btn-family-card">
+    <div class="btn-family-title">Behaviour Notes</div>
+    <ul class="btn-usage-list">
+      <li><strong>Cc/Bcc expansion</strong> — clicking + Cc or + Bcc appends a new row below the To row. The row is dismissible by removing all chips and blurring the input.</li>
+      <li><strong>Recipient chips</strong> — typed email addresses or selected contacts become chips on Enter or comma. Chips show a 24×24 avatar with initials or a photo, the display name, and a remove (×) button. Invalid addresses show an error chip (red border).</li>
+      <li><strong>Rich text toolbar</strong> — all 10 buttons (B, I, U, S, Link, OL, UL, Quote, Code, Table) use <code>document.execCommand</code> or a rich text editor lib. The active state (blue tint) reflects the selection context.</li>
+      <li><strong>Drag-and-drop</strong> — dragging files onto the content area shows a "Drop files here" overlay. Dropped files appear in the attachments row as 186×40px chips with a file icon, truncated name, and a remove button.</li>
+      <li><strong>Attachment button</strong> (paperclip, in the toolbar) opens the native file picker. Multiple files are supported.</li>
+    </ul>
+  </div>
+  <div class="btn-family-card">
+    <div class="btn-family-title">Accessibility</div>
+    <ul class="btn-usage-list">
+      <li>The modal uses <code>role="dialog"</code>, <code>aria-modal="true"</code>, and <code>aria-labelledby</code> pointing to the title. Focus is trapped inside while open; Esc closes it.</li>
+      <li>Recipient chips have <code>role="option"</code> and <code>aria-label="Remove [name]"</code> on the close button.</li>
+      <li>Each toolbar button has a descriptive <code>title</code> attribute for tooltip and <code>aria-label</code> for screen readers.</li>
+      <li>The <code>contenteditable</code> editor has <code>role="textbox"</code>, <code>aria-multiline="true"</code>, and <code>aria-label="Email body"</code>.</li>
+    </ul>
+  </div>
+</div>
+<div class="code-tab-qnav">
+  <div class="code-qnav-inner">
+    <p class="code-qnav-title">On this page</p>
+    <ul class="code-qnav-list">
+      <li class="code-qnav-item"><a class="code-qnav-link" href="#">Modal vs Inline</a></li>
+      <li class="code-qnav-item"><a class="code-qnav-link" href="#">Behaviour</a></li>
+      <li class="code-qnav-item"><a class="code-qnav-link" href="#">Accessibility</a></li>
+    </ul>
+  </div>
+</div>
+</div>
+</div><!-- /usage tab -->
+
+
+<!-- ═══ MODAL (position:fixed — uses design system openGsModal/closeGsModal) ═══ -->
+<div id="em-modal-overlay" onclick="closeGsModalOnOverlay(event,'em-modal-overlay')">
+  <!-- .gs-modal enables gs-modal-in / gs-modal-out animations via openGsModal -->
+  <div class="gs-email gs-email--modal gs-modal" id="em-modal" role="dialog" aria-modal="true" aria-labelledby="em-modal-title">
+
+    <!-- Header -->
+    <div class="gs-email__head">
+      <span class="gs-email__title" id="em-modal-title">Compose Email</span>
+      <button class="gs-email__close" onclick="closeEmModal()" aria-label="Close">
+        <svg width="16" height="16" viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></svg>
+      </button>
+    </div>
+
+    <!-- Email info -->
+    <div class="gs-email__info">
+      <!-- To row -->
+      <div class="gs-email__row" id="em-to-row">
+        <div class="gs-email__row-label">To</div>
+        <div class="gs-email__row-value">
+          <div class="gs-email__chips" id="em-chips-to">
+            <span class="gs-email__chip" data-email="bruce@gotham.com">
+              <span class="gs-email__chip-avatar">BW</span>
+              Bruce Wayne
+              <button class="gs-email__chip-close" onclick="removeEmChip(this)" aria-label="Remove Bruce Wayne">
+                <svg width="8" height="8" viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></svg>
+              </button>
+            </span>
+            <input class="gs-email__recipient-input" id="em-to-input" placeholder="Add recipients…"
+                   onkeydown="handleEmRecipientKey(event,'em-chips-to','em-to-input')"/>
+          </div>
+          <!-- Neutral Cc/Bcc buttons (Figma + screenshot 2) -->
+          <button class="gs-email__cc-btn" id="em-cc-toggle" onclick="toggleEmCc()">
+            <svg width="12" height="12" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            Cc
+          </button>
+          <button class="gs-email__cc-btn" id="em-bcc-toggle" onclick="toggleEmBcc()">
+            <svg width="12" height="12" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            Bcc
+          </button>
+        </div>
+      </div>
+      <!-- Cc row (hidden until toggled) -->
+      <div class="gs-email__row" id="em-cc-row" style="display:none;">
+        <div class="gs-email__row-label">Cc</div>
+        <div class="gs-email__row-value">
+          <div class="gs-email__chips" id="em-chips-cc">
+            <input class="gs-email__recipient-input" id="em-cc-input" placeholder="Add Cc recipients…"
+                   onkeydown="handleEmRecipientKey(event,'em-chips-cc','em-cc-input')"/>
+          </div>
+        </div>
+      </div>
+      <!-- Bcc row (hidden until toggled) -->
+      <div class="gs-email__row" id="em-bcc-row" style="display:none;">
+        <div class="gs-email__row-label">Bcc</div>
+        <div class="gs-email__row-value">
+          <div class="gs-email__chips" id="em-chips-bcc">
+            <input class="gs-email__recipient-input" id="em-bcc-input" placeholder="Add Bcc recipients…"
+                   onkeydown="handleEmRecipientKey(event,'em-chips-bcc','em-bcc-input')"/>
+          </div>
+        </div>
+      </div>
+      <!-- Subject row -->
+      <div class="gs-email__row" style="border-bottom:none;">
+        <div class="gs-email__row-label">Subject</div>
+        <div class="gs-email__row-value gs-email__row-value--subject">
+          <input class="gs-email__subject-input" id="em-subject" value="Proposal Subject from naveen" placeholder="Subject"/>
+        </div>
+      </div>
+    </div>
+
+    <!-- Rich text toolbar (matches Figma text-tool-panel exactly) -->
+    <div class="gs-email__toolbar">
+      <div class="gs-email__tb-group">
+        <!-- Bold -->
+        <button class="gs-email__tb-btn" title="Bold" aria-label="Bold" onclick="execEmCmd('bold',this)">
+          <svg width="16" height="16" viewBox="0 0 24 24"><path d="M6 4h8a4 4 0 0 1 4 4 4 4 0 0 1-4 4H6z"/><path d="M6 12h9a4 4 0 0 1 4 4 4 4 0 0 1-4 4H6z"/></svg>
+        </button>
+        <!-- Italic -->
+        <button class="gs-email__tb-btn" title="Italic" aria-label="Italic" onclick="execEmCmd('italic',this)">
+          <svg width="16" height="16" viewBox="0 0 24 24"><line x1="19" y1="4" x2="10" y2="4"/><line x1="14" y1="20" x2="5" y2="20"/><line x1="15" y1="4" x2="9" y2="20"/></svg>
+        </button>
+        <!-- Underline -->
+        <button class="gs-email__tb-btn" title="Underline" aria-label="Underline" onclick="execEmCmd('underline',this)">
+          <svg width="16" height="16" viewBox="0 0 24 24"><path d="M6 3v7a6 6 0 0 0 6 6 6 6 0 0 0 6-6V3"/><line x1="4" y1="21" x2="20" y2="21"/></svg>
+        </button>
+        <!-- Strikethrough -->
+        <button class="gs-email__tb-btn" title="Strikethrough" aria-label="Strikethrough" onclick="execEmCmd('strikeThrough',this)">
+          <svg width="16" height="16" viewBox="0 0 24 24"><path d="M17.3 4.9c-2.3-.6-4.4-1-6.2-.9-2.7 0-5.3.7-5.3 3.6 0 1.5 1.8 3.7 6 3.7h.4m8.5 3.8H3m8.8 4.4c-1.6 0-4-.5-4-3.9"/></svg>
+        </button>
+        <!-- Link -->
+        <button class="gs-email__tb-btn" title="Link" aria-label="Insert link" onclick="insertEmLink()">
+          <svg width="16" height="16" viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+        </button>
+        <!-- Ordered list -->
+        <button class="gs-email__tb-btn" title="Ordered list" aria-label="Ordered list" onclick="execEmCmd('insertOrderedList',this)">
+          <svg width="16" height="16" viewBox="0 0 24 24"><line x1="10" y1="6" x2="21" y2="6"/><line x1="10" y1="12" x2="21" y2="12"/><line x1="10" y1="18" x2="21" y2="18"/><path d="M4 6h1v4"/><path d="M4 10h2"/><path d="M6 18H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg>
+        </button>
+        <!-- Bullet list -->
+        <button class="gs-email__tb-btn" title="Bullet list" aria-label="Bullet list" onclick="execEmCmd('insertUnorderedList',this)">
+          <svg width="16" height="16" viewBox="0 0 24 24"><line x1="9" y1="6" x2="20" y2="6"/><line x1="9" y1="12" x2="20" y2="12"/><line x1="9" y1="18" x2="20" y2="18"/><circle cx="4" cy="6" r="1" fill="currentColor" stroke="none"/><circle cx="4" cy="12" r="1" fill="currentColor" stroke="none"/><circle cx="4" cy="18" r="1" fill="currentColor" stroke="none"/></svg>
+        </button>
+        <!-- Block quote -->
+        <button class="gs-email__tb-btn" title="Block quote" aria-label="Block quote" onclick="execEmCmd('formatBlock',this,'blockquote')">
+          <svg width="16" height="16" viewBox="0 0 24 24"><path d="M3 21c3 0 7-1 7-8V5c0-1.25-.756-2.017-2-2H4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2 1 0 1 0 1 1v1c0 1-1 2-2 2s-1 .008-1 1.031V20c0 1 0 1 1 1z"/><path d="M15 21c3 0 7-1 7-8V5c0-1.25-.757-2.017-2-2h-4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2h.75c0 2.25.25 4-2.75 4v3c0 1 0 1 1 1z"/></svg>
+        </button>
+        <!-- Code -->
+        <button class="gs-email__tb-btn" title="Code" aria-label="Code" onclick="execEmCmd('formatBlock',this,'pre')">
+          <svg width="16" height="16" viewBox="0 0 24 24"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/><line x1="12" y1="2" x2="12" y2="22" transform="rotate(-20,12,12)"/></svg>
+        </button>
+        <!-- Table -->
+        <button class="gs-email__tb-btn" title="Insert table" aria-label="Insert table" onclick="insertEmTable()">
+          <svg width="16" height="16" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="3" y1="15" x2="21" y2="15"/><line x1="12" y1="3" x2="12" y2="21"/></svg>
+        </button>
+      </div>
+
+      <!-- Divider -->
+      <div class="gs-email__tb-sep"></div>
+
+      <!-- Attachment -->
+      <button class="gs-email__tb-btn" title="Attach file" aria-label="Attach file" onclick="triggerEmAttach()">
+        <svg width="16" height="16" viewBox="0 0 24 24"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg>
+      </button>
+      <input type="file" id="em-file-input" multiple style="display:none;" onchange="handleEmFileAttach(this.files)"/>
+    </div>
+
+    <!-- Content area (scrollable, drag-droppable) -->
+    <div class="gs-email__content" id="em-content"
+         ondragover="handleEmDragOver(event)" ondragleave="handleEmDragLeave(event)" ondrop="handleEmDrop(event)">
+      <div class="gs-email__editor" id="em-editor" contenteditable="true"
+           role="textbox" aria-multiline="true" aria-label="Email body"
+           data-placeholder="Write your email…">
+        <p>Hi Mubeen</p><p><br></p>
+        <p>I hope this email finds you well.</p><p><br></p>
+        <p>Please find attached the Voyage Summary for STI ROSE (TOSE38).</p>
+        <p><br>The PDF includes:</p>
+        <ul>
+          <li>Voyage overview (Charterer, Broker, Laycan)</li>
+          <li>Port details &amp; itinerary</li>
+          <li>Vessel particulars &amp; cargo history</li>
+        </ul>
+        <p><br></p>
+        <p>Kindly review and let me know if any additional information or clarifications are required.<br>Best regards,</p>
+      </div>
+      <!-- Drag hint overlay -->
+      <div class="gs-email__drag-hint">
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#1852fe" stroke-width="1.5" stroke-linecap="round"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg>
+        <span style="font-size:14px;font-weight:600;color:#1852fe;">Drop files to attach</span>
+      </div>
+    </div>
+
+    <!-- Attachments -->
+    <div class="gs-email__attachments" id="em-attachments" style="display:flex;">
+      <div class="gs-attach-card">
+        <div class="gs-attach-card__icon"><svg width="14" height="14" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
+        <span class="gs-attach-card__name">SoF_RTM_13Jun25.pdf</span>
+        <button class="gs-attach-card__del" onclick="removeEmAttachment(this)" aria-label="Remove attachment">
+          <svg width="12" height="12" viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></svg>
+        </button>
+      </div>
+      <div class="gs-attach-card">
+        <div class="gs-attach-card__icon"><svg width="14" height="14" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
+        <span class="gs-attach-card__name">SoF_RTM_13Jun25.pdf</span>
+      </div>
+      <div class="gs-attach-card">
+        <div class="gs-attach-card__icon"><svg width="14" height="14" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
+        <span class="gs-attach-card__name">SoF_RTM_13Jun25.pdf</span>
+      </div>
+      <div class="gs-attach-card">
+        <div class="gs-attach-card__icon"><svg width="14" height="14" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
+        <span class="gs-attach-card__name">SoF_RTM_13Jun25.pdf</span>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="gs-email__footer">
+      <button class="gs-email__btn-cancel" onclick="closeEmModal()">Cancel</button>
+      <button class="gs-email__btn-send" onclick="sendEmModal()">
+        <svg width="13" height="13" viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2" fill="white" stroke="none"/></svg>
+        Send
+      </button>
+    </div>
+
+  </div><!-- /gs-email -->
+</div><!-- /overlay -->
+
+
+<!-- ═══ JAVASCRIPT ════════════════════════════════════════════════════ -->
+<script>
+/* ── Tab switching ─────────────────────────────────────────────────── */
+function switchEmTab(tab) {
+  document.querySelectorAll('.em-tab-btn').forEach(b => b.classList.toggle('active', b.dataset.tab === tab));
+  document.querySelectorAll('.em-tab-pane').forEach(p => p.classList.toggle('active', p.id === 'em-tab-' + tab));
+}
+
+/* ── Modal open/close ──────────────────────────────────────────────── */
+function openEmModal() {
+  const o = document.getElementById('em-modal-overlay');
+  if (o) { o.classList.add('is-open'); document.body.style.overflow = 'hidden'; }
+  setTimeout(() => document.getElementById('em-to-input')?.focus(), 220);
+}
+function closeEmModal() {
+  const o = document.getElementById('em-modal-overlay');
+  if (o) { o.classList.remove('is-open'); document.body.style.overflow = ''; }
+}
+function sendEmModal() {
+  const subject = document.getElementById('em-subject')?.value || '';
+  const body    = document.getElementById('em-editor')?.innerHTML || '';
+  console.log('[EmailPanel] send', { subject, body });
+  closeEmModal();
+}
+function handleEmOverlayClick(e) {
+  if (e.target === document.getElementById('em-modal-overlay')) closeEmModal();
+}
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') { const o = document.getElementById('em-modal-overlay'); if (o?.classList.contains('is-open')) closeEmModal(); }
+});
+
+/* ── Cc / Bcc toggles ──────────────────────────────────────────────── */
+function toggleEmCc() {
+  const row = document.getElementById('em-cc-row');
+  const btn = document.getElementById('em-cc-toggle');
+  if (!row) return;
+  const showing = row.style.display !== 'none';
+  row.style.display = showing ? 'none' : 'flex';
+  if (!showing) document.getElementById('em-cc-input')?.focus();
+}
+function toggleEmBcc() {
+  const row = document.getElementById('em-bcc-row');
+  if (!row) return;
+  const showing = row.style.display !== 'none';
+  row.style.display = showing ? 'none' : 'flex';
+  if (!showing) document.getElementById('em-bcc-input')?.focus();
+}
+
+/* ── Recipient chips ───────────────────────────────────────────────── */
+function handleEmRecipientKey(e, chipsId, inputId) {
+  if (e.key !== 'Enter' && e.key !== ',') return;
+  e.preventDefault();
+  const input = document.getElementById(inputId);
+  const chips = document.getElementById(chipsId);
+  const val   = input?.value.trim().replace(/,$/, '');
+  if (!val || !chips) return;
+  addEmChip(chips, val, input);
+  input.value = '';
+}
+function addEmChip(container, text, inputEl) {
+  const chip = document.createElement('span');
+  chip.className = 'gs-email__chip';
+  const initials = text.split('@')[0].slice(0,2).toUpperCase();
+  chip.innerHTML = `
+    <span class="gs-email__chip-avatar">${initials}</span>
+    ${text.length > 24 ? text.slice(0,22) + '…' : text}
+    <button class="gs-email__chip-close" onclick="removeEmChip(this)" aria-label="Remove ${text}">
+      <svg width="8" height="8" viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></svg>
+    </button>`;
+  container.insertBefore(chip, inputEl);
+}
+function removeEmChip(btn) { btn?.closest('.gs-email__chip')?.remove(); }
+
+/* ── Toolbar commands ──────────────────────────────────────────────── */
+function execEmCmd(cmd, btn, value) {
+  document.getElementById('em-editor')?.focus();
+  document.execCommand(cmd, false, value || null);
+  if (btn) btn.classList.toggle('is-active', document.queryCommandState(cmd));
+}
+function insertEmLink() {
+  const url = prompt('Enter URL:', 'https://');
+  if (url) { document.getElementById('em-editor')?.focus(); document.execCommand('createLink', false, url); }
+}
+function insertEmTable() {
+  const tbl = `<table><tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr><tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr></table><p><br></p>`;
+  document.getElementById('em-editor')?.focus();
+  document.execCommand('insertHTML', false, tbl);
+}
+
+/* ── Attachments ───────────────────────────────────────────────────── */
+function triggerEmAttach() { document.getElementById('em-file-input')?.click(); }
+function handleEmFileAttach(files) {
+  Array.from(files).forEach(f => {
+    const wrap = document.getElementById('em-attachments');
+    if (!wrap) return;
+    const card = document.createElement('div');
+    card.className = 'gs-attach-card';
+    card.innerHTML = `
+      <div class="gs-attach-card__icon">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+      </div>
+      <span class="gs-attach-card__name">${f.name}</span>
+      <button class="gs-attach-card__del" onclick="removeEmAttachment(this)" aria-label="Remove attachment">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+      </button>`;
+    wrap.appendChild(card);
+  });
+}
+function removeEmAttachment(btn) { btn?.closest('.gs-attach-card')?.remove(); }
+
+/* ── Drag & drop into content area ────────────────────────────────── */
+function handleEmDragOver(e) {
+  e.preventDefault();
+  document.getElementById('em-content')?.closest('.gs-email')?.classList.add('gs-email--dragover');
+}
+function handleEmDragLeave(e) {
+  if (!e.currentTarget.contains(e.relatedTarget))
+    document.getElementById('em-content')?.closest('.gs-email')?.classList.remove('gs-email--dragover');
+}
+function handleEmDrop(e) {
+  e.preventDefault();
+  document.getElementById('em-content')?.closest('.gs-email')?.classList.remove('gs-email--dragover');
+  if (e.dataTransfer?.files?.length) handleEmFileAttach(e.dataTransfer.files);
+}
+
+/* ── Toolbar active state on selection change ──────────────────────── */
+document.addEventListener('selectionchange', () => {
+  ['bold','italic','underline','strikeThrough'].forEach(cmd => {
+    document.querySelectorAll(`.gs-email__tb-btn[title="${cmd.charAt(0).toUpperCase() + cmd.slice(1).replace('T',' t')}"]`).forEach(b => {
+      try { b.classList.toggle('is-active', document.queryCommandState(cmd)); } catch {}
+    });
+  });
+});
+</script>

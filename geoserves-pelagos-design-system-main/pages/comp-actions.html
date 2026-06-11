@@ -1,0 +1,40 @@
+<div class="page-header"><h1 class="ds-hero-title">Button</h1></div>
+    <div class="content-area">
+      <div class="section-title">Variants</div>
+      <div class="section-desc">Each variant communicates a different level of emphasis.</div>
+      <div style="background:#f8faff;border:1px solid var(--color-border);border-radius:12px;padding:32px;display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin-bottom:32px;">
+        <button class="demo-btn demo-btn-primary">Primary</button>
+        <button class="demo-btn demo-btn-secondary">Secondary</button>
+        <button class="demo-btn demo-btn-ghost">Ghost</button>
+        <button class="demo-btn demo-btn-danger">Danger</button>
+        <button class="demo-btn" style="background:transparent;color:#999;cursor:not-allowed;border:1px solid #e8eaed;" disabled>Disabled</button>
+      </div>
+      <div class="code-block">
+        &lt;<span class="token-key">Button</span> variant=<span class="token-str">"primary"</span>&gt;Primary&lt;/<span class="token-key">Button</span>&gt;<br>
+        &lt;<span class="token-key">Button</span> variant=<span class="token-str">"secondary"</span>&gt;Secondary&lt;/<span class="token-key">Button</span>&gt;<br>
+        &lt;<span class="token-key">Button</span> variant=<span class="token-str">"ghost"</span>&gt;Ghost&lt;/<span class="token-key">Button</span>&gt;<br>
+        &lt;<span class="token-key">Button</span> variant=<span class="token-str">"danger"</span>&gt;Danger&lt;/<span class="token-key">Button</span>&gt;<br>
+        &lt;<span class="token-key">Button</span> <span class="token-key">disabled</span>&gt;Disabled&lt;/<span class="token-key">Button</span>&gt;
+      </div>
+
+      <div class="divider"></div>
+      <div class="section-title">Sizes</div>
+      <div style="background:#f8faff;border:1px solid var(--color-border);border-radius:12px;padding:32px;display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:32px;">
+        <button class="demo-btn demo-btn-primary" style="padding:5px 12px;font-size:12px;">Small</button>
+        <button class="demo-btn demo-btn-primary">Medium</button>
+        <button class="demo-btn demo-btn-primary" style="padding:11px 24px;font-size:15px;">Large</button>
+      </div>
+
+      <div class="divider"></div>
+      <div class="section-title">Props</div>
+      <table class="token-table">
+        <thead><tr><th>Prop</th><th>Type</th><th>Default</th><th>Description</th></tr></thead>
+        <tbody>
+          <tr><td class="token-name">variant</td><td class="token-value">primary | secondary | ghost | danger</td><td class="token-value">"primary"</td><td class="ds-td-muted">Visual style variant</td></tr>
+          <tr><td class="token-name">size</td><td class="token-value">sm | md | lg</td><td class="token-value">"md"</td><td class="ds-td-muted">Button size</td></tr>
+          <tr><td class="token-name">disabled</td><td class="token-value">boolean</td><td class="token-value">false</td><td class="ds-td-muted">Disables interaction</td></tr>
+          <tr><td class="token-name">loading</td><td class="token-value">boolean</td><td class="token-value">false</td><td class="ds-td-muted">Shows loading spinner</td></tr>
+          <tr><td class="token-name">onClick</td><td class="token-value">() => void</td><td class="token-value">-</td><td class="ds-td-muted">Click handler</td></tr>
+        </tbody>
+      </table>
+    </div>

@@ -1,0 +1,30 @@
+/**
+ * Pelagos Button — Supplemental Styles
+ * components/primitives/button/Button.scss
+ *
+ * Ant Design handles ALL core styling (colours, heights, padding, border
+ * radius, hover/active/focus states, loading spinner, wave ripple, disabled
+ * opacity) via the ConfigProvider token overrides in buttonTheme.js.
+ *
+ * This file is intentionally minimal — it only covers the one narrow case
+ * that the AntD token system cannot express on its own:
+ *
+ *   · Dual-icon layout — when both iconLeft AND iconRight are supplied.
+ *     AntD's `icon` prop supports a single icon with `iconPosition`. When
+ *     both are needed the Button renders them as child spans; this file
+ *     provides their alignment and gap.
+ */
+
+/* ── Dual-icon helpers ─────────────────────────────────────────────────────── */
+
+.btn__icon--left,
+.btn__icon--right {
+  display: inline-flex;
+  align-items: center;
+  flex-shrink: 0;
+
+  svg { display: block; }
+}
+
+.btn__icon--left  { margin-inline-end:   var(--prim-space-1); }  /* gap: icon → label  (--prim-space-1 = 4px) */
+.btn__icon--right { margin-inline-start: var(--prim-space-1); }  /* gap: label → icon  (--prim-space-1 = 4px) */

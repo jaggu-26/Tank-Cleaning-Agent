@@ -1,0 +1,1924 @@
+<!-- Banner -->
+    <div class="page-header"><h1 class="ds-hero-title">Buttons</h1></div>
+
+    <!-- Tab bar -->
+    <div class="btn-tab-bar">
+      <button class="btn-tab-btn active" data-tab="design" onclick="switchBtnTab('design')">Design</button>
+      <button class="btn-tab-btn" data-tab="code" onclick="switchBtnTab('code')">Code</button>
+      <button class="btn-tab-btn" data-tab="usage" onclick="switchBtnTab('usage')">Usage</button>
+    </div>
+
+    <!-- ========== DESIGN TAB ========== -->
+    <div id="btn-tab-design" class="btn-tab-pane active">
+
+      <div class="code-tab-layout">
+      <div class="code-tab-main">
+
+      <p style="font-size:15px;line-height:1.75;color:#475569;margin:0 0 28px;">Buttons initiate actions and communicate state. The system provides four button <strong>families</strong> - each with three visual <strong>variants</strong> (Primary, Secondary, Tertiary) and three <strong>sizes</strong> (Large, Medium, Small). Use the right family and variant to convey action priority clearly.</p>
+
+      <!-- ── DEFAULT FAMILY ─────────────────────────────────────── -->
+      <div id="btn-s-default" class="btn-family-card">
+        <div class="btn-family-title">Default</div>
+        <p class="btn-family-desc">The default family uses brand blue to signal positive, affirmative actions - submitting forms, confirming decisions, or navigating forward. Three variants let you layer visual hierarchy within the same screen.</p>
+
+        <div class="btn-sub-label">
+          Variants × Sizes
+          <span class="btn-sub-label-note">Large 48px · Medium 40px · Small 32px</span>
+        </div>
+
+        <div style="margin-bottom:0;">
+          <div class="btn-variant-row">
+            <span class="btn-variant-label">Primary</span>
+            <div class="btn-variant-sizes">
+              <button class="gs-btn gs-btn-primary gs-btn-lg">Save changes</button>
+              <button class="gs-btn gs-btn-primary gs-btn-md">Save changes</button>
+              <button class="gs-btn gs-btn-primary gs-btn-sm">Save</button>
+            </div>
+          </div>
+          <div class="btn-variant-row">
+            <span class="btn-variant-label">Secondary</span>
+            <div class="btn-variant-sizes">
+              <button class="gs-btn gs-btn-secondary gs-btn-lg">View report</button>
+              <button class="gs-btn gs-btn-secondary gs-btn-md">View report</button>
+              <button class="gs-btn gs-btn-secondary gs-btn-sm">View</button>
+            </div>
+          </div>
+          <div class="btn-variant-row">
+            <span class="btn-variant-label">Tertiary</span>
+            <div class="btn-variant-sizes">
+              <button class="gs-btn gs-btn-tertiary gs-btn-lg">Learn more</button>
+              <button class="gs-btn gs-btn-tertiary gs-btn-md">Learn more</button>
+              <button class="gs-btn gs-btn-tertiary gs-btn-sm">Learn more</button>
+            </div>
+          </div>
+        </div>
+
+        <hr class="btn-family-divider">
+
+        <div class="btn-sub-label">Primary - All States</div>
+        <div class="btn-states-grid">
+          <div class="btn-state-cell">
+            <button class="gs-btn gs-btn-primary gs-btn-md">Button</button>
+            <span class="btn-state-label">Enabled</span>
+          </div>
+          <div class="btn-state-cell">
+            <button class="gs-btn gs-btn-primary gs-btn-md state-hover">Button</button>
+            <span class="btn-state-label">Hover</span>
+          </div>
+          <div class="btn-state-cell">
+            <button class="gs-btn gs-btn-primary gs-btn-md state-pressed">Button</button>
+            <span class="btn-state-label">Pressed</span>
+          </div>
+          <div class="btn-state-cell">
+            <button class="gs-btn gs-btn-primary gs-btn-md" disabled>Button</button>
+            <span class="btn-state-label">Disabled</span>
+          </div>
+          <div class="btn-state-cell">
+            <button class="gs-btn gs-btn-primary gs-btn-md state-focus">Button</button>
+            <span class="btn-state-label">Focus</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── DANGER FAMILY ─────────────────────────────────────── -->
+      <div id="btn-s-danger" class="btn-family-card">
+        <div class="btn-family-title">Danger</div>
+        <p class="btn-family-desc">Use danger buttons for destructive, irreversible, or high-risk actions - deleting records, ending sessions, or permanently removing data. Always pair the Primary danger variant with a confirmation step before executing.</p>
+
+        <div class="btn-sub-label">
+          Variants × Sizes
+          <span class="btn-sub-label-note">Large 48px · Medium 40px · Small 32px</span>
+        </div>
+
+        <div style="margin-bottom:0;">
+          <div class="btn-variant-row">
+            <span class="btn-variant-label">Primary</span>
+            <div class="btn-variant-sizes">
+              <button class="gs-btn gs-btn-danger-primary gs-btn-lg">Delete account</button>
+              <button class="gs-btn gs-btn-danger-primary gs-btn-md">Delete account</button>
+              <button class="gs-btn gs-btn-danger-primary gs-btn-sm">Delete</button>
+            </div>
+          </div>
+          <div class="btn-variant-row">
+            <span class="btn-variant-label">Secondary</span>
+            <div class="btn-variant-sizes">
+              <button class="gs-btn gs-btn-danger-secondary gs-btn-lg">Remove user</button>
+              <button class="gs-btn gs-btn-danger-secondary gs-btn-md">Remove user</button>
+              <button class="gs-btn gs-btn-danger-secondary gs-btn-sm">Remove</button>
+            </div>
+          </div>
+          <div class="btn-variant-row">
+            <span class="btn-variant-label">Tertiary</span>
+            <div class="btn-variant-sizes">
+              <button class="gs-btn gs-btn-danger-tertiary gs-btn-lg">Discard changes</button>
+              <button class="gs-btn gs-btn-danger-tertiary gs-btn-md">Discard changes</button>
+              <button class="gs-btn gs-btn-danger-tertiary gs-btn-sm">Discard</button>
+            </div>
+          </div>
+        </div>
+
+        <hr class="btn-family-divider">
+
+        <div class="btn-sub-label">Primary - All States</div>
+        <div class="btn-states-grid">
+          <div class="btn-state-cell">
+            <button class="gs-btn gs-btn-danger-primary gs-btn-md">Delete</button>
+            <span class="btn-state-label">Enabled</span>
+          </div>
+          <div class="btn-state-cell">
+            <button class="gs-btn gs-btn-danger-primary gs-btn-md state-hover">Delete</button>
+            <span class="btn-state-label">Hover</span>
+          </div>
+          <div class="btn-state-cell">
+            <button class="gs-btn gs-btn-danger-primary gs-btn-md state-pressed">Delete</button>
+            <span class="btn-state-label">Pressed</span>
+          </div>
+          <div class="btn-state-cell">
+            <button class="gs-btn gs-btn-danger-primary gs-btn-md" disabled>Delete</button>
+            <span class="btn-state-label">Disabled</span>
+          </div>
+          <div class="btn-state-cell">
+            <button class="gs-btn gs-btn-danger-primary gs-btn-md state-focus">Delete</button>
+            <span class="btn-state-label">Focus</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── NEUTRAL FAMILY ────────────────────────────────────── -->
+      <div id="btn-s-neutral" class="btn-family-card">
+        <div class="btn-family-title">Neutral</div>
+        <p class="btn-family-desc">Neutral buttons handle utility actions like cancelling, dismissing, or navigating back - with no affirmative or destructive connotation. They sit naturally alongside Primary or Danger buttons without competing for visual attention.</p>
+
+        <div class="btn-sub-label">
+          Sizes
+          <span class="btn-sub-label-note">Large 48px · Medium 40px · Small 32px</span>
+        </div>
+
+        <div class="btn-variant-row">
+          <span class="btn-variant-label">With Border</span>
+          <div class="btn-variant-sizes">
+            <button class="gs-btn gs-btn-neutral gs-btn-lg">Cancel</button>
+            <button class="gs-btn gs-btn-neutral gs-btn-md">Cancel</button>
+            <button class="gs-btn gs-btn-neutral gs-btn-sm">Cancel</button>
+          </div>
+        </div>
+
+        <div class="btn-variant-row" style="margin-top:14px;">
+          <span class="btn-variant-label">No Border</span>
+          <div class="btn-variant-sizes">
+            <button class="gs-btn gs-btn-neutral-ghost gs-btn-lg">Cancel</button>
+            <button class="gs-btn gs-btn-neutral-ghost gs-btn-md">Cancel</button>
+            <button class="gs-btn gs-btn-neutral-ghost gs-btn-sm">Cancel</button>
+          </div>
+        </div>
+
+        <hr class="btn-family-divider">
+
+        <div class="btn-sub-label">Common Pairings</div>
+        <div style="display:flex;flex-direction:column;gap:14px;margin-bottom:32px;">
+          <div style="display:flex;align-items:center;gap:10px;">
+            <button class="gs-btn gs-btn-neutral gs-btn-md">Cancel</button>
+            <button class="gs-btn gs-btn-primary gs-btn-md">Save changes</button>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;">
+            <button class="gs-btn gs-btn-neutral gs-btn-md">Cancel</button>
+            <button class="gs-btn gs-btn-danger-primary gs-btn-md">Delete record</button>
+          </div>
+        </div>
+
+        <div class="btn-sub-label">Neutral (With Border) — All States</div>
+        <div class="btn-states-grid" style="margin-bottom:32px;">
+          <div class="btn-state-cell">
+            <button class="gs-btn gs-btn-neutral gs-btn-md">Cancel</button>
+            <span class="btn-state-label">Enabled</span>
+          </div>
+          <div class="btn-state-cell">
+            <button class="gs-btn gs-btn-neutral gs-btn-md state-hover">Cancel</button>
+            <span class="btn-state-label">Hover</span>
+          </div>
+          <div class="btn-state-cell">
+            <button class="gs-btn gs-btn-neutral gs-btn-md state-pressed">Cancel</button>
+            <span class="btn-state-label">Pressed</span>
+          </div>
+          <div class="btn-state-cell">
+            <button class="gs-btn gs-btn-neutral gs-btn-md" disabled>Cancel</button>
+            <span class="btn-state-label">Disabled</span>
+          </div>
+          <div class="btn-state-cell">
+            <button class="gs-btn gs-btn-neutral gs-btn-md state-focus">Cancel</button>
+            <span class="btn-state-label">Focus</span>
+          </div>
+        </div>
+
+        <div class="btn-sub-label">Neutral (No Border) — All States</div>
+        <div class="btn-states-grid">
+          <div class="btn-state-cell">
+            <button class="gs-btn gs-btn-neutral-ghost gs-btn-md">Cancel</button>
+            <span class="btn-state-label">Enabled</span>
+          </div>
+          <div class="btn-state-cell">
+            <button class="gs-btn gs-btn-neutral-ghost gs-btn-md state-hover">Cancel</button>
+            <span class="btn-state-label">Hover</span>
+          </div>
+          <div class="btn-state-cell">
+            <button class="gs-btn gs-btn-neutral-ghost gs-btn-md state-pressed">Cancel</button>
+            <span class="btn-state-label">Pressed</span>
+          </div>
+          <div class="btn-state-cell">
+            <button class="gs-btn gs-btn-neutral-ghost gs-btn-md" disabled>Cancel</button>
+            <span class="btn-state-label">Disabled</span>
+          </div>
+          <div class="btn-state-cell">
+            <button class="gs-btn gs-btn-neutral-ghost gs-btn-md state-focus">Cancel</button>
+            <span class="btn-state-label">Focus</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── ICON-ONLY FAMILY ──────────────────────────────────── -->
+      <div id="btn-s-icon" class="btn-family-card">
+        <div class="btn-family-title">Icon-Only</div>
+        <p class="btn-family-desc">Square buttons containing a single icon and no text label. Combine <code>.gs-btn-icon</code> with any colour variant and a size class. Always include <code>aria-label</code> for screen readers. The <strong>Neutral Ghost</strong> (no border) variant is the standard for close/dismiss buttons in modal headers, slide-out panels, and banners.</p>
+
+        <!-- Primary icon-only sizes -->
+        <div class="btn-sub-label">Primary — All Sizes</div>
+        <div style="display:flex;align-items:flex-end;gap:16px;margin-bottom:28px;flex-wrap:wrap;">
+          <div style="display:flex;flex-direction:column;align-items:center;gap:10px;">
+            <button class="gs-btn gs-btn-primary gs-btn-icon gs-btn-lg" aria-label="Add item">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            </button>
+            <span class="btn-state-label">Large 48px</span>
+          </div>
+          <div style="display:flex;flex-direction:column;align-items:center;gap:10px;">
+            <button class="gs-btn gs-btn-primary gs-btn-icon gs-btn-md" aria-label="Add item">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            </button>
+            <span class="btn-state-label">Medium 40px</span>
+          </div>
+          <div style="display:flex;flex-direction:column;align-items:center;gap:10px;">
+            <button class="gs-btn gs-btn-primary gs-btn-icon gs-btn-sm" aria-label="Add item">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            </button>
+            <span class="btn-state-label">Small 32px</span>
+          </div>
+        </div>
+
+        <!-- Danger icon-only sizes -->
+        <div class="btn-sub-label">Danger — All Sizes</div>
+        <div style="display:flex;align-items:flex-end;gap:16px;margin-bottom:28px;flex-wrap:wrap;">
+          <div style="display:flex;flex-direction:column;align-items:center;gap:10px;">
+            <button class="gs-btn gs-btn-danger-primary gs-btn-icon gs-btn-lg" aria-label="Delete">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6M10 11v6M14 11v6M9 6V4h6v2"/></svg>
+            </button>
+            <span class="btn-state-label">Large 48px</span>
+          </div>
+          <div style="display:flex;flex-direction:column;align-items:center;gap:10px;">
+            <button class="gs-btn gs-btn-danger-primary gs-btn-icon gs-btn-md" aria-label="Delete">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6M10 11v6M14 11v6M9 6V4h6v2"/></svg>
+            </button>
+            <span class="btn-state-label">Medium 40px</span>
+          </div>
+          <div style="display:flex;flex-direction:column;align-items:center;gap:10px;">
+            <button class="gs-btn gs-btn-danger-primary gs-btn-icon gs-btn-sm" aria-label="Delete">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6M10 11v6M14 11v6M9 6V4h6v2"/></svg>
+            </button>
+            <span class="btn-state-label">Small 32px</span>
+          </div>
+        </div>
+
+        <!-- Neutral ghost icon-only — all states -->
+        <div class="btn-sub-label">Neutral (No Border) — All States</div>
+        <div class="btn-states-grid" style="grid-template-columns:repeat(5,1fr);margin-bottom:20px;">
+          <div class="btn-state-cell">
+            <button class="gs-btn gs-btn-neutral-ghost gs-btn-icon gs-btn-md" aria-label="Close">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+            </button>
+            <span class="btn-state-label">Enabled</span>
+          </div>
+          <div class="btn-state-cell">
+            <button class="gs-btn gs-btn-neutral-ghost gs-btn-icon gs-btn-md state-hover" aria-label="Close">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+            </button>
+            <span class="btn-state-label">Hover</span>
+          </div>
+          <div class="btn-state-cell">
+            <button class="gs-btn gs-btn-neutral-ghost gs-btn-icon gs-btn-md state-pressed" aria-label="Close">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+            </button>
+            <span class="btn-state-label">Pressed</span>
+          </div>
+          <div class="btn-state-cell">
+            <button class="gs-btn gs-btn-neutral-ghost gs-btn-icon gs-btn-md" disabled aria-label="Close">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+            </button>
+            <span class="btn-state-label">Disabled</span>
+          </div>
+          <div class="btn-state-cell">
+            <button class="gs-btn gs-btn-neutral-ghost gs-btn-icon gs-btn-md state-focus" aria-label="Close">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+            </button>
+            <span class="btn-state-label">Focus</span>
+          </div>
+        </div>
+
+        <!-- Common icons -->
+        <div class="btn-sub-label" style="margin-bottom:12px;">Common Use Cases</div>
+        <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
+          <div style="display:flex;flex-direction:column;align-items:center;gap:8px;">
+            <button class="gs-btn gs-btn-neutral-ghost gs-btn-icon gs-btn-md" aria-label="Close panel">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+            </button>
+            <span style="font-size:10px;color:var(--color-text-secondary);">Close</span>
+          </div>
+          <div style="display:flex;flex-direction:column;align-items:center;gap:8px;">
+            <button class="gs-btn gs-btn-neutral-ghost gs-btn-icon gs-btn-md" aria-label="Edit">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+            </button>
+            <span style="font-size:10px;color:var(--color-text-secondary);">Edit</span>
+          </div>
+          <div style="display:flex;flex-direction:column;align-items:center;gap:8px;">
+            <button class="gs-btn gs-btn-neutral-ghost gs-btn-icon gs-btn-md" aria-label="More options">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="12" cy="5" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="12" cy="19" r="1"/></svg>
+            </button>
+            <span style="font-size:10px;color:var(--color-text-secondary);">More</span>
+          </div>
+          <div style="display:flex;flex-direction:column;align-items:center;gap:8px;">
+            <button class="gs-btn gs-btn-neutral-ghost gs-btn-icon gs-btn-md" aria-label="Download">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            </button>
+            <span style="font-size:10px;color:var(--color-text-secondary);">Download</span>
+          </div>
+          <div style="display:flex;flex-direction:column;align-items:center;gap:8px;">
+            <button class="gs-btn gs-btn-neutral-ghost gs-btn-icon gs-btn-md" aria-label="Refresh">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
+            </button>
+            <span style="font-size:10px;color:var(--color-text-secondary);">Refresh</span>
+          </div>
+          <div style="display:flex;flex-direction:column;align-items:center;gap:8px;">
+            <button class="gs-btn gs-btn-danger-primary gs-btn-icon gs-btn-sm" aria-label="Delete row">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6M10 11v6M14 11v6M9 6V4h6v2"/></svg>
+            </button>
+            <span style="font-size:10px;color:var(--color-text-secondary);">Delete (sm)</span>
+          </div>
+        </div>
+
+
+      <!-- ── LINK FAMILY ───────────────────────────────────────── -->
+      <div id="btn-s-link" class="btn-family-card">
+        <div class="btn-family-title">Link</div>
+        <p class="btn-family-desc">Link buttons look and behave like hyperlinks - zero visual weight, ideal for supplementary or inline actions within body copy, dense UIs, or table rows where full button styling would overwhelm the layout.</p>
+
+        <div class="btn-sub-label">Default - All States</div>
+        <div style="display:flex;align-items:flex-end;gap:40px;margin-bottom:28px;flex-wrap:wrap;">
+          <div style="display:flex;flex-direction:column;align-items:center;gap:12px;">
+            <button class="gs-btn gs-btn-link">View details</button>
+            <span class="btn-state-label">Enabled</span>
+          </div>
+          <div style="display:flex;flex-direction:column;align-items:center;gap:12px;">
+            <button class="gs-btn gs-btn-link state-hover">View details</button>
+            <span class="btn-state-label">Hover</span>
+          </div>
+          <div style="display:flex;flex-direction:column;align-items:center;gap:12px;">
+            <button class="gs-btn gs-btn-link state-pressed">View details</button>
+            <span class="btn-state-label">Pressed</span>
+          </div>
+          <div style="display:flex;flex-direction:column;align-items:center;gap:12px;">
+            <button class="gs-btn gs-btn-link" disabled>View details</button>
+            <span class="btn-state-label">Disabled</span>
+          </div>
+        </div>
+
+        <div class="btn-sub-label">Danger - All States</div>
+        <div style="display:flex;align-items:flex-end;gap:40px;flex-wrap:wrap;">
+          <div style="display:flex;flex-direction:column;align-items:center;gap:12px;">
+            <button class="gs-btn gs-btn-link-danger">Remove</button>
+            <span class="btn-state-label">Enabled</span>
+          </div>
+          <div style="display:flex;flex-direction:column;align-items:center;gap:12px;">
+            <button class="gs-btn gs-btn-link-danger state-hover">Remove</button>
+            <span class="btn-state-label">Hover</span>
+          </div>
+          <div style="display:flex;flex-direction:column;align-items:center;gap:12px;">
+            <button class="gs-btn gs-btn-link-danger state-pressed">Remove</button>
+            <span class="btn-state-label">Pressed</span>
+          </div>
+          <div style="display:flex;flex-direction:column;align-items:center;gap:12px;">
+            <button class="gs-btn gs-btn-link-danger" disabled>Remove</button>
+            <span class="btn-state-label">Disabled</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── LOADING STATE ────────────────────────────────────────── -->
+      <div id="btn-s-loading" class="btn-family-card">
+        <div class="btn-family-title">Loading State</div>
+        <p class="btn-family-desc">Add <code>.gs-btn--loading</code> to any button to replace the left content with an animated spinner and disable interaction. The spinner colour is automatically derived from the button's colour family — white on dark backgrounds, brand blue on light ones. Always pair with <code>disabled</code> or <code>aria-disabled="true"</code>.</p>
+
+        <!-- Live demos — all families -->
+        <div class="btn-sub-label" style="margin-bottom:12px;">Button Loading State — Live Demo</div>
+
+        <!-- Row label -->
+        <div style="display:flex;gap:0;margin-bottom:6px;padding:0 2px;">
+          <span style="width:120px;font-size:11px;font-weight:600;color:#9CA3AF;text-transform:uppercase;letter-spacing:.05em;flex-shrink:0;">Family</span>
+          <span style="font-size:11px;font-weight:600;color:#9CA3AF;text-transform:uppercase;letter-spacing:.05em;">Small · Medium · Large</span>
+        </div>
+
+        <!-- Default Primary -->
+        <div class="btn-variant-row" style="align-items:center;">
+          <span class="btn-variant-label">Primary</span>
+          <div class="btn-variant-sizes" style="pointer-events:none;display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
+            <button class="gs-btn gs-btn-primary gs-btn-sm gs-btn--loading" disabled>Saving…</button>
+            <button class="gs-btn gs-btn-primary gs-btn-md gs-btn--loading" disabled>Saving…</button>
+            <button class="gs-btn gs-btn-primary gs-btn-lg gs-btn--loading" disabled>Saving…</button>
+          </div>
+        </div>
+
+        <!-- Default Secondary -->
+        <div class="btn-variant-row" style="align-items:center;">
+          <span class="btn-variant-label">Secondary</span>
+          <div class="btn-variant-sizes" style="pointer-events:none;display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
+            <button class="gs-btn gs-btn-secondary gs-btn-sm gs-btn--loading" disabled>Loading…</button>
+            <button class="gs-btn gs-btn-secondary gs-btn-md gs-btn--loading" disabled>Loading…</button>
+            <button class="gs-btn gs-btn-secondary gs-btn-lg gs-btn--loading" disabled>Loading…</button>
+          </div>
+        </div>
+
+        <!-- Danger Primary -->
+        <div class="btn-variant-row" style="align-items:center;">
+          <span class="btn-variant-label">Danger</span>
+          <div class="btn-variant-sizes" style="pointer-events:none;display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
+            <button class="gs-btn gs-btn-danger-primary gs-btn-sm gs-btn--loading" disabled>Deleting…</button>
+            <button class="gs-btn gs-btn-danger-primary gs-btn-md gs-btn--loading" disabled>Deleting…</button>
+            <button class="gs-btn gs-btn-danger-primary gs-btn-lg gs-btn--loading" disabled>Deleting…</button>
+          </div>
+        </div>
+
+        <!-- Neutral -->
+        <div class="btn-variant-row" style="align-items:center;">
+          <span class="btn-variant-label">Neutral</span>
+          <div class="btn-variant-sizes" style="pointer-events:none;display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
+            <button class="gs-btn gs-btn-neutral gs-btn-sm gs-btn--loading" disabled>Loading…</button>
+            <button class="gs-btn gs-btn-neutral gs-btn-md gs-btn--loading" disabled>Loading…</button>
+            <button class="gs-btn gs-btn-neutral gs-btn-lg gs-btn--loading" disabled>Loading…</button>
+          </div>
+        </div>
+
+        <hr class="btn-family-divider">
+
+        <!-- Spec table -->
+        <div class="btn-sub-label" style="margin-bottom:8px;">Behaviour Spec</div>
+        <table>
+          <thead><tr><th>Property</th><th>Value</th><th>Notes</th></tr></thead>
+          <tbody>
+            <tr class="ds-tr-border"><td>CSS class</td><td><code>.gs-btn--loading</code></td><td>Add alongside existing button classes — no replacement needed</td></tr>
+            <tr class="ds-tr-border"><td>Spinner size</td><td><code>sm</code>: 12px · <code>md</code>: 14px · <code>lg</code>: 16px</td><td>Sized via <code>::before</code> pseudo-element width/height</td></tr>
+            <tr class="ds-tr-border"><td>Spinner colour</td><td>White on primary/danger-primary · Brand blue on all others</td><td>Derived from button family — no extra class needed</td></tr>
+            <tr class="ds-tr-border"><td>Animation</td><td><code>gs-btn-spin 0.72s linear infinite</code></td><td>Matches <code>.gs-spinner</code> timing for visual consistency</td></tr>
+            <tr class="ds-tr-border"><td>Interaction</td><td><code>pointer-events: none</code> · <code>opacity: 0.82</code></td><td>Signals non-interactivity without full disabled styling</td></tr>
+            <tr class="ds-tr-border"><td>DOM requirement</td><td>None — spinner is <code>::before</code> pseudo-element</td><td>No extra <code>&lt;span&gt;</code> or child nodes required</td></tr>
+          </tbody>
+        </table>
+
+        <hr class="btn-family-divider">
+
+        <!-- Cross-reference -->
+        <p class="btn-family-desc" style="margin-top:0;">See also the <button class="btn-inline-link" onclick="navigate('loading-spinner')">Spinner</button> component for standalone usage outside of buttons (inline hints, card overlays, full-page loading).</p>
+      </div>
+
+      <!-- ── DESIGN TOKENS ─────────────────────────────────────── -->
+      <div id="btn-s-tokens" class="btn-family-card">
+        <div class="btn-family-title">Design Tokens</div>
+        <p class="btn-family-desc">Button styling flows through a 3-tier token system. Component tokens (<code style="font-family:'SF Mono',monospace;font-size:12px;background:#f1f5f9;padding:1px 6px;border-radius:3px;">--btn-*</code>) reference semantic tokens, which reference primitive values - so overriding a single semantic token cascades through all components that use it.</p>
+
+        <!-- Token chain legend -->
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:24px;flex-wrap:wrap;">
+          <span style="display:inline-flex;align-items:center;gap:5px;padding:4px 10px;border-radius:20px;background:#eff6ff;font-size:11px;font-weight:700;color:#1852fe;letter-spacing:0.04em;">COMPONENT</span>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+          <span style="display:inline-flex;align-items:center;gap:5px;padding:4px 10px;border-radius:20px;background:#f0fdf4;font-size:11px;font-weight:700;color:#16a34a;letter-spacing:0.04em;">SEMANTIC</span>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+          <span style="display:inline-flex;align-items:center;gap:5px;padding:4px 10px;border-radius:20px;background:#faf5ff;font-size:11px;font-weight:700;color:#7c3aed;letter-spacing:0.04em;">PRIMITIVE</span>
+        </div>
+
+        <!-- Structure tokens -->
+        <div class="btn-sub-label">Structure &amp; Sizing</div>
+        <table class="tok-table" style="margin-bottom:24px;">
+          <thead><tr>
+            <th>Component Token</th>
+            <th>Semantic Token</th>
+            <th>Primitive / Value</th>
+            <th>Preview</th>
+          </tr></thead>
+          <tbody>
+            <tr>
+              <td class="tok-name"><code>--btn-radius</code></td>
+              <td class="tok-ref"><code>--radius-sm</code></td>
+              <td class="tok-ref"><code>--prim-radius-sm</code> · 4px</td>
+              <td><span style="display:inline-block;width:20px;height:20px;border-radius:4px;background:#e2e8f0;border:1.5px solid #cbd5e1;"></span></td>
+            </tr>
+            <tr>
+              <td class="tok-name"><code>--btn-font-size</code></td>
+              <td class="tok-ref">-</td>
+              <td class="tok-ref"><code>--prim-font-size-md</code> · 14px</td>
+              <td><span style="font-size:14px;font-weight:600;color:#0f172a;line-height:1;">Aa</span></td>
+            </tr>
+            <tr>
+              <td class="tok-name"><code>--btn-font-weight</code></td>
+              <td class="tok-ref">-</td>
+              <td class="tok-ref"><code>--prim-font-weight-semibold</code> · 600</td>
+              <td><span style="font-weight:600;color:#0f172a;font-size:13px;">SemiBold</span></td>
+            </tr>
+            <tr>
+              <td class="tok-name"><code>--btn-height-lg</code></td>
+              <td class="tok-ref">-</td>
+              <td class="tok-ref"><code>--prim-space-12</code> · 48px</td>
+              <td><div style="width:40px;height:12px;background:#e2e8f0;border-radius:2px;"></div></td>
+            </tr>
+            <tr>
+              <td class="tok-name"><code>--btn-height-md</code></td>
+              <td class="tok-ref">-</td>
+              <td class="tok-ref"><code>--prim-space-10</code> · 40px</td>
+              <td><div style="width:40px;height:10px;background:#e2e8f0;border-radius:2px;"></div></td>
+            </tr>
+            <tr>
+              <td class="tok-name"><code>--btn-height-sm</code></td>
+              <td class="tok-ref">-</td>
+              <td class="tok-ref"><code>--prim-space-8</code> · 32px</td>
+              <td><div style="width:40px;height:8px;background:#e2e8f0;border-radius:2px;"></div></td>
+            </tr>
+          </tbody>
+        </table>
+
+        <hr class="btn-family-divider">
+
+        <!-- Primary colour tokens -->
+        <div class="btn-sub-label">Primary Colour</div>
+        <table class="tok-table" style="margin-bottom:24px;">
+          <thead><tr>
+            <th>Component Token</th>
+            <th>Semantic Token</th>
+            <th>Primitive / Value</th>
+            <th>Preview</th>
+          </tr></thead>
+          <tbody>
+            <tr>
+              <td class="tok-name"><code>--btn-primary-bg</code></td>
+              <td class="tok-ref"><code>--color-brand</code></td>
+              <td class="tok-ref"><code>--prim-marine</code> · #1852FE</td>
+              <td><span class="tok-swatch" style="background:#1852fe;"></span></td>
+            </tr>
+            <tr>
+              <td class="tok-name"><code>--btn-primary-bg-hover</code></td>
+              <td class="tok-ref"><code>--color-brand-hover</code></td>
+              <td class="tok-ref">#1242D4</td>
+              <td><span class="tok-swatch" style="background:#1242d4;"></span></td>
+            </tr>
+            <tr>
+              <td class="tok-name"><code>--btn-primary-bg-active</code></td>
+              <td class="tok-ref"><code>--color-brand-active</code></td>
+              <td class="tok-ref">#0D3299</td>
+              <td><span class="tok-swatch" style="background:#0d3299;"></span></td>
+            </tr>
+            <tr>
+              <td class="tok-name"><code>--btn-primary-bg-disabled</code></td>
+              <td class="tok-ref"><code>--color-brand-subtle</code></td>
+              <td class="tok-ref"><code>--prim-blue-100</code> · #B8CCFE</td>
+              <td><span class="tok-swatch" style="background:#b8ccfe;"></span></td>
+            </tr>
+            <tr>
+              <td class="tok-name"><code>--btn-secondary-bg</code></td>
+              <td class="tok-ref"><code>--color-brand-subtle</code></td>
+              <td class="tok-ref"><code>--prim-blue-10</code> · #EEF6FF</td>
+              <td><span class="tok-swatch" style="background:#eef6ff;border:1px solid #e2e8f0;"></span></td>
+            </tr>
+            <tr>
+              <td class="tok-name"><code>--btn-secondary-text</code></td>
+              <td class="tok-ref"><code>--color-brand</code></td>
+              <td class="tok-ref"><code>--prim-marine</code> · #1852FE</td>
+              <td><span class="tok-swatch" style="background:#1852fe;"></span></td>
+            </tr>
+            <tr>
+              <td class="tok-name"><code>--btn-tertiary-text</code></td>
+              <td class="tok-ref"><code>--color-brand</code></td>
+              <td class="tok-ref"><code>--prim-marine</code> · #1852FE</td>
+              <td><span class="tok-swatch" style="background:#1852fe;"></span></td>
+            </tr>
+          </tbody>
+        </table>
+
+        <hr class="btn-family-divider">
+
+        <!-- Danger colour tokens -->
+        <div class="btn-sub-label">Danger Colour</div>
+        <table class="tok-table" style="margin-bottom:24px;">
+          <thead><tr>
+            <th>Component Token</th>
+            <th>Semantic Token</th>
+            <th>Primitive / Value</th>
+            <th>Preview</th>
+          </tr></thead>
+          <tbody>
+            <tr>
+              <td class="tok-name"><code>--btn-danger-bg</code></td>
+              <td class="tok-ref"><code>--color-danger</code></td>
+              <td class="tok-ref"><code>--prim-red-500</code> · #DC2625</td>
+              <td><span class="tok-swatch" style="background:#dc2625;"></span></td>
+            </tr>
+            <tr>
+              <td class="tok-name"><code>--btn-danger-bg-hover</code></td>
+              <td class="tok-ref"><code>--color-danger-hover</code></td>
+              <td class="tok-ref"><code>--prim-red-600</code> · #B91C1B</td>
+              <td><span class="tok-swatch" style="background:#b91c1b;"></span></td>
+            </tr>
+            <tr>
+              <td class="tok-name"><code>--btn-danger-bg-active</code></td>
+              <td class="tok-ref"><code>--color-danger-active</code></td>
+              <td class="tok-ref"><code>--prim-red-700</code> · #991B1A</td>
+              <td><span class="tok-swatch" style="background:#991b1a;"></span></td>
+            </tr>
+            <tr>
+              <td class="tok-name"><code>--btn-danger-sec-bg</code></td>
+              <td class="tok-ref"><code>--color-danger-subtle</code></td>
+              <td class="tok-ref"><code>--prim-red-10</code> · #FEF2F2</td>
+              <td><span class="tok-swatch" style="background:#fef2f2;border:1px solid #e2e8f0;"></span></td>
+            </tr>
+          </tbody>
+        </table>
+
+        <hr class="btn-family-divider">
+
+        <!-- Neutral & link tokens -->
+        <div class="btn-sub-label">Neutral &amp; Link</div>
+        <table class="tok-table">
+          <thead><tr>
+            <th>Component Token</th>
+            <th>Semantic Token</th>
+            <th>Primitive / Value</th>
+            <th>Preview</th>
+          </tr></thead>
+          <tbody>
+            <tr>
+              <td class="tok-name"><code>--btn-neutral-bg</code></td>
+              <td class="tok-ref"><code>--color-surface-default</code></td>
+              <td class="tok-ref"><code>--prim-white</code> · #FFFFFF</td>
+              <td><span class="tok-swatch" style="background:#fff;border:1.5px solid #cbd5e1;"></span></td>
+            </tr>
+            <tr>
+              <td class="tok-name"><code>--btn-neutral-bg-hover</code></td>
+              <td class="tok-ref">-</td>
+              <td class="tok-ref"><code>--prim-grey-50</code> · #F8FAFC</td>
+              <td><span class="tok-swatch" style="background:#f8fafc;border:1px solid #e2e8f0;"></span></td>
+            </tr>
+            <tr>
+              <td class="tok-name"><code>--btn-neutral-text</code></td>
+              <td class="tok-ref">-</td>
+              <td class="tok-ref"><code>--prim-grey-500</code> · #64748B</td>
+              <td><span class="tok-swatch" style="background:#64748b;"></span></td>
+            </tr>
+            <tr>
+              <td class="tok-name"><code>--btn-neutral-border</code></td>
+              <td class="tok-ref"><code>--color-border-default</code></td>
+              <td class="tok-ref"><code>--prim-grey-100</code> · #F1F5F9</td>
+              <td><span class="tok-swatch" style="background:#f1f5f9;border:1px solid #e2e8f0;"></span></td>
+            </tr>
+            <tr>
+              <td class="tok-name"><code>--btn-link-text</code></td>
+              <td class="tok-ref"><code>--color-brand</code></td>
+              <td class="tok-ref"><code>--prim-marine</code> · #1852FE</td>
+              <td><span class="tok-swatch" style="background:#1852fe;"></span></td>
+            </tr>
+            <tr>
+              <td class="tok-name"><code>--btn-link-danger-text</code></td>
+              <td class="tok-ref"><code>--color-danger</code></td>
+              <td class="tok-ref"><code>--prim-red-500</code> · #DC2625</td>
+              <td><span class="tok-swatch" style="background:#dc2625;"></span></td>
+            </tr>
+            <tr>
+              <td class="tok-name"><code>--btn-focus-ring</code></td>
+              <td class="tok-ref">-</td>
+              <td class="tok-ref">rgba(24,82,254,0.2) · 3px spread</td>
+              <td><span style="display:inline-block;width:20px;height:20px;border-radius:4px;background:#fff;border:1.5px solid #1852fe;box-shadow:0 0 0 3px rgba(24,82,254,0.2);"></span></td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div style="margin-top:24px;padding:16px 20px;background:#f8fafc;border-radius:10px;border-left:3px solid #1852fe;">
+          <p style="margin:0;font-size:13px;color:#475569;line-height:1.6;">
+            <strong style="color:#0f172a;">Overriding tokens</strong> - to change the brand colour globally, update <code style="font-family:'SF Mono',monospace;font-size:12px;background:#e2e8f0;padding:1px 5px;border-radius:3px;">--prim-marine</code> in <code style="font-family:'SF Mono',monospace;font-size:12px;background:#e2e8f0;padding:1px 5px;border-radius:3px;">:root</code>. The change cascades through <code style="font-family:'SF Mono',monospace;font-size:12px;background:#e2e8f0;padding:1px 5px;border-radius:3px;">--color-brand</code> → all <code style="font-family:'SF Mono',monospace;font-size:12px;background:#e2e8f0;padding:1px 5px;border-radius:3px;">--btn-primary-*</code> tokens automatically.
+          </p>
+        </div>
+      </div>
+
+      </div><!-- /code-tab-main -->
+      </div><!-- /code-tab-layout (close main column) -->
+      <div class="code-tab-qnav">
+        <div class="code-qnav-inner">
+          <p class="code-qnav-title">Quick Access</p>
+          <ul class="code-qnav-list" id="btn-design-qnav">
+            <li class="code-qnav-item"><button class="code-qnav-link active" onclick="scrollToSection('btn-s-default')">Default</button></li>
+            <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('btn-s-danger')">Danger</button></li>
+            <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('btn-s-neutral')">Neutral</button></li>
+            <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('btn-s-icon')">Icon-Only</button></li>
+            <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('btn-s-link')">Link</button></li>
+            <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('btn-s-loading')">Loading State</button></li>
+            <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('btn-s-tokens')">Design Tokens</button></li>
+          </ul>
+        </div>
+      </div>
+      </div><!-- /code-tab-layout -->
+
+    </div><!-- /design tab -->
+
+    <!-- ========== CODE TAB ========== -->
+    <div id="btn-tab-code" class="btn-tab-pane">
+
+      <!-- Framework toggle -->
+      <div class="fw-toggle-bar">
+        <button class="fw-toggle-bar-btn active" data-fw="react" onclick="switchFw('btn-tab-code','react')">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="2.05" fill="#61DAFB"/><ellipse cx="12" cy="12" rx="10" ry="3.8" stroke="#61DAFB" stroke-width="1.3" fill="none"/><ellipse cx="12" cy="12" rx="10" ry="3.8" stroke="#61DAFB" stroke-width="1.3" fill="none" transform="rotate(60 12 12)"/><ellipse cx="12" cy="12" rx="10" ry="3.8" stroke="#61DAFB" stroke-width="1.3" fill="none" transform="rotate(120 12 12)"/></svg>
+          React
+        </button>
+        <button class="fw-toggle-bar-btn" data-fw="angular" onclick="switchFw('btn-tab-code','angular')">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none"><polygon points="12,2 22,5.5 20,18 12,22 4,18 2,5.5" fill="#DD0031"/><polygon points="12,2 12,22 4,18 2,5.5" fill="#C3002F"/><polygon points="12,5.5 8,15.5 9.5,15.5 10.5,13 13.5,13 14.5,15.5 16,15.5 12,5.5" fill="white"/></svg>
+          Angular
+        </button>
+      </div>
+
+      <div class="code-tab-layout">
+      <div class="code-tab-main">
+
+      <!-- Common intro -->
+      <p style="font-size:15px;line-height:1.75;color:#475569;margin:0 0 32px;">
+        The <code class="ds-code-tag">Button</code> component is a <strong style="color:#0f172a;">Pelagos</strong> primitive. The <strong style="color:#0f172a;">React</strong> implementation is a thin wrapper on top of <strong style="color:#0f172a;">Ant Design's Button</strong> — all interactive behaviours (loading spinner, wave-ripple, keyboard activation, link rendering) are delegated to AntD. Pelagos design tokens are injected per-variant via a scoped <code class="ds-code-tag">ConfigProvider</code> in <code class="ds-code-tag">buttonTheme.js</code> so they never leak into the global theme. Global tokens are shared across all components via <code class="ds-code-tag">pelagosTheme.js</code>; mount <code class="ds-code-tag">PelagosProvider</code> once at your app root to apply them system-wide, or rely on each component’s own scoped provider — <strong style="color:#0f172a;">either approach works independently</strong>. The <strong style="color:#0f172a;">Angular</strong> implementation is a standalone CSS component that uses the same Pelagos token chain via <code class="ds-code-tag">_variables.scss</code>.
+      </p>
+
+      <!-- ① Installation -->
+      <div id="btn-c-install" class="btn-code-section">
+        <div class="ds-step-row">
+          <span class="ds-step-num">1</span>
+          <h3 class="ds-prop-title">Installation</h3>
+        </div>
+        <div class="fw-react">
+          <div class="btn-code-block">
+            <div class="btn-code-head">
+              <span class="btn-code-lang">bash</span>
+              <button class="btn-copy-btn" onclick="copyBtnCode('code-install',this)">Copy</button>
+            </div>
+            <div class="btn-code-body">
+              <pre id="code-install"><span class="c-cmt"># Install dependencies</span>
+npm install antd
+npm install --save-dev sass</pre>
+            </div>
+          </div>
+        </div>
+        <div class="fw-angular" style="display:none">
+          <div class="btn-code-block">
+            <div class="btn-code-head">
+              <span class="btn-code-lang">bash</span>
+              <button class="btn-copy-btn" onclick="copyBtnCode('ng-code-install',this)">Copy</button>
+            </div>
+            <div class="btn-code-body">
+              <pre id="ng-code-install"><span class="c-cmt"># Sass is pre-installed in Angular CLI projects</span>
+npm install --save-dev sass</pre>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ② File Structure -->
+      <div id="btn-c-struct" class="btn-code-section">
+        <div class="ds-step-row">
+          <span class="ds-step-num">2</span>
+          <h3 class="ds-prop-title">File Structure</h3>
+        </div>
+        <div class="fw-react">
+          <div class="btn-code-block">
+            <div class="btn-code-head">
+              <span class="btn-code-lang">directory</span>
+            </div>
+            <div class="btn-code-body">
+              <pre id="code-structure"><span class="c-cmt">src/
+├── foundations/
+│   ├── colors.css             </span><span class="c-cmt">← Pelagos color tokens (primitive → semantic)</span>
+<span class="c-cmt">│   ├── typography.css         </span><span class="c-cmt">← Font family, sizes, weights</span>
+<span class="c-cmt">│   ├── spacing.css            </span><span class="c-cmt">← Spacing, radius, elevation</span>
+<span class="c-cmt">│   └── index.css              </span><span class="c-cmt">← Barrel — import this one file</span>
+<span class="c-cmt">├── pelagosTheme.js        </span><span class="c-cmt">← Shared global tokens + control heights (all components)</span>
+<span class="c-cmt">├── PelagosProvider.jsx    </span><span class="c-cmt">← Optional app-root ConfigProvider wrapping globalTokens</span>
+<span class="c-cmt">└── components/
+    └── primitives/
+        └── button/
+            ├── Button.jsx     </span><span class="c-cmt">← Pelagos Button — AntD wrapper</span>
+<span class="c-cmt">            ├── buttonTheme.js </span><span class="c-cmt">← Button-specific tokens; imports globalTokens from pelagosTheme.js</span>
+<span class="c-cmt">            ├── Button.scss    </span><span class="c-cmt">← Supplemental styles (dual-icon layout only)</span>
+<span class="c-cmt">            └── index.js       </span><span class="c-cmt">← Barrel export</span></pre>
+            </div>
+          </div>
+        </div>
+        <div class="fw-angular" style="display:none">
+          <div class="btn-code-block">
+            <div class="btn-code-head">
+              <span class="btn-code-lang">directory</span>
+            </div>
+            <div class="btn-code-body">
+              <pre id="ng-code-structure"><span class="c-cmt">src/
+├── tokens/
+│   └── tokens.css                  </span><span class="c-cmt">← DS CSS custom properties (:root)</span>
+<span class="c-cmt">├── styles/
+│   └── _variables.scss             </span><span class="c-cmt">← SCSS bridge: $var: var(--btn-*)</span>
+<span class="c-cmt">└── app/
+    └── shared/
+        └── button/
+            ├── button.component.ts </span><span class="c-cmt">← GS Button component (standalone)</span>
+<span class="c-cmt">            ├── button.component.html</span><span class="c-cmt">← Template</span>
+<span class="c-cmt">            ├── button.component.scss</span><span class="c-cmt">← Uses SCSS vars → resolves to CSS tokens</span>
+<span class="c-cmt">            └── button.module.ts    </span><span class="c-cmt">← NgModule re-export (optional)</span></pre>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ③ Token Setup -->
+      <div id="btn-c-token" class="btn-code-section">
+        <div class="ds-step-row">
+          <span class="ds-step-num">3</span>
+          <h3 class="ds-prop-title fw-react">button/buttonTheme.js</h3>
+          <h3 class="ds-prop-title fw-angular" style="display:none">main.ts — Token Import</h3>
+        </div>
+        <div class="fw-react">
+          <div class="btn-code-block">
+            <div class="btn-code-head">
+              <span class="btn-code-lang">JavaScript · Pelagos → AntD Token Mapping</span>
+              <button class="btn-copy-btn" onclick="copyBtnCode('code-theme',this)">Copy</button>
+            </div>
+            <div class="btn-code-body">
+              <pre id="code-theme"><span class="c-cmt">/**
+ * buttonTheme.js — scoped ConfigProvider theme per variant.
+ *
+ * Maps Pelagos design tokens (foundations/) to AntD v5 Button component
+ * tokens. Global tokens (colour, typography, radius) and shared control
+ * heights are imported from pelagosTheme.js so they stay in sync with
+ * every other Pelagos component wrapper.
+ *
+ * Token chain:  colorPrimary  ←  --prim-marine  ←  #1852FE
+ */</span>
+
+<span class="c-kw">import</span> { globalTokens, globalComponentTokens } <span class="c-kw">from</span> <span class="c-val">'../../../pelagosTheme.js'</span>;
+
+<span class="c-cmt">// ── Button-specific component tokens only ─────────────────────────────────</span>
+<span class="c-cmt">//    Heights come from globalComponentTokens (shared with Input, Select, …)</span>
+<span class="c-cmt">//    AntD defaults:  SM=24 / middle=32 / LG=40  →  Pelagos: 32 / 40 / 48</span>
+<span class="c-kw">const</span> baseButtonTokens = {
+  ...globalComponentTokens,              <span class="c-cmt">// controlHeight / LG / SM</span>
+  paddingInline:     <span class="c-val">16</span>,  paddingInlineLG:    <span class="c-val">24</span>,  paddingInlineSM:    <span class="c-val">12</span>,
+  contentFontSize:   <span class="c-val">14</span>,  contentFontSizeLG:  <span class="c-val">16</span>,  contentFontSizeSM:  <span class="c-val">12</span>,
+  fontWeight:        <span class="c-val">600</span>,
+  primaryShadow: <span class="c-val">'none'</span>, defaultShadow: <span class="c-val">'none'</span>, dangerShadow: <span class="c-val">'none'</span>,
+};
+
+<span class="c-kw">export const</span> variantThemes = {
+  <span class="c-cmt">// primary — colorPrimary drives bg + border + focus ring</span>
+  primary:   { token: globalTokens, components: { Button: baseButtonTokens } },
+
+  <span class="c-cmt">// secondary — tinted brand bg, brand text + border (default type)</span>
+  secondary: { token: globalTokens, components: { Button: { ...baseButtonTokens,
+    defaultBg:               <span class="c-val">'#eef6ff'</span>, <span class="c-cmt">// --color-brand-subtle</span>
+    defaultBorderColor:      <span class="c-val">'#bedbfe'</span>, <span class="c-cmt">// --color-brand-border</span>
+    defaultColor:            <span class="c-val">'#1852FE'</span>, <span class="c-cmt">// --color-brand</span>
+    defaultHoverBg:          <span class="c-val">'#dde7ff'</span>, defaultHoverBorderColor: <span class="c-val">'#bedbfe'</span>,
+    defaultActiveBg:         <span class="c-val">'#bedbfe'</span>, defaultActiveColor:      <span class="c-val">'#1242d4'</span>,
+  }}},
+
+  <span class="c-cmt">// tertiary — transparent bg, brand text (text type)</span>
+  <span class="c-cmt">// colorText scoped here to brand blue — safe, wraps only this button</span>
+  tertiary: {
+    token: { ...globalTokens, colorText: <span class="c-val">'#1852FE'</span> },
+    components: { Button: { ...baseButtonTokens, textHoverBg: <span class="c-val">'#eef6ff'</span> } },
+  },
+
+  <span class="c-cmt">// danger — colorError drives bg + border + focus ring (primary + danger)</span>
+  danger: { token: globalTokens, components: { Button: baseButtonTokens } },
+
+  <span class="c-cmt">// danger-secondary — subtle red bg (default + danger)</span>
+  <span class="c-cmt">// colorBgContainer sets initial bg; colorErrorBg/BgHover set hover/active</span>
+  <span class="c-val">'danger-secondary'</span>: {
+    token: { ...globalTokens,
+      colorBgContainer:  <span class="c-val">'#fef1f2'</span>, <span class="c-cmt">// --color-danger-subtle (initial bg)</span>
+      colorErrorBg:      <span class="c-val">'#fde2e2'</span>, <span class="c-cmt">// --prim-red-50         (hover bg)</span>
+      colorErrorBgHover: <span class="c-val">'#fecaca'</span>, <span class="c-cmt">// --prim-red-100        (active bg)</span>
+      colorErrorBorder:  <span class="c-val">'#fecaca'</span>, <span class="c-cmt">// --prim-red-100        (initial border)</span>
+    },
+    components: { Button: baseButtonTokens },
+  },
+
+  <span class="c-cmt">// neutral — grey palette, no brand tint (default type)</span>
+  neutral: { token: globalTokens, components: { Button: { ...baseButtonTokens,
+    defaultBg:               <span class="c-val">'#ffffff'</span>, defaultBorderColor:      <span class="c-val">'#e2e8f0'</span>,
+    defaultColor:            <span class="c-val">'#475569'</span>, <span class="c-cmt">// --prim-grey-500</span>
+    defaultHoverBg:          <span class="c-val">'#f1f5f9'</span>, defaultHoverBorderColor: <span class="c-val">'#e2e8f0'</span>,
+    defaultActiveBg:         <span class="c-val">'#e2e8f0'</span>, defaultActiveColor:      <span class="c-val">'#334154'</span>,
+  }}},
+
+  <span class="c-cmt">// link — colorLink / colorLinkHover / colorLinkActive drive text colour</span>
+  link: { token: globalTokens, components: { Button: baseButtonTokens } },
+};
+
+<span class="c-cmt">/** Returns the scoped ConfigProvider theme for a given Pelagos variant. */</span>
+<span class="c-kw">export const</span> getButtonTheme = (variant) =&gt;
+  variantThemes[variant] ?? variantThemes.primary;</pre>
+            </div>
+          </div>
+        </div>
+        <div class="fw-angular" style="display:none">
+          <div class="btn-code-block">
+            <div class="btn-code-head">
+              <span class="btn-code-lang">TypeScript · main.ts</span>
+              <button class="btn-copy-btn" onclick="copyBtnCode('ng-code-main',this)">Copy</button>
+            </div>
+            <div class="btn-code-body">
+              <pre id="ng-code-main"><span class="c-cmt">// Import once at the app entry point.</span>
+<span class="c-cmt">// Angular reads the custom properties at runtime — no ConfigProvider needed.</span>
+<span class="c-kw">import</span> <span class="c-val">'../tokens/tokens.css'</span>;
+
+<span class="c-kw">import</span> { bootstrapApplication } <span class="c-kw">from</span> <span class="c-val">'@angular/platform-browser'</span>;
+<span class="c-kw">import</span> { AppComponent } <span class="c-kw">from</span> <span class="c-val">'./app/app.component'</span>;
+
+bootstrapApplication(AppComponent);</pre>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ④ _variables.scss — COMMON (framework-agnostic token bridge) -->
+      <div id="btn-c-vars" class="btn-code-section">
+        <div class="ds-step-row">
+          <span class="ds-step-num">4</span>
+          <h3 class="ds-prop-title">styles/_variables.scss</h3>
+          <span style="font-size:11px;font-weight:600;color:#0f172a;background:#f0fdf4;border:1px solid #bbf7d0;border-radius:20px;padding:2px 9px;margin-left:8px;letter-spacing:0.03em;">Angular &amp; other components</span>
+          <span style="font-size:11px;font-weight:600;color:#475569;background:#f8fafc;border:1px solid #e2e8f0;border-radius:20px;padding:2px 9px;margin-left:6px;letter-spacing:0.03em;">React Button uses AntD tokens — this file not required</span>
+        </div>
+        <div class="btn-code-block">
+          <div class="btn-code-head">
+            <span class="btn-code-lang">SCSS · Design Tokens · Framework-agnostic</span>
+            <button class="btn-copy-btn" onclick="copyBtnCode('code-variables',this)">Copy</button>
+          </div>
+          <div class="btn-code-body">
+            <pre id="code-variables"><span class="c-cmt">// ─── Token bridge: SCSS variables → CSS custom properties ─────────────────
+// Each $variable wraps a var(--token) so SCSS can use them in rules while
+// the CSS engine resolves the actual value from :root at runtime.
+//
+// Tier chain:  $btn-primary-bg
+//               → var(--btn-primary-bg)       [component token]
+//               → var(--color-brand)           [semantic token]
+//               → var(--prim-marine)           [primitive token]
+//               → #1852FE                      [raw value]
+// ─────────────────────────────────────────────────────────────────────────</span>
+
+<span class="c-cmt">// ─── Structure ────────────────────────────────────────────</span>
+<span class="c-kw">$btn-radius</span>:             var(<span class="c-val">--btn-radius</span>);            <span class="c-cmt">// → --radius-sm → 4px</span>
+<span class="c-kw">$btn-font-size</span>:          var(<span class="c-val">--btn-font-size</span>);         <span class="c-cmt">// → --prim-font-size-md → 14px</span>
+<span class="c-kw">$btn-font-weight</span>:        var(<span class="c-val">--btn-font-weight</span>);       <span class="c-cmt">// → --prim-font-weight-semibold → 600</span>
+
+<span class="c-cmt">// ─── Primary ──────────────────────────────────────────────</span>
+<span class="c-kw">$btn-primary-bg</span>:         var(<span class="c-val">--btn-primary-bg</span>);        <span class="c-cmt">// → --color-brand → #1852FE</span>
+<span class="c-kw">$btn-primary-bg-hover</span>:   var(<span class="c-val">--btn-primary-bg-hover</span>);  <span class="c-cmt">// → --color-brand-hover → #1242D4</span>
+<span class="c-kw">$btn-primary-bg-active</span>:  var(<span class="c-val">--btn-primary-bg-active</span>); <span class="c-cmt">// → --color-brand-active → #0D3299</span>
+<span class="c-kw">$btn-primary-text</span>:       var(<span class="c-val">--btn-primary-text</span>);      <span class="c-cmt">// → --color-text-inverse → #FFF</span>
+<span class="c-kw">$btn-secondary-bg</span>:       var(<span class="c-val">--btn-secondary-bg</span>);      <span class="c-cmt">// → --color-brand-subtle → #EEF6FF</span>
+<span class="c-kw">$btn-secondary-text</span>:     var(<span class="c-val">--btn-secondary-text</span>);    <span class="c-cmt">// → --color-brand → #1852FE</span>
+<span class="c-kw">$btn-secondary-border</span>:   var(<span class="c-val">--btn-secondary-border</span>);  <span class="c-cmt">// → --color-brand-border</span>
+<span class="c-kw">$btn-tertiary-bg-hover</span>:  var(<span class="c-val">--btn-tertiary-bg-hover</span>); <span class="c-cmt">// → --color-brand-subtle</span>
+<span class="c-kw">$btn-tertiary-text</span>:      var(<span class="c-val">--btn-tertiary-text</span>);     <span class="c-cmt">// → --color-brand → #1852FE</span>
+
+<span class="c-cmt">// ─── Danger ───────────────────────────────────────────────</span>
+<span class="c-kw">$btn-danger-bg</span>:          var(<span class="c-val">--btn-danger-bg</span>);         <span class="c-cmt">// → --color-danger → #DC2625</span>
+<span class="c-kw">$btn-danger-bg-hover</span>:    var(<span class="c-val">--btn-danger-bg-hover</span>);   <span class="c-cmt">// → --color-danger-hover → #B91C1B</span>
+<span class="c-kw">$btn-danger-bg-active</span>:   var(<span class="c-val">--btn-danger-bg-active</span>);  <span class="c-cmt">// → --color-danger-active → #991B1A</span>
+<span class="c-kw">$btn-danger-text</span>:        var(<span class="c-val">--btn-danger-text</span>);       <span class="c-cmt">// → --color-text-inverse → #FFF</span>
+<span class="c-kw">$btn-danger-sec-bg</span>:      var(<span class="c-val">--btn-danger-sec-bg</span>);     <span class="c-cmt">// → --color-danger-subtle → #FEF2F2</span>
+<span class="c-kw">$btn-danger-sec-text</span>:    var(<span class="c-val">--btn-danger-sec-text</span>);   <span class="c-cmt">// → --color-danger → #DC2625</span>
+<span class="c-kw">$btn-danger-sec-border</span>:  var(<span class="c-val">--btn-danger-sec-border</span>); <span class="c-cmt">// → --color-danger</span>
+
+<span class="c-cmt">// ─── Neutral & Link ───────────────────────────────────────</span>
+<span class="c-kw">$btn-neutral-bg</span>:         var(<span class="c-val">--btn-neutral-bg</span>);        <span class="c-cmt">// → --color-surface-default → #FFF</span>
+<span class="c-kw">$btn-neutral-bg-hover</span>:   var(<span class="c-val">--btn-neutral-bg-hover</span>);  <span class="c-cmt">// → --prim-grey-50 → #F8FAFC</span>
+<span class="c-kw">$btn-neutral-text</span>:       var(<span class="c-val">--btn-neutral-text</span>);      <span class="c-cmt">// → --prim-grey-500 → #64748B</span>
+<span class="c-kw">$btn-neutral-border</span>:     var(<span class="c-val">--btn-neutral-border</span>);    <span class="c-cmt">// → --color-border-default</span>
+<span class="c-kw">$btn-link-text</span>:          var(<span class="c-val">--btn-link-text</span>);         <span class="c-cmt">// → --color-brand → #1852FE</span>
+<span class="c-kw">$btn-link-text-hover</span>:    var(<span class="c-val">--btn-link-text-hover</span>);   <span class="c-cmt">// → --color-brand-hover → #1242D4</span>
+<span class="c-kw">$btn-link-danger-text</span>:   var(<span class="c-val">--btn-link-danger-text</span>);  <span class="c-cmt">// → --color-danger → #DC2625</span>
+<span class="c-kw">$btn-link-danger-hover</span>:  var(<span class="c-val">--btn-link-danger-hover</span>); <span class="c-cmt">// → --color-danger-hover → #B91C1B</span>
+<span class="c-kw">$btn-focus-ring</span>:         var(<span class="c-val">--btn-focus-ring</span>);        <span class="c-cmt">// 0 0 0 3px rgba(24,82,254,0.2)</span></pre>
+          </div>
+        </div>
+      </div>
+
+      <!-- ⑤ Component Styles -->
+      <div id="btn-c-styles" class="btn-code-section">
+        <div class="ds-step-row">
+          <span class="ds-step-num">5</span>
+          <h3 class="ds-prop-title fw-react">Button/Button.scss</h3>
+          <h3 class="ds-prop-title fw-angular" style="display:none">button/button.component.scss</h3>
+        </div>
+        <div class="fw-react">
+        <div class="btn-code-block">
+          <div class="btn-code-head">
+            <span class="btn-code-lang">SCSS · Supplemental Overrides (minimal)</span>
+            <button class="btn-copy-btn" onclick="copyBtnCode('code-scss',this)">Copy</button>
+          </div>
+          <div class="btn-code-body">
+            <pre id="code-scss"><span class="c-cmt">/**
+ * Button.scss — intentionally minimal.
+ *
+ * AntD handles ALL core styling (colours, heights, padding, border-radius,
+ * hover/active/focus states, loading spinner, wave ripple, disabled opacity)
+ * via the ConfigProvider token overrides in buttonTheme.js.
+ *
+ * This file only provides the dual-icon layout — for the rare case where
+ * both iconLeft AND iconRight are passed simultaneously. AntD's `icon` prop
+ * supports only one icon slot, so we handle the second icon manually.
+ */</span>
+
+<span class="c-cmt">// ── Dual-icon helpers ──────────────────────────────────────</span>
+<span class="c-tag">.btn__icon--left</span>,
+<span class="c-tag">.btn__icon--right</span> {
+  display: inline-flex;
+  align-items: center;
+  flex-shrink: 0;
+
+  <span class="c-tag">svg</span> { display: block; }
+}
+
+<span class="c-tag">.btn__icon--left</span>  { margin-inline-end:   4px; } <span class="c-cmt">// gap: icon → label</span>
+<span class="c-tag">.btn__icon--right</span> { margin-inline-start: 4px; } <span class="c-cmt">// gap: label → icon</span></pre>
+          </div>
+        </div>
+        </div><!-- /fw-react -->
+        <div class="fw-angular" style="display:none">
+          <div class="btn-code-block">
+            <div class="btn-code-head">
+              <span class="btn-code-lang">SCSS · Angular Component</span>
+              <button class="btn-copy-btn" onclick="copyBtnCode('ng-code-scss',this)">Copy</button>
+            </div>
+            <div class="btn-code-body">
+              <pre id="ng-code-scss"><span class="c-kw">@use</span> <span class="c-val">'../../styles/variables'</span> <span class="c-kw">as</span> *;
+
+<span class="c-tag">:host</span> { display: inline-flex; }
+
+<span class="c-tag">.gs-btn</span> {
+  display: inline-flex; align-items: center; justify-content: center;
+  font-size: <span class="c-kw">$btn-font-size</span>; font-weight: <span class="c-kw">$btn-font-weight</span>; border-radius: <span class="c-kw">$btn-radius</span>;
+  cursor: pointer; border: 1px solid transparent;
+  transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+  <span class="c-tag">&amp;:focus-visible</span> { outline: none; box-shadow: <span class="c-kw">$btn-focus-ring</span>; }
+  <span class="c-tag">&amp;[disabled]</span>     { opacity: 0.45; cursor: not-allowed; pointer-events: none; }
+}
+<span class="c-tag">.gs-btn--lg</span> { height: 48px; padding: 0 24px; font-size: 15px; }
+<span class="c-tag">.gs-btn--md</span> { height: 40px; padding: 0 16px; }
+<span class="c-tag">.gs-btn--sm</span> { height: 32px; padding: 0 12px; font-size: 13px; }
+
+<span class="c-tag">.gs-btn--primary</span> {
+  background: <span class="c-kw">$btn-primary-bg</span>; color: <span class="c-kw">$btn-primary-text</span>;
+  <span class="c-tag">&amp;:hover</span>  { background: <span class="c-kw">$btn-primary-bg-hover</span>; }
+  <span class="c-tag">&amp;:active</span> { background: <span class="c-kw">$btn-primary-bg-active</span>; }
+}
+<span class="c-tag">.gs-btn--secondary</span> {
+  background: <span class="c-kw">$btn-secondary-bg</span>; color: <span class="c-kw">$btn-secondary-text</span>; border-color: <span class="c-kw">$btn-secondary-border</span>;
+  <span class="c-tag">&amp;:hover</span>  { filter: brightness(0.97); }
+  <span class="c-tag">&amp;:active</span> { filter: brightness(0.94); }
+}
+<span class="c-tag">.gs-btn--tertiary</span> {
+  background: transparent; color: <span class="c-kw">$btn-tertiary-text</span>;
+  <span class="c-tag">&amp;:hover</span>  { background: <span class="c-kw">$btn-tertiary-bg-hover</span>; }
+}
+<span class="c-tag">.gs-btn--danger</span> {
+  background: <span class="c-kw">$btn-danger-bg</span>; color: <span class="c-kw">$btn-danger-text</span>;
+  <span class="c-tag">&amp;:hover</span>  { background: <span class="c-kw">$btn-danger-bg-hover</span>; }
+  <span class="c-tag">&amp;:active</span> { background: <span class="c-kw">$btn-danger-bg-active</span>; }
+}
+<span class="c-tag">.gs-btn--danger-secondary</span> {
+  background: <span class="c-kw">$btn-danger-sec-bg</span>; color: <span class="c-kw">$btn-danger-sec-text</span>; border-color: <span class="c-kw">$btn-danger-sec-border</span>;
+  <span class="c-tag">&amp;:hover</span>  { filter: brightness(0.97); }
+}
+<span class="c-tag">.gs-btn--danger-tertiary</span> {
+  background: transparent; color: <span class="c-kw">$btn-danger-sec-text</span>;
+  <span class="c-tag">&amp;:hover</span>  { background: <span class="c-kw">$btn-danger-sec-bg</span>; }
+}
+<span class="c-tag">.gs-btn--neutral</span> {
+  background: <span class="c-kw">$btn-neutral-bg</span>; color: <span class="c-kw">$btn-neutral-text</span>; border-color: <span class="c-kw">$btn-neutral-border</span>;
+  <span class="c-tag">&amp;:hover</span>  { background: <span class="c-kw">$btn-neutral-bg-hover</span>; }
+}
+<span class="c-tag">.gs-btn--link</span> {
+  background: none; border-color: transparent; color: <span class="c-kw">$btn-link-text</span>;
+  text-decoration: underline; text-underline-offset: 3px;
+  <span class="c-tag">&amp;:hover</span>  { color: <span class="c-kw">$btn-link-text-hover</span>; }
+  <span class="c-tag">&amp;:active</span> { color: <span class="c-kw">$btn-primary-bg-active</span>; }
+}
+<span class="c-tag">.gs-btn--link-danger</span> {
+  background: none; border-color: transparent; color: <span class="c-kw">$btn-link-danger-text</span>;
+  text-decoration: underline; text-underline-offset: 3px;
+  <span class="c-tag">&amp;:hover</span>  { color: <span class="c-kw">$btn-link-danger-hover</span>; }
+}</pre>
+            </div>
+          </div>
+        </div><!-- /fw-angular -->
+      </div>
+
+      <!-- ⑥ Component Logic -->
+      <div id="btn-c-logic" class="btn-code-section">
+        <div class="ds-step-row">
+          <span class="ds-step-num">6</span>
+          <h3 class="ds-prop-title fw-react">Button/Button.jsx</h3>
+          <h3 class="ds-prop-title fw-angular" style="display:none">button.component.ts + .html</h3>
+        </div>
+
+        <div class="fw-react">
+          <div class="btn-code-block">
+            <div class="btn-code-head">
+              <span class="btn-code-lang">JSX · React · AntD Wrapper + forwardRef</span>
+              <button class="btn-copy-btn" onclick="copyBtnCode('code-component',this)">Copy</button>
+            </div>
+            <div class="btn-code-body">
+              <pre id="code-component"><span class="c-kw">import</span> React <span class="c-kw">from</span> <span class="c-val">'react'</span>;
+<span class="c-kw">import</span> { Button <span class="c-kw">as</span> AntButton, ConfigProvider } <span class="c-kw">from</span> <span class="c-val">'antd'</span>;
+<span class="c-kw">import</span> { getButtonTheme } <span class="c-kw">from</span> <span class="c-val">'./buttonTheme'</span>;
+<span class="c-kw">import</span> <span class="c-val">'./Button.scss'</span>;
+
+<span class="c-cmt">// ── Variant → AntD type + danger ─────────────────────────────────────────</span>
+<span class="c-cmt">// Extending variants requires only a new entry here — no other code changes.</span>
+<span class="c-kw">const</span> VARIANT_MAP = {
+  primary:            { type: <span class="c-val">'primary'</span>, danger: <span class="c-val">false</span> },
+  secondary:          { type: <span class="c-val">'default'</span>, danger: <span class="c-val">false</span> },
+  tertiary:           { type: <span class="c-val">'text'</span>,    danger: <span class="c-val">false</span> },
+  danger:             { type: <span class="c-val">'primary'</span>, danger: <span class="c-val">true</span>  },
+  <span class="c-val">'danger-secondary'</span>: { type: <span class="c-val">'default'</span>, danger: <span class="c-val">true</span>  },
+  neutral:            { type: <span class="c-val">'default'</span>, danger: <span class="c-val">false</span> },
+  link:               { type: <span class="c-val">'link'</span>,    danger: <span class="c-val">false</span> },
+};
+
+<span class="c-cmt">// ── Pelagos size → AntD size ──────────────────────────────────────────────</span>
+<span class="c-kw">const</span> SIZE_MAP = { sm: <span class="c-val">'small'</span>, md: <span class="c-val">'middle'</span>, lg: <span class="c-val">'large'</span> };
+
+<span class="c-cmt">// ── Component ─────────────────────────────────────────────────────────────</span>
+<span class="c-cmt">// React.forwardRef preserves ref compatibility: form libraries (react-hook-form,</span>
+<span class="c-cmt">// Formik), focus management, and any existing ref usage in the consuming app.</span>
+<span class="c-kw">export const</span> Button = React.forwardRef(<span class="c-kw">function</span> <span class="c-type">Button</span>(
+  {
+    <span class="c-cmt">// ── Pelagos-specific props ──────────────────────────────────────────</span>
+    variant   = <span class="c-val">'primary'</span>,
+    size      = <span class="c-val">'md'</span>,
+    iconLeft,
+    iconRight,
+    fullWidth = <span class="c-val">false</span>,
+    type      = <span class="c-val">'button'</span>,   <span class="c-cmt">// HTML button type → AntD htmlType</span>
+
+    <span class="c-cmt">// ── AntD v5.13+ interception (not forwarded) ───────────────────────</span>
+    color,              <span class="c-cmt">// AntD v5.13+ color prop — use variant instead</span>
+
+    <span class="c-cmt">// ── AntD props ─────────────────────────────────────────────────────</span>
+    disabled  = <span class="c-val">false</span>,
+    loading   = <span class="c-val">false</span>,  <span class="c-cmt">// boolean | { delay: number }</span>
+    onClick,
+    children,
+    className,
+    ...rest             <span class="c-cmt">// href, target, shape, ghost, classNames, styles…</span>
+  },
+  ref,
+) {
+  <span class="c-kw">const</span> { type: antType, danger } = VARIANT_MAP[variant] ?? VARIANT_MAP.primary;
+  <span class="c-kw">const</span> antSize                   = SIZE_MAP[size]        ?? <span class="c-val">'middle'</span>;
+
+  <span class="c-cmt">// Single icon → AntD icon + iconPosition (gap + alignment handled by AntD).</span>
+  <span class="c-cmt">// Both icons  → manual spans; AntD still renders the button shell.</span>
+  <span class="c-kw">const</span> hasBothIcons = <span class="c-type">Boolean</span>(iconLeft &amp;&amp; iconRight);
+  <span class="c-kw">let</span> icon, iconPosition;
+  <span class="c-kw">if</span> (!hasBothIcons) {
+    <span class="c-kw">if</span> (iconLeft)  { icon = iconLeft;  iconPosition = <span class="c-val">'start'</span>; }
+    <span class="c-kw">if</span> (iconRight) { icon = iconRight; iconPosition = <span class="c-val">'end'</span>;   }
+  }
+
+  <span class="c-kw">return</span> (
+    &lt;<span class="c-tag">ConfigProvider</span> <span class="c-attr">theme</span>={getButtonTheme(variant)}&gt;
+      &lt;<span class="c-tag">AntButton</span>
+        <span class="c-attr">ref</span>={ref}
+        <span class="c-attr">type</span>={antType}
+        <span class="c-attr">danger</span>={danger}
+        <span class="c-attr">size</span>={antSize}
+        <span class="c-attr">disabled</span>={disabled}
+        <span class="c-attr">loading</span>={loading}
+        <span class="c-attr">block</span>={fullWidth}
+        <span class="c-attr">icon</span>={icon}
+        <span class="c-attr">iconPosition</span>={iconPosition}
+        <span class="c-attr">htmlType</span>={type}
+        <span class="c-attr">onClick</span>={onClick}
+        <span class="c-attr">className</span>={className}
+        <span class="c-attr">data-variant</span>={variant}
+        {...rest}
+      &gt;
+        {hasBothIcons ? (
+          &lt;&gt;
+            &lt;<span class="c-tag">span</span> <span class="c-attr">className</span>=<span class="c-val">"btn__icon--left"</span>&gt;{iconLeft}&lt;/<span class="c-tag">span</span>&gt;
+            {children}
+            &lt;<span class="c-tag">span</span> <span class="c-attr">className</span>=<span class="c-val">"btn__icon--right"</span>&gt;{iconRight}&lt;/<span class="c-tag">span</span>&gt;
+          &lt;/&gt;
+        ) : children}
+      &lt;/<span class="c-tag">AntButton</span>&gt;
+    &lt;/<span class="c-tag">ConfigProvider</span>&gt;
+  );
+});
+
+Button.displayName = <span class="c-val">'PelagosButton'</span>;
+<span class="c-kw">export default</span> Button;</pre>
+            </div>
+          </div>
+        </div><!-- /fw-react -->
+
+        <div class="fw-angular" style="display:none">
+          <div class="btn-code-block">
+            <div class="btn-code-head">
+              <span class="btn-code-lang">TypeScript · Button.component.ts · ng-zorro wrapper</span>
+              <button class="btn-copy-btn" onclick="copyBtnCode('ng-code-component',this)">Copy</button>
+            </div>
+            <div class="btn-code-body">
+              <pre id="ng-code-component"><span class="c-kw">import</span> {
+  Component, Input, Output, EventEmitter, OnChanges, SimpleChanges,
+} <span class="c-kw">from</span> <span class="c-val">'@angular/core'</span>;
+<span class="c-kw">import</span> { getButtonTheme } <span class="c-kw">from</span> <span class="c-val">'./buttonTheme'</span>;
+
+<span class="c-cmt">// ── Variant → ng-zorro nzType + nzDanger ─────────────────────────────────</span>
+<span class="c-kw">const</span> VARIANT_MAP: <span class="c-type">Record</span>&lt;<span class="c-type">string</span>, { nzType: <span class="c-type">string</span>; nzDanger: <span class="c-type">boolean</span> }&gt; = {
+  primary:            { nzType: <span class="c-val">'primary'</span>, nzDanger: <span class="c-val">false</span> },
+  secondary:          { nzType: <span class="c-val">'default'</span>, nzDanger: <span class="c-val">false</span> },
+  tertiary:           { nzType: <span class="c-val">'text'</span>,    nzDanger: <span class="c-val">false</span> },
+  danger:             { nzType: <span class="c-val">'primary'</span>, nzDanger: <span class="c-val">true</span>  },
+  <span class="c-val">'danger-secondary'</span>: { nzType: <span class="c-val">'default'</span>, nzDanger: <span class="c-val">true</span>  },
+  neutral:            { nzType: <span class="c-val">'default'</span>, nzDanger: <span class="c-val">false</span> },
+  link:               { nzType: <span class="c-val">'link'</span>,    nzDanger: <span class="c-val">false</span> },
+};
+
+<span class="c-kw">const</span> SIZE_MAP: <span class="c-type">Record</span>&lt;<span class="c-type">string</span>, <span class="c-type">string</span>&gt; = { sm: <span class="c-val">'small'</span>, md: <span class="c-val">'default'</span>, lg: <span class="c-val">'large'</span> };
+
+@<span class="c-tag">Component</span>({
+  selector: <span class="c-val">'gs-button'</span>,
+  templateUrl: <span class="c-val">'./Button.component.html'</span>,
+  host: { class: <span class="c-val">'gs-button-host'</span> },
+})
+<span class="c-kw">export class</span> ButtonComponent <span class="c-kw">implements</span> OnChanges {
+  <span class="c-cmt">// ── Pelagos props ──────────────────────────────────────────────────────</span>
+  @<span class="c-tag">Input</span>() variant = <span class="c-val">'primary'</span>;
+  @<span class="c-tag">Input</span>() size: <span class="c-val">'sm'</span> | <span class="c-val">'md'</span> | <span class="c-val">'lg'</span> = <span class="c-val">'md'</span>;
+  @<span class="c-tag">Input</span>() fullWidth = <span class="c-val">false</span>;
+
+  <span class="c-cmt">// ── ng-zorro props (forwarded directly) ───────────────────────────────</span>
+  @<span class="c-tag">Input</span>() loading = <span class="c-val">false</span>;
+  @<span class="c-tag">Input</span>() disabled = <span class="c-val">false</span>;
+  @<span class="c-tag">Input</span>() ghost = <span class="c-val">false</span>;
+  @<span class="c-tag">Input</span>() shape: <span class="c-val">'default'</span> | <span class="c-val">'circle'</span> | <span class="c-val">'round'</span> = <span class="c-val">'default'</span>;
+  @<span class="c-tag">Input</span>() type: <span class="c-val">'button'</span> | <span class="c-val">'submit'</span> | <span class="c-val">'reset'</span> = <span class="c-val">'button'</span>;
+  @<span class="c-tag">Input</span>() href?: <span class="c-type">string</span>;
+  @<span class="c-tag">Input</span>() target?: <span class="c-type">string</span>;
+  @<span class="c-tag">Output</span>() clicked = <span class="c-kw">new</span> EventEmitter&lt;MouseEvent&gt;();
+
+  <span class="c-cmt">// ── Derived ng-zorro bindings (resolved on change) ────────────────────</span>
+  nzType = <span class="c-val">'primary'</span>;
+  nzDanger = <span class="c-val">false</span>;
+  nzSize = <span class="c-val">'default'</span>;
+
+  ngOnChanges(changes: SimpleChanges): <span class="c-type">void</span> {
+    <span class="c-kw">if</span> (changes[<span class="c-val">'variant'</span>]) {
+      <span class="c-kw">const</span> m = VARIANT_MAP[<span class="c-kw">this</span>.variant] ?? VARIANT_MAP[<span class="c-val">'primary'</span>];
+      <span class="c-kw">this</span>.nzType   = m.nzType;
+      <span class="c-kw">this</span>.nzDanger = m.nzDanger;
+    }
+    <span class="c-kw">if</span> (changes[<span class="c-val">'size'</span>]) {
+      <span class="c-kw">this</span>.nzSize = SIZE_MAP[<span class="c-kw">this</span>.size] ?? <span class="c-val">'default'</span>;
+    }
+  }
+
+  handleClick(event: MouseEvent): <span class="c-type">void</span> { <span class="c-kw">this</span>.clicked.emit(event); }
+}</pre>
+            </div>
+          </div>
+          <div class="btn-code-block" style="margin-top:12px;">
+            <div class="btn-code-head">
+              <span class="btn-code-lang">HTML · Button.component.html · ng-zorro template</span>
+              <button class="btn-copy-btn" onclick="copyBtnCode('ng-code-template',this)">Copy</button>
+            </div>
+            <div class="btn-code-body">
+              <pre id="ng-code-template"><span class="c-cmt">&lt;!-- Link button (href present) --&gt;</span>
+&lt;<span class="c-tag">ng-container</span> *<span class="c-attr">ngIf</span>=<span class="c-val">"href; else regularButton"</span>&gt;
+  &lt;<span class="c-tag">a</span> <span class="c-attr">nz-button</span>
+    [<span class="c-attr">nzType</span>]=<span class="c-val">"nzType"</span> [<span class="c-attr">nzDanger</span>]=<span class="c-val">"nzDanger"</span> [<span class="c-attr">nzSize</span>]=<span class="c-val">"nzSize"</span>
+    [<span class="c-attr">nzBlock</span>]=<span class="c-val">"fullWidth"</span> [<span class="c-attr">nzLoading</span>]=<span class="c-val">"loading"</span> [<span class="c-attr">nzGhost</span>]=<span class="c-val">"ghost"</span>
+    [<span class="c-attr">href</span>]=<span class="c-val">"href"</span> [<span class="c-attr">target</span>]=<span class="c-val">"target"</span>
+    [<span class="c-attr">attr.data-variant</span>]=<span class="c-val">"variant"</span>
+    (<span class="c-attr">click</span>)=<span class="c-val">"handleClick($event)"</span>
+  &gt;
+    &lt;<span class="c-tag">ng-content</span> <span class="c-attr">select</span>=<span class="c-val">"[iconLeft]"</span>&gt;&lt;/<span class="c-tag">ng-content</span>&gt;
+    &lt;<span class="c-tag">ng-content</span>&gt;&lt;/<span class="c-tag">ng-content</span>&gt;
+    &lt;<span class="c-tag">ng-content</span> <span class="c-attr">select</span>=<span class="c-val">"[iconRight]"</span>&gt;&lt;/<span class="c-tag">ng-content</span>&gt;
+  &lt;/<span class="c-tag">a</span>&gt;
+&lt;/<span class="c-tag">ng-container</span>&gt;
+
+<span class="c-cmt">&lt;!-- Regular button --&gt;</span>
+&lt;<span class="c-tag">ng-template</span> #regularButton&gt;
+  &lt;<span class="c-tag">button</span> <span class="c-attr">nz-button</span>
+    [<span class="c-attr">nzType</span>]=<span class="c-val">"nzType"</span> [<span class="c-attr">nzDanger</span>]=<span class="c-val">"nzDanger"</span> [<span class="c-attr">nzSize</span>]=<span class="c-val">"nzSize"</span>
+    [<span class="c-attr">nzBlock</span>]=<span class="c-val">"fullWidth"</span> [<span class="c-attr">nzLoading</span>]=<span class="c-val">"loading"</span> [<span class="c-attr">nzGhost</span>]=<span class="c-val">"ghost"</span>
+    [<span class="c-attr">disabled</span>]=<span class="c-val">"disabled"</span> [<span class="c-attr">type</span>]=<span class="c-val">"type"</span>
+    [<span class="c-attr">attr.data-variant</span>]=<span class="c-val">"variant"</span>
+    (<span class="c-attr">click</span>)=<span class="c-val">"handleClick($event)"</span>
+  &gt;
+    &lt;<span class="c-tag">ng-content</span> <span class="c-attr">select</span>=<span class="c-val">"[iconLeft]"</span>&gt;&lt;/<span class="c-tag">ng-content</span>&gt;
+    &lt;<span class="c-tag">ng-content</span>&gt;&lt;/<span class="c-tag">ng-content</span>&gt;
+    &lt;<span class="c-tag">ng-content</span> <span class="c-attr">select</span>=<span class="c-val">"[iconRight]"</span>&gt;&lt;/<span class="c-tag">ng-content</span>&gt;
+  &lt;/<span class="c-tag">button</span>&gt;
+&lt;/<span class="c-tag">ng-template</span>&gt;</pre>
+            </div>
+          </div>
+        </div><!-- /fw-angular -->
+      </div>
+
+      <!-- ⑦ Module / Exports -->
+      <div id="btn-c-module" class="btn-code-section">
+        <div class="ds-step-row">
+          <span class="ds-step-num">7</span>
+          <h3 class="ds-prop-title fw-react">Button/index.js</h3>
+          <h3 class="ds-prop-title fw-angular" style="display:none">button/button.module.ts</h3>
+        </div>
+        <div class="fw-react">
+          <div class="btn-code-block">
+            <div class="btn-code-head">
+              <span class="btn-code-lang">JavaScript · Barrel Export</span>
+              <button class="btn-copy-btn" onclick="copyBtnCode('code-barrel',this)">Copy</button>
+            </div>
+            <div class="btn-code-body">
+              <pre id="code-barrel"><span class="c-kw">export</span> { <span class="c-kw">default</span> } <span class="c-kw">from</span> <span class="c-val">'./Button'</span>;
+<span class="c-kw">export</span> { <span class="c-kw">default as</span> Button } <span class="c-kw">from</span> <span class="c-val">'./Button'</span>;</pre>
+            </div>
+          </div>
+        </div>
+        <div class="fw-angular" style="display:none">
+          <div class="btn-code-block">
+            <div class="btn-code-head">
+              <span class="btn-code-lang">TypeScript · NgModule</span>
+              <button class="btn-copy-btn" onclick="copyBtnCode('ng-code-module',this)">Copy</button>
+            </div>
+            <div class="btn-code-body">
+              <pre id="ng-code-module"><span class="c-kw">import</span> { NgModule } <span class="c-kw">from</span> <span class="c-val">'@angular/core'</span>;
+<span class="c-kw">import</span> { ButtonComponent } <span class="c-kw">from</span> <span class="c-val">'./button.component'</span>;
+
+@<span class="c-tag">NgModule</span>({
+  imports:  [ButtonComponent],
+  exports:  [ButtonComponent],
+})
+<span class="c-kw">export class</span> ButtonModule {}</pre>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ⑧ Usage Examples -->
+      <div id="btn-c-usage" class="btn-code-section">
+        <div class="ds-step-row">
+          <span class="ds-step-num">8</span>
+          <h3 class="ds-prop-title">Usage Examples</h3>
+        </div>
+
+        <div class="fw-react">
+          <!-- No app-root setup needed -->
+          <p class="ds-label-upper">Import</p>
+          <div class="btn-code-block" style="margin-bottom:20px;">
+            <div class="btn-code-head">
+              <span class="btn-code-lang">JSX</span>
+              <button class="btn-copy-btn" onclick="copyBtnCode('code-app-root',this)">Copy</button>
+            </div>
+            <div class="btn-code-body">
+              <pre id="code-app-root"><span class="c-cmt">// No app-level ConfigProvider required.
+// Each Button injects its own scoped theme internally.</span>
+<span class="c-kw">import</span> { Button } <span class="c-kw">from</span> <span class="c-val">'./components/primitives/button'</span>;</pre>
+            </div>
+          </div>
+
+          <!-- Default buttons -->
+          <p class="ds-label-upper">Default buttons</p>
+          <div class="btn-code-block" style="margin-bottom:20px;">
+            <div class="btn-code-head">
+              <span class="btn-code-lang">JSX</span>
+              <button class="btn-copy-btn" onclick="copyBtnCode('code-usage-default',this)">Copy</button>
+            </div>
+            <div class="btn-code-body">
+              <pre id="code-usage-default"><span class="c-cmt">// Primary — all sizes</span>
+&lt;<span class="c-tag">Button</span> <span class="c-attr">variant</span>=<span class="c-val">"primary"</span> <span class="c-attr">size</span>=<span class="c-val">"lg"</span>&gt;Save changes&lt;/<span class="c-tag">Button</span>&gt;
+&lt;<span class="c-tag">Button</span> <span class="c-attr">variant</span>=<span class="c-val">"primary"</span> <span class="c-attr">size</span>=<span class="c-val">"md"</span>&gt;Save changes&lt;/<span class="c-tag">Button</span>&gt;
+&lt;<span class="c-tag">Button</span> <span class="c-attr">variant</span>=<span class="c-val">"primary"</span> <span class="c-attr">size</span>=<span class="c-val">"sm"</span>&gt;Save&lt;/<span class="c-tag">Button</span>&gt;
+
+<span class="c-cmt">// Disabled</span>
+&lt;<span class="c-tag">Button</span> <span class="c-attr">variant</span>=<span class="c-val">"primary"</span> <span class="c-attr">disabled</span>&gt;Save changes&lt;/<span class="c-tag">Button</span>&gt;
+
+<span class="c-cmt">// Loading — boolean or delayed (AntD feature)</span>
+&lt;<span class="c-tag">Button</span> <span class="c-attr">variant</span>=<span class="c-val">"primary"</span> <span class="c-attr">loading</span>&gt;Saving…&lt;/<span class="c-tag">Button</span>&gt;
+&lt;<span class="c-tag">Button</span> <span class="c-attr">variant</span>=<span class="c-val">"primary"</span> <span class="c-attr">loading</span>={{ delay: <span class="c-val">300</span> }}&gt;Saving…&lt;/<span class="c-tag">Button</span>&gt;
+
+<span class="c-cmt">// Secondary &amp; Tertiary</span>
+&lt;<span class="c-tag">Button</span> <span class="c-attr">variant</span>=<span class="c-val">"secondary"</span>&gt;View report&lt;/<span class="c-tag">Button</span>&gt;
+&lt;<span class="c-tag">Button</span> <span class="c-attr">variant</span>=<span class="c-val">"tertiary"</span>&gt;Learn more&lt;/<span class="c-tag">Button</span>&gt;
+
+<span class="c-cmt">// Click handler</span>
+&lt;<span class="c-tag">Button</span> <span class="c-attr">variant</span>=<span class="c-val">"primary"</span> <span class="c-attr">onClick</span>={handleSave}&gt;Save changes&lt;/<span class="c-tag">Button</span>&gt;
+
+<span class="c-cmt">// Full width</span>
+&lt;<span class="c-tag">Button</span> <span class="c-attr">variant</span>=<span class="c-val">"primary"</span> <span class="c-attr">fullWidth</span>&gt;Submit form&lt;/<span class="c-tag">Button</span>&gt;
+
+<span class="c-cmt">// HTML form type (maps to AntD htmlType)</span>
+&lt;<span class="c-tag">Button</span> <span class="c-attr">variant</span>=<span class="c-val">"primary"</span> <span class="c-attr">type</span>=<span class="c-val">"submit"</span>&gt;Submit&lt;/<span class="c-tag">Button</span>&gt;
+&lt;<span class="c-tag">Button</span> <span class="c-attr">variant</span>=<span class="c-val">"neutral"</span> <span class="c-attr">type</span>=<span class="c-val">"reset"</span>&gt;Reset&lt;/<span class="c-tag">Button</span>&gt;</pre>
+            </div>
+          </div>
+
+          <!-- Icons -->
+          <p class="ds-label-upper">Buttons with icons</p>
+          <div class="btn-code-block" style="margin-bottom:20px;">
+            <div class="btn-code-head">
+              <span class="btn-code-lang">JSX</span>
+              <button class="btn-copy-btn" onclick="copyBtnCode('code-usage-icons',this)">Copy</button>
+            </div>
+            <div class="btn-code-body">
+              <pre id="code-usage-icons"><span class="c-cmt">// iconLeft — delegates to AntD icon + iconPosition="start"</span>
+&lt;<span class="c-tag">Button</span> <span class="c-attr">variant</span>=<span class="c-val">"primary"</span> <span class="c-attr">iconLeft</span>={&lt;<span class="c-tag">PlusIcon</span> /&gt;}&gt;Add item&lt;/<span class="c-tag">Button</span>&gt;
+
+<span class="c-cmt">// iconRight — delegates to AntD icon + iconPosition="end"</span>
+&lt;<span class="c-tag">Button</span> <span class="c-attr">variant</span>=<span class="c-val">"secondary"</span> <span class="c-attr">iconRight</span>={&lt;<span class="c-tag">ArrowRightIcon</span> /&gt;}&gt;Continue&lt;/<span class="c-tag">Button</span>&gt;
+
+<span class="c-cmt">// Both icons — manual layout via btn__icon--left / right spans</span>
+&lt;<span class="c-tag">Button</span>
+  <span class="c-attr">variant</span>=<span class="c-val">"secondary"</span>
+  <span class="c-attr">iconLeft</span>={&lt;<span class="c-tag">FilterIcon</span> /&gt;}
+  <span class="c-attr">iconRight</span>={&lt;<span class="c-tag">ChevronDownIcon</span> /&gt;}
+&gt;Filter&lt;/<span class="c-tag">Button</span>&gt;
+
+<span class="c-cmt">// Icon-only — pass only an icon as children, AntD handles square sizing</span>
+&lt;<span class="c-tag">Button</span> <span class="c-attr">variant</span>=<span class="c-val">"neutral"</span> <span class="c-attr">aria-label</span>=<span class="c-val">"Close"</span>
+  <span class="c-attr">icon</span>={&lt;<span class="c-tag">XIcon</span> /&gt;}  <span class="c-cmt">// AntD native icon prop for icon-only buttons</span>
+/&gt;</pre>
+            </div>
+          </div>
+
+          <!-- Danger buttons -->
+          <p class="ds-label-upper">Danger buttons</p>
+          <div class="btn-code-block" style="margin-bottom:20px;">
+            <div class="btn-code-head">
+              <span class="btn-code-lang">JSX</span>
+              <button class="btn-copy-btn" onclick="copyBtnCode('code-usage-danger',this)">Copy</button>
+            </div>
+            <div class="btn-code-body">
+              <pre id="code-usage-danger"><span class="c-cmt">// Danger Primary</span>
+&lt;<span class="c-tag">Button</span> <span class="c-attr">variant</span>=<span class="c-val">"danger"</span>&gt;Delete account&lt;/<span class="c-tag">Button</span>&gt;
+&lt;<span class="c-tag">Button</span> <span class="c-attr">variant</span>=<span class="c-val">"danger"</span> <span class="c-attr">size</span>=<span class="c-val">"lg"</span> <span class="c-attr">onClick</span>={handleDelete}&gt;Delete account&lt;/<span class="c-tag">Button</span>&gt;
+
+<span class="c-cmt">// Danger Secondary</span>
+&lt;<span class="c-tag">Button</span> <span class="c-attr">variant</span>=<span class="c-val">"danger-secondary"</span>&gt;Remove user&lt;/<span class="c-tag">Button</span>&gt;
+
+<span class="c-cmt">// Disabled</span>
+&lt;<span class="c-tag">Button</span> <span class="c-attr">variant</span>=<span class="c-val">"danger"</span> <span class="c-attr">disabled</span>&gt;Delete account&lt;/<span class="c-tag">Button</span>&gt;</pre>
+            </div>
+          </div>
+
+          <!-- Neutral + Link -->
+          <p class="ds-label-upper">Neutral &amp; Link buttons</p>
+          <div class="btn-code-block" style="margin-bottom:20px;">
+            <div class="btn-code-head">
+              <span class="btn-code-lang">JSX</span>
+              <button class="btn-copy-btn" onclick="copyBtnCode('code-usage-neutral',this)">Copy</button>
+            </div>
+            <div class="btn-code-body">
+              <pre id="code-usage-neutral"><span class="c-cmt">// Confirm / cancel pair</span>
+&lt;<span class="c-tag">div</span> <span class="c-attr">style</span>={{ display: <span class="c-val">'flex'</span>, gap: <span class="c-val">8</span> }}&gt;
+  &lt;<span class="c-tag">Button</span> <span class="c-attr">variant</span>=<span class="c-val">"neutral"</span> <span class="c-attr">onClick</span>={onCancel}&gt;Cancel&lt;/<span class="c-tag">Button</span>&gt;
+  &lt;<span class="c-tag">Button</span> <span class="c-attr">variant</span>=<span class="c-val">"primary"</span> <span class="c-attr">onClick</span>={onSave}&gt;Save changes&lt;/<span class="c-tag">Button</span>&gt;
+&lt;/<span class="c-tag">div</span>&gt;
+
+<span class="c-cmt">// Destructive confirmation</span>
+&lt;<span class="c-tag">div</span> <span class="c-attr">style</span>={{ display: <span class="c-val">'flex'</span>, gap: <span class="c-val">8</span> }}&gt;
+  &lt;<span class="c-tag">Button</span> <span class="c-attr">variant</span>=<span class="c-val">"neutral"</span> <span class="c-attr">onClick</span>={onCancel}&gt;Cancel&lt;/<span class="c-tag">Button</span>&gt;
+  &lt;<span class="c-tag">Button</span> <span class="c-attr">variant</span>=<span class="c-val">"danger"</span> <span class="c-attr">onClick</span>={onDelete}&gt;Delete record&lt;/<span class="c-tag">Button</span>&gt;
+&lt;/<span class="c-tag">div</span>&gt;</pre>
+            </div>
+          </div>
+
+          <!-- AntD passthrough -->
+          <p class="ds-label-upper">AntD passthrough — href &amp; shape</p>
+          <div class="btn-code-block">
+            <div class="btn-code-head">
+              <span class="btn-code-lang">JSX</span>
+              <button class="btn-copy-btn" onclick="copyBtnCode('code-usage-link',this)">Copy</button>
+            </div>
+            <div class="btn-code-body">
+              <pre id="code-usage-link"><span class="c-cmt">// Link variant with href — renders an &lt;a&gt; tag (AntD native)</span>
+&lt;<span class="c-tag">Button</span> <span class="c-attr">variant</span>=<span class="c-val">"link"</span> <span class="c-attr">href</span>=<span class="c-val">"https://docs.geoserve.com"</span> <span class="c-attr">target</span>=<span class="c-val">"_blank"</span>&gt;
+  View docs
+&lt;/<span class="c-tag">Button</span>&gt;
+
+<span class="c-cmt">// Pill shape (AntD passthrough via ...rest)</span>
+&lt;<span class="c-tag">Button</span> <span class="c-attr">variant</span>=<span class="c-val">"secondary"</span> <span class="c-attr">shape</span>=<span class="c-val">"round"</span>&gt;Rounded&lt;/<span class="c-tag">Button</span>&gt;
+
+<span class="c-cmt">// Inline link inside prose</span>
+&lt;<span class="c-tag">p</span>&gt;
+  Your report is ready.{<span class="c-val">' '</span>}
+  &lt;<span class="c-tag">Button</span> <span class="c-attr">variant</span>=<span class="c-val">"link"</span> <span class="c-attr">onClick</span>={openReport}&gt;Download now&lt;/<span class="c-tag">Button</span>&gt;
+&lt;/<span class="c-tag">p</span>&gt;</pre>
+            </div>
+          </div>
+        </div><!-- /fw-react -->
+
+        <div class="fw-angular" style="display:none">
+          <p class="ds-label-upper">Module import</p>
+          <div class="btn-code-block" style="margin-bottom:20px;">
+            <div class="btn-code-head"><span class="btn-code-lang">TypeScript</span><button class="btn-copy-btn" onclick="copyBtnCode('ng-code-import',this)">Copy</button></div>
+            <div class="btn-code-body"><pre id="ng-code-import"><span class="c-kw">import</span> { ButtonModule } <span class="c-kw">from</span> <span class="c-val">'./shared/button/button.module'</span>;
+
+@<span class="c-tag">NgModule</span>({
+  imports: [ButtonModule, <span class="c-cmt">/* … */</span>],
+})
+<span class="c-kw">export class</span> AppModule {}</pre></div>
+          </div>
+
+          <p class="ds-label-upper">Default buttons</p>
+          <div class="btn-code-block" style="margin-bottom:20px;">
+            <div class="btn-code-head"><span class="btn-code-lang">HTML · Angular template</span><button class="btn-copy-btn" onclick="copyBtnCode('ng-code-usage-default',this)">Copy</button></div>
+            <div class="btn-code-body"><pre id="ng-code-usage-default"><span class="c-cmt">&lt;!-- Primary - all sizes --&gt;</span>
+&lt;<span class="c-tag">gs-button</span> <span class="c-attr">variant</span>=<span class="c-val">"primary"</span> <span class="c-attr">size</span>=<span class="c-val">"lg"</span>&gt;Save changes&lt;/<span class="c-tag">gs-button</span>&gt;
+&lt;<span class="c-tag">gs-button</span> <span class="c-attr">variant</span>=<span class="c-val">"primary"</span> <span class="c-attr">size</span>=<span class="c-val">"md"</span>&gt;Save changes&lt;/<span class="c-tag">gs-button</span>&gt;
+&lt;<span class="c-tag">gs-button</span> <span class="c-attr">variant</span>=<span class="c-val">"primary"</span> <span class="c-attr">size</span>=<span class="c-val">"sm"</span>&gt;Save&lt;/<span class="c-tag">gs-button</span>&gt;
+
+<span class="c-cmt">&lt;!-- Disabled --&gt;</span>
+&lt;<span class="c-tag">gs-button</span> <span class="c-attr">variant</span>=<span class="c-val">"primary"</span> [<span class="c-attr">disabled</span>]=<span class="c-val">"true"</span>&gt;Save changes&lt;/<span class="c-tag">gs-button</span>&gt;
+
+<span class="c-cmt">&lt;!-- Loading state --&gt;</span>
+&lt;<span class="c-tag">gs-button</span> <span class="c-attr">variant</span>=<span class="c-val">"primary"</span> [<span class="c-attr">loading</span>]=<span class="c-val">"isSaving"</span>&gt;Saving…&lt;/<span class="c-tag">gs-button</span>&gt;
+
+<span class="c-cmt">&lt;!-- Secondary &amp; Tertiary --&gt;</span>
+&lt;<span class="c-tag">gs-button</span> <span class="c-attr">variant</span>=<span class="c-val">"secondary"</span>&gt;View report&lt;/<span class="c-tag">gs-button</span>&gt;
+&lt;<span class="c-tag">gs-button</span> <span class="c-attr">variant</span>=<span class="c-val">"tertiary"</span>&gt;Learn more&lt;/<span class="c-tag">gs-button</span>&gt;
+
+<span class="c-cmt">&lt;!-- Output binding --&gt;</span>
+&lt;<span class="c-tag">gs-button</span> <span class="c-attr">variant</span>=<span class="c-val">"primary"</span> (<span class="c-attr">clicked</span>)=<span class="c-val">"onSave($event)"</span>&gt;Save changes&lt;/<span class="c-tag">gs-button</span>&gt;</pre></div>
+          </div>
+
+          <p class="ds-label-upper">Danger buttons</p>
+          <div class="btn-code-block" style="margin-bottom:20px;">
+            <div class="btn-code-head"><span class="btn-code-lang">HTML · Angular template</span><button class="btn-copy-btn" onclick="copyBtnCode('ng-code-usage-danger',this)">Copy</button></div>
+            <div class="btn-code-body"><pre id="ng-code-usage-danger"><span class="c-cmt">&lt;!-- Danger Primary --&gt;</span>
+&lt;<span class="c-tag">gs-button</span> <span class="c-attr">variant</span>=<span class="c-val">"danger"</span>&gt;Delete account&lt;/<span class="c-tag">gs-button</span>&gt;
+&lt;<span class="c-tag">gs-button</span> <span class="c-attr">variant</span>=<span class="c-val">"danger"</span> <span class="c-attr">size</span>=<span class="c-val">"lg"</span> (<span class="c-attr">clicked</span>)=<span class="c-val">"onDelete($event)"</span>&gt;
+  Delete account
+&lt;/<span class="c-tag">gs-button</span>&gt;
+
+<span class="c-cmt">&lt;!-- Secondary &amp; Tertiary --&gt;</span>
+&lt;<span class="c-tag">gs-button</span> <span class="c-attr">variant</span>=<span class="c-val">"danger-secondary"</span>&gt;Remove user&lt;/<span class="c-tag">gs-button</span>&gt;
+&lt;<span class="c-tag">gs-button</span> <span class="c-attr">variant</span>=<span class="c-val">"danger-tertiary"</span>&gt;Discard changes&lt;/<span class="c-tag">gs-button</span>&gt;
+
+<span class="c-cmt">&lt;!-- Disabled --&gt;</span>
+&lt;<span class="c-tag">gs-button</span> <span class="c-attr">variant</span>=<span class="c-val">"danger"</span> [<span class="c-attr">disabled</span>]=<span class="c-val">"true"</span>&gt;Delete account&lt;/<span class="c-tag">gs-button</span>&gt;</pre></div>
+          </div>
+
+          <p class="ds-label-upper">Neutral button</p>
+          <div class="btn-code-block" style="margin-bottom:20px;">
+            <div class="btn-code-head"><span class="btn-code-lang">HTML · Angular template</span><button class="btn-copy-btn" onclick="copyBtnCode('ng-code-usage-neutral',this)">Copy</button></div>
+            <div class="btn-code-body"><pre id="ng-code-usage-neutral"><span class="c-cmt">&lt;!-- Confirm / cancel pair --&gt;</span>
+&lt;<span class="c-tag">div</span> <span class="c-attr">style</span>=<span class="c-val">"display:flex;gap:8px;"</span>&gt;
+  &lt;<span class="c-tag">gs-button</span> <span class="c-attr">variant</span>=<span class="c-val">"neutral"</span> (<span class="c-attr">clicked</span>)=<span class="c-val">"onCancel()"</span>&gt;Cancel&lt;/<span class="c-tag">gs-button</span>&gt;
+  &lt;<span class="c-tag">gs-button</span> <span class="c-attr">variant</span>=<span class="c-val">"primary"</span> (<span class="c-attr">clicked</span>)=<span class="c-val">"onSave()"</span>&gt;Save changes&lt;/<span class="c-tag">gs-button</span>&gt;
+&lt;/<span class="c-tag">div</span>&gt;
+
+<span class="c-cmt">&lt;!-- Destructive confirmation --&gt;</span>
+&lt;<span class="c-tag">div</span> <span class="c-attr">style</span>=<span class="c-val">"display:flex;gap:8px;"</span>&gt;
+  &lt;<span class="c-tag">gs-button</span> <span class="c-attr">variant</span>=<span class="c-val">"neutral"</span> (<span class="c-attr">clicked</span>)=<span class="c-val">"onCancel()"</span>&gt;Cancel&lt;/<span class="c-tag">gs-button</span>&gt;
+  &lt;<span class="c-tag">gs-button</span> <span class="c-attr">variant</span>=<span class="c-val">"danger"</span> (<span class="c-attr">clicked</span>)=<span class="c-val">"onDelete()"</span>&gt;Delete record&lt;/<span class="c-tag">gs-button</span>&gt;
+&lt;/<span class="c-tag">div</span>&gt;</pre></div>
+          </div>
+
+          <p class="ds-label-upper">Link buttons</p>
+          <div class="btn-code-block">
+            <div class="btn-code-head"><span class="btn-code-lang">HTML · Angular template</span><button class="btn-copy-btn" onclick="copyBtnCode('ng-code-usage-link',this)">Copy</button></div>
+            <div class="btn-code-body"><pre id="ng-code-usage-link"><span class="c-cmt">&lt;!-- Link Default --&gt;</span>
+&lt;<span class="c-tag">gs-button</span> <span class="c-attr">variant</span>=<span class="c-val">"link"</span> (<span class="c-attr">clicked</span>)=<span class="c-val">"onView()"</span>&gt;View details&lt;/<span class="c-tag">gs-button</span>&gt;
+
+<span class="c-cmt">&lt;!-- Link Danger --&gt;</span>
+&lt;<span class="c-tag">gs-button</span> <span class="c-attr">variant</span>=<span class="c-val">"link-danger"</span> (<span class="c-attr">clicked</span>)=<span class="c-val">"onRemove()"</span>&gt;Remove&lt;/<span class="c-tag">gs-button</span>&gt;
+
+<span class="c-cmt">&lt;!-- Inline in prose --&gt;</span>
+&lt;<span class="c-tag">p</span>&gt;
+  Your report is ready.
+  &lt;<span class="c-tag">gs-button</span> <span class="c-attr">variant</span>=<span class="c-val">"link"</span> (<span class="c-attr">clicked</span>)=<span class="c-val">"openReport()"</span>&gt;Download now&lt;/<span class="c-tag">gs-button</span>&gt;
+&lt;/<span class="c-tag">p</span>&gt;</pre></div>
+          </div>
+        </div><!-- /fw-angular -->
+      </div>
+
+
+      <!-- Props Reference -->
+      <h3 style="font-size:15px;font-weight:700;color:#0f172a;margin:32px 0 14px;">Props Reference</h3>
+      <p style="font-size:13px;color:#64748b;margin:0 0 12px;">Pelagos-specific props below. All native <a href="https://ant.design/components/button#api" target="_blank" style="color:#1852FE;">Ant Design Button props</a> are also accepted via <code class="ds-inline-tag">...rest</code> (e.g. <code class="ds-inline-tag">href</code>, <code class="ds-inline-tag">target</code>, <code class="ds-inline-tag">shape</code>, <code class="ds-inline-tag">ghost</code>).</p>
+      <div style="background:#fff;border-radius:12px;overflow:hidden;border:1px solid #e8ecf4;">
+        <table style="width:100%;border-collapse:collapse;font-size:13px;">
+          <thead>
+            <tr style="border-bottom:1px solid #e8ecf4;">
+              <th style="text-align:left;padding:10px 16px;font-size:11px;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:0.06em;background:#f8fafc;">Prop</th>
+              <th style="text-align:left;padding:10px 16px;font-size:11px;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:0.06em;background:#f8fafc;">Type</th>
+              <th style="text-align:left;padding:10px 16px;font-size:11px;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:0.06em;background:#f8fafc;">Default</th>
+              <th style="text-align:left;padding:10px 16px;font-size:11px;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:0.06em;background:#f8fafc;">Maps to AntD</th>
+              <th style="text-align:left;padding:10px 16px;font-size:11px;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:0.06em;background:#f8fafc;">Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="ds-tr-border">
+              <td class="ds-td-code-primary">variant</td>
+              <td style="padding:11px 16px;font-family:'SF Mono',monospace;font-size:11px;color:#475569;line-height:1.8;">'primary' · 'secondary'<br>'tertiary' · 'danger'<br>'danger-secondary'<br>'neutral' · 'link'</td>
+              <td class="ds-td-code-warn">'primary'</td>
+              <td style="padding:11px 16px;font-family:'SF Mono',monospace;font-size:11.5px;color:#64748b;">type + danger</td>
+              <td class="ds-td-value">Visual style. Resolved to AntD <code class="ds-inline-tag">type</code> + <code class="ds-inline-tag">danger</code> via VARIANT_MAP. Token colours injected via scoped ConfigProvider.</td>
+            </tr>
+            <tr class="ds-tr-border">
+              <td class="ds-td-code-primary">size</td>
+              <td class="ds-td-code-muted">'sm' · 'md' · 'lg'</td>
+              <td class="ds-td-code-warn">'md'</td>
+              <td style="padding:11px 16px;font-family:'SF Mono',monospace;font-size:11.5px;color:#64748b;">size</td>
+              <td class="ds-td-value">Maps to AntD <code class="ds-inline-tag">small / middle / large</code>. Heights: 32 / 40 / 48 px.</td>
+            </tr>
+            <tr class="ds-tr-border">
+              <td class="ds-td-code-primary">iconLeft</td>
+              <td class="ds-td-code-muted">ReactNode</td>
+              <td class="ds-td-faint">-</td>
+              <td style="padding:11px 16px;font-family:'SF Mono',monospace;font-size:11.5px;color:#64748b;">icon + iconPosition="start"</td>
+              <td class="ds-td-value">Icon before the label. AntD handles gap and alignment natively. If both icons are supplied, rendered as manual spans.</td>
+            </tr>
+            <tr class="ds-tr-border">
+              <td class="ds-td-code-primary">iconRight</td>
+              <td class="ds-td-code-muted">ReactNode</td>
+              <td class="ds-td-faint">-</td>
+              <td style="padding:11px 16px;font-family:'SF Mono',monospace;font-size:11.5px;color:#64748b;">icon + iconPosition="end"</td>
+              <td class="ds-td-value">Icon after the label. AntD handles gap and alignment natively.</td>
+            </tr>
+            <tr class="ds-tr-border">
+              <td class="ds-td-code-primary">fullWidth</td>
+              <td class="ds-td-code-muted">boolean</td>
+              <td class="ds-td-code-warn">false</td>
+              <td style="padding:11px 16px;font-family:'SF Mono',monospace;font-size:11.5px;color:#64748b;">block</td>
+              <td class="ds-td-value">Stretches button to 100% of its container width.</td>
+            </tr>
+            <tr class="ds-tr-border">
+              <td class="ds-td-code-primary">type</td>
+              <td class="ds-td-code-muted">'button' · 'submit' · 'reset'</td>
+              <td class="ds-td-code-warn">'button'</td>
+              <td style="padding:11px 16px;font-family:'SF Mono',monospace;font-size:11.5px;color:#64748b;">htmlType</td>
+              <td class="ds-td-value">HTML button type attribute — mapped to AntD's <code class="ds-inline-tag">htmlType</code> to avoid collision with AntD's own <code class="ds-inline-tag">type</code> (visual style) prop.</td>
+            </tr>
+            <tr class="ds-tr-border">
+              <td class="ds-td-code-primary">disabled</td>
+              <td class="ds-td-code-muted">boolean</td>
+              <td class="ds-td-code-warn">false</td>
+              <td style="padding:11px 16px;font-family:'SF Mono',monospace;font-size:11.5px;color:#64748b;">disabled</td>
+              <td class="ds-td-value">Disabled state — passed through to AntD.</td>
+            </tr>
+            <tr class="ds-tr-border">
+              <td class="ds-td-code-primary">loading</td>
+              <td class="ds-td-code-muted">boolean · {'{'} delay: number {'}'}</td>
+              <td class="ds-td-code-warn">false</td>
+              <td style="padding:11px 16px;font-family:'SF Mono',monospace;font-size:11.5px;color:#64748b;">loading</td>
+              <td class="ds-td-value">Shows AntD's built-in spinner, prevents double-submit. Accepts <code class="ds-inline-tag">{'{'} delay: 300 {'}'}</code> to defer the spinner (avoids flash for fast responses).</td>
+            </tr>
+            <tr class="ds-tr-border">
+              <td class="ds-td-code-primary">onClick</td>
+              <td class="ds-td-code-muted">MouseEventHandler</td>
+              <td class="ds-td-faint">-</td>
+              <td style="padding:11px 16px;font-family:'SF Mono',monospace;font-size:11.5px;color:#64748b;">onClick</td>
+              <td class="ds-td-value">Click handler. Passed through directly to AntD Button.</td>
+            </tr>
+            <tr class="ds-tr-border">
+              <td class="ds-td-code-primary">className</td>
+              <td class="ds-td-code-muted">string</td>
+              <td class="ds-td-faint">-</td>
+              <td style="padding:11px 16px;font-family:'SF Mono',monospace;font-size:11.5px;color:#64748b;">className</td>
+              <td class="ds-td-value">Extra classes appended to the root element.</td>
+            </tr>
+            <tr>
+              <td class="ds-td-code-primary">...rest</td>
+              <td class="ds-td-code-muted">AntD Button props</td>
+              <td class="ds-td-faint">-</td>
+              <td style="padding:11px 16px;font-family:'SF Mono',monospace;font-size:11.5px;color:#64748b;">spread directly</td>
+              <td class="ds-td-value">All AntD Button props pass through: <code class="ds-inline-tag">href</code>, <code class="ds-inline-tag">target</code>, <code class="ds-inline-tag">shape</code>, <code class="ds-inline-tag">ghost</code>, <code class="ds-inline-tag">classNames</code>, <code class="ds-inline-tag">styles</code>, etc.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Variant → internal mapping quick-ref -->
+      <div style="margin-top:20px;">
+        <h3 style="font-size:14px;font-weight:700;color:#0f172a;margin:0 0 12px;">Variant → AntD Mapping</h3>
+        <div style="background:#fff;border-radius:12px;overflow:hidden;border:1px solid #e8ecf4;">
+          <table style="width:100%;border-collapse:collapse;font-size:12.5px;">
+            <thead>
+              <tr style="border-bottom:1px solid #e8ecf4;">
+                <th style="text-align:left;padding:9px 16px;font-size:11px;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:0.06em;background:#f8fafc;">variant</th>
+                <th style="text-align:left;padding:9px 16px;font-size:11px;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:0.06em;background:#f8fafc;">AntD type</th>
+                <th style="text-align:left;padding:9px 16px;font-size:11px;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:0.06em;background:#f8fafc;">danger</th>
+                <th style="text-align:left;padding:9px 16px;font-size:11px;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:0.06em;background:#f8fafc;">Token strategy</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="ds-tr-border"><td style="padding:9px 16px;font-family:'SF Mono',monospace;color:#1852fe;">primary</td><td class="ds-td-code-sm">primary</td><td style="padding:9px 16px;font-family:'SF Mono',monospace;color:#94a3b8;">false</td><td style="padding:9px 16px;font-size:12px;color:#475569;">colorPrimary drives bg, border &amp; focus ring</td></tr>
+              <tr class="ds-tr-border"><td style="padding:9px 16px;font-family:'SF Mono',monospace;color:#1852fe;">secondary</td><td class="ds-td-code-sm">default</td><td style="padding:9px 16px;font-family:'SF Mono',monospace;color:#94a3b8;">false</td><td style="padding:9px 16px;font-size:12px;color:#475569;">defaultBg / defaultColor / defaultBorderColor overrides</td></tr>
+              <tr class="ds-tr-border"><td style="padding:9px 16px;font-family:'SF Mono',monospace;color:#1852fe;">tertiary</td><td class="ds-td-code-sm">text</td><td style="padding:9px 16px;font-family:'SF Mono',monospace;color:#94a3b8;">false</td><td style="padding:9px 16px;font-size:12px;color:#475569;">colorText scoped to #1852FE · textHoverBg override</td></tr>
+              <tr class="ds-tr-border"><td style="padding:9px 16px;font-family:'SF Mono',monospace;color:#dc2625;">danger</td><td class="ds-td-code-sm">primary</td><td style="padding:9px 16px;font-family:'SF Mono',monospace;color:#dc2625;">true</td><td style="padding:9px 16px;font-size:12px;color:#475569;">colorError drives bg, border &amp; focus ring</td></tr>
+              <tr class="ds-tr-border"><td style="padding:9px 16px;font-family:'SF Mono',monospace;color:#dc2625;">danger-secondary</td><td class="ds-td-code-sm">default</td><td style="padding:9px 16px;font-family:'SF Mono',monospace;color:#dc2625;">true</td><td style="padding:9px 16px;font-size:12px;color:#475569;">colorBgContainer + colorErrorBg / BgHover / Border</td></tr>
+              <tr class="ds-tr-border"><td class="ds-td-code-sm">neutral</td><td class="ds-td-code-sm">default</td><td style="padding:9px 16px;font-family:'SF Mono',monospace;color:#94a3b8;">false</td><td style="padding:9px 16px;font-size:12px;color:#475569;">defaultBg / defaultColor / defaultBorderColor overrides</td></tr>
+              <tr><td style="padding:9px 16px;font-family:'SF Mono',monospace;color:#1852fe;">link</td><td class="ds-td-code-sm">link</td><td style="padding:9px 16px;font-family:'SF Mono',monospace;color:#94a3b8;">false</td><td style="padding:9px 16px;font-size:12px;color:#475569;">colorLink / colorLinkHover / colorLinkActive</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      </div><!-- /code-tab-main -->
+
+      <!-- Right quick-access panel -->
+      <div class="code-tab-qnav">
+        <div class="code-qnav-inner">
+          <p class="code-qnav-title">Quick Access</p>
+          <ul class="code-qnav-list" id="btn-code-qnav">
+            <li class="code-qnav-item"><button class="code-qnav-link active" onclick="scrollToSection('btn-c-install')">Install</button></li>
+            <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('btn-c-struct')">File Structure</button></li>
+            <li class="code-qnav-item fw-react"><button class="code-qnav-link" onclick="scrollToSection('btn-c-token')">buttonTheme.js</button></li>
+            <li class="code-qnav-item fw-angular" style="display:none"><button class="code-qnav-link" onclick="scrollToSection('btn-c-token')">main.ts</button></li>
+            <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('btn-c-vars')">_variables.scss</button></li>
+            <li class="code-qnav-item fw-react"><button class="code-qnav-link" onclick="scrollToSection('btn-c-styles')">Button.scss (minimal)</button></li>
+            <li class="code-qnav-item fw-angular" style="display:none"><button class="code-qnav-link" onclick="scrollToSection('btn-c-styles')">component.scss</button></li>
+            <li class="code-qnav-item fw-react"><button class="code-qnav-link" onclick="scrollToSection('btn-c-logic')">Button.jsx</button></li>
+            <li class="code-qnav-item fw-angular" style="display:none"><button class="code-qnav-link" onclick="scrollToSection('btn-c-logic')">component.ts</button></li>
+            <li class="code-qnav-item fw-react"><button class="code-qnav-link" onclick="scrollToSection('btn-c-module')">index.js</button></li>
+            <li class="code-qnav-item fw-angular" style="display:none"><button class="code-qnav-link" onclick="scrollToSection('btn-c-module')">module.ts</button></li>
+            <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('btn-c-usage')">Usage</button></li>
+          </ul>
+        </div>
+      </div>
+
+      </div><!-- /code-tab-layout -->
+
+    </div><!-- /code tab -->
+
+    <!-- ========== USAGE TAB ========== -->
+    <div id="btn-tab-usage" class="btn-tab-pane">
+      <div class="code-tab-layout">
+        <div class="code-tab-main">
+
+
+      <p style="font-size:15px;line-height:1.75;color:#475569;margin:0 0 32px;">Choosing the right button communicates the importance of an action and guides users toward the correct decision. Follow these guidelines to ensure consistency across the product.</p>
+
+      <!-- When to use -->
+      <h2 class="ds-section-heading" id="btn-u-when">When to Use Each Family</h2>
+      <div class="btn-when-grid">
+        <div class="btn-when-card">
+          <div class="ds-mb-12"><button class="gs-btn gs-btn-primary gs-btn-sm" style="pointer-events:none;">Default</button></div>
+          <div class="btn-when-card-title">Default</div>
+          <p class="btn-when-card-desc">Positive, affirmative actions that move the user forward. The most visually prominent button - use once per view for the highest-priority action.</p>
+          <div class="btn-when-examples">
+            <span class="btn-when-example-tag">Save</span>
+            <span class="btn-when-example-tag">Submit</span>
+            <span class="btn-when-example-tag">Create</span>
+            <span class="btn-when-example-tag">Confirm</span>
+          </div>
+        </div>
+        <div class="btn-when-card">
+          <div class="ds-mb-12"><button class="gs-btn gs-btn-danger-primary gs-btn-sm" style="pointer-events:none;">Danger</button></div>
+          <div class="btn-when-card-title">Danger</div>
+          <p class="btn-when-card-desc">Destructive actions that are difficult or impossible to reverse. Always confirm before executing the Primary danger variant.</p>
+          <div class="btn-when-examples">
+            <span class="btn-when-example-tag">Delete</span>
+            <span class="btn-when-example-tag">Remove</span>
+            <span class="btn-when-example-tag">Discard</span>
+            <span class="btn-when-example-tag">Terminate</span>
+          </div>
+        </div>
+        <div class="btn-when-card">
+          <div class="ds-mb-12"><button class="gs-btn gs-btn-neutral gs-btn-sm" style="pointer-events:none;">Neutral</button></div>
+          <div class="btn-when-card-title">Neutral</div>
+          <p class="btn-when-card-desc">Low-emphasis utility actions that carry no affirmative or destructive meaning. Always paired alongside a Primary or Danger button.</p>
+          <div class="btn-when-examples">
+            <span class="btn-when-example-tag">Cancel</span>
+            <span class="btn-when-example-tag">Go back</span>
+            <span class="btn-when-example-tag">Close</span>
+            <span class="btn-when-example-tag">Skip</span>
+          </div>
+        </div>
+        <div class="btn-when-card">
+          <div class="ds-mb-12"><button class="gs-btn gs-btn-link" style="pointer-events:none;">Link</button></div>
+          <div class="btn-when-card-title">Link</div>
+          <p class="btn-when-card-desc">Supplementary or in-line actions with the lowest visual weight. Use within body copy or dense UIs to avoid adding visual clutter.</p>
+          <div class="btn-when-examples">
+            <span class="btn-when-example-tag">View details</span>
+            <span class="btn-when-example-tag">Learn more</span>
+            <span class="btn-when-example-tag">Undo</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Variant hierarchy -->
+      <h2 class="ds-section-heading" id="btn-u-hierarchy">Variant Priority Hierarchy</h2>
+      <div style="background:#fff;border:1px solid #e2e8f0;border-radius:12px;overflow:hidden;margin-bottom:32px;">
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);">
+          <div style="padding:20px;border-right:1px solid #e8ecf4;">
+            <div style="font-size:11px;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:10px;">① Primary</div>
+            <div style="font-size:13px;color:#475569;line-height:1.6;margin-bottom:12px;">Maximum visual weight. Reserve for the single most important action per view.</div>
+            <button class="gs-btn gs-btn-primary gs-btn-sm" style="pointer-events:none;">Submit form</button>
+          </div>
+          <div style="padding:20px;border-right:1px solid #e8ecf4;">
+            <div style="font-size:11px;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:10px;">② Secondary</div>
+            <div style="font-size:13px;color:#475569;line-height:1.6;margin-bottom:12px;">Medium weight. Supports the Primary action or offers a meaningful alternative path.</div>
+            <button class="gs-btn gs-btn-secondary gs-btn-sm" style="pointer-events:none;">Preview</button>
+          </div>
+          <div style="padding:20px;">
+            <div style="font-size:11px;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:10px;">③ Tertiary</div>
+            <div style="font-size:13px;color:#475569;line-height:1.6;margin-bottom:12px;">Minimal weight. For low-priority or frequently repeated actions in dense UIs.</div>
+            <button class="gs-btn gs-btn-tertiary gs-btn-sm" style="pointer-events:none;">View history</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dos & Don'ts -->
+      <h2 class="ds-section-heading" id="btn-u-dosdonts">Dos &amp; Don'ts</h2>
+      <div class="btn-dos-donts">
+        <div class="btn-do-card">
+          <h4>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            Do
+          </h4>
+          <ul>
+            <li>Use <strong>one Primary button per view</strong> to indicate the single most important action</li>
+            <li>Pair Neutral + Primary (or Neutral + Danger) for all confirm/cancel dialogs</li>
+            <li>Keep labels <strong>short, specific, and action-oriented</strong> - verb + noun where possible</li>
+            <li>Default to <strong>Medium size</strong>; use Large only for prominent hero CTAs, Small only for inline controls</li>
+            <li>Always show a <strong>confirmation dialog</strong> before any Danger Primary action executes</li>
+            <li>Use <code>disabled</code> + a tooltip that explains <em>why</em> the action is unavailable</li>
+          </ul>
+        </div>
+        <div class="btn-dont-card">
+          <h4>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            Don't
+          </h4>
+          <ul>
+            <li>Don't stack <strong>multiple Primary buttons</strong> on the same screen or modal</li>
+            <li>Don't use Danger buttons for non-destructive actions just to draw attention</li>
+            <li>Don't use vague labels like <em>"OK"</em>, <em>"Yes"</em>, or <em>"Click here"</em></li>
+            <li>Don't <strong>mix sizes</strong> within the same button group (all must be the same height)</li>
+            <li>Don't silently disable a button without a clear explanation of why</li>
+            <li>Don't use a Link button as the primary action inside a form or dialog</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Accessibility -->
+      <h2 class="ds-section-heading" id="btn-u-a11y">Accessibility</h2>
+      <div class="btn-a11y-card">
+        <h3>WCAG 2.1 AA Checklist</h3>
+        <div class="btn-a11y-row">
+          <div class="btn-a11y-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+          <div class="btn-a11y-text">Use native <code>&lt;button&gt;</code> elements - they provide keyboard focus, <code>Space</code>/<code>Enter</code> activation, and the correct ARIA role automatically.</div>
+        </div>
+        <div class="btn-a11y-row">
+          <div class="btn-a11y-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+          <div class="btn-a11y-text">Icon-only buttons <strong>must</strong> include <code>aria-label="Action name"</code> so screen readers can announce the button's purpose.</div>
+        </div>
+        <div class="btn-a11y-row">
+          <div class="btn-a11y-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+          <div class="btn-a11y-text">Use the native <code>disabled</code> attribute - it removes the element from tab order entirely. If you need the button focusable while inactive, use <code>aria-disabled="true"</code> instead and handle clicks in JS.</div>
+        </div>
+        <div class="btn-a11y-row">
+          <div class="btn-a11y-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+          <div class="btn-a11y-text">All button families meet WCAG AA contrast minimums: <strong>Primary</strong> (#1852fe text on #eef2ff bg) 4.7:1 · <strong>Danger</strong> (#dc2625 on #fef1f2) 5.1:1 · <strong>Neutral</strong> (#475569 on #fff) 5.9:1 · <strong>White on blue</strong> (#fff on #1852fe) 4.7:1.</div>
+        </div>
+        <div class="btn-a11y-row">
+          <div class="btn-a11y-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+          <div class="btn-a11y-text">Focus rings use <code>:focus-visible</code> so they appear only during keyboard navigation - not on mouse click. <strong>Never suppress</strong> <code>outline</code> without providing an equivalent visible focus indicator.</div>
+        </div>
+        <div class="btn-a11y-row">
+          <div class="btn-a11y-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+          <div class="btn-a11y-text">Minimum touch target is <strong>40×40px</strong> - all sizes comply (Small = 32px height; wrap in a 40px tap area if needed for mobile contexts).</div>
+        </div>
+      </div>
+
+    
+        </div><!-- /code-tab-main -->
+        <div class="code-tab-qnav">
+          <div class="code-qnav-inner">
+            <p class="code-qnav-title">Quick Access</p>
+            <ul class="code-qnav-list">
+              <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('btn-u-when')">When to Use Each Family</button></li>
+              <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('btn-u-hierarchy')">Variant Priority Hierarchy</button></li>
+              <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('btn-u-dosdonts')">Dos & Don'ts</button></li>
+              <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('btn-u-a11y')">Accessibility</button></li>
+            </ul>
+          </div>
+        </div>
+      </div><!-- /code-tab-layout -->
+
+    </div><!-- /usage tab -->

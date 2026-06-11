@@ -1,0 +1,2035 @@
+<!-- ═══════════════════════════════════════════════════════════════
+     TABLE — Pelagos Design System
+     Spec: geone-table-design-spec.html
+     Ref:  Ant Design Table · Figma node-id=370-929
+     ═══════════════════════════════════════════════════════════════ -->
+<style>
+/* ── Design tokens ────────────────────────────────────────────── */
+:root {
+  --tbl-header-bg:     var(--prim-grey-50,  #F1F5F9); /* → Colour Palette: grey/50  */
+  --tbl-header-color:  var(--color-text-secondary, #64748B); /* → Semantic: text-secondary */
+  --tbl-border:        #E2E8F0;
+  --tbl-row-divider:   #F3F4F6;
+  --tbl-row-hover:     var(--prim-blue-10, #EEF6FF);   /* Blue/10 — subtle hover tint   */
+  --tbl-row-selected:  var(--prim-blue-50, #DBEAFE);   /* Blue/50 — clear selected fill */
+  --tbl-text:          #0F1B35;
+  --tbl-text-dim:      #475569;
+  --tbl-radius:        12px;
+  --tbl-cell-px:       16px;
+  --tbl-head-h:        44px;  /* Figma: 44px (node 131-17842) */
+  --tbl-row-h:         44px;
+}
+
+/* ── Table wrapper — horizontal scroll supported ──────────────── */
+.gs-table-wrap {
+  background: #fff;
+  border: 1px solid var(--tbl-border);
+  border-radius: var(--tbl-radius);
+  overflow-x: auto;   /* horizontal scroll when columns overflow */
+  overflow-y: hidden;
+  box-shadow: 0 1px 4px rgba(0,0,0,.05);
+  -webkit-overflow-scrolling: touch;
+}
+.gs-table-wrap table { width:100%; min-width: 600px; border-collapse:collapse; }
+
+/* ── Header ───────────────────────────────────────────────────── */
+.gs-table-wrap thead tr { background: var(--tbl-header-bg); }
+.gs-table-wrap thead th {
+  padding: 0 var(--tbl-cell-px);
+  height: var(--tbl-head-h);   /* 44px per Figma */
+  font-size: 14px !important;  /* Figma: Body SB 14px */
+  font-weight: 600 !important;
+  text-transform: none !important;
+  letter-spacing: 0 !important;
+  color: var(--tbl-header-color);
+  text-align: left; white-space: nowrap;
+  border-bottom: 1px solid var(--prim-grey-200, #CBD5E1); /* Figma: Grey/200 */
+  user-select: none;
+  vertical-align: middle;
+}
+/* Sortable th hover — grey/100 background per Figma */
+.gs-table-wrap thead th.gs-th-sort:hover:not(.is-filtering),
+.gs-table-wrap thead th.gs-th-sort.is-filtering {
+  background: var(--prim-grey-100, #E2E8F0);
+}
+
+/* ── Body ─────────────────────────────────────────────────────── */
+.gs-table-wrap tbody tr {
+  border-bottom: 1px solid var(--tbl-row-divider);
+  cursor: pointer; transition: background .12s;
+}
+.gs-table-wrap tbody tr:last-child { border-bottom: none; }
+.gs-table-wrap tbody tr:hover { background: var(--tbl-row-hover); }
+.gs-table-wrap tbody tr.gs-row-selected { background: var(--tbl-row-selected); }
+.gs-table-wrap tbody td {
+  padding: 0 var(--tbl-cell-px);
+  height: var(--tbl-row-h);
+  font-size: 13px; color: var(--tbl-text);
+  vertical-align: middle;
+}
+
+/* Cell variants */
+.gs-td-link { color:#001E4C; font-weight:600; cursor:pointer; }
+.gs-td-link:hover { color:#1852FE; text-decoration:underline; }
+.gs-td-dim  { color:#475569; font-size:12.5px; }
+.gs-td-bold { font-weight:600; font-size:12.5px; }
+.gs-td-trunc{ max-width:180px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+
+/* ── Status chips — now uses ds gs-cs (Chip Status) from styles.css ── */
+/* gs-cs + gs-cs--{colour} — pill, 12px SemiBold, light tint bg       */
+/* Colour map: yellow=pending/approval  orange=pre-approved/finalise   */
+/*             green=approved/active    red=rejected/cancelled          */
+/*             teal=booked/invoiced     blue=auction/planned            */
+/*             grey=closed/completed    purple=incremental              */
+
+/* ── Fuel chips — gs-ci gs-ci--sm gs-ci--light gs-ci--{colour} ─────── */
+/* Fuel tooltip wrapper (keep for hover tooltip) */
+.gs-fuel-wrap { position:relative; display:inline-flex; }
+/* Small inline icon inside chip — aligns with gs-ci */
+.gs-ci svg   { width:11px; height:11px; stroke:currentColor; fill:none; stroke-width:2.5; flex-shrink:0; }
+/* Trade chips share same style as fuel multi */
+
+/* Fuel tooltip */
+.gs-fuel-wrap { position:relative; display:inline-flex; }
+.gs-fuel-tip {
+  display:none; position:absolute; bottom:calc(100% + 6px); left:50%; transform:translateX(-50%);
+  background:#001E4C; color:#fff; font-size:11.5px; font-weight:500;
+  padding:5px 10px; border-radius:7px; white-space:nowrap; pointer-events:none; z-index:100;
+}
+.gs-fuel-wrap:hover .gs-fuel-tip { display:block; }
+
+/* Days to claim */
+.gs-days-ok   { font-size:12px; font-weight:600; color:#16A34A; }
+.gs-days-warn { font-size:12px; font-weight:600; color:#D97706; }
+.gs-days-exp  { font-size:12px; font-weight:500; color:#9CA3AF; }
+
+/* ── 3-dot row menu ───────────────────────────────────────────── */
+.gs-row-menu-wrap { position:relative; display:inline-flex; }
+.gs-row-menu-btn {
+  width:28px; height:28px; border-radius:7px;
+  border:1px solid #E2E8F0; background:#fff; cursor:pointer;
+  display:flex; align-items:center; justify-content:center;
+  color:#64748B; transition:all .12s;
+}
+.gs-row-menu-btn:hover { background:#F1F5F9; border-color:#CBD5E1; }
+.gs-row-menu-btn svg { width:14px; height:14px; fill:#64748B; }
+.gs-row-menu-dd {
+  display:none; position:absolute; right:0; top:calc(100% + 4px);
+  background:#fff; border:1px solid #E2E8F0; border-radius:10px;
+  box-shadow:0 8px 24px rgba(14,26,51,.12); z-index:200; min-width:160px; overflow:hidden;
+}
+.gs-row-menu-item {
+  display:flex; align-items:center; gap:8px;
+  padding:9px 14px; font-size:12.5px; font-weight:500; color:#374151; cursor:pointer; transition:background .1s;
+}
+.gs-row-menu-item:hover { background:#F8FAFF; }
+.gs-row-menu-item.danger { color:#EF4444; }
+.gs-row-menu-item.danger:hover { background:#FEF2F2; }
+.gs-row-menu-item svg { width:13px; height:13px; stroke:currentColor; fill:none; stroke-width:2; flex-shrink:0; }
+
+/* ── Table footer ─────────────────────────────────────────────── */
+.gs-table-footer {
+  padding:10px var(--tbl-cell-px); font-size:12px; color:#9CA3AF;
+  border-top:1px solid var(--tbl-row-divider); background:#FAFAFA;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   STACKED TABLE
+══════════════════════════════════════════════════════════════ */
+/* Parent group row */
+.tbl-group-parent td:first-child {
+  padding-left: 8px;
+}
+.tbl-expand-btn {
+  background: none; border: none; cursor: pointer;
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 22px; height: 22px; border-radius: 4px; color: #64748B;
+  margin-right: 4px; flex-shrink: 0; vertical-align: middle;
+  transition: background .12s;
+}
+.tbl-expand-btn:hover { background: #F1F5F9; color: #1852FE; }
+.tbl-chevron { width:12px; height:12px; stroke:currentColor; fill:none; stroke-width:2.5; transition:transform .2s ease; }
+
+/* Expanded parent gets blue left strip */
+.tbl-group-parent.tbl-group-expanded {
+  background: #F8FAFF !important;
+  border-left: 3px solid #1852FE;
+}
+.tbl-group-parent.tbl-group-expanded td:first-child { padding-left: 5px; }
+
+/* Child rows */
+.tbl-group-child td:first-child { padding-left: 38px; }
+.tbl-group-child { background: #FAFCFF; }
+.tbl-group-child:hover { background: #F0F6FF !important; }
+.tbl-group-child td { font-size: 12.5px; height: 40px; }
+
+/* Aggregated summary cells */
+.tbl-agg { color: #94A3B8; font-size: 12px; font-style: italic; }
+
+
+/* ── Sort header states (Figma: node 591-8916) ────────────────────
+   Default:    grey/50  #F1F5F9  bg · no icon
+   Hover:      grey/100 #E2E8F0  bg · ↑↓ icon appears (grey/400)
+   Ascending:  grey/100 #E2E8F0  bg · ↑ highlighted blue, ↓ grey
+   Descending: grey/100 #E2E8F0  bg · ↑ grey, ↓ highlighted blue
+─────────────────────────────────────────────────────────────────── */
+.gs-th-sort { position: relative; }
+/* Hover → grey/100 (matches Figma exactly) */
+.gs-th-sort:hover { background: var(--prim-grey-100, #E2E8F0); color: #001E4C; }
+/* Active sorted states also use grey/100 */
+.gs-th-sort.tbl-sort-asc,
+.gs-th-sort.tbl-sort-desc { background: var(--prim-grey-100, #E2E8F0); }
+
+/* ══════════════════════════════════════════════════════════════════
+   COLUMN HEADER  —  Figma node 131-17842
+   3 states: Default · Hover (actions visible) · Search (input mode)
+   Height: 44px  ·  Font: Gilroy SemiBold 14px  ·  Color: #64748B
+══════════════════════════════════════════════════════════════════ */
+
+/* ── Sort icon arrows (existing tbl-sort-icon — keep for sort cycle) */
+.tbl-sort-icon { display:inline-flex; flex-direction:column; align-items:center; gap:1px; vertical-align:middle; flex-shrink:0; }
+.tbl-sort-icon .si-up,
+.tbl-sort-icon .si-dn { width:8px; height:5px; stroke:#94A3B8; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; transition:stroke .12s; }
+.gs-th-sort.tbl-sort-asc  .tbl-sort-icon .si-up { stroke:#1852FE; }
+.gs-th-sort.tbl-sort-asc  .tbl-sort-icon .si-dn { stroke:#CBD5E1; }
+.gs-th-sort.tbl-sort-desc .tbl-sort-icon .si-dn { stroke:#1852FE; }
+.gs-th-sort.tbl-sort-desc .tbl-sort-icon .si-up { stroke:#CBD5E1; }
+
+/* ── th: keep table-cell; inner div handles flex layout ──────────── */
+/* CRITICAL: do NOT set display:flex on th — breaks table rendering  */
+.gs-th-sort {
+  position: relative;
+  cursor: pointer;
+  padding: 0 !important;           /* padding controlled by inner div  */
+}
+
+/* ── Inner wrapper (Default + Hover states) ──────────────────────── */
+.tbl-th-inner {
+  display: flex;
+  align-items: center;
+  gap: 10px;                                      /* Figma: 10px gap text ↔ actions (no exact token) */
+  height: var(--tbl-head-h, 44px);               /* ← --tbl-head-h = 44px                           */
+  padding: 0 var(--space-md, 16px);              /* ← --space-md = --prim-space-4 = 16px             */
+  box-sizing: border-box;
+  overflow: hidden;
+  position: relative;
+}
+.tbl-th-label {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--color-text-secondary, #64748B);   /* ← --color-text-secondary → Greys/Grey 400        */
+}
+
+/* ── Action buttons (Search, Sort) ──────────────────────────────────
+   Absolutely positioned so buttons never shrink the label — even on
+   narrow columns the label text remains visible at full flex:1 width.
+────────────────────────────────────────────────────────────────────── */
+.tbl-th-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs, 4px);
+  flex-shrink: 0;
+  visibility: hidden;
+  opacity: 0;
+  transition: opacity .12s;
+  position: absolute;
+  right: 4px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+.gs-th-sort:hover:not(.is-filtering) .tbl-th-actions,
+.gs-th-sort.tbl-sort-asc  .tbl-th-actions,
+.gs-th-sort.tbl-sort-desc .tbl-th-actions { visibility: visible; opacity: 1; }
+/* Reserve right-side space so label truncates before buttons */
+.gs-th-sort:hover:not(.is-filtering) .tbl-th-inner,
+.gs-th-sort.tbl-sort-asc  .tbl-th-inner,
+.gs-th-sort.tbl-sort-desc .tbl-th-inner { padding-right: 72px; }
+
+.tbl-th-action-btn {
+  width: 32px; height: 32px;                     /* Figma: 32×32 touch target, 4px pad               */
+  display: flex; align-items: center; justify-content: center;
+  border: none; background: none; cursor: pointer; padding: 4px;
+  border-radius: var(--radius-xs, 4px);
+  color: var(--color-text-secondary, #64748B);
+  flex-shrink: 0; transition: background .1s, color .1s;
+}
+.tbl-th-action-btn:hover { background: rgba(0,0,0,.06); color: var(--prim-grey-700, #1E293B); }
+.tbl-th-action-btn svg {
+  width: 16px; height: 16px;
+  stroke: currentColor; fill: none;
+  stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round;
+}
+
+/* Sort active colour on the sort button */
+.gs-th-sort.tbl-sort-asc  .tbl-th-action-sort,
+.gs-th-sort.tbl-sort-desc .tbl-th-action-sort { color: var(--color-brand, #1852FE); }
+
+/* Active filter badge — blue dot */
+.tbl-col-filter-dot {
+  width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0;
+  background: var(--color-brand, #1852FE); display: none; align-self: center;
+}
+.gs-th-sort.has-filter .tbl-col-filter-dot { display: block; }
+.gs-th-sort.has-filter { background: var(--prim-blue-10, #EEF6FF) !important; }
+
+/* ── Search state — gs-textfield component (Figma property1="search") ──
+   .is-filtering: hide inner wrapper, show gs-tf-box input row
+──────────────────────────────────────────────────────────────────────── */
+.gs-th-sort.is-filtering .tbl-th-inner { display: none; }
+
+.tbl-col-search-wrap {
+  display: none;
+  align-items: center;
+  height: var(--tbl-head-h, 44px);
+  padding: 0 var(--space-md, 16px);
+  box-sizing: border-box;
+  width: 100%;
+}
+.gs-th-sort.is-filtering .tbl-col-search-wrap { display: flex; }
+
+/* Overlay mode — column narrower than 140px; search floats over adjacent columns */
+.gs-th-sort.tbl-search-overlay {
+  overflow: visible;
+  position: relative;
+  z-index: 10;
+}
+.gs-th-sort.tbl-search-overlay .tbl-col-search-wrap {
+  position: absolute;
+  left: var(--space-md, 16px);
+  top: 0;
+  padding-left: 0;
+  width: auto;
+  min-width: 140px;
+  background: var(--prim-grey-100, #E2E8F0);
+  box-shadow: 8px 0 16px rgba(148,163,184,.4);
+  z-index: 10;
+}
+
+/* gs-tf-box inside the search wrap fills available width */
+.tbl-col-search-wrap .gs-tf-box {
+  flex: 1;
+  min-width: 0;
+}
+
+/* Close/clear button — sits inside gs-tf-box as a flex child */
+.tbl-col-search-close {
+  position: static;
+  width: 16px; height: 16px; border-radius: 50%; border: none;
+  background: var(--prim-grey-300, #94A3B8);
+  cursor: pointer; padding: 0;
+  display: flex; align-items: center; justify-content: center;
+  color: #fff; transition: background .1s; flex-shrink: 0;
+}
+.tbl-col-search-close svg { width: 8px; height: 8px; stroke: #fff; fill: none; stroke-width: 2.5; stroke-linecap: round; }
+.tbl-col-search-close:hover { background: var(--prim-grey-500, #475569); }
+
+/* ── Vertical scroll — bounded wrapper with sticky header ──────── */
+.gs-table-scroll-v {
+  overflow-y: auto;
+  overflow-x: auto;
+  position: relative;
+  -webkit-overflow-scrolling: touch;
+}
+/* Sticky thead when scrolling vertically */
+.gs-table-scroll-v thead th {
+  position: sticky; top: 0; z-index: 3;
+  background: var(--tbl-header-bg,#F1F5F9);
+}
+/* Prevent border-collapse bleed on sticky */
+.gs-table-scroll-v thead th::after {
+  content: ''; position: absolute; bottom: -1px; left: 0; right: 0;
+  height: 1px; background: var(--tbl-border,#E2E8F0);
+}
+/* Infinite-scroll sentinel */
+.tbl-inf-sentinel { height: 1px; }
+
+/* ── Sticky columns — horizontal scroll ────────────────────────── */
+/* Add .gs-tbl-sticky-first to <table> to pin first column          */
+/* Add .gs-tbl-sticky-last  to <table> to pin last column           */
+.gs-tbl-sticky-first th:first-child,
+.gs-tbl-sticky-first td:first-child {
+  position: sticky; left: 0; z-index: 1;
+  background: inherit;
+  transition: box-shadow .2s;
+}
+.gs-tbl-sticky-first thead th:first-child { z-index: 4; background: var(--tbl-header-bg,#F1F5F9); }
+
+/* Right-edge shadow on left-sticky when user has scrolled right */
+.gs-table-wrap.can-scroll-left .gs-tbl-sticky-first th:first-child,
+.gs-table-wrap.can-scroll-left .gs-tbl-sticky-first td:first-child {
+  box-shadow: 4px 0 10px rgba(15,27,53,.10);
+}
+
+.gs-tbl-sticky-last th:last-child,
+.gs-tbl-sticky-last td:last-child {
+  position: sticky; right: 0; z-index: 1;
+  background: inherit;
+  transition: box-shadow .2s;
+}
+.gs-tbl-sticky-last thead th:last-child { z-index: 4; background: var(--tbl-header-bg,#F1F5F9); }
+
+/* Left-edge shadow on right-sticky when more content exists to the right */
+.gs-table-wrap.can-scroll-right .gs-tbl-sticky-last th:last-child,
+.gs-table-wrap.can-scroll-right .gs-tbl-sticky-last td:last-child {
+  box-shadow: -4px 0 10px rgba(15,27,53,.10);
+}
+
+/* Ensure tbody rows have correct bg for sticky cell inheritance */
+.gs-tbl-sticky-first tbody tr:hover td:first-child,
+.gs-tbl-sticky-last  tbody tr:hover td:last-child { background: var(--tbl-row-hover,#EEF6FF); }
+.gs-tbl-sticky-first tbody tr.gs-row-selected td:first-child,
+.gs-tbl-sticky-last  tbody tr.gs-row-selected td:last-child { background: var(--tbl-row-selected,#DBEAFE); }
+/* Ascending: up arrow → brand blue */
+.gs-th-sort.tbl-sort-asc  .tbl-sort-icon .si-up { stroke:#1852FE; }
+.gs-th-sort.tbl-sort-asc  .tbl-sort-icon .si-dn { stroke:#CBD5E1; }
+/* Descending: down arrow → brand blue */
+.gs-th-sort.tbl-sort-desc .tbl-sort-icon .si-dn { stroke:#1852FE; }
+.gs-th-sort.tbl-sort-desc .tbl-sort-icon .si-up { stroke:#CBD5E1; }
+
+/* Sort tooltip */
+/* .tbl-sort-tip removed — tooltip text now stored in data-sort-tip attribute on th */
+
+/* ── Stacked group ────────────────────────────────────────────── */
+.tbl-group-parent { cursor: pointer; }
+/* Expanded parent — blue left strip + subtle tint */
+.tbl-group-parent.tbl-group-expanded {
+  border-left: 3px solid var(--prim-marine, #1852FE) !important;
+  background: var(--prim-blue-10, #EEF6FF);
+}
+/* Child rows — blue left strip */
+.tbl-group-child.tbl-group-line {
+  border-left: 3px solid var(--prim-marine, #1852FE) !important;
+}
+/* Child hover inside group — Blue/10 same as normal row hover (consistent) */
+.tbl-group-child.tbl-group-line:hover {
+  background: var(--prim-blue-10, #EEF6FF) !important;
+}
+/* Group separator under last child */
+.tbl-group-end {
+  border-bottom: 1.5px solid var(--prim-grey-200, #CBD5E1) !important;
+}
+
+/* ── Stacked expand/collapse smooth transition ────────────────── */
+/* Child rows animate in/out with opacity + y-slide instead of hard display toggle */
+.tbl-group-child {
+  transition: opacity 0.22s ease, transform 0.22s ease;
+}
+/* .tbl-child-entering = row just became visible, fade-in from top */
+.tbl-group-child.tbl-child-entering {
+  animation: tblChildIn 0.22s ease forwards;
+}
+/* .tbl-child-leaving = row about to be hidden, fade-out upward */
+.tbl-group-child.tbl-child-leaving {
+  animation: tblChildOut 0.2s ease forwards;
+}
+@keyframes tblChildIn {
+  from { opacity: 0; transform: translateY(-6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes tblChildOut {
+  from { opacity: 1; transform: translateY(0); }
+  to   { opacity: 0; transform: translateY(-4px); }
+}
+
+/* ── Skeleton loading ─────────────────────────────────────────── */
+.tbl-skeleton-row td { height: var(--tbl-row-h); padding: 0 var(--tbl-cell-px); vertical-align: middle; }
+.tbl-skeleton-cell {
+  height: 12px; border-radius: 4px;
+  background: linear-gradient(90deg, #F1F5F9 25%, #E2E8F0 50%, #F1F5F9 75%);
+  background-size: 400% 100%;
+  animation: tbl-shimmer 1.5s ease infinite;
+}
+@keyframes tbl-shimmer {
+  0%   { background-position: 100% 0; }
+  100% { background-position: -100% 0; }
+}
+.tbl-skeleton-row:hover { background: transparent !important; cursor: default; }
+
+/* ── Lazy load sentinel ───────────────────────────────────────── */
+.tbl-lazy-sentinel {
+  height: 1px; display: flex; align-items: center; justify-content: center;
+  padding: 12px; font-size: 12px; color: #9CA3AF; font-family: var(--prim-font-primary);
+}
+.tbl-lazy-spinner {
+  width: 18px; height: 18px; border: 2px solid #E2E8F0;
+  border-top-color: #1852FE; border-radius: 50%;
+  animation: tbl-spin .7s linear infinite; margin-right: 8px;
+}
+@keyframes tbl-spin { to { transform: rotate(360deg); } }
+
+/* ── Row action menu ─────────────────────────────────────────────────────
+   Trigger: gs-btn gs-btn-neutral gs-btn-icon gs-btn-sm
+   Popup  : .gs-table-menu-pop (display:none/block — avoids overflow:hidden
+             clipping that breaks the opacity-based gs-popover)
+   Padding: 4px · Item gap: 2px
+──────────────────────────────────────────────────────────────────────── */
+.gs-pop-wrap { position:relative; display:inline-flex; }
+.gs-table-menu-pop {
+  display: none;
+  position: absolute;
+  right: 0;
+  top: calc(100% + 4px);
+  z-index: 200;
+  min-width: 160px;
+  background: var(--color-surface-default, #fff);
+  border: 1px solid var(--color-border-default, #e2e8f0);
+  border-radius: 10px;
+  box-shadow: 0 8px 24px rgba(14,26,51,0.12);
+  padding: 4px;                          /* 4px padding */
+  overflow: hidden;
+}
+.gs-table-menu-pop.is-open { display: block; }
+/* 2px gap between items */
+.gs-table-menu-pop .gs-pop__content { display:flex; flex-direction:column; gap:2px; }
+
+  /* ── Selection checkbox ───────────────────────────────────────── */
+.gs-tbl-check {
+  width:16px; height:16px; accent-color:#1852FE; cursor:pointer;
+}
+
+/* ── Design-system tooltip (gs-tt) — scoped copy for table page ─────────────
+   Mirrors prim-tooltip.html so the floating sort-header tooltip renders
+   correctly even when that page hasn't been visited in this session.
+   Ant Design arrow pattern: rotated 8×8px square, background:inherit.
+────────────────────────────────────────────────────────────────────────────── */
+.gs-tt {
+  position:       absolute;       /* overridden to fixed by gsFloatTipShow */
+  z-index:        9999;
+  max-width:      240px;
+  padding:        6px 10px;
+  border-radius:  6px;
+  font-size:      12px;
+  font-weight:    500;
+  line-height:    1.4;
+  white-space:    nowrap;
+  pointer-events: none;
+  opacity:        0;
+  visibility:     hidden;
+  transition:     opacity 120ms ease, visibility 120ms ease;
+}
+.gs-tt.is-visible { opacity:1; visibility:visible; }
+
+/* Dark theme (default for sort headers) */
+.gs-tt--dark {
+  background: var(--prim-blue-900, #001e4c);
+  color:      #ffffff;
+  filter:     drop-shadow(0 3px 8px rgba(0,30,76,0.22));
+}
+/* Light theme */
+.gs-tt--light {
+  background: #ffffff;
+  color:      var(--prim-grey-800, #1e293b);
+  filter:     drop-shadow(0 2px 8px rgba(0,0,0,0.13));
+}
+
+/* Placements */
+.gs-tt--top    { bottom:calc(100% + 10px); left:50%; transform:translateX(-50%); }
+.gs-tt--bottom { top:   calc(100% + 10px); left:50%; transform:translateX(-50%); }
+.gs-tt--left   { right: calc(100% + 10px); top:50%;  transform:translateY(-50%); }
+.gs-tt--right  { left:  calc(100% + 10px); top:50%;  transform:translateY(-50%); }
+
+/* Arrow (rotated square, Ant Design pattern) */
+.gs-tt--arrow::before {
+  content: ''; position: absolute;
+  width: 8px; height: 8px;
+  background: inherit;
+  transform: rotate(45deg);
+}
+.gs-tt--arrow.gs-tt--top::before    { bottom:-4px; left:50%; margin-left:-4px; border-radius:0 0 2px 0; }
+.gs-tt--arrow.gs-tt--bottom::before { top:-4px;    left:50%; margin-left:-4px; border-radius:2px 0 0 0; }
+.gs-tt--arrow.gs-tt--left::before   { right:-4px;  top:50%;  margin-top:-4px;  border-radius:0 2px 0 0; }
+.gs-tt--arrow.gs-tt--right::before  { left:-4px;   top:50%;  margin-top:-4px;  border-radius:0 0 0 2px; }
+
+/* Entrance animations */
+.gs-tt--bottom.is-visible { animation: gs-tt-in-bottom 160ms cubic-bezier(0.23,1,0.32,1) both; }
+.gs-tt--top.is-visible    { animation: gs-tt-in-top    160ms cubic-bezier(0.23,1,0.32,1) both; }
+@keyframes gs-tt-in-bottom { from{opacity:0;transform:translateX(-50%) translateY(-6px)} to{opacity:1;transform:translateX(-50%) translateY(0)} }
+@keyframes gs-tt-in-top    { from{opacity:0;transform:translateX(-50%) translateY( 6px)} to{opacity:1;transform:translateX(-50%) translateY(0)} }
+
+/* ── Row Selection (Checkbox) ────────────────────────────────────── */
+.tbl-th-cb, .tbl-td-cb {
+  width: 44px !important; min-width: 44px !important; max-width: 44px !important;
+  text-align: center;
+  padding: 0 !important;
+  vertical-align: middle;
+}
+.tbl-th-cb .gs-cb-wrap,
+.tbl-td-cb .gs-cb-wrap { justify-content: center; padding: 0; margin: 0 auto; }
+/* Indeterminate — blue fill + white dash (matches design system indeterminate spec) */
+.gs-cb-input:indeterminate + .gs-cb-box::before {
+  border-color: var(--color-brand, #1852FE);
+  background: var(--color-brand, #1852FE);
+}
+.gs-cb-input:indeterminate + .gs-cb-box::after {
+  opacity: 1;
+  width: 10px; height: 2px;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 2' fill='none'%3E%3Cpath d='M0.5 1H9.5' stroke='white' stroke-width='1.8' stroke-linecap='round'/%3E%3C/svg%3E") no-repeat center/contain;
+}
+/* Selection bar — blue tint, shown when rows are checked */
+.tbl-select-bar {
+  display: flex; align-items: center; gap: 12px;
+  padding: 8px 16px;
+  background: var(--prim-blue-10, #EEF6FF);
+  border: 1px solid var(--tbl-border);
+  border-bottom: none;
+  border-radius: var(--tbl-radius) var(--tbl-radius) 0 0;
+  font-size: 13px; font-weight: 500;
+  color: var(--prim-grey-700, #1E293B);
+}
+.tbl-select-bar-count { color: var(--color-brand, #1852FE); font-weight: 600; }
+.tbl-select-bar-actions { display: flex; gap: 8px; margin-left: auto; }
+
+/* ── Inline Editable Table ────────────────────────────────────────── */
+.gs-tbl-inline tbody td { padding: 6px 8px; vertical-align: middle; }
+.gs-tbl-inline tbody tr { cursor: default; }
+.tbl-ife-input {
+  width: 100%; border: 1.5px solid transparent;
+  border-radius: var(--radius-xs, 4px);
+  background: transparent;
+  padding: 0 8px;
+  font-family: var(--prim-font-primary, inherit);
+  font-size: 13px; color: var(--tbl-text, #0F1B35);
+  outline: none; height: 32px; box-sizing: border-box;
+  transition: border-color .15s, background .15s;
+  min-width: 80px;
+}
+.tbl-ife-input::placeholder { color: var(--tf-text-placeholder, #94A3B8); }
+.tbl-ife-input:hover { border-color: var(--prim-grey-200, #CBD5E1); background: var(--prim-grey-50, #F8FAFC); }
+.tbl-ife-input:focus { border-color: var(--color-brand, #1852FE); background: #fff; box-shadow: 0 0 0 3px rgba(24,82,254,.12); }
+.tbl-ife-select {
+  width: 100%; border: 1.5px solid transparent;
+  border-radius: var(--radius-xs, 4px);
+  background-color: transparent;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%2364748B' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+  background-repeat: no-repeat; background-position: right 8px center;
+  padding: 0 28px 0 8px;
+  font-family: var(--prim-font-primary, inherit);
+  font-size: 13px; color: var(--tbl-text, #0F1B35);
+  outline: none; height: 32px; box-sizing: border-box;
+  appearance: none; -webkit-appearance: none; cursor: pointer;
+  transition: border-color .15s, background-color .15s;
+}
+.tbl-ife-select:hover { border-color: var(--prim-grey-200, #CBD5E1); background-color: var(--prim-grey-50, #F8FAFC); }
+.tbl-ife-select:focus { border-color: var(--color-brand, #1852FE); background-color: #fff; box-shadow: 0 0 0 3px rgba(24,82,254,.12); }
+.tbl-ife-del {
+  width: 32px; height: 32px; display: flex; align-items: center; justify-content: center;
+  border: none; background: none; cursor: pointer;
+  border-radius: var(--radius-xs, 4px);
+  color: var(--color-error, #EF4444);
+  transition: background .12s; padding: 0; flex-shrink: 0; opacity: 0.5;
+}
+.tbl-ife-del:hover { background: #FEF2F2; opacity: 1; }
+.tbl-ife-del svg { width: 15px; height: 15px; stroke: currentColor; fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.tbl-ife-add-row {
+  display: flex; align-items: center; gap: 6px;
+  padding: 10px 16px;
+  font-size: 13px; font-weight: 600;
+  color: var(--color-brand, #1852FE);
+  background: none; border: none; cursor: pointer;
+  border-top: 1px solid var(--tbl-border);
+  width: 100%; text-align: left;
+  border-radius: 0 0 var(--tbl-radius) var(--tbl-radius);
+  transition: background .12s;
+}
+.tbl-ife-add-row:hover { background: var(--prim-blue-10, #EEF6FF); }
+.tbl-ife-add-row svg { width: 14px; height: 14px; stroke: currentColor; fill: none; stroke-width: 2.5; stroke-linecap: round; }
+</style>
+
+<!-- BANNER -->
+<div class="page-header">
+  <h1 class="ds-hero-title">Table</h1>
+</div>
+
+<!-- TAB BAR -->
+<div class="btn-tab-bar">
+  <button class="btn-tab-btn tbl-tab-btn active" data-tab="design" onclick="switchTableTab('design')">Design</button>
+  <button class="btn-tab-btn tbl-tab-btn" data-tab="code"   onclick="switchTableTab('code')">Code</button>
+  <button class="btn-tab-btn tbl-tab-btn" data-tab="usage"  onclick="switchTableTab('usage')">Usage</button>
+</div>
+
+<!-- ═══ DESIGN TAB ═══════════════════════════════════════════════ -->
+<div id="tbl-tab-design" class="btn-tab-pane tbl-tab-pane active">
+  <div class="code-tab-layout">
+    <div class="code-tab-main">
+
+      <!-- OVERVIEW -->
+      <div id="tbl-s-overview" class="btn-family-card">
+        <div class="btn-family-title">Overview</div>
+        <p class="btn-family-desc">The GeoOne Table displays structured data with sortable columns, status badges, fuel/trade chips, and interactive row actions. It supports two modes: <strong>flat</strong> (standard row list) and <strong>stacked</strong> (grouped rows with parent-child expand/collapse). Built over the Ant Design Table spec with GeoOne tokens.</p>
+
+        <div style="margin-top:16px;overflow-x:auto;">
+          <div class="gs-table-wrap">
+            <table>
+              <thead><tr>
+                <th class="gs-th-sort" aria-sort="none" data-col="0" data-sort-tip="Click to sort in ascending order">
+                  <div class="tbl-th-inner"><span class="tbl-th-label">Job No</span><div class="tbl-th-actions"><button class="tbl-th-action-btn" onclick="gsTblColSearchOpen(event,this)" title="Search column"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg></button><button class="tbl-th-action-btn tbl-th-action-sort" onclick="gsTblThClick(event,this.closest('th'))" onmouseenter="gsThSortBtnHover(this)" onmouseleave="gsFloatTipHide(80)" title="Sort"><svg viewBox="0 0 24 24"><polyline points="7 15 12 20 17 15"/><polyline points="7 9 12 4 17 9"/></svg></button><span class="tbl-col-filter-dot"></span></div></div>
+                  <div class="tbl-col-search-wrap"><div class="gs-tf-box size-sm"><input class="gs-tf-input" type="text" placeholder="Search Job No…" autocomplete="off" oninput="gsTblColFilter(event,this)" onkeydown="if(event.key==='Escape')gsTblColSearchClear(event,this)"><button class="tbl-col-search-close" type="button" onclick="gsTblColSearchClear(event,this)" title="Clear"><svg viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></svg></button></div></div>
+                </th>
+                <th class="gs-th-sort" aria-sort="none" data-col="1" data-sort-tip="Click to sort in ascending order">
+                  <div class="tbl-th-inner"><span class="tbl-th-label">Vessel</span><div class="tbl-th-actions"><button class="tbl-th-action-btn" onclick="gsTblColSearchOpen(event,this)" title="Search column"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg></button><button class="tbl-th-action-btn tbl-th-action-sort" onclick="gsTblThClick(event,this.closest('th'))" onmouseenter="gsThSortBtnHover(this)" onmouseleave="gsFloatTipHide(80)" title="Sort"><svg viewBox="0 0 24 24"><polyline points="7 15 12 20 17 15"/><polyline points="7 9 12 4 17 9"/></svg></button><span class="tbl-col-filter-dot"></span></div></div>
+                  <div class="tbl-col-search-wrap"><div class="gs-tf-box size-sm"><input class="gs-tf-input" type="text" placeholder="Search Vessel…" autocomplete="off" oninput="gsTblColFilter(event,this)" onkeydown="if(event.key==='Escape')gsTblColSearchClear(event,this)"><button class="tbl-col-search-close" type="button" onclick="gsTblColSearchClear(event,this)" title="Clear"><svg viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></svg></button></div></div>
+                </th>
+                <th class="gs-th-sort" aria-sort="none" data-col="2" data-sort-tip="Click to sort in ascending order">
+                  <div class="tbl-th-inner"><span class="tbl-th-label">Port</span><div class="tbl-th-actions"><button class="tbl-th-action-btn" onclick="gsTblColSearchOpen(event,this)" title="Search column"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg></button><button class="tbl-th-action-btn tbl-th-action-sort" onclick="gsTblThClick(event,this.closest('th'))" onmouseenter="gsThSortBtnHover(this)" onmouseleave="gsFloatTipHide(80)" title="Sort"><svg viewBox="0 0 24 24"><polyline points="7 15 12 20 17 15"/><polyline points="7 9 12 4 17 9"/></svg></button><span class="tbl-col-filter-dot"></span></div></div>
+                  <div class="tbl-col-search-wrap"><div class="gs-tf-box size-sm"><input class="gs-tf-input" type="text" placeholder="Search Port…" autocomplete="off" oninput="gsTblColFilter(event,this)" onkeydown="if(event.key==='Escape')gsTblColSearchClear(event,this)"><button class="tbl-col-search-close" type="button" onclick="gsTblColSearchClear(event,this)" title="Clear"><svg viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></svg></button></div></div>
+                </th>
+                <th>Seller</th>
+                <th>Fuel</th>
+                <th class="gs-th-sort" aria-sort="none" data-col="5" data-sort-tip="Click to sort in ascending order">
+                  <div class="tbl-th-inner"><span class="tbl-th-label">Stem Date</span><div class="tbl-th-actions"><button class="tbl-th-action-btn" onclick="gsTblColSearchOpen(event,this)" title="Search column"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg></button><button class="tbl-th-action-btn tbl-th-action-sort" onclick="gsTblThClick(event,this.closest('th'))" onmouseenter="gsThSortBtnHover(this)" onmouseleave="gsFloatTipHide(80)" title="Sort"><svg viewBox="0 0 24 24"><polyline points="7 15 12 20 17 15"/><polyline points="7 9 12 4 17 9"/></svg></button><span class="tbl-col-filter-dot"></span></div></div>
+                  <div class="tbl-col-search-wrap"><div class="gs-tf-box size-sm"><input class="gs-tf-input" type="text" placeholder="Search Stem Date…" autocomplete="off" oninput="gsTblColFilter(event,this)" onkeydown="if(event.key==='Escape')gsTblColSearchClear(event,this)"><button class="tbl-col-search-close" type="button" onclick="gsTblColSearchClear(event,this)" title="Clear"><svg viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></svg></button></div></div>
+                </th>
+                <th>Trade</th>
+                <th>Status</th>
+              </tr></thead>
+              <tbody>
+                <tr onclick="this.classList.toggle('gs-row-selected')">
+                  <td class="gs-td-link">G6713</td>
+                  <td class="gs-td-bold" style="white-space:nowrap">STI Garnet</td>
+                  <td class="gs-td-dim" style="white-space:nowrap">Singapore, SGP</td>
+                  <td class="gs-td-dim">Nautical Nav LLP</td>
+                  <td><span class="gs-ci gs-ci--sm gs-ci--light gs-ci--blue">VLSFO 0.5%</span></td>
+                  <td class="gs-td-bold" style="white-space:nowrap">24 Apr 26</td>
+                  <td><span class="gs-ci gs-ci--sm gs-ci--light gs-ci--grey">Spot</span></td>
+                  <td><span class="gs-cs gs-cs--yellow">For Approval</span></td>
+                </tr>
+                <tr onclick="this.classList.toggle('gs-row-selected')">
+                  <td class="gs-td-link">G6701</td>
+                  <td class="gs-td-bold" style="white-space:nowrap">Crimson Tide</td>
+                  <td class="gs-td-dim" style="white-space:nowrap">Singapore, SGP</td>
+                  <td class="gs-td-dim">Harbor Guardian</td>
+                  <td><div class="gs-fuel-wrap"><span class="gs-ci gs-ci--sm gs-ci--light gs-ci--grey"><svg viewBox="0 0 24 24"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14M7 23l-4-4 4-4"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg>3 Fuels</span><div class="gs-fuel-tip">HSFO: Spot · VLSFO: Term · LSMGO: Spot</div></div></td>
+                  <td class="gs-td-bold" style="white-space:nowrap">24 Apr 26</td>
+                  <td><span class="gs-ci gs-ci--sm gs-ci--light gs-ci--grey">Spot</span></td>
+                  <td><span class="gs-cs gs-cs--yellow">Pending Credit</span></td>
+                </tr>
+                <tr onclick="this.classList.toggle('gs-row-selected')">
+                  <td class="gs-td-link">G6686</td>
+                  <td class="gs-td-bold" style="white-space:nowrap">Starry Horizon</td>
+                  <td class="gs-td-dim" style="white-space:nowrap">Rotterdam, NLD</td>
+                  <td class="gs-td-dim">Gulf Supply Co</td>
+                  <td><span class="gs-ci gs-ci--sm gs-ci--light gs-ci--blue">VLSFO 0.5%</span></td>
+                  <td class="gs-td-bold" style="white-space:nowrap">02 May 26</td>
+                  <td><span class="gs-ci gs-ci--sm gs-ci--light gs-ci--grey">Contract</span></td>
+                  <td><span class="gs-cs gs-cs--teal">Booked</span></td>
+                </tr>
+              </tbody>
+            </table>
+            <div class="gs-table-footer">Click any row to select · Showing 3 of 102 records</div>
+          </div>
+        </div>
+
+        <div class="btn-when-examples" style="margin-top:16px;">
+          <span class="btn-when-example-tag">Sortable columns</span>
+          <span class="btn-when-example-tag">Status badges</span>
+          <span class="btn-when-example-tag">Row select</span>
+          <span class="btn-when-example-tag">Row hover</span>
+          <span class="btn-when-example-tag">Stacked groups</span>
+          <span class="btn-when-example-tag">3-dot actions</span>
+          <span class="btn-when-example-tag">WCAG AA</span>
+        </div>
+      </div>
+
+      <!-- STATUS BADGES -->
+      <div id="tbl-s-badges" class="btn-family-card">
+        <div class="btn-family-title">Status Badges</div>
+        <p class="btn-family-desc">Pill-shaped badges (border-radius 20px). Background is a ~15% tint of the status colour. Font: 11.5px / SemiBold.</p>
+        <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:12px;">
+          <span class="gs-cs gs-cs--yellow">For Approval</span>
+          <span class="gs-cs gs-cs--yellow">Pending Credit Approval</span>
+          <span class="gs-cs gs-cs--orange">Credit Pre-Approved</span>
+          <span class="gs-cs gs-cs--green">Credit Approved</span>
+          <span class="gs-cs gs-cs--red">Credit Rejected</span>
+          <span class="gs-cs gs-cs--teal">Booked</span>
+          <span class="gs-cs gs-cs--green">Active</span>
+          <span class="gs-cs gs-cs--yellow">Awaiting</span>
+          <span class="gs-cs gs-cs--orange">Finalise Qty</span>
+          <span class="gs-cs gs-cs--blue">Auction</span>
+          <span class="gs-cs gs-cs--grey">Watch</span>
+          <span class="gs-cs gs-cs--green">Delivered</span>
+          <span class="gs-cs gs-cs--blue">Incremental</span>
+          <span class="gs-cs gs-cs--teal">Commenced</span>
+          <span class="gs-cs gs-cs--blue">Planned</span>
+          <span class="gs-cs gs-cs--grey">Completed</span>
+          <span class="gs-cs gs-cs--teal">Invoiced</span>
+          <span class="gs-cs gs-cs--red">Cancelled</span>
+          <span class="gs-cs gs-cs--grey">Closed</span>
+        </div>
+      </div>
+
+      <!-- FUEL & TRADE CHIPS -->
+      <div id="tbl-s-chips" class="btn-family-card">
+        <div class="btn-family-title">Fuel &amp; Trade Type Chips</div>
+        <p class="btn-family-desc">Rounded chips (radius 6px) for fuel grade and trade type. Multi-fuel chip shows tooltip on hover.</p>
+        <div style="display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:12px;">
+          <span class="gs-ci gs-ci--sm gs-ci--light gs-ci--blue">VLSFO 0.5%</span>
+          <span class="gs-ci gs-ci--sm gs-ci--light gs-ci--red">HSFO 3.5%</span>
+          <span class="gs-ci gs-ci--sm gs-ci--light gs-ci--green">LSMGO 0.1%</span>
+          <div class="gs-fuel-wrap">
+            <span class="gs-ci gs-ci--sm gs-ci--light gs-ci--grey"><svg viewBox="0 0 24 24"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14M7 23l-4-4 4-4"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg>2 Fuels</span>
+            <div class="gs-fuel-tip">VLSFO: Spot · HSFO: Term</div>
+          </div>
+          <span style="color:#9CA3AF;font-size:11px">← hover for tooltip</span>
+          <div style="width:1px;height:18px;background:#E2E8F0;margin:0 4px;"></div>
+          <span class="gs-ci gs-ci--sm gs-ci--light gs-ci--grey">Spot</span>
+          <span class="gs-ci gs-ci--sm gs-ci--light gs-ci--grey">Contract</span>
+          <div class="gs-fuel-wrap">
+            <span class="gs-ci gs-ci--sm gs-ci--light gs-ci--grey"><svg viewBox="0 0 24 24"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14M7 23l-4-4 4-4"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg>2 Types</span>
+            <div class="gs-fuel-tip">HSFO: Spot · VLSFO: Term</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ROW STATES -->
+      <div id="tbl-s-states" class="btn-family-card">
+        <div class="btn-family-title">Row States — Live Demo</div>
+        <p class="btn-family-desc">Hover a row to see <strong>Blue/10</strong> (<code>--prim-blue-10</code> #EEF6FF) fill. Click to toggle <strong>Blue/50</strong> (<code>--prim-blue-50</code> #DBEAFE) selection. All transitions are 120ms ease.</p>
+        <div style="margin-top:12px;overflow-x:auto;max-width:600px;">
+          <div class="gs-table-wrap">
+            <table>
+              <thead><tr><th>Vessel</th><th>Port</th><th>Status</th><th style="font-size:11px;color:#9CA3AF;font-weight:400;font-style:italic;">← hover / click rows</th></tr></thead>
+              <tbody>
+                <tr onclick="this.classList.toggle('gs-row-selected')">
+                  <td class="gs-td-bold">STI Garnet</td><td class="gs-td-dim">Singapore</td><td><span class="gs-cs gs-cs--teal">Booked</span></td><td class="gs-td-dim" style="font-size:11px;color:#9CA3AF;">Default</td>
+                </tr>
+                <tr onclick="this.classList.toggle('gs-row-selected')" style="background:var(--prim-blue-10,#EEF6FF);">
+                  <td class="gs-td-bold">Crimson Tide</td><td class="gs-td-dim">Rotterdam</td><td><span class="gs-cs gs-cs--green">Credit Approved</span></td><td class="gs-td-dim" style="font-size:11px;color:#1852FE;">Hover · Blue/10 #EEF6FF</td>
+                </tr>
+                <tr onclick="this.classList.toggle('gs-row-selected')" class="gs-row-selected">
+                  <td class="gs-td-bold">Ocean Whisper</td><td class="gs-td-dim">Antwerp</td><td><span class="gs-cs gs-cs--yellow">Pending</span></td><td class="gs-td-dim" style="font-size:11px;color:#1852FE;">Selected · Blue/50 #DBEAFE</td>
+                </tr>
+                <tr style="opacity:.4;pointer-events:none;">
+                  <td class="gs-td-bold">Nordic Hawk</td><td class="gs-td-dim">Hamburg</td><td><span class="gs-cs gs-cs--grey">Closed</span></td><td class="gs-td-dim" style="font-size:11px;color:#9CA3AF;">Disabled</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- HEADER STATES + SORT -->
+      <div id="tbl-s-header" class="btn-family-card">
+        <div class="btn-family-title">Table Header Behaviour</div>
+        <p class="btn-family-desc">Sortable headers have three states: <strong>Default</strong> (grey/50 bg, label only) → <strong>Hover</strong> (grey/100 bg, search + sort buttons appear without shifting column width) → <strong>Search</strong> (TextField replaces label). Clicking the sort button cycles <em>Default → Ascending → Descending → Default</em>; the active direction arrow turns <strong>blue</strong>. A tooltip anchored to the sort button describes the next action.</p>
+
+        <!-- Live sort + column filter demo -->
+        <p class="btn-family-desc" style="margin-top:12px;">Click the <strong>search icon</strong> to enter filter mode. The search bar fits inside the column cell (min-width 140 px). For narrow columns that can't accommodate 140 px, it expands as a floating overlay — shadow x: −8 px, y: 0, blur: 8, colour grey/400@30% — without pushing adjacent columns. Filtered columns show a <strong>blue dot</strong> indicator. Press <kbd style="font-size:11px;background:#f1f5f9;border:1px solid #cbd5e1;border-radius:4px;padding:1px 5px;">Esc</kbd> or click × to clear and close.</p>
+        <div style="margin-top:12px;overflow-x:auto;" id="tbl-sort-filter-demo">
+          <div class="gs-table-wrap">
+            <table id="tbl-sf-table">
+              <thead><tr>
+                <th class="gs-th-sort" aria-sort="none" data-col="0" data-sort-tip="Click to sort in ascending order">
+                  <div class="tbl-th-inner">
+                    <span class="tbl-th-label">Job No</span>
+                    <div class="tbl-th-actions">
+                      <button class="tbl-th-action-btn" onclick="gsTblColSearchOpen(event,this)" title="Search column"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg></button>
+                      <button class="tbl-th-action-btn tbl-th-action-sort" onclick="gsTblThClick(event,this.closest('th'))" onmouseenter="gsThSortBtnHover(this)" onmouseleave="gsFloatTipHide(80)" title="Sort"><svg viewBox="0 0 24 24"><polyline points="7 15 12 20 17 15"/><polyline points="7 9 12 4 17 9"/></svg></button>
+                      <span class="tbl-col-filter-dot"></span>
+                    </div>
+                  </div>
+                  <div class="tbl-col-search-wrap"><div class="gs-tf-box size-sm"><input class="gs-tf-input" type="text" placeholder="Search Job No…" autocomplete="off" oninput="gsTblColFilter(event,this)" onkeydown="if(event.key==='Escape')gsTblColSearchClear(event,this)"><button class="tbl-col-search-close" type="button" onclick="gsTblColSearchClear(event,this)" title="Clear"><svg viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></svg></button></div></div>
+                </th>
+                <th class="gs-th-sort" aria-sort="none" data-col="1" data-sort-tip="Click to sort in ascending order">
+                  <div class="tbl-th-inner">
+                    <span class="tbl-th-label">Vessel Name</span>
+                    <div class="tbl-th-actions">
+                      <button class="tbl-th-action-btn" onclick="gsTblColSearchOpen(event,this)" title="Search column"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg></button>
+                      <button class="tbl-th-action-btn tbl-th-action-sort" onclick="gsTblThClick(event,this.closest('th'))" onmouseenter="gsThSortBtnHover(this)" onmouseleave="gsFloatTipHide(80)" title="Sort"><svg viewBox="0 0 24 24"><polyline points="7 15 12 20 17 15"/><polyline points="7 9 12 4 17 9"/></svg></button>
+                      <span class="tbl-col-filter-dot"></span>
+                    </div>
+                  </div>
+                  <div class="tbl-col-search-wrap"><div class="gs-tf-box size-sm"><input class="gs-tf-input" type="text" placeholder="Search Vessel…" autocomplete="off" oninput="gsTblColFilter(event,this)" onkeydown="if(event.key==='Escape')gsTblColSearchClear(event,this)"><button class="tbl-col-search-close" type="button" onclick="gsTblColSearchClear(event,this)" title="Clear"><svg viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></svg></button></div></div>
+                </th>
+                <!-- Narrow column — demonstrates overlay search (col < 140px triggers floating mode) -->
+                <th class="gs-th-sort" aria-sort="none" data-col="2" data-sort-tip="Click to sort in ascending order" style="width:80px;max-width:80px;">
+                  <div class="tbl-th-inner">
+                    <span class="tbl-th-label">Port</span>
+                    <div class="tbl-th-actions">
+                      <button class="tbl-th-action-btn" onclick="gsTblColSearchOpen(event,this)" title="Search column"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg></button>
+                      <button class="tbl-th-action-btn tbl-th-action-sort" onclick="gsTblThClick(event,this.closest('th'))" onmouseenter="gsThSortBtnHover(this)" onmouseleave="gsFloatTipHide(80)" title="Sort"><svg viewBox="0 0 24 24"><polyline points="7 15 12 20 17 15"/><polyline points="7 9 12 4 17 9"/></svg></button>
+                      <span class="tbl-col-filter-dot"></span>
+                    </div>
+                  </div>
+                  <div class="tbl-col-search-wrap"><div class="gs-tf-box size-sm"><input class="gs-tf-input" type="text" placeholder="Search Port…" autocomplete="off" oninput="gsTblColFilter(event,this)" onkeydown="if(event.key==='Escape')gsTblColSearchClear(event,this)"><button class="tbl-col-search-close" type="button" onclick="gsTblColSearchClear(event,this)" title="Clear"><svg viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></svg></button></div></div>
+                </th>
+                <th class="gs-th-sort" aria-sort="none" data-col="3" data-sort-tip="Click to sort in ascending order">
+                  <div class="tbl-th-inner">
+                    <span class="tbl-th-label">Stem Date</span>
+                    <div class="tbl-th-actions">
+                      <button class="tbl-th-action-btn" onclick="gsTblColSearchOpen(event,this)" title="Search column"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg></button>
+                      <button class="tbl-th-action-btn tbl-th-action-sort" onclick="gsTblThClick(event,this.closest('th'))" onmouseenter="gsThSortBtnHover(this)" onmouseleave="gsFloatTipHide(80)" title="Sort"><svg viewBox="0 0 24 24"><polyline points="7 15 12 20 17 15"/><polyline points="7 9 12 4 17 9"/></svg></button>
+                      <span class="tbl-col-filter-dot"></span>
+                    </div>
+                  </div>
+                  <div class="tbl-col-search-wrap"><div class="gs-tf-box size-sm"><input class="gs-tf-input" type="text" placeholder="Search Stem Date…" autocomplete="off" oninput="gsTblColFilter(event,this)" onkeydown="if(event.key==='Escape')gsTblColSearchClear(event,this)"><button class="tbl-col-search-close" type="button" onclick="gsTblColSearchClear(event,this)" title="Clear"><svg viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></svg></button></div></div>
+                </th>
+                <th>Status</th>
+              </tr></thead>
+              <tbody>
+                <tr><td class="gs-td-link">G6713</td><td class="gs-td-bold">STI Garnet</td><td class="gs-td-dim">SGP</td><td class="gs-td-bold">24 Apr 26</td><td><span class="gs-cs gs-cs--yellow">For Approval</span></td></tr>
+                <tr><td class="gs-td-link">G6701</td><td class="gs-td-bold">Crimson Tide</td><td class="gs-td-dim">NLD</td><td class="gs-td-bold">24 Apr 26</td><td><span class="gs-cs gs-cs--teal">Booked</span></td></tr>
+                <tr><td class="gs-td-link">G6686</td><td class="gs-td-bold">Starry Horizon</td><td class="gs-td-dim">DEU</td><td class="gs-td-bold">02 May 26</td><td><span class="gs-cs gs-cs--green">Credit Approved</span></td></tr>
+                <tr><td class="gs-td-link">G6671</td><td class="gs-td-bold">Ocean Phantom</td><td class="gs-td-dim">UAE</td><td class="gs-td-bold">05 May 26</td><td><span class="gs-cs gs-cs--blue">Auction</span></td></tr>
+                <tr><td class="gs-td-link">G6659</td><td class="gs-td-bold">Pacific Rose</td><td class="gs-td-dim">BEL</td><td class="gs-td-bold">10 May 26</td><td><span class="gs-cs gs-cs--orange">Finalise Qty</span></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <p style="margin-top:8px;font-size:11.5px;color:#64748B;"><strong style="color:#0f1b35;">Port</strong> column is intentionally narrow (80 px) — click its 🔍 to see the searchbar overlay in action.</p>
+
+        <!-- State diagram -->
+        <div class="btn-sub-label" style="margin-top:20px;margin-bottom:8px;">Sort state reference</div>
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;max-width:700px;">
+          <div style="border:1px solid #E2E8F0;border-radius:8px;overflow:hidden;">
+            <div style="background:#F1F5F9;padding:8px 12px;font-size:11.5px;font-weight:600;color:#64748B;display:flex;align-items:center;justify-content:space-between;">
+              Default
+              <span class="tbl-sort-icon"><svg class="si-up" style="stroke:#94A3B8" viewBox="0 0 10 6"><polyline points="1,5 5,1 9,5"/></svg><svg class="si-dn" style="stroke:#94A3B8" viewBox="0 0 10 6"><polyline points="1,1 5,5 9,1"/></svg></span>
+            </div>
+            <div style="padding:7px 12px;font-size:11px;color:#9CA3AF;"><strong style="color:#64748B;">grey/50</strong> bg · no icon · sort icon appears on hover</div>
+          </div>
+          <div style="border:1px solid #E2E8F0;border-radius:8px;overflow:hidden;">
+            <div style="background:#E2E8F0;padding:8px 12px;font-size:11.5px;font-weight:600;color:#001E4C;display:flex;align-items:center;justify-content:space-between;">
+              Hover
+              <span class="tbl-sort-icon"><svg class="si-up" style="stroke:#94A3B8" viewBox="0 0 10 6"><polyline points="1,5 5,1 9,5"/></svg><svg class="si-dn" style="stroke:#94A3B8" viewBox="0 0 10 6"><polyline points="1,1 5,5 9,1"/></svg></span>
+            </div>
+            <div style="padding:7px 12px;font-size:11px;color:#9CA3AF;"><strong style="color:#64748B;">grey/100</strong> bg · search + sort buttons appear · tooltip on sort button only</div>
+          </div>
+          <div style="border:1px solid #E2E8F0;border-radius:8px;overflow:hidden;">
+            <div style="background:#F1F5F9;padding:8px 12px;font-size:11.5px;font-weight:600;color:#001E4C;display:flex;align-items:center;justify-content:space-between;">
+              Asc ↑
+              <span class="tbl-sort-icon"><svg class="si-up" style="stroke:#CBD5E1" viewBox="0 0 10 6"><polyline points="1,5 5,1 9,5"/></svg><svg class="si-dn" style="stroke:#1852FE" viewBox="0 0 10 6"><polyline points="1,1 5,5 9,1"/></svg></span>
+            </div>
+            <div style="padding:7px 12px;font-size:11px;color:#9CA3AF;">Tooltip: "Click to sort descending"</div>
+          </div>
+          <div style="border:1px solid #E2E8F0;border-radius:8px;overflow:hidden;">
+            <div style="background:#F1F5F9;padding:8px 12px;font-size:11.5px;font-weight:600;color:#001E4C;display:flex;align-items:center;justify-content:space-between;">
+              Desc ↓
+              <span class="tbl-sort-icon"><svg class="si-up" style="stroke:#CBD5E1" viewBox="0 0 10 6"><polyline points="1,5 5,1 9,5"/></svg><svg class="si-dn" style="stroke:#1852FE" viewBox="0 0 10 6"><polyline points="1,1 5,5 9,1"/></svg></span>
+            </div>
+            <div style="padding:7px 12px;font-size:11px;color:#9CA3AF;">Tooltip: "Click to cancel sorting"</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- VERTICAL SCROLL — INFINITE LOAD -->
+      <div id="tbl-s-vscroll" class="btn-family-card">
+        <div class="btn-family-title">Vertical Scroll — Infinite Load</div>
+        <p class="btn-family-desc">When the user scrolls to the bottom, <strong>2 skeleton rows</strong> appear for 600ms then the next page of data loads. The header is sticky. Add <code>.gs-table-scroll-v</code> to the wrapper and set a <code>max-height</code>. Call <code>gsTblInitInfiniteScroll(id, loadFn)</code> to wire the IntersectionObserver.</p>
+
+        <div id="tbl-vscroll-wrap" class="gs-table-wrap gs-table-scroll-v" style="max-height:340px;margin-top:16px;">
+          <table id="tbl-vscroll-table">
+            <thead><tr>
+              <th class="gs-th-sort" aria-sort="none" data-col="0" data-sort-tip="Click to sort in ascending order">
+                <div class="tbl-th-inner"><span class="tbl-th-label">Job No</span><div class="tbl-th-actions"><button class="tbl-th-action-btn" onclick="gsTblColSearchOpen(event,this)" title="Search column"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg></button><button class="tbl-th-action-btn tbl-th-action-sort" onclick="gsTblThClick(event,this.closest('th'))" onmouseenter="gsThSortBtnHover(this)" onmouseleave="gsFloatTipHide(80)" title="Sort"><svg viewBox="0 0 24 24"><polyline points="7 15 12 20 17 15"/><polyline points="7 9 12 4 17 9"/></svg></button><span class="tbl-col-filter-dot"></span></div></div>
+                <div class="tbl-col-search-wrap"><div class="gs-tf-box size-sm"><input class="gs-tf-input" type="text" placeholder="Search Job No…" autocomplete="off" oninput="gsTblColFilter(event,this)" onkeydown="if(event.key==='Escape')gsTblColSearchClear(event,this)"><button class="tbl-col-search-close" type="button" onclick="gsTblColSearchClear(event,this)" title="Clear"><svg viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></svg></button></div></div>
+              </th>
+              <th class="gs-th-sort" aria-sort="none" data-col="1" data-sort-tip="Click to sort in ascending order">
+                <div class="tbl-th-inner"><span class="tbl-th-label">Vessel</span><div class="tbl-th-actions"><button class="tbl-th-action-btn" onclick="gsTblColSearchOpen(event,this)" title="Search column"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg></button><button class="tbl-th-action-btn tbl-th-action-sort" onclick="gsTblThClick(event,this.closest('th'))" onmouseenter="gsThSortBtnHover(this)" onmouseleave="gsFloatTipHide(80)" title="Sort"><svg viewBox="0 0 24 24"><polyline points="7 15 12 20 17 15"/><polyline points="7 9 12 4 17 9"/></svg></button><span class="tbl-col-filter-dot"></span></div></div>
+                <div class="tbl-col-search-wrap"><div class="gs-tf-box size-sm"><input class="gs-tf-input" type="text" placeholder="Search Vessel…" autocomplete="off" oninput="gsTblColFilter(event,this)" onkeydown="if(event.key==='Escape')gsTblColSearchClear(event,this)"><button class="tbl-col-search-close" type="button" onclick="gsTblColSearchClear(event,this)" title="Clear"><svg viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></svg></button></div></div>
+              </th>
+              <th>Port</th>
+              <th>Status</th>
+            </tr></thead>
+            <tbody id="tbl-vscroll-body">
+              <tr><td class="gs-td-link">G6713</td><td class="gs-td-bold">STI Garnet</td><td class="gs-td-dim">Singapore</td><td><span class="gs-cs gs-cs--teal">Booked</span></td></tr>
+              <tr><td class="gs-td-link">G6701</td><td class="gs-td-bold">Crimson Tide</td><td class="gs-td-dim">Rotterdam</td><td><span class="gs-cs gs-cs--green">Active</span></td></tr>
+              <tr><td class="gs-td-link">G6686</td><td class="gs-td-bold">Pacific Rose</td><td class="gs-td-dim">Dubai</td><td><span class="gs-cs gs-cs--yellow">Pending</span></td></tr>
+              <tr><td class="gs-td-link">G6671</td><td class="gs-td-bold">Ocean Phantom</td><td class="gs-td-dim">Hamburg</td><td><span class="gs-cs gs-cs--blue">Auction</span></td></tr>
+              <tr><td class="gs-td-link">G6659</td><td class="gs-td-bold">Nordic Eagle</td><td class="gs-td-dim">Antwerp</td><td><span class="gs-cs gs-cs--grey">Closed</span></td></tr>
+              <tr><td class="gs-td-link">G6648</td><td class="gs-td-bold">Torm Freya</td><td class="gs-td-dim">Singapore</td><td><span class="gs-cs gs-cs--green">Active</span></td></tr>
+            </tbody>
+            <!-- Infinite scroll sentinel -->
+            <tbody><tr class="tbl-inf-sentinel" id="tbl-vscroll-sentinel"><td colspan="4"></td></tr></tbody>
+          </table>
+        </div>
+        <p style="font-size:11.5px;color:#94a3b8;margin-top:8px;">Scroll down inside the table ↑ to trigger skeleton load</p>
+      </div>
+
+      <!-- HORIZONTAL SCROLL — STICKY COLUMNS -->
+      <div id="tbl-s-sticky" class="btn-family-card">
+        <div class="btn-family-title">Horizontal Scroll — Sticky Columns</div>
+        <p class="btn-family-desc">Add <code>gs-tbl-sticky-first</code> and/or <code>gs-tbl-sticky-last</code> to the <code>&lt;table&gt;</code> element to pin the first and/or last column while the table scrolls horizontally. Both are independent — use one or both as needed.</p>
+
+        <div class="gs-table-wrap" id="tbl-sticky-wrap" style="margin-top:16px;">
+          <table class="gs-tbl-sticky-first gs-tbl-sticky-last" style="min-width:900px;">
+            <thead><tr>
+              <th style="min-width:100px;">Job No</th>
+              <th style="min-width:160px;">Vessel Name</th>
+              <th style="min-width:140px;">Port of Loading</th>
+              <th style="min-width:140px;">Port of Discharge</th>
+              <th style="min-width:120px;">Fuel</th>
+              <th style="min-width:110px;">Stem Date</th>
+              <th style="min-width:140px;">Status</th>
+              <th style="min-width:80px;text-align:center;">Actions</th>
+            </tr></thead>
+            <tbody>
+              <tr onclick="this.classList.toggle('gs-row-selected')">
+                <td class="gs-td-link">G6713</td>
+                <td class="gs-td-bold">STI Garnet</td>
+                <td class="gs-td-dim">Singapore, SGP</td>
+                <td class="gs-td-dim">Rotterdam, NLD</td>
+                <td><span class="gs-ci gs-ci--sm gs-ci--light gs-ci--blue">VLSFO 0.5%</span></td>
+                <td class="gs-td-bold">24 Apr 26</td>
+                <td><span class="gs-cs gs-cs--teal">Booked</span></td>
+                <td style="text-align:center;">
+                  <div class="gs-pop-wrap">
+                    <button class="gs-btn gs-btn-neutral-ghost gs-btn-icon gs-btn-sm" onclick="gsTableMenu(this)">
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="#64748b"><circle cx="12" cy="5" r="1.5"/><circle cx="12" cy="12" r="1.5"/><circle cx="12" cy="19" r="1.5"/></svg>
+                    </button>
+                    <div class="gs-table-menu-pop"><div class="gs-pop__content">
+                      <div class="gs-pop-item" onclick="gsPopClose()"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>View</div>
+                      <div class="gs-pop-item" onclick="gsPopClose()"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>Edit</div>
+                    </div></div>
+                  </div>
+                </td>
+              </tr>
+              <tr onclick="this.classList.toggle('gs-row-selected')">
+                <td class="gs-td-link">G6701</td>
+                <td class="gs-td-bold">Crimson Tide</td>
+                <td class="gs-td-dim">Rotterdam, NLD</td>
+                <td class="gs-td-dim">Dubai, UAE</td>
+                <td><span class="gs-ci gs-ci--sm gs-ci--light gs-ci--red">HSFO 3.5%</span></td>
+                <td class="gs-td-bold">02 May 26</td>
+                <td><span class="gs-cs gs-cs--green">Active</span></td>
+                <td style="text-align:center;">
+                  <div class="gs-pop-wrap">
+                    <button class="gs-btn gs-btn-neutral-ghost gs-btn-icon gs-btn-sm" onclick="gsTableMenu(this)">
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="#64748b"><circle cx="12" cy="5" r="1.5"/><circle cx="12" cy="12" r="1.5"/><circle cx="12" cy="19" r="1.5"/></svg>
+                    </button>
+                    <div class="gs-table-menu-pop"><div class="gs-pop__content">
+                      <div class="gs-pop-item" onclick="gsPopClose()"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>View</div>
+                      <div class="gs-pop-item" onclick="gsPopClose()"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>Edit</div>
+                    </div></div>
+                  </div>
+                </td>
+              </tr>
+              <tr onclick="this.classList.toggle('gs-row-selected')">
+                <td class="gs-td-link">G6686</td>
+                <td class="gs-td-bold">Nordic Eagle</td>
+                <td class="gs-td-dim">Hamburg, DEU</td>
+                <td class="gs-td-dim">Antwerp, BEL</td>
+                <td><span class="gs-ci gs-ci--sm gs-ci--light gs-ci--green">LSMGO 0.1%</span></td>
+                <td class="gs-td-bold">10 May 26</td>
+                <td><span class="gs-cs gs-cs--yellow">Pending</span></td>
+                <td style="text-align:center;">
+                  <div class="gs-pop-wrap">
+                    <button class="gs-btn gs-btn-neutral-ghost gs-btn-icon gs-btn-sm" onclick="gsTableMenu(this)">
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="#64748b"><circle cx="12" cy="5" r="1.5"/><circle cx="12" cy="12" r="1.5"/><circle cx="12" cy="19" r="1.5"/></svg>
+                    </button>
+                    <div class="gs-table-menu-pop"><div class="gs-pop__content">
+                      <div class="gs-pop-item" onclick="gsPopClose()"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>View</div>
+                    </div></div>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div style="margin-top:10px;display:flex;gap:12px;flex-wrap:wrap;font-size:12px;color:#64748b;">
+          <span>🔒 <strong style="color:#0f1b35;">Job No</strong> — sticky left via <code>gs-tbl-sticky-first</code></span>
+          <span>🔒 <strong style="color:#0f1b35;">Actions</strong> — sticky right via <code>gs-tbl-sticky-last</code></span>
+          <span>↔ Resize window to see horizontal scroll</span>
+        </div>
+      </div>
+
+      <!-- STACKED TABLE -->
+      <div id="tbl-s-stacked" class="btn-family-card">
+        <div class="btn-family-title">Stacked Table (Grouped Rows)</div>
+        <p class="btn-family-desc">Groups related rows under a collapsible parent. The parent shows aggregated counts. Click <strong>anywhere on the parent row</strong> to expand/collapse. Blue left strip spans the whole group. <strong>Grey/300 bottom border</strong> separates each group from the next. Figma: <code>14609-161234</code>.</p>
+
+        <div class="btn-when-examples" style="margin:12px 0;">
+          <span class="btn-when-example-tag">Group by vessel</span>
+          <span class="btn-when-example-tag">Aggregated parent</span>
+          <span class="btn-when-example-tag">Blue strip = expanded</span>
+          <span class="btn-when-example-tag">Grey/300 group separator</span>
+        </div>
+
+        <div style="overflow-x:auto;">
+          <div class="gs-table-wrap">
+            <table>
+              <thead><tr>
+                <th class="gs-th-sort" aria-sort="none" data-col="0" data-sort-tip="Click to sort in ascending order">
+                  <div class="tbl-th-inner"><span class="tbl-th-label">Vessel Name</span><div class="tbl-th-actions"><button class="tbl-th-action-btn" onclick="gsTblColSearchOpen(event,this)" title="Search column"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg></button><button class="tbl-th-action-btn tbl-th-action-sort" onclick="gsTblThClick(event,this.closest('th'))" onmouseenter="gsThSortBtnHover(this)" onmouseleave="gsFloatTipHide(80)" title="Sort"><svg viewBox="0 0 24 24"><polyline points="7 15 12 20 17 15"/><polyline points="7 9 12 4 17 9"/></svg></button><span class="tbl-col-filter-dot"></span></div></div>
+                  <div class="tbl-col-search-wrap"><div class="gs-tf-box size-sm"><input class="gs-tf-input" type="text" placeholder="Search Vessel…" autocomplete="off" oninput="gsTblColFilter(event,this)" onkeydown="if(event.key==='Escape')gsTblColSearchClear(event,this)"><button class="tbl-col-search-close" type="button" onclick="gsTblColSearchClear(event,this)" title="Clear"><svg viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></svg></button></div></div>
+                </th>
+                <th>Ports</th>
+                <th>Commodity</th>
+                <th>Contract Date</th>
+                <th>Counterparty</th>
+                <th>VMS#</th>
+                <th>Voy Status</th>
+                <th>TIP</th>
+                <th>Assigned To</th>
+                <th>Source</th>
+                <th class="gs-th-sort" aria-sort="none" data-col="10" data-sort-tip="Click to sort in ascending order">
+                  <div class="tbl-th-inner"><span class="tbl-th-label">Last Updated</span><div class="tbl-th-actions"><button class="tbl-th-action-btn" onclick="gsTblColSearchOpen(event,this)" title="Search column"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg></button><button class="tbl-th-action-btn tbl-th-action-sort" onclick="gsTblThClick(event,this.closest('th'))" onmouseenter="gsThSortBtnHover(this)" onmouseleave="gsFloatTipHide(80)" title="Sort"><svg viewBox="0 0 24 24"><polyline points="7 15 12 20 17 15"/><polyline points="7 9 12 4 17 9"/></svg></button><span class="tbl-col-filter-dot"></span></div></div>
+                  <div class="tbl-col-search-wrap"><div class="gs-tf-box size-sm"><input class="gs-tf-input" type="text" placeholder="Search date…" autocomplete="off" oninput="gsTblColFilter(event,this)" onkeydown="if(event.key==='Escape')gsTblColSearchClear(event,this)"><button class="tbl-col-search-close" type="button" onclick="gsTblColSearchClear(event,this)" title="Clear"><svg viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></svg></button></div></div>
+                </th>
+                <th>Status</th>
+                <th style="width:36px;"></th>
+              </tr></thead>
+              <tbody>
+                <!-- ── GROUP 1 — EXPANDED (Figma: Incremental variant with 2 children) ── -->
+                <tr class="tbl-group-parent tbl-group-expanded" data-group="g1" data-expanded="true" onclick="gsTableToggleStack(this)">
+                  <td class="gs-td-bold" style="white-space:nowrap;">
+                    <button class="tbl-expand-btn" onclick="event.stopPropagation();gsTableToggleStack(this.closest('tr'))">
+                      <svg class="tbl-chevron" viewBox="0 0 24 24" style="transform:rotate(180deg)"><polyline points="6 9 12 15 18 9"/></svg>
+                    </button>
+                    Vessel Bravo
+                  </td>
+                  <td class="tbl-agg">2 Ports</td>
+                  <td class="tbl-agg">2 Commodities</td>
+                  <td></td>
+                  <td class="tbl-agg">1 counterparty</td>
+                  <td></td><td></td><td></td><td></td><td></td><td></td>
+                  <td><span class="gs-cs gs-cs--blue">Incremental</span></td>
+                  <td></td>
+                </tr>
+                <!-- Child 1a — Antwerp · Crude Oil · Commenced -->
+                <tr class="tbl-group-child tbl-group-line" data-group-child="g1">
+                  <td></td>
+                  <td class="gs-td-dim">Antwerp</td>
+                  <td class="gs-td-dim">Crude Oil</td>
+                  <td class="gs-td-dim">06/22/2025</td>
+                  <td class="gs-td-dim">Tony Bennet</td>
+                  <td class="gs-td-dim">1234-A</td>
+                  <td><span class="gs-cs gs-cs--teal" style="font-size:10.5px;padding:1px 7px;">Commenced</span></td>
+                  <td class="gs-td-dim" style="color:#f97316;font-weight:600;">24</td>
+                  <td class="gs-td-dim">John Samuel</td>
+                  <td style="white-space:nowrap;"><span class="gs-ci gs-ci--sm gs-ci--light gs-ci--blue" style="font-size:10.5px;padding:1px 7px;display:inline-flex;align-items:center;gap:3px;">IMOS <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="3" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg></span></td>
+                  <td class="gs-td-dim" style="white-space:nowrap;">30/05/2025, 12:55 PM</td>
+                  <td><span class="gs-cs gs-cs--yellow">Awaiting</span></td>
+                  <td style="text-align:right;padding-right:8px;width:44px;"><div class="gs-pop-wrap" style="position:relative;"><button class="gs-btn gs-btn-neutral gs-btn-icon gs-btn-sm" onclick="gsTableMenu(this)" aria-haspopup="menu" aria-label="Row actions"><svg width="16" height="16" viewBox="0 0 24 24" fill="#64748B"><circle cx="12" cy="5" r="1.5"/><circle cx="12" cy="12" r="1.5"/><circle cx="12" cy="19" r="1.5"/></svg></button><div class="gs-table-menu-pop" style="min-width:160px;" role="menu"><div class="gs-pop__content"><button class="gs-pop-item" role="menuitem"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>View Details</button></div></div></div></td>
+                </tr>
+                <!-- Child 1b — Dubai · Coal · Commenced (last child = tbl-group-end) -->
+                <tr class="tbl-group-child tbl-group-line tbl-group-end" data-group-child="g1">
+                  <td></td>
+                  <td class="gs-td-dim">Dubai</td>
+                  <td class="gs-td-dim">Coal</td>
+                  <td class="gs-td-dim">06/22/2025</td>
+                  <td class="gs-td-dim">Tony Bennet</td>
+                  <td class="gs-td-dim">1234-B</td>
+                  <td><span class="gs-cs gs-cs--teal" style="font-size:10.5px;padding:1px 7px;">Commenced</span></td>
+                  <td class="gs-td-dim" style="color:#f97316;font-weight:600;">24</td>
+                  <td class="gs-td-dim">John Samuel</td>
+                  <td style="white-space:nowrap;"><span class="gs-ci gs-ci--sm gs-ci--light gs-ci--blue" style="font-size:10.5px;padding:1px 7px;display:inline-flex;align-items:center;gap:3px;">IMOS <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="3" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg></span></td>
+                  <td class="gs-td-dim" style="white-space:nowrap;">30/05/2025, 12:55 PM</td>
+                  <td><span class="gs-cs gs-cs--yellow">Awaiting</span></td>
+                  <td style="text-align:right;padding-right:8px;width:44px;"><div class="gs-pop-wrap" style="position:relative;"><button class="gs-btn gs-btn-neutral gs-btn-icon gs-btn-sm" onclick="gsTableMenu(this)" aria-haspopup="menu" aria-label="Row actions"><svg width="16" height="16" viewBox="0 0 24 24" fill="#64748B"><circle cx="12" cy="5" r="1.5"/><circle cx="12" cy="12" r="1.5"/><circle cx="12" cy="19" r="1.5"/></svg></button><div class="gs-table-menu-pop" style="min-width:160px;" role="menu"><div class="gs-pop__content"><button class="gs-pop-item" role="menuitem"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>View Details</button></div></div></div></td>
+                </tr>
+
+                <!-- ── GROUP 2 — COLLAPSED (single child) ── -->
+                <tr class="tbl-group-parent" data-group="g2" data-expanded="false" onclick="gsTableToggleStack(this)">
+                  <td class="gs-td-bold" style="white-space:nowrap;">
+                    <button class="tbl-expand-btn" onclick="event.stopPropagation();gsTableToggleStack(this.closest('tr'))">
+                      <svg class="tbl-chevron" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+                    </button>
+                    Vessel Bravo
+                  </td>
+                  <td class="gs-td-dim">Antwerp</td>
+                  <td class="gs-td-dim">Crude Oil</td>
+                  <td class="gs-td-dim">06/22/2025</td>
+                  <td class="gs-td-dim">Tony Bennet</td>
+                  <td class="gs-td-dim">1234</td>
+                  <td><span class="gs-cs gs-cs--blue" style="font-size:10.5px;padding:1px 7px;">Planned</span></td>
+                  <td class="gs-td-dim" style="color:#f97316;font-weight:600;">24</td>
+                  <td class="gs-td-dim">Alexander W.</td>
+                  <td style="white-space:nowrap;"><span class="gs-ci gs-ci--sm gs-ci--light gs-ci--blue" style="font-size:10.5px;padding:1px 7px;display:inline-flex;align-items:center;gap:3px;">IMOS <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="3" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg></span></td>
+                  <td class="gs-td-dim" style="white-space:nowrap;">30/05/2025, 12:55 PM</td>
+                  <td><span class="gs-cs gs-cs--yellow">Awaiting</span></td>
+                  <td></td>
+                </tr>
+                <!-- Child 2 (hidden) -->
+                <tr class="tbl-group-child" data-group-child="g2" style="display:none;">
+                  <td></td><td class="gs-td-dim">Antwerp</td><td class="gs-td-dim">Crude Oil</td><td class="gs-td-dim">06/22/2025</td><td class="gs-td-dim">Tony Bennet</td><td class="gs-td-dim">1234</td><td><span class="gs-cs gs-cs--teal" style="font-size:10.5px;padding:1px 7px;">Commenced</span></td><td class="gs-td-dim" style="color:#f97316;font-weight:600;">24</td><td class="gs-td-dim">John Samuel</td><td><span class="gs-ci gs-ci--sm gs-ci--light gs-ci--blue" style="font-size:10.5px;padding:1px 7px;">IMOS ✓</span></td><td class="gs-td-dim" style="white-space:nowrap;">30/05/2025, 12:55 PM</td><td><span class="gs-cs gs-cs--yellow">Awaiting</span></td><td></td>
+                </tr>
+
+                <!-- ── FLAT ROW — Commenced ── -->
+                <tr>
+                  <td class="gs-td-bold" style="white-space:nowrap;padding-left:16px;">Vessel Bravo</td>
+                  <td class="gs-td-dim">Antwerp</td>
+                  <td class="gs-td-dim">Crude Oil</td>
+                  <td class="gs-td-dim">06/22/2025</td>
+                  <td class="gs-td-dim">Tony Bennet</td>
+                  <td class="gs-td-dim">1234</td>
+                  <td><span class="gs-cs gs-cs--teal" style="font-size:10.5px;padding:1px 7px;">Commenced</span></td>
+                  <td class="gs-td-dim" style="color:#f97316;font-weight:600;">24</td>
+                  <td class="gs-td-dim">John Samuel</td>
+                  <td style="white-space:nowrap;"><span class="gs-ci gs-ci--sm gs-ci--light gs-ci--blue" style="font-size:10.5px;padding:1px 7px;display:inline-flex;align-items:center;gap:3px;">IMOS <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#dc2625" stroke-width="3" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><line x1="12" y1="8" x2="12" y2="12"/><circle cx="12" cy="16" r="1" fill="#dc2625"/></svg></span></td>
+                  <td class="gs-td-dim" style="white-space:nowrap;">30/05/2025, 12:55 PM</td>
+                  <td><span class="gs-cs gs-cs--yellow">Awaiting</span></td>
+                  <td style="text-align:right;padding-right:8px;width:44px;"><div class="gs-pop-wrap" style="position:relative;"><button class="gs-btn gs-btn-neutral gs-btn-icon gs-btn-sm" onclick="gsTableMenu(this)" aria-haspopup="menu" aria-label="Row actions"><svg width="16" height="16" viewBox="0 0 24 24" fill="#64748B"><circle cx="12" cy="5" r="1.5"/><circle cx="12" cy="12" r="1.5"/><circle cx="12" cy="19" r="1.5"/></svg></button><div class="gs-table-menu-pop" style="min-width:160px;" role="menu"><div class="gs-pop__content"><button class="gs-pop-item" role="menuitem"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>View Details</button></div></div></div></td>
+                </tr>
+
+                <!-- ── FLAT ROW — Completed + Editing in progress ── -->
+                <tr>
+                  <td class="gs-td-bold" style="white-space:nowrap;padding-left:16px;">Vessel Bravo</td>
+                  <td class="gs-td-dim">Antwerp</td>
+                  <td class="gs-td-dim">Crude Oil</td>
+                  <td class="gs-td-dim">06/22/2025</td>
+                  <td class="gs-td-dim">Tony Bennet</td>
+                  <td class="gs-td-dim">1234</td>
+                  <td><span class="gs-cs gs-cs--grey" style="font-size:10.5px;padding:1px 7px;">Completed</span></td>
+                  <td class="gs-td-dim" style="color:#f97316;font-weight:600;">24</td>
+                  <td class="gs-td-dim">John Samuel</td>
+                  <td style="white-space:nowrap;"><span class="gs-ci gs-ci--sm gs-ci--light gs-ci--blue" style="font-size:10.5px;padding:1px 7px;display:inline-flex;align-items:center;gap:3px;">IMOS <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/></svg></span></td>
+                  <td class="gs-td-dim" style="white-space:nowrap;">30/05/2025, 12:55 PM</td>
+                  <td>
+                    <span class="gs-cs gs-cs--yellow" style="display:block;">Awaiting</span>
+                    <span style="font-size:10px;font-weight:500;color:#92400E;margin-top:2px;display:flex;align-items:center;gap:3px;">
+                      <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                      Editing in progress
+                    </span>
+                  </td>
+                  <td></td>
+                </tr>
+              </tbody>
+            </table>
+            <div class="gs-table-footer">Stacked view — 2 groups · grey/300 separator between groups</div>
+          </div>
+        </div>
+
+        <!-- Design notes -->
+        <div class="btn-sub-label" style="margin-top:20px;margin-bottom:8px;">Stacked row specs</div>
+        <table>
+          <thead><tr><th>Element</th><th>Spec</th></tr></thead>
+          <tbody>
+            <tr class="ds-tr-border"><td>Parent left strip</td><td><code>border-left: 3px solid #1852FE</code> — entire group when expanded</td></tr>
+            <tr class="ds-tr-border"><td>Group separator</td><td><code>border-bottom: 1.5px solid --prim-grey-300 (#94a3b8)</code> on last child/parent</td></tr>
+            <tr class="ds-tr-border"><td>Aggregated cell</td><td><code>.tbl-agg</code> — <code>color: #94A3B8; font-style: italic</code></td></tr>
+            <tr class="ds-tr-border"><td>Parent badge</td><td><code>Incremental</code> — purple <code>gs-cs--blue</code></td></tr>
+            <tr class="ds-tr-border"><td>Row click</td><td>Toggles expand/collapse on entire parent row</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- ROW SELECTION -->
+      <div id="tbl-s-select" class="btn-family-card">
+        <div class="btn-family-title">Row Selection</div>
+        <p class="btn-family-desc">Add a checkbox column to enable multi-row selection. The header checkbox cycles through <strong>all selected</strong> and <strong>none</strong> states, with an <strong>indeterminate</strong> (dash) state when some rows are checked. The selection bar above the table shows a count and bulk-action buttons. Uses the <code>gs-cb-wrap</code> / <code>gs-cb-box</code> checkbox primitive from <code>styles.css</code>.</p>
+
+        <div class="btn-when-examples" style="margin:12px 0;">
+          <span class="btn-when-example-tag">Bulk actions</span>
+          <span class="btn-when-example-tag">Select all + indeterminate</span>
+          <span class="btn-when-example-tag">gs-cb-wrap component</span>
+          <span class="btn-when-example-tag">Selection count bar</span>
+        </div>
+
+        <div style="margin-top:16px;" id="tbl-sel-container">
+          <div class="tbl-select-bar" id="tbl-select-bar" style="display:none;">
+            <span><span class="tbl-select-bar-count" id="tbl-select-count">0</span> rows selected</span>
+            <div class="tbl-select-bar-actions">
+              <button class="gs-btn gs-btn-neutral gs-btn-sm" onclick="gsTblCbClear('tbl-sel-table')">Clear</button>
+              <button class="gs-btn gs-btn-primary gs-btn-sm">Approve Selected</button>
+            </div>
+          </div>
+          <div class="gs-table-wrap" id="tbl-sel-wrap">
+            <table id="tbl-sel-table">
+              <thead><tr>
+                <th class="tbl-th-cb">
+                  <label class="gs-cb-wrap" title="Select all">
+                    <input type="checkbox" class="gs-cb-input" id="tbl-sel-all" onchange="gsTblCbSelectAll(this,'tbl-sel-table')">
+                    <span class="gs-cb-box"></span>
+                  </label>
+                </th>
+                <th>Job No</th>
+                <th>Vessel</th>
+                <th>Port</th>
+                <th>Stem Date</th>
+                <th>Status</th>
+              </tr></thead>
+              <tbody>
+                <tr onclick="gsTblCbRowClick(event,this,'tbl-sel-table')">
+                  <td class="tbl-td-cb"><label class="gs-cb-wrap"><input type="checkbox" class="gs-cb-input tbl-row-cb" onchange="gsTblCbRowToggle(this,'tbl-sel-table')"><span class="gs-cb-box"></span></label></td>
+                  <td class="gs-td-link">G6713</td>
+                  <td class="gs-td-bold" style="white-space:nowrap">STI Garnet</td>
+                  <td class="gs-td-dim">Singapore</td>
+                  <td class="gs-td-bold">24 Apr 26</td>
+                  <td><span class="gs-cs gs-cs--yellow">For Approval</span></td>
+                </tr>
+                <tr onclick="gsTblCbRowClick(event,this,'tbl-sel-table')">
+                  <td class="tbl-td-cb"><label class="gs-cb-wrap"><input type="checkbox" class="gs-cb-input tbl-row-cb" onchange="gsTblCbRowToggle(this,'tbl-sel-table')"><span class="gs-cb-box"></span></label></td>
+                  <td class="gs-td-link">G6701</td>
+                  <td class="gs-td-bold" style="white-space:nowrap">Crimson Tide</td>
+                  <td class="gs-td-dim">Rotterdam</td>
+                  <td class="gs-td-bold">30 Apr 26</td>
+                  <td><span class="gs-cs gs-cs--green">Approved</span></td>
+                </tr>
+                <tr onclick="gsTblCbRowClick(event,this,'tbl-sel-table')">
+                  <td class="tbl-td-cb"><label class="gs-cb-wrap"><input type="checkbox" class="gs-cb-input tbl-row-cb" onchange="gsTblCbRowToggle(this,'tbl-sel-table')"><span class="gs-cb-box"></span></label></td>
+                  <td class="gs-td-link">G6698</td>
+                  <td class="gs-td-bold" style="white-space:nowrap">Pacific Star</td>
+                  <td class="gs-td-dim">Fujairah</td>
+                  <td class="gs-td-bold">02 May 26</td>
+                  <td><span class="gs-cs gs-cs--orange">Pre-Approved</span></td>
+                </tr>
+                <tr onclick="gsTblCbRowClick(event,this,'tbl-sel-table')">
+                  <td class="tbl-td-cb"><label class="gs-cb-wrap"><input type="checkbox" class="gs-cb-input tbl-row-cb" onchange="gsTblCbRowToggle(this,'tbl-sel-table')"><span class="gs-cb-box"></span></label></td>
+                  <td class="gs-td-link">G6685</td>
+                  <td class="gs-td-bold" style="white-space:nowrap">Nordic Breeze</td>
+                  <td class="gs-td-dim">Houston</td>
+                  <td class="gs-td-bold">05 May 26</td>
+                  <td><span class="gs-cs gs-cs--red">Rejected</span></td>
+                </tr>
+                <tr onclick="gsTblCbRowClick(event,this,'tbl-sel-table')">
+                  <td class="tbl-td-cb"><label class="gs-cb-wrap"><input type="checkbox" class="gs-cb-input tbl-row-cb" onchange="gsTblCbRowToggle(this,'tbl-sel-table')"><span class="gs-cb-box"></span></label></td>
+                  <td class="gs-td-link">G6670</td>
+                  <td class="gs-td-bold" style="white-space:nowrap">Ocean Fortune</td>
+                  <td class="gs-td-dim">Piraeus</td>
+                  <td class="gs-td-bold">12 May 26</td>
+                  <td><span class="gs-cs gs-cs--yellow">For Approval</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="btn-sub-label" style="margin-top:20px;margin-bottom:8px;">Selection specs</div>
+        <table>
+          <thead><tr><th>Element</th><th>Spec</th></tr></thead>
+          <tbody>
+            <tr class="ds-tr-border"><td>Checkbox column</td><td><code>44px</code> fixed width, center-aligned, no padding. Use <code>.tbl-th-cb</code> / <code>.tbl-td-cb</code></td></tr>
+            <tr class="ds-tr-border"><td>Header checkbox</td><td>Checked = all rows selected. Indeterminate = partial. Unchecked = none. Managed by <code>gsTblCbSelectAll()</code></td></tr>
+            <tr class="ds-tr-border"><td>Row click</td><td>Clicking anywhere on the row toggles selection via <code>gsTblCbRowClick()</code> — delegates to the checkbox</td></tr>
+            <tr class="ds-tr-border"><td>Selection bar</td><td>Blue/10 tint, appears above table when ≥1 rows selected. Rounds top corners; table gets bottom-only corners.</td></tr>
+            <tr class="ds-tr-border"><td>Selected row bg</td><td><code>--tbl-row-selected: var(--prim-blue-50, #DBEAFE)</code> via <code>.gs-row-selected</code></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- INLINE EDITABLE TABLE -->
+      <div id="tbl-s-inline" class="btn-family-card">
+        <div class="btn-family-title">Inline Field Table</div>
+        <p class="btn-family-desc">Used on internal pages with editable fields. Each cell contains a text input, number input, or dropdown. Row borders are transparent by default — visible only on hover and focus using design-system tokens. Rows can be added with <code>gsTblIfeAddRow()</code> and deleted with <code>gsTblIfeDelRow()</code>.</p>
+
+        <div class="btn-when-examples" style="margin:12px 0;">
+          <span class="btn-when-example-tag">Add / delete rows</span>
+          <span class="btn-when-example-tag">Text &amp; number inputs</span>
+          <span class="btn-when-example-tag">Dropdown cells</span>
+          <span class="btn-when-example-tag">Inline editing context</span>
+        </div>
+
+        <div style="overflow-x:auto;margin-top:16px;">
+          <div class="gs-table-wrap" style="overflow:visible;">
+            <table class="gs-tbl-inline" id="tbl-inline-table">
+              <thead><tr>
+                <th style="min-width:160px;">Fuel Type</th>
+                <th style="min-width:140px;">Sulphur</th>
+                <th style="min-width:200px;">ISO SPEC</th>
+                <th style="min-width:120px;">Qty Min</th>
+                <th style="min-width:120px;">Qty Max</th>
+                <th style="width:44px;"></th>
+              </tr></thead>
+              <tbody id="tbl-inline-body">
+                <tr>
+                  <td><select class="tbl-ife-select"><option value="">Select</option><option value="HSFO" selected>HSFO</option><option value="VLSFO">VLSFO</option><option value="LSMGO">LSMGO</option><option value="MDO">MDO</option></select></td>
+                  <td><select class="tbl-ife-select"><option value="">Select</option><option value="9653343" selected>9653343</option><option value="0.5">0.5%</option><option value="0.1">0.1%</option></select></td>
+                  <td><select class="tbl-ife-select"><option value="">Select</option><option value="MDO ISO 8217:2010" selected>MDO ISO 8217:2010</option><option value="RMG 380">RMG 380</option><option value="DMA">DMA</option></select></td>
+                  <td><input type="number" class="tbl-ife-input" value="800" min="0"></td>
+                  <td><input type="number" class="tbl-ife-input" value="1200" min="0"></td>
+                  <td style="text-align:center;"><button class="tbl-ife-del" onclick="gsTblIfeDelRow(this)" title="Delete row"><svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg></button></td>
+                </tr>
+                <tr>
+                  <td><select class="tbl-ife-select"><option value="">Select</option><option value="HSFO">HSFO</option><option value="VLSFO">VLSFO</option><option value="LSMGO">LSMGO</option><option value="MDO">MDO</option></select></td>
+                  <td><select class="tbl-ife-select"><option value="">Select</option><option value="9653343">9653343</option><option value="0.5">0.5%</option><option value="0.1">0.1%</option></select></td>
+                  <td><select class="tbl-ife-select"><option value="">Select</option><option value="MDO ISO 8217:2010">MDO ISO 8217:2010</option><option value="RMG 380">RMG 380</option><option value="DMA">DMA</option></select></td>
+                  <td><input type="number" class="tbl-ife-input" placeholder="Add min qty" min="0"></td>
+                  <td><input type="number" class="tbl-ife-input" placeholder="Add max qty" min="0"></td>
+                  <td style="text-align:center;"><button class="tbl-ife-del" onclick="gsTblIfeDelRow(this)" title="Delete row"><svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg></button></td>
+                </tr>
+              </tbody>
+            </table>
+            <button class="tbl-ife-add-row" onclick="gsTblIfeAddRow('tbl-inline-body')">
+              <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+              Add Bunker
+            </button>
+          </div>
+        </div>
+
+        <div class="btn-sub-label" style="margin-top:20px;margin-bottom:8px;">Inline table specs</div>
+        <table>
+          <thead><tr><th>Element</th><th>Spec</th></tr></thead>
+          <tbody>
+            <tr class="ds-tr-border"><td>Cell padding</td><td><code>6px 8px</code> via <code>.gs-tbl-inline</code> modifier — tighter than the standard <code>0 16px</code></td></tr>
+            <tr class="ds-tr-border"><td>Input border</td><td>Transparent default → <code>--prim-grey-200</code> on hover → <code>--color-brand</code> on focus with blue ring</td></tr>
+            <tr class="ds-tr-border"><td>Dropdown</td><td>Native <code>&lt;select&gt;</code> with custom SVG chevron via <code>background-image</code>; same border states as input</td></tr>
+            <tr class="ds-tr-border"><td>Delete button</td><td><code>.tbl-ife-del</code> — 32×32, red/10 bg on hover, <code>opacity:0.5</code> default. Min 1 row enforced by JS.</td></tr>
+            <tr class="ds-tr-border"><td>Add row</td><td><code>.tbl-ife-add-row</code> — full-width footer button with top border separator</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+    </div><!-- /code-tab-main -->
+    <div class="code-tab-qnav">
+      <div class="code-qnav-inner">
+        <p class="code-qnav-title">On This Page</p>
+        <ul class="code-qnav-list">
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('tbl-s-overview')">Overview</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('tbl-s-badges')">Status Badges</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('tbl-s-chips')">Fuel &amp; Trade Chips</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('tbl-s-states')">Row States</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('tbl-s-header')">Header Behaviour</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('tbl-s-vscroll')">Vertical Scroll</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('tbl-s-sticky')">Sticky Columns</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('tbl-s-stacked')">Stacked Table</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('tbl-s-select')">Row Selection</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('tbl-s-inline')">Inline Field Table</button></li>
+        </ul>
+      </div>
+    </div>
+  </div><!-- /code-tab-layout -->
+</div><!-- /tbl-tab-design -->
+
+<!-- ═══ CODE TAB ═══════════════════════════════════════════════ -->
+<div id="tbl-tab-code" class="btn-tab-pane tbl-tab-pane">
+
+  <!-- Framework toggle -->
+  <div class="fw-toggle-bar">
+    <button class="fw-toggle-bar-btn active" data-fw="react" onclick="switchFw('tbl-tab-code','react')">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="2.05" fill="#61DAFB"/><ellipse cx="12" cy="12" rx="10" ry="3.8" stroke="#61DAFB" stroke-width="1.3" fill="none"/><ellipse cx="12" cy="12" rx="10" ry="3.8" stroke="#61DAFB" stroke-width="1.3" fill="none" transform="rotate(60 12 12)"/><ellipse cx="12" cy="12" rx="10" ry="3.8" stroke="#61DAFB" stroke-width="1.3" fill="none" transform="rotate(120 12 12)"/></svg>
+      React
+    </button>
+    <button class="fw-toggle-bar-btn" data-fw="angular" onclick="switchFw('tbl-tab-code','angular')">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none"><polygon points="12,2 22,5.5 20,18 12,22 4,18 2,5.5" fill="#DD0031"/><polygon points="12,2 12,22 4,18 2,5.5" fill="#C3002F"/><polygon points="12,5.5 8,15.5 9.5,15.5 10.5,13 13.5,13 14.5,15.5 16,15.5 12,5.5" fill="white"/></svg>
+      Angular
+    </button>
+  </div>
+
+  <div class="code-tab-layout">
+    <div class="code-tab-main">
+
+      <!-- 1 Overview -->
+      <div id="tbl-c-overview" class="btn-family-card">
+        <div class="ds-step-row"><span class="ds-step-num">1</span><div class="btn-family-title" style="margin:0;">Overview</div></div>
+        <div class="fw-react"><p class="btn-family-desc">The <code>GeoTable</code> React component wraps Ant Design's <code>Table</code> with GeoOne design tokens applied via CSS override. Pass <code>stackBy</code> to enable grouped row mode. All Ant Design Table props are supported.</p></div>
+        <div class="fw-angular" style="display:none;"><p class="btn-family-desc">Use <code>.gs-table-wrap</code> container with semantic <code>&lt;table&gt;</code> markup. Call <code>gsTableToggleStack(btn)</code> for expand/collapse and <code>gsTableMenu(btn)</code> for 3-dot menus. All styles are in <code>styles.css</code>.</p></div>
+      </div>
+
+      <!-- 2 Import -->
+      <div id="tbl-c-install" class="btn-family-card">
+        <div class="ds-step-row"><span class="ds-step-num">2</span><div class="btn-family-title" style="margin:0;">Import</div></div>
+        <div class="fw-react">
+          <div class="btn-code-block"><div class="btn-code-head"><span class="btn-code-lang">JSX</span><button class="btn-copy-btn" onclick="copyBtnCode('tbl-imp-r',this)">Copy</button></div>
+          <div class="btn-code-body"><pre id="tbl-imp-r"><code><span class="c-kw">import</span> { <span class="c-type">GeoTable</span>, <span class="c-type">StatusBadge</span>, <span class="c-type">FuelChip</span> } <span class="c-kw">from</span> <span class="c-val">'@pelagos/components/views/table'</span>;</code></pre></div></div>
+        </div>
+        <div class="fw-angular" style="display:none;">
+          <p class="btn-family-desc">Include <code>styles.css</code> — all <code>.gs-table-*</code>, <code>.gs-cs</code> (status chips), and <code>.gs-ci</code> (info chips) classes are globally available from <code>styles.css</code>. Call <code>gsTableToggleStack()</code> and <code>gsTableMenu()</code> from <code>script.js</code>.</p>
+        </div>
+      </div>
+
+      <!-- 3 API -->
+      <div id="tbl-c-api" class="btn-family-card">
+        <div class="ds-step-row"><span class="ds-step-num">3</span><div class="btn-family-title" style="margin:0;">API / Props</div></div>
+        <div class="fw-react">
+          <table>
+            <thead><tr><th>Prop</th><th>Type</th><th>Default</th><th>Description</th></tr></thead>
+            <tbody>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">columns</td><td class="ds-td-code-muted">Column[]</td><td class="ds-td-code-muted">—</td><td>Column definitions (Ant Design ColumnsType)</td></tr>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">dataSource</td><td class="ds-td-code-muted">object[]</td><td class="ds-td-code-muted">[]</td><td>Row data array</td></tr>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">stackBy</td><td class="ds-td-code-muted">string</td><td class="ds-td-code-muted">—</td><td>Field key to group rows by (enables stacked mode)</td></tr>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">onRowClick</td><td class="ds-td-code-muted">(row) => void</td><td class="ds-td-code-muted">—</td><td>Called on row click</td></tr>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">loading</td><td class="ds-td-code-muted">boolean</td><td class="ds-td-code-muted">false</td><td>Show skeleton loader</td></tr>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">pagination</td><td class="ds-td-code-muted">object | false</td><td class="ds-td-code-muted">&#123;pageSize:20&#125;</td><td>Ant Design pagination config or false to disable</td></tr>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">rowKey</td><td class="ds-td-code-muted">string</td><td class="ds-td-code-muted">'id'</td><td>Unique row identifier field</td></tr>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">footer</td><td class="ds-td-code-muted">string | ReactNode</td><td class="ds-td-code-muted">—</td><td>Footer content (e.g. "Showing N of M records")</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="fw-angular" style="display:none;">
+          <table>
+            <thead><tr><th>JS Function</th><th>Signature</th><th>Description</th></tr></thead>
+            <tbody>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">gsTableToggleStack(btn)</td><td class="ds-td-code-muted">btn: HTMLElement</td><td>Expand/collapse a group. Pass the expand button element.</td></tr>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">gsTableMenu(btn)</td><td class="ds-td-code-muted">btn: HTMLElement</td><td>Toggle 3-dot dropdown. Auto-closes on outside click.</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- 4 Basic flat -->
+      <div id="tbl-c-basic" class="btn-family-card">
+        <div class="ds-step-row"><span class="ds-step-num">4</span><div class="btn-family-title" style="margin:0;">Flat Table — Shell</div></div>
+        <p class="btn-family-desc" style="margin-bottom:12px;">Drop-in shell. Define <code>columns</code> to match your data shape, wire <code>dataSource</code> to your API response, and each row renders itself. Replace <code>dataIndex</code> keys and column titles as needed.</p>
+        <div class="fw-react">
+          <div class="btn-code-block"><div class="btn-code-head"><span class="btn-code-lang">JSX</span><button class="btn-copy-btn" onclick="copyBtnCode('tbl-basic-r',this)">Copy</button></div>
+          <div class="btn-code-body"><pre id="tbl-basic-r"><code><span class="c-kw">import</span> { <span class="c-type">GeoTable</span>, <span class="c-type">StatusBadge</span>, <span class="c-type">FuelChip</span> } <span class="c-kw">from</span> <span class="c-val">'@pelagos/components/views/table'</span>;
+
+<span class="c-cmt">// 1. Define columns — replace keys/titles to match your data</span>
+<span class="c-kw">const</span> columns = [
+  {
+    title:     <span class="c-val">'Column A'</span>,     <span class="c-cmt">// header label</span>
+    dataIndex: <span class="c-val">'fieldA'</span>,       <span class="c-cmt">// key in your data object</span>
+    sorter:    true,            <span class="c-cmt">// set false to disable sort</span>
+    render:    (v) =&gt; <span class="c-tag">&lt;a</span> <span class="c-attr">className</span>=<span class="c-val">"gs-td-link"</span><span class="c-tag">&gt;</span>{v}<span class="c-tag">&lt;/a&gt;</span>,
+  },
+  {
+    title:     <span class="c-val">'Column B'</span>,
+    dataIndex: <span class="c-val">'fieldB'</span>,
+    sorter:    true,
+  },
+  {
+    title:     <span class="c-val">'Column C'</span>,
+    dataIndex: <span class="c-val">'fieldC'</span>,        <span class="c-cmt">// plain text — no render needed</span>
+  },
+  {
+    title:     <span class="c-val">'Status'</span>,
+    dataIndex: <span class="c-val">'status'</span>,
+    render:    (v) =&gt; <span class="c-tag">&lt;StatusBadge</span> <span class="c-attr">status</span>={v} <span class="c-tag">/&gt;</span>,
+  },
+  <span class="c-cmt">// Add or remove columns as needed</span>
+];
+
+<span class="c-cmt">// 2. Fetch data from your API</span>
+<span class="c-kw">const</span> [rows,  setRows]  = <span class="c-type">useState</span>([]);
+<span class="c-kw">const</span> [total, setTotal] = <span class="c-type">useState</span>(0);
+<span class="c-kw">const</span> [loading, setLoading] = <span class="c-type">useState</span>(true);
+
+<span class="c-type">useEffect</span>(() =&gt; {
+  fetchRows(<span class="c-val">'/api/your-endpoint'</span>).then(({ data, count }) =&gt; {
+    setRows(data);
+    setTotal(count);
+    setLoading(false);
+  });
+}, []);
+
+<span class="c-cmt">// 3. Render</span>
+<span class="c-tag">&lt;GeoTable</span>
+  <span class="c-attr">columns</span>={columns}
+  <span class="c-attr">dataSource</span>={rows}
+  <span class="c-attr">rowKey</span>=<span class="c-val">"id"</span>              <span class="c-cmt">// unique identifier field</span>
+  <span class="c-attr">loading</span>={loading}
+  <span class="c-attr">onRowClick</span>={(row) =&gt; navigate(`/detail/${row.id}`)}
+  <span class="c-attr">footer</span>={`Showing ${rows.length} of ${total}`}
+<span class="c-tag">/&gt;</span></code></pre></div></div>
+        </div>
+        <div class="fw-angular" style="display:none;">
+          <div class="btn-code-block"><div class="btn-code-head"><span class="btn-code-lang">HTML</span><button class="btn-copy-btn" onclick="copyBtnCode('tbl-basic-ng',this)">Copy</button></div>
+          <div class="btn-code-body"><pre id="tbl-basic-ng"><code><span class="c-cmt">&lt;!-- Table shell — replace column headers and bind {row.field} values --&gt;</span>
+<span class="c-tag">&lt;div</span> <span class="c-attr">class</span>=<span class="c-val">"gs-table-wrap"</span><span class="c-tag">&gt;</span>
+  <span class="c-tag">&lt;table</span> <span class="c-attr">role</span>=<span class="c-val">"grid"</span><span class="c-tag">&gt;</span>
+
+    <span class="c-tag">&lt;thead&gt;</span>
+      <span class="c-tag">&lt;tr&gt;</span>
+        <span class="c-cmt">&lt;!-- Sortable column --&gt;</span>
+        <span class="c-tag">&lt;th</span> <span class="c-attr">class</span>=<span class="c-val">"gs-th-sort"</span> <span class="c-attr">aria-sort</span>=<span class="c-val">"none"</span>
+            <span class="c-attr">onclick</span>=<span class="c-val">"gsTableSort(this)"</span>
+            <span class="c-attr">onmouseenter</span>=<span class="c-val">"gsThSortHover(this)"</span>
+            <span class="c-attr">onmouseleave</span>=<span class="c-val">"gsFloatTipHide(0)"</span><span class="c-tag">&gt;</span>
+          Column A <span class="c-cmt">&lt;!-- sort icon --&gt;</span>
+          <span class="c-tag">&lt;span</span> <span class="c-attr">class</span>=<span class="c-val">"tbl-sort-icon"</span><span class="c-tag">&gt;</span>...<span class="c-tag">&lt;/span&gt;</span>
+          <span class="c-tag">&lt;span</span> <span class="c-attr">class</span>=<span class="c-val">"tbl-sort-tip"</span><span class="c-tag">&gt;</span>Click to sort in ascending order<span class="c-tag">&lt;/span&gt;</span>
+        <span class="c-tag">&lt;/th&gt;</span>
+        <span class="c-cmt">&lt;!-- Plain column --&gt;</span>
+        <span class="c-tag">&lt;th&gt;</span>Column B<span class="c-tag">&lt;/th&gt;</span>
+        <span class="c-tag">&lt;th&gt;</span>Column C<span class="c-tag">&lt;/th&gt;</span>
+        <span class="c-tag">&lt;th&gt;</span>Status<span class="c-tag">&lt;/th&gt;</span>
+        <span class="c-tag">&lt;th</span> <span class="c-attr">style</span>=<span class="c-val">"width:44px"</span><span class="c-tag">&gt;&lt;/th&gt;</span> <span class="c-cmt">&lt;!-- actions column --&gt;</span>
+      <span class="c-tag">&lt;/tr&gt;</span>
+    <span class="c-tag">&lt;/thead&gt;</span>
+
+    <span class="c-tag">&lt;tbody&gt;</span>
+      <span class="c-cmt">&lt;!-- Repeat for each row from your data source --&gt;</span>
+      <span class="c-tag">&lt;tr</span> <span class="c-attr">onclick</span>=<span class="c-val">"this.classList.toggle('gs-row-selected')"</span>
+          <span class="c-attr">aria-selected</span>=<span class="c-val">"false"</span><span class="c-tag">&gt;</span>
+        <span class="c-tag">&lt;td</span> <span class="c-attr">class</span>=<span class="c-val">"gs-td-link"</span><span class="c-tag">&gt;</span>{row.fieldA}<span class="c-tag">&lt;/td&gt;</span>
+        <span class="c-tag">&lt;td</span> <span class="c-attr">class</span>=<span class="c-val">"gs-td-bold"</span><span class="c-tag">&gt;</span>{row.fieldB}<span class="c-tag">&lt;/td&gt;</span>
+        <span class="c-tag">&lt;td</span> <span class="c-attr">class</span>=<span class="c-val">"gs-td-dim"</span><span class="c-tag">&gt;</span>{row.fieldC}<span class="c-tag">&lt;/td&gt;</span>
+        <span class="c-tag">&lt;td&gt;&lt;span</span> <span class="c-attr">class</span>=<span class="c-val">"gs-cs gs-cs--{colour}"</span><span class="c-tag">&gt;</span>{row.status}<span class="c-tag">&lt;/span&gt;&lt;/td&gt;</span>
+        <span class="c-tag">&lt;td&gt;</span>
+          <span class="c-cmt">&lt;!-- Action menu --&gt;</span>
+          <span class="c-tag">&lt;div</span> <span class="c-attr">class</span>=<span class="c-val">"gs-pop-wrap"</span> <span class="c-attr">style</span>=<span class="c-val">"position:relative"</span><span class="c-tag">&gt;</span>
+            <span class="c-tag">&lt;button</span> <span class="c-attr">class</span>=<span class="c-val">"gs-btn gs-btn-neutral gs-btn-icon gs-btn-sm"</span>
+                    <span class="c-attr">onclick</span>=<span class="c-val">"gsTableMenu(this)"</span><span class="c-tag">&gt;</span>⋯<span class="c-tag">&lt;/button&gt;</span>
+            <span class="c-tag">&lt;div</span> <span class="c-attr">class</span>=<span class="c-val">"gs-popover gs-popover--bottom-end gs-table-menu-pop"</span><span class="c-tag">&gt;</span>
+              <span class="c-tag">&lt;div</span> <span class="c-attr">class</span>=<span class="c-val">"gs-pop__content"</span><span class="c-tag">&gt;</span>
+                <span class="c-tag">&lt;button</span> <span class="c-attr">class</span>=<span class="c-val">"gs-pop-item"</span><span class="c-tag">&gt;</span>Action A<span class="c-tag">&lt;/button&gt;</span>
+                <span class="c-tag">&lt;button</span> <span class="c-attr">class</span>=<span class="c-val">"gs-pop-item gs-pop-item--danger"</span><span class="c-tag">&gt;</span>Action B<span class="c-tag">&lt;/button&gt;</span>
+              <span class="c-tag">&lt;/div&gt;</span>
+            <span class="c-tag">&lt;/div&gt;</span>
+          <span class="c-tag">&lt;/div&gt;</span>
+        <span class="c-tag">&lt;/td&gt;</span>
+      <span class="c-tag">&lt;/tr&gt;</span>
+    <span class="c-tag">&lt;/tbody&gt;</span>
+
+  <span class="c-tag">&lt;/table&gt;</span>
+  <span class="c-tag">&lt;div</span> <span class="c-attr">class</span>=<span class="c-val">"gs-table-footer"</span><span class="c-tag">&gt;</span>Showing {rows.length} of {total} records<span class="c-tag">&lt;/div&gt;</span>
+<span class="c-tag">&lt;/div&gt;</span></code></pre></div></div>
+        </div>
+      </div>
+
+      <!-- 5 Stacked -->
+      <div id="tbl-c-stacked" class="btn-family-card">
+        <div class="ds-step-row"><span class="ds-step-num">5</span><div class="btn-family-title" style="margin:0;">Stacked (Grouped) Table</div></div>
+        <div class="fw-react">
+          <div class="btn-code-block"><div class="btn-code-head"><span class="btn-code-lang">JSX</span><button class="btn-copy-btn" onclick="copyBtnCode('tbl-stack-r',this)">Copy</button></div>
+          <div class="btn-code-body"><pre id="tbl-stack-r"><code><span class="c-cmt">// Pass stackBy to group rows</span>
+<span class="c-tag">&lt;GeoTable</span>
+  <span class="c-attr">columns</span>={columns}
+  <span class="c-attr">dataSource</span>={voyages}
+  <span class="c-attr">stackBy</span>=<span class="c-val">"groupKey"</span>    <span class="c-cmt">// groups rows that share the same groupKey value</span>
+  <span class="c-attr">rowKey</span>=<span class="c-val">"id"</span>
+<span class="c-tag">/&gt;</span>
+
+<span class="c-cmt">// Fetch your data — structure depends on your API</span>
+<span class="c-cmt">// Each row needs the grouping field (used in stackBy) + all column fields</span>
+<span class="c-kw">const</span> [rows, setRows] = <span class="c-type">useState</span>([]);
+
+<span class="c-type">useEffect</span>(() =&gt; {
+  fetchRows(<span class="c-val">'/api/your-endpoint'</span>).then(({ data }) =&gt; setRows(data));
+}, []);
+
+<span class="c-cmt">// Expected shape — adapt field names to your API response:</span>
+<span class="c-cmt">// [</span>
+<span class="c-cmt">//   { id: 1, groupKey: 'group-a', fieldA: '...', fieldB: '...', status: '...' },</span>
+<span class="c-cmt">//   { id: 2, groupKey: 'group-a', fieldA: '...', fieldB: '...', status: '...' },</span>
+<span class="c-cmt">//   { id: 3, groupKey: 'group-b', fieldA: '...', fieldB: '...', status: '...' },</span>
+<span class="c-cmt">// ]</span></code></pre></div></div>
+        </div>
+        <div class="fw-angular" style="display:none;">
+          <div class="btn-code-block"><div class="btn-code-head"><span class="btn-code-lang">HTML</span><button class="btn-copy-btn" onclick="copyBtnCode('tbl-stack-ng',this)">Copy</button></div>
+          <div class="btn-code-body"><pre id="tbl-stack-ng"><code><span class="c-cmt">&lt;!-- Parent group row --&gt;</span>
+<span class="c-tag">&lt;tr</span> <span class="c-attr">class</span>=<span class="c-val">"tbl-group-parent"</span>
+    <span class="c-attr">data-group</span>=<span class="c-val">"{row.groupKey}"</span>
+    <span class="c-attr">data-expanded</span>=<span class="c-val">"false"</span><span class="c-tag">&gt;</span>
+  <span class="c-tag">&lt;td&gt;</span>
+    <span class="c-tag">&lt;button</span> <span class="c-attr">class</span>=<span class="c-val">"tbl-expand-btn"</span>
+            <span class="c-attr">onclick</span>=<span class="c-val">"gsTableToggleStack(this)"</span>
+            <span class="c-attr">aria-expanded</span>=<span class="c-val">"false"</span>
+            <span class="c-attr">aria-label</span>=<span class="c-val">"Expand {row.groupKey}"</span><span class="c-tag">&gt;</span> <span class="c-cmt">&lt;!-- set from your data --&gt;</span>
+      <span class="c-tag">&lt;svg</span> <span class="c-attr">class</span>=<span class="c-val">"tbl-chevron"</span> <span class="c-attr">viewBox</span>=<span class="c-val">"0 0 24 24"</span><span class="c-tag">&gt;</span>
+        <span class="c-tag">&lt;polyline</span> <span class="c-attr">points</span>=<span class="c-val">"6 9 12 15 18 9"</span><span class="c-tag">/&gt;</span>
+      <span class="c-tag">&lt;/svg&gt;</span>
+    <span class="c-tag">&lt;/button&gt;</span>
+    {row.groupKey} <span class="c-cmt">&lt;!-- group label from your data --&gt;</span>
+  <span class="c-tag">&lt;/td&gt;</span>
+  <span class="c-tag">&lt;td</span> <span class="c-attr">class</span>=<span class="c-val">"tbl-agg"</span><span class="c-tag">&gt;</span>{count} label<span class="c-tag">&lt;/td&gt;</span> <span class="c-cmt">&lt;!-- aggregated count --&gt;</span>
+<span class="c-tag">&lt;/tr&gt;</span>
+
+<span class="c-cmt">&lt;!-- Child rows — hidden by default --&gt;</span>
+<span class="c-tag">&lt;tr</span> <span class="c-attr">class</span>=<span class="c-val">"tbl-group-child"</span>
+    <span class="c-attr">data-group-child</span>=<span class="c-val">"{row.groupKey}"</span>
+    <span class="c-attr">style</span>=<span class="c-val">"display:none"</span><span class="c-tag">&gt;</span>
+  <span class="c-tag">&lt;td&gt;&lt;/td&gt;</span> <span class="c-cmt">&lt;!-- empty first cell --&gt;</span>
+  <span class="c-tag">&lt;td</span> <span class="c-attr">class</span>=<span class="c-val">"gs-td-dim"</span><span class="c-tag">&gt;</span>{row.fieldA}<span class="c-tag">&lt;/td&gt;</span> <span class="c-cmt">&lt;!-- bind your field --&gt;</span>
+<span class="c-tag">&lt;/tr&gt;</span></code></pre></div></div>
+        </div>
+      </div>
+
+      <!-- 6 Status badge code -->
+      <div id="tbl-c-badges" class="btn-family-card">
+        <div class="ds-step-row"><span class="ds-step-num">6</span><div class="btn-family-title" style="margin:0;">Status Badge &amp; Fuel Chip Code</div></div>
+        <div class="fw-react">
+          <div class="btn-code-block"><div class="btn-code-head"><span class="btn-code-lang">JSX</span><button class="btn-copy-btn" onclick="copyBtnCode('tbl-chips-r',this)">Copy</button></div>
+          <div class="btn-code-body"><pre id="tbl-chips-r"><code><span class="c-cmt">// Status badge</span>
+<span class="c-tag">&lt;StatusBadge</span> <span class="c-attr">status</span>=<span class="c-val">"Booked"</span> <span class="c-tag">/&gt;</span>
+<span class="c-tag">&lt;StatusBadge</span> <span class="c-attr">status</span>=<span class="c-val">"For Approval"</span> <span class="c-tag">/&gt;</span>
+
+<span class="c-cmt">// Fuel chip — single</span>
+<span class="c-tag">&lt;FuelChip</span> <span class="c-attr">type</span>=<span class="c-val">"vlsfo"</span> <span class="c-attr">label</span>=<span class="c-val">"VLSFO 0.5%"</span> <span class="c-tag">/&gt;</span>
+
+<span class="c-cmt">// Fuel chip — multi (shows tooltip on hover)</span>
+<span class="c-tag">&lt;FuelChip</span>
+  <span class="c-attr">type</span>=<span class="c-val">"multi"</span>
+  <span class="c-attr">label</span>=<span class="c-val">"3 Fuels"</span>
+  <span class="c-attr">tooltip</span>=<span class="c-val">"HSFO: Spot · VLSFO: Term · LSMGO: Spot"</span>
+<span class="c-tag">/&gt;</span></code></pre></div></div>
+        </div>
+        <div class="fw-angular" style="display:none;">
+          <div class="btn-code-block"><div class="btn-code-head"><span class="btn-code-lang">HTML</span><button class="btn-copy-btn" onclick="copyBtnCode('tbl-chips-ng',this)">Copy</button></div>
+          <div class="btn-code-body"><pre id="tbl-chips-ng"><code><span class="c-cmt">&lt;!-- Status badge --&gt;</span>
+<span class="c-tag">&lt;span</span> <span class="c-attr">class</span>=<span class="c-val">"gs-cs gs-cs--teal"</span><span class="c-tag">&gt;</span>Booked<span class="c-tag">&lt;/span&gt;</span>
+<span class="c-tag">&lt;span</span> <span class="c-attr">class</span>=<span class="c-val">"gs-cs gs-cs--yellow"</span><span class="c-tag">&gt;</span>For Approval<span class="c-tag">&lt;/span&gt;</span>
+
+<span class="c-cmt">&lt;!-- Fuel chip — single --&gt;</span>
+<span class="c-tag">&lt;span</span> <span class="c-attr">class</span>=<span class="c-val">"gs-ci gs-ci--sm gs-ci--light gs-ci--blue"</span><span class="c-tag">&gt;</span>VLSFO 0.5%<span class="c-tag">&lt;/span&gt;</span>
+
+<span class="c-cmt">&lt;!-- Fuel chip — multi with tooltip --&gt;</span>
+<span class="c-tag">&lt;div</span> <span class="c-attr">class</span>=<span class="c-val">"gs-fuel-wrap"</span><span class="c-tag">&gt;</span>
+  <span class="c-tag">&lt;span</span> <span class="c-attr">class</span>=<span class="c-val">"gs-ci gs-ci--sm gs-ci--light gs-ci--grey"</span><span class="c-tag">&gt;</span>3 Fuels<span class="c-tag">&lt;/span&gt;</span>
+  <span class="c-tag">&lt;div</span> <span class="c-attr">class</span>=<span class="c-val">"gs-fuel-tip"</span><span class="c-tag">&gt;</span>HSFO: Spot · VLSFO: Term<span class="c-tag">&lt;/div&gt;</span>
+<span class="c-tag">&lt;/div&gt;</span>
+
+<span class="c-cmt">&lt;!-- Row action menu — icon-only neutral btn + gs-popover (4px pad, 2px gap) --&gt;</span>
+<span class="c-tag">&lt;div</span> <span class="c-attr">class</span>=<span class="c-val">"gs-pop-wrap"</span> <span class="c-attr">style</span>=<span class="c-val">"position:relative"</span><span class="c-tag">&gt;</span>
+  <span class="c-tag">&lt;button</span> <span class="c-attr">class</span>=<span class="c-val">"gs-btn gs-btn-neutral gs-btn-icon gs-btn-sm"</span>
+          <span class="c-attr">onclick</span>=<span class="c-val">"gsTableMenu(this)"</span>
+          <span class="c-attr">aria-haspopup</span>=<span class="c-val">"menu"</span>
+          <span class="c-attr">aria-label</span>=<span class="c-val">"Row actions"</span><span class="c-tag">&gt;</span>
+    <span class="c-cmt">&lt;!-- 3-dot SVG --&gt;</span>
+    <span class="c-tag">&lt;svg</span> <span class="c-attr">width</span>=<span class="c-val">"16"</span> <span class="c-attr">height</span>=<span class="c-val">"16"</span> <span class="c-attr">viewBox</span>=<span class="c-val">"0 0 24 24"</span> <span class="c-attr">fill</span>=<span class="c-val">"currentColor"</span><span class="c-tag">&gt;</span>
+      <span class="c-tag">&lt;circle</span> <span class="c-attr">cx</span>=<span class="c-val">"12"</span> <span class="c-attr">cy</span>=<span class="c-val">"5"</span>  <span class="c-attr">r</span>=<span class="c-val">"1.5"</span><span class="c-tag">/&gt;</span>
+      <span class="c-tag">&lt;circle</span> <span class="c-attr">cx</span>=<span class="c-val">"12"</span> <span class="c-attr">cy</span>=<span class="c-val">"12"</span> <span class="c-attr">r</span>=<span class="c-val">"1.5"</span><span class="c-tag">/&gt;</span>
+      <span class="c-tag">&lt;circle</span> <span class="c-attr">cx</span>=<span class="c-val">"12"</span> <span class="c-attr">cy</span>=<span class="c-val">"19"</span> <span class="c-attr">r</span>=<span class="c-val">"1.5"</span><span class="c-tag">/&gt;</span>
+    <span class="c-tag">&lt;/svg&gt;</span>
+  <span class="c-tag">&lt;/button&gt;</span>
+  <span class="c-cmt">&lt;!-- Popover: padding=4px, item gap=2px via .gs-pop__content --&gt;</span>
+  <span class="c-tag">&lt;div</span> <span class="c-attr">class</span>=<span class="c-val">"gs-popover gs-popover--bottom-end gs-table-menu-pop"</span>
+       <span class="c-attr">style</span>=<span class="c-val">"min-width:160px"</span> <span class="c-attr">role</span>=<span class="c-val">"menu"</span><span class="c-tag">&gt;</span>
+    <span class="c-tag">&lt;div</span> <span class="c-attr">class</span>=<span class="c-val">"gs-pop__content"</span><span class="c-tag">&gt;</span>
+      <span class="c-cmt">&lt;!-- danger action --&gt;</span>
+      <span class="c-tag">&lt;button</span> <span class="c-attr">class</span>=<span class="c-val">"gs-pop-item gs-pop-item--danger"</span>
+              <span class="c-attr">role</span>=<span class="c-val">"menuitem"</span><span class="c-tag">&gt;</span>Action A<span class="c-tag">&lt;/button&gt;</span>
+      <span class="c-cmt">&lt;!-- default action --&gt;</span>
+      <span class="c-tag">&lt;button</span> <span class="c-attr">class</span>=<span class="c-val">"gs-pop-item"</span>
+              <span class="c-attr">role</span>=<span class="c-val">"menuitem"</span><span class="c-tag">&gt;</span>Action B<span class="c-tag">&lt;/button&gt;</span>
+    <span class="c-tag">&lt;/div&gt;</span>
+  <span class="c-tag">&lt;/div&gt;</span>
+<span class="c-tag">&lt;/div&gt;</span></code></pre></div></div>
+        </div>
+      </div>
+
+      <!-- 7 · Colour Tokens -->
+      <div id="tbl-c-tokens" class="btn-family-card">
+        <div class="ds-step-row"><span class="ds-step-num">7</span><div class="btn-family-title" style="margin:0;">Design Tokens</div></div>
+        <p class="btn-family-desc">All row and header colours reference the foundational <button onclick="navigate('found-color')" class="btn-inline-link">Colour Palette</button> and <button onclick="navigate('found-tokens')" class="btn-inline-link">Design Tokens</button>. Use CSS custom properties so themes cascade automatically.</p>
+        <div class="fw-react">
+          <table>
+            <thead><tr><th>Token</th><th>Value</th><th>Usage</th></tr></thead>
+            <tbody>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">--tbl-header-bg</td><td class="ds-td-code-muted">var(--prim-grey-50) · #F1F5F9</td><td>Header row background</td></tr>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">--tbl-header-color</td><td class="ds-td-code-muted">var(--color-text-secondary) · #64748B</td><td>Header text colour</td></tr>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">--tbl-border</td><td class="ds-td-code-muted">#E2E8F0</td><td>Outer border + header bottom</td></tr>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">--tbl-row-divider</td><td class="ds-td-code-muted">#F3F4F6</td><td>Row separator line</td></tr>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">--tbl-row-hover</td><td class="ds-td-code-muted">var(--prim-blue-10) · #EEF6FF</td><td>Row hover fill — Blue/10 (subtle)</td></tr>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">--tbl-row-selected</td><td class="ds-td-code-muted">var(--prim-blue-50) · #DBEAFE</td><td>Selected row background — Blue/50</td></tr>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">--tbl-radius</td><td class="ds-td-code-muted">12px</td><td>Container border-radius</td></tr>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">--tbl-cell-px</td><td class="ds-td-code-muted">16px</td><td>Cell horizontal padding</td></tr>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">--tbl-head-h</td><td class="ds-td-code-muted">40px</td><td>Header row height</td></tr>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">--tbl-row-h</td><td class="ds-td-code-muted">44px</td><td>Data row height</td></tr>
+            </tbody>
+          </table>
+          <div class="btn-sub-label" style="margin-top:20px;margin-bottom:8px;">Override a token</div>
+          <div class="btn-code-block"><div class="btn-code-head"><span class="btn-code-lang">JSX</span><button class="btn-copy-btn" onclick="copyBtnCode('tbl-tok-r',this)">Copy</button></div>
+          <div class="btn-code-body"><pre id="tbl-tok-r"><code><span class="c-cmt">// Override hover colour for a specific table instance</span>
+<span class="c-tag">&lt;GeoTable</span>
+  <span class="c-attr">style</span>={{ <span class="c-val">'--tbl-row-hover'</span>: <span class="c-val">'#f0fdf4'</span> }}
+  <span class="c-attr">columns</span>={columns}
+  <span class="c-attr">dataSource</span>={rows}
+<span class="c-tag">/&gt;</span></code></pre></div></div>
+        </div>
+        <div class="fw-angular" style="display:none;">
+          <table>
+            <thead><tr><th>Token</th><th>Value</th><th>Usage</th></tr></thead>
+            <tbody>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">--tbl-header-bg</td><td class="ds-td-code-muted">var(--prim-grey-50) · #F1F5F9</td><td>Header row background</td></tr>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">--tbl-header-color</td><td class="ds-td-code-muted">var(--color-text-secondary) · #64748B</td><td>Header text colour</td></tr>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">--tbl-border</td><td class="ds-td-code-muted">#E2E8F0</td><td>Outer border + header bottom</td></tr>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">--tbl-row-divider</td><td class="ds-td-code-muted">#F3F4F6</td><td>Row separator line</td></tr>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">--tbl-row-hover</td><td class="ds-td-code-muted">var(--prim-blue-10) · #EEF6FF</td><td>Row hover fill — Blue/10 (subtle)</td></tr>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">--tbl-row-selected</td><td class="ds-td-code-muted">var(--prim-blue-50) · #DBEAFE</td><td>Selected row background — Blue/50</td></tr>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">--tbl-radius</td><td class="ds-td-code-muted">12px</td><td>Container border-radius</td></tr>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">--tbl-cell-px</td><td class="ds-td-code-muted">16px</td><td>Cell horizontal padding</td></tr>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">--tbl-head-h</td><td class="ds-td-code-muted">40px</td><td>Header row height</td></tr>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">--tbl-row-h</td><td class="ds-td-code-muted">44px</td><td>Data row height</td></tr>
+            </tbody>
+          </table>
+          <div class="btn-sub-label" style="margin-top:20px;margin-bottom:8px;">Override a token</div>
+          <div class="btn-code-block"><div class="btn-code-head"><span class="btn-code-lang">CSS</span><button class="btn-copy-btn" onclick="copyBtnCode('tbl-tok-ng',this)">Copy</button></div>
+          <div class="btn-code-body"><pre id="tbl-tok-ng"><code><span class="c-cmt">/* Override hover colour scoped to one table */</span>
+<span class="c-val">#my-special-table</span> {
+  <span class="c-attr">--tbl-row-hover</span>: <span class="c-val">#f0fdf4</span>;
+  <span class="c-attr">--tbl-row-selected</span>: <span class="c-val">#dcfce7</span>;
+}</code></pre></div></div>
+        </div>
+      </div>
+
+      <!-- 8 · Skeleton Loading -->
+      <div id="tbl-c-skeleton" class="btn-family-card">
+        <div class="ds-step-row"><span class="ds-step-num">8</span><div class="btn-family-title" style="margin:0;">Skeleton Loading</div></div>
+        <p class="btn-family-desc">Show exactly <strong>3 skeleton rows</strong> while data is fetching — a shimmer animation that mirrors column widths. Replace with real rows once data resolves. Badge cells use <code>border-radius:20px</code>; chip cells use <code>border-radius:6px</code>.</p>
+        <div class="fw-react">
+          <div class="btn-code-block"><div class="btn-code-head"><span class="btn-code-lang">JSX</span><button class="btn-copy-btn" onclick="copyBtnCode('tbl-skel-r',this)">Copy</button></div>
+          <div class="btn-code-body"><pre id="tbl-skel-r"><code><span class="c-cmt">// Pass loading prop — GeoTable renders 3 skeleton rows automatically</span>
+<span class="c-kw">const</span> [loading, setLoading] = <span class="c-type">useState</span>(true);
+
+<span class="c-type">useEffect</span>(() =&gt; {
+  fetchRows(<span class="c-val">'/api/endpoint'</span>).then(({ data }) =&gt; {
+    setRows(data);
+    setLoading(false);   <span class="c-cmt">// switches skeleton → real rows</span>
+  });
+}, []);
+
+<span class="c-tag">&lt;GeoTable</span>
+  <span class="c-attr">columns</span>={columns}
+  <span class="c-attr">dataSource</span>={rows}
+  <span class="c-attr">loading</span>={loading}   <span class="c-cmt">// true → 3 shimmer rows; false → real data</span>
+<span class="c-tag">/&gt;</span>
+
+<span class="c-cmt">// Rules:</span>
+<span class="c-cmt">// • Always 3 rows regardless of expected data count</span>
+<span class="c-cmt">// • Shimmer: 1.5s ease linear-gradient sweep</span>
+<span class="c-cmt">// • Skeleton rows are non-interactive (no hover/click)</span></code></pre></div></div>
+        </div>
+        <div class="fw-angular" style="display:none;">
+          <div class="btn-code-block"><div class="btn-code-head"><span class="btn-code-lang">HTML</span><button class="btn-copy-btn" onclick="copyBtnCode('tbl-skel-ng',this)">Copy</button></div>
+          <div class="btn-code-body"><pre id="tbl-skel-ng"><code><span class="c-cmt">&lt;!-- Replace tbody contents with skeleton rows while loading --&gt;</span>
+<span class="c-tag">&lt;tbody</span> <span class="c-attr">id</span>=<span class="c-val">"tbl-body"</span><span class="c-tag">&gt;</span>
+  <span class="c-cmt">&lt;!-- 3 skeleton rows (always exactly 3) --&gt;</span>
+  <span class="c-tag">&lt;tr</span> <span class="c-attr">class</span>=<span class="c-val">"tbl-skeleton-row"</span><span class="c-tag">&gt;</span>
+    <span class="c-tag">&lt;td&gt;&lt;div</span> <span class="c-attr">class</span>=<span class="c-val">"tbl-skeleton-cell"</span> <span class="c-attr">style</span>=<span class="c-val">"width:46px"</span><span class="c-tag">&gt;&lt;/div&gt;&lt;/td&gt;</span>
+    <span class="c-tag">&lt;td&gt;&lt;div</span> <span class="c-attr">class</span>=<span class="c-val">"tbl-skeleton-cell"</span> <span class="c-attr">style</span>=<span class="c-val">"width:110px"</span><span class="c-tag">&gt;&lt;/div&gt;&lt;/td&gt;</span>
+    <span class="c-cmt">&lt;!-- badge cell: border-radius matches pill shape --&gt;</span>
+    <span class="c-tag">&lt;td&gt;&lt;div</span> <span class="c-attr">class</span>=<span class="c-val">"tbl-skeleton-cell"</span> <span class="c-attr">style</span>=<span class="c-val">"width:80px;border-radius:20px"</span><span class="c-tag">&gt;&lt;/div&gt;&lt;/td&gt;</span>
+  <span class="c-tag">&lt;/tr&gt;</span>
+  <span class="c-cmt">&lt;!-- repeat x2 more rows --&gt;</span>
+<span class="c-tag">&lt;/tbody&gt;</span>
+
+<span class="c-cmt">&lt;!-- On data load: replace skeleton rows with real &lt;tr&gt; rows --&gt;</span>
+<span class="c-cmt">&lt;!-- document.getElementById('tbl-body').innerHTML = realRowsHTML; --&gt;</span></code></pre></div></div>
+        </div>
+      </div>
+
+      <!-- 9 · Lazy Loading -->
+      <div id="tbl-c-lazy" class="btn-family-card">
+        <div class="ds-step-row"><span class="ds-step-num">9</span><div class="btn-family-title" style="margin:0;">Lazy Loading (Infinite Scroll)</div></div>
+        <p class="btn-family-desc">For large datasets (1,000+ rows) use <strong>IntersectionObserver</strong> on a 1 px sentinel at the table bottom. When the sentinel enters the viewport, fetch the next page and append rows. Debounce the callback by 200 ms to prevent double-fetching.</p>
+        <div class="fw-react">
+          <div class="btn-code-block"><div class="btn-code-head"><span class="btn-code-lang">JSX</span><button class="btn-copy-btn" onclick="copyBtnCode('tbl-lazy-r',this)">Copy</button></div>
+          <div class="btn-code-body"><pre id="tbl-lazy-r"><code><span class="c-kw">const</span> sentinelRef = <span class="c-type">useRef</span>(null);
+<span class="c-kw">const</span> [rows, setRows]       = <span class="c-type">useState</span>([]);
+<span class="c-kw">const</span> [page, setPage]       = <span class="c-type">useState</span>(1);
+<span class="c-kw">const</span> [total, setTotal]     = <span class="c-type">useState</span>(0);
+<span class="c-kw">const</span> [loading, setLoading] = <span class="c-type">useState</span>(false);
+
+<span class="c-type">useEffect</span>(() =&gt; {
+  <span class="c-kw">const</span> obs = <span class="c-kw">new</span> <span class="c-type">IntersectionObserver</span>(
+    (entries) =&gt; {
+      <span class="c-kw">if</span> (entries[0].isIntersecting &amp;&amp; rows.length &lt; total &amp;&amp; !loading) {
+        loadMore();
+      }
+    },
+    { threshold: 0.1 }
+  );
+  <span class="c-kw">if</span> (sentinelRef.current) obs.observe(sentinelRef.current);
+  <span class="c-kw">return</span> () =&gt; obs.disconnect();
+}, [rows.length, total, loading]);
+
+<span class="c-kw">const</span> loadMore = <span class="c-type">debounce</span>(async () =&gt; {
+  setLoading(true);
+  <span class="c-kw">const</span> { data, count } = <span class="c-kw">await</span> fetchRows({ page: page + 1 });
+  setRows(prev =&gt; [...prev, ...data]);
+  setTotal(count);
+  setPage(p =&gt; p + 1);
+  setLoading(false);
+}, 200);  <span class="c-cmt">// 200ms debounce prevents double-fetch</span>
+
+<span class="c-cmt">// Render sentinel below GeoTable</span>
+<span class="c-tag">&lt;GeoTable</span> <span class="c-attr">columns</span>={columns} <span class="c-attr">dataSource</span>={rows} <span class="c-attr">loading</span>={loading} <span class="c-tag">/&gt;</span>
+<span class="c-tag">&lt;div</span> <span class="c-attr">ref</span>={sentinelRef} <span class="c-attr">style</span>={{ height: <span class="c-val">1</span> }} <span class="c-tag">/&gt;</span>  <span class="c-cmt">// 1px sentinel</span></code></pre></div></div>
+        </div>
+        <div class="fw-angular" style="display:none;">
+          <div class="btn-code-block"><div class="btn-code-head"><span class="btn-code-lang">JS</span><button class="btn-copy-btn" onclick="copyBtnCode('tbl-lazy-ng',this)">Copy</button></div>
+          <div class="btn-code-body"><pre id="tbl-lazy-ng"><code><span class="c-cmt">// Wire IntersectionObserver to the sentinel element</span>
+<span class="c-kw">const</span> sentinel = document.getElementById(<span class="c-val">'tbl-lazy-sentinel'</span>);
+<span class="c-kw">let</span>   page = 1, total = 0, loading = false;
+
+<span class="c-kw">const</span> observer = <span class="c-kw">new</span> <span class="c-type">IntersectionObserver</span>((entries) =&gt; {
+  <span class="c-kw">if</span> (!entries[0].isIntersecting || loading) return;
+  loadNextPage();
+}, { threshold: 0.1 });
+observer.observe(sentinel);
+
+<span class="c-kw">function</span> loadNextPage() {
+  loading = true;
+  sentinel.style.display = <span class="c-val">'flex'</span>;    <span class="c-cmt">// show spinner</span>
+
+  fetch(<span class="c-val">`/api/rows?page=${page + 1}`</span>)
+    .then(r =&gt; r.json())
+    .then(({ data, count }) =&gt; {
+      appendRows(data);               <span class="c-cmt">// append tr elements to tbody</span>
+      total = count;
+      page++;
+      sentinel.style.display = <span class="c-val">'none'</span>;
+      loading = false;
+      <span class="c-kw">if</span> (page * 20 &gt;= total) observer.disconnect();  <span class="c-cmt">// all loaded</span>
+    });
+}
+
+<span class="c-cmt">// Sentinel HTML inside .gs-table-wrap (after &lt;/table&gt;):</span>
+<span class="c-cmt">// &lt;div id="tbl-lazy-sentinel" class="tbl-lazy-sentinel" style="display:none"&gt;</span>
+<span class="c-cmt">//   &lt;div class="tbl-lazy-spinner"&gt;&lt;/div&gt; Loading more records…</span>
+<span class="c-cmt">// &lt;/div&gt;</span></code></pre></div></div>
+        </div>
+      </div>
+
+      <!-- 10 Row Selection -->
+      <div id="tbl-c-select" class="btn-family-card">
+        <div class="ds-step-row"><span class="ds-step-num">10</span><div class="btn-family-title" style="margin:0;">Row Selection</div></div>
+        <div class="fw-react">
+          <div class="btn-code-block"><div class="btn-code-head"><span class="btn-code-lang">JSX</span><button class="btn-copy-btn" onclick="copyBtnCode('tbl-sel-r',this)">Copy</button></div>
+          <div class="btn-code-body"><pre id="tbl-sel-r"><code><span class="c-cmt">// rowSelection config enables checkboxes and selection bar</span>
+<span class="c-kw">const</span> rowSelection = {
+  onChange: (selectedRowKeys, selectedRows) =&gt; {
+    setSelectedRows(selectedRows);
+  },
+};
+
+<span class="c-tag">&lt;GeoTable</span>
+  <span class="c-attr">rowSelection</span>={rowSelection}
+  <span class="c-attr">rowKey</span>=<span class="c-val">"jobNo"</span>
+  <span class="c-attr">dataSource</span>={rows}
+  <span class="c-attr">columns</span>={columns}
+<span class="c-tag">/&gt;</span></code></pre></div></div>
+        </div>
+        <div class="fw-angular" style="display:none;">
+          <div class="btn-code-block"><div class="btn-code-head"><span class="btn-code-lang">HTML</span><button class="btn-copy-btn" onclick="copyBtnCode('tbl-sel-ng',this)">Copy</button></div>
+          <div class="btn-code-body"><pre id="tbl-sel-ng"><code><span class="c-cmt">&lt;!-- Checkbox column — first th/td --&gt;</span>
+&lt;<span class="c-tag">th</span> <span class="c-attr">class</span>=<span class="c-val">"tbl-th-cb"</span>&gt;
+  &lt;<span class="c-tag">label</span> <span class="c-attr">class</span>=<span class="c-val">"gs-cb-wrap"</span>&gt;
+    &lt;<span class="c-tag">input</span> <span class="c-attr">type</span>=<span class="c-val">"checkbox"</span> <span class="c-attr">class</span>=<span class="c-val">"gs-cb-input"</span>
+           <span class="c-attr">onchange</span>=<span class="c-val">"gsTblCbSelectAll(this,'myTable')"</span>&gt;
+    &lt;<span class="c-tag">span</span> <span class="c-attr">class</span>=<span class="c-val">"gs-cb-box"</span>&gt;&lt;/<span class="c-tag">span</span>&gt;
+  &lt;/<span class="c-tag">label</span>&gt;
+&lt;/<span class="c-tag">th</span>&gt;
+
+<span class="c-cmt">&lt;!-- Row td --&gt;</span>
+&lt;<span class="c-tag">td</span> <span class="c-attr">class</span>=<span class="c-val">"tbl-td-cb"</span>&gt;
+  &lt;<span class="c-tag">label</span> <span class="c-attr">class</span>=<span class="c-val">"gs-cb-wrap"</span>&gt;
+    &lt;<span class="c-tag">input</span> <span class="c-attr">type</span>=<span class="c-val">"checkbox"</span> <span class="c-attr">class</span>=<span class="c-val">"gs-cb-input tbl-row-cb"</span>
+           <span class="c-attr">onchange</span>=<span class="c-val">"gsTblCbRowToggle(this,'myTable')"</span>&gt;
+    &lt;<span class="c-tag">span</span> <span class="c-attr">class</span>=<span class="c-val">"gs-cb-box"</span>&gt;&lt;/<span class="c-tag">span</span>&gt;
+  &lt;/<span class="c-tag">label</span>&gt;
+&lt;/<span class="c-tag">td</span>&gt;
+
+<span class="c-cmt">&lt;!-- Row tr — click whole row to toggle --&gt;</span>
+&lt;<span class="c-tag">tr</span> <span class="c-attr">onclick</span>=<span class="c-val">"gsTblCbRowClick(event,this,'myTable')"</span>&gt;</code></pre></div></div>
+        </div>
+      </div>
+
+      <!-- 11 Inline Editable Table -->
+      <div id="tbl-c-inline" class="btn-family-card">
+        <div class="ds-step-row"><span class="ds-step-num">11</span><div class="btn-family-title" style="margin:0;">Inline Field Table</div></div>
+        <div class="fw-react">
+          <div class="btn-code-block"><div class="btn-code-head"><span class="btn-code-lang">JSX</span><button class="btn-copy-btn" onclick="copyBtnCode('tbl-ife-r',this)">Copy</button></div>
+          <div class="btn-code-body"><pre id="tbl-ife-r"><code><span class="c-cmt">// Editable cell renderer — swap display with input on row edit mode</span>
+<span class="c-kw">const</span> EditableCell = ({ editing, dataIndex, inputType, children, ...rest }) =&gt; (
+  &lt;<span class="c-tag">td</span> {...rest}&gt;
+    {editing
+      ? &lt;<span class="c-type">Form.Item</span> <span class="c-attr">name</span>={dataIndex} <span class="c-attr">style</span>={{ margin: 0 }}&gt;
+          {inputType === <span class="c-val">'select'</span>
+            ? &lt;<span class="c-type">Select</span> <span class="c-attr">className</span>=<span class="c-val">"tbl-ife-select"</span> /&gt;
+            : &lt;<span class="c-type">InputNumber</span> <span class="c-attr">className</span>=<span class="c-val">"tbl-ife-input"</span> /&gt;}
+        &lt;/<span class="c-type">Form.Item</span>&gt;
+      : children}
+  &lt;/<span class="c-tag">td</span>&gt;
+);
+
+<span class="c-tag">&lt;GeoTable</span>
+  <span class="c-attr">components</span>={{ body: { cell: EditableCell } }}
+  <span class="c-attr">dataSource</span>={rows}
+  <span class="c-attr">columns</span>={mergedColumns}
+  <span class="c-attr">footer</span>={() =&gt; (
+    &lt;<span class="c-tag">button</span> <span class="c-attr">className</span>=<span class="c-val">"tbl-ife-add-row"</span> <span class="c-attr">onClick</span>={addRow}&gt;+ Add Bunker&lt;/<span class="c-tag">button</span>&gt;
+  )}
+<span class="c-tag">/&gt;</span></code></pre></div></div>
+        </div>
+        <div class="fw-angular" style="display:none;">
+          <div class="btn-code-block"><div class="btn-code-head"><span class="btn-code-lang">HTML</span><button class="btn-copy-btn" onclick="copyBtnCode('tbl-ife-ng',this)">Copy</button></div>
+          <div class="btn-code-body"><pre id="tbl-ife-ng"><code><span class="c-cmt">&lt;!-- Add .gs-tbl-inline to table for tighter cell padding --&gt;</span>
+&lt;<span class="c-tag">table</span> <span class="c-attr">class</span>=<span class="c-val">"gs-tbl-inline"</span> <span class="c-attr">id</span>=<span class="c-val">"myInlineTable"</span>&gt;
+  &lt;<span class="c-tag">tbody</span> <span class="c-attr">id</span>=<span class="c-val">"myInlineBody"</span>&gt;
+    &lt;<span class="c-tag">tr</span>&gt;
+      &lt;<span class="c-tag">td</span>&gt;&lt;<span class="c-tag">select</span> <span class="c-attr">class</span>=<span class="c-val">"tbl-ife-select"</span>&gt;...&lt;/<span class="c-tag">select</span>&gt;&lt;/<span class="c-tag">td</span>&gt;
+      &lt;<span class="c-tag">td</span>&gt;&lt;<span class="c-tag">input</span> <span class="c-attr">type</span>=<span class="c-val">"number"</span> <span class="c-attr">class</span>=<span class="c-val">"tbl-ife-input"</span>
+               <span class="c-attr">placeholder</span>=<span class="c-val">"Add min qty"</span>&gt;&lt;/<span class="c-tag">td</span>&gt;
+      &lt;<span class="c-tag">td</span>&gt;&lt;<span class="c-tag">button</span> <span class="c-attr">class</span>=<span class="c-val">"tbl-ife-del"</span>
+               <span class="c-attr">onclick</span>=<span class="c-val">"gsTblIfeDelRow(this)"</span>&gt;🗑&lt;/<span class="c-tag">button</span>&gt;&lt;/<span class="c-tag">td</span>&gt;
+    &lt;/<span class="c-tag">tr</span>&gt;
+  &lt;/<span class="c-tag">tbody</span>&gt;
+&lt;/<span class="c-tag">table</span>&gt;
+&lt;<span class="c-tag">button</span> <span class="c-attr">class</span>=<span class="c-val">"tbl-ife-add-row"</span>
+        <span class="c-attr">onclick</span>=<span class="c-val">"gsTblIfeAddRow('myInlineBody')"</span>&gt;+ Add Bunker&lt;/<span class="c-tag">button</span>&gt;</code></pre></div></div>
+        </div>
+      </div>
+
+    </div><!-- /code-tab-main -->
+    <div class="code-tab-qnav">
+      <div class="code-qnav-inner">
+        <p class="code-qnav-title">On This Page</p>
+        <ul class="code-qnav-list">
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('tbl-c-overview')">1 · Overview</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('tbl-c-install')">2 · Import</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('tbl-c-api')">3 · API / Props</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('tbl-c-basic')">4 · Flat Table</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('tbl-c-stacked')">5 · Stacked Table</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('tbl-c-badges')">6 · Chips &amp; Badges</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('tbl-c-tokens')">7 · Design Tokens</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('tbl-c-skeleton')">8 · Skeleton Loading</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('tbl-c-lazy')">9 · Lazy Loading</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('tbl-c-select')">10 · Row Selection</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('tbl-c-inline')">11 · Inline Field Table</button></li>
+        </ul>
+      </div>
+    </div>
+  </div><!-- /code-tab-layout -->
+</div><!-- /tbl-tab-code -->
+
+<!-- ═══ USAGE TAB ════════════════════════════════════════════════ -->
+<div id="tbl-tab-usage" class="btn-tab-pane tbl-tab-pane">
+  <div class="code-tab-layout">
+    <div class="code-tab-main">
+      <div id="tbl-u-when" class="btn-family-card">
+        <div class="btn-family-title">When to Use</div>
+        <ul class="btn-usage-list">
+          <li><strong>Large structured datasets</strong> — vessel inquiry lists, contract ledgers, invoice registers where users need to scan, sort, and filter many rows.</li>
+          <li><strong>Stacked mode</strong> — when multiple voyages or stems share a vessel, or when contract rows have child stem dates. Groups related rows under a collapsible parent.</li>
+          <li><strong>Action-heavy rows</strong> — use the 3-dot column when rows have multiple context-sensitive actions (Raise Claim, View Details, Export).</li>
+          <li><strong>Status-driven workflows</strong> — when row colour-coding and badge states communicate progress across a workflow pipeline.</li>
+        </ul>
+      </div>
+      <div id="tbl-u-when-not" class="btn-family-card">
+        <div class="btn-family-title">When Not to Use</div>
+        <ul class="btn-usage-list">
+          <li><strong>Simple key-value display</strong> — use a <strong>Description List</strong> for detail panels; the table adds unnecessary visual weight.</li>
+          <li><strong>Fewer than 5 rows with no sorting need</strong> — a plain list or card layout is lighter and more scannable.</li>
+          <li><strong>More than 3 levels of hierarchy</strong> — stacked mode only supports parent → children (1 level deep). Deeper nesting needs a dedicated tree component.</li>
+        </ul>
+      </div>
+      <div id="tbl-u-best" class="btn-family-card">
+        <div class="btn-family-title">Best Practices</div>
+        <ul class="btn-usage-list">
+          <li><strong>Freeze the Job No / Vessel column</strong> when the table has 8+ columns so users retain row context while scrolling horizontally.</li>
+          <li><strong>Show Days to Claim only on Delivered tab</strong> — this column is tab-conditional and shouldn't appear on All, Active, or Booked views.</li>
+          <li><strong>Use fuel chip tooltips for multi-fuel rows</strong> — never try to display all fuel grades inline; the tooltip pattern keeps cell width consistent.</li>
+          <li><strong>Set <code>rowKey</code> to a stable unique ID</strong> — never use array index as the key; it breaks selection and animation state on sort/filter.</li>
+          <li><strong>Limit visible columns to ~8–10</strong> — prefer tab-based column sets (All, Active, Delivered) over one mega-table with all columns.</li>
+        </ul>
+      </div>
+      <div id="tbl-u-mistakes" class="btn-family-card">
+        <div class="btn-family-title">Anti-patterns</div>
+        <ul class="btn-usage-list">
+          <li><strong>❌ Colour-only status</strong> — never rely solely on badge colour; always include a text label for colour-blind users.<br><strong>✅ Fix:</strong> every <code>.gs-cs</code> / <code>.gs-ci</code> chip always has visible text.</li>
+          <li><strong>❌ Truncating all cells</strong> — over-truncation hides context. Only truncate long free-text fields (Buying Entity, Seller).<br><strong>✅ Fix:</strong> <code>.gs-td-trunc</code> class with max-width, never applied globally.</li>
+          <li><strong>❌ Stacking without an aggregation strategy</strong> — showing blank parent cells is confusing. Plan what the parent row summarises (port count, commodity count, etc.).<br><strong>✅ Fix:</strong> parent cells always show either aggregated data or a clear tally (<em>2 Ports</em>, <em>1 counterparty</em>).</li>
+        </ul>
+      </div>
+      <div id="tbl-u-refs" class="btn-family-card">
+        <div class="btn-family-title">References</div>
+        <ul class="btn-related-list">
+          <li><a href="https://www.figma.com/design/TOLfBpRePgynqwvDVp6fg3/Design-System?node-id=370-929" target="_blank" rel="noopener">Figma — Table component frame (370-929)</a></li>
+          <li><a href="https://ant.design/components/table" target="_blank" rel="noopener">Ant Design — Table component reference</a></li>
+          <li><a href="https://www.w3.org/WAI/ARIA/apg/patterns/grid/" target="_blank" rel="noopener">ARIA APG — Grid pattern</a></li>
+          <li><a href="https://www.w3.org/WAI/WCAG21/Understanding/use-of-color.html" target="_blank" rel="noopener">WCAG 2.1 — 1.4.1 Use of Color</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="code-tab-qnav">
+      <div class="code-qnav-inner">
+        <p class="code-qnav-title">On This Page</p>
+        <ul class="code-qnav-list">
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('tbl-u-when')">When to Use</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('tbl-u-when-not')">When Not to Use</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('tbl-u-best')">Best Practices</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('tbl-u-mistakes')">Anti-patterns</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('tbl-u-refs')">References</button></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>

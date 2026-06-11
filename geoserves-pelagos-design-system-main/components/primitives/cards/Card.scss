@@ -1,0 +1,15 @@
+.card {
+  background: var(--color-surface-default); border: 1px solid var(--color-border-default);
+  border-radius: var(--radius-lg); box-shadow: var(--shadow-card); overflow: hidden;
+  &--interactive { cursor: pointer; transition: box-shadow 150ms ease, transform 150ms ease;
+    &:hover { box-shadow: var(--shadow-md); transform: translateY(-1px); }
+    &:active { transform: translateY(0); }
+    &:focus-visible { outline: none; box-shadow: var(--btn-focus-ring); }
+  }
+  &__header { padding: var(--prim-space-4) var(--prim-space-4) 0; border-bottom: 1px solid var(--color-border-subtle); padding-bottom: var(--prim-space-3); }
+  &__footer { padding: var(--prim-space-3) var(--prim-space-4); border-top: 1px solid var(--color-border-subtle); background: var(--color-surface-subtle); }
+  &--pad-sm  &__body { padding: var(--prim-space-3); }
+  &--pad-md  &__body { padding: var(--prim-space-4); }
+  &--pad-lg  &__body { padding: var(--prim-space-6); }
+  &--pad-none &__body { padding: 0; }
+}

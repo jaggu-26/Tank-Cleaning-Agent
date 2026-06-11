@@ -1,0 +1,1671 @@
+<!-- ═══════════════════════════════════════════════════════════════
+     CHIPS  — Pelagos Design System
+     Types: Chip Info · Chip Status · Chip Field · Chip Interactive
+     ═══════════════════════════════════════════════════════════════ -->
+
+<!-- BANNER -->
+<div class="page-header">
+  <h1 class="ds-hero-title">Chips</h1>
+</div>
+
+<!-- TAB BAR -->
+<div class="btn-tab-bar">
+  <button class="btn-tab-btn chip-tab-btn active" data-tab="design" onclick="switchChipsTab('design')">Design</button>
+  <button class="btn-tab-btn chip-tab-btn" data-tab="code"   onclick="switchChipsTab('code')">Code</button>
+  <button class="btn-tab-btn chip-tab-btn" data-tab="usage"  onclick="switchChipsTab('usage')">Usage</button>
+</div>
+
+<!-- ═══ DESIGN TAB ═══════════════════════════════════════════════════ -->
+<div id="chip-tab-design" class="btn-tab-pane chip-tab-pane active">
+
+  <div class="code-tab-layout">
+  <div class="code-tab-main">
+
+  <!-- OVERVIEW -->
+  <div class="btn-family-card" id="chip-d-overview">
+    <div class="btn-family-title">Overview</div>
+    <p class="btn-family-desc">Chips are small visual elements that communicate an attribute, category, or action in a constrained space. The design system provides four chip types, each with a distinct purpose.</p>
+    <div style="display:flex;gap:16px;flex-wrap:wrap;margin-top:16px;" style="margin-top:20px;">
+      <div class="btn-family-card" style="padding:20px;">
+        <div style="margin-bottom:12px;display:flex;gap:6px;flex-wrap:wrap;">
+          <span class="gs-ci gs-ci--sm gs-ci--filled gs-ci--blue">Chip</span>
+          <span class="gs-ci gs-ci--sm gs-ci--light gs-ci--red">Chip</span>
+          <span class="gs-ci gs-ci--sm gs-ci--outlined gs-ci--green">Chip</span>
+        </div>
+        <div style="font-size:var(--prim-font-size-sm);font-weight:var(--prim-font-weight-bold);color:var(--color-text-default);margin-bottom:4px;">Chip Info</div>
+        <p class="btn-family-desc">Color-coded label chips in Filled, Outlined, and Light variants across six colors.</p>
+      </div>
+      <div class="btn-family-card" style="padding:20px;">
+        <div style="margin-bottom:12px;display:flex;gap:6px;flex-wrap:wrap;">
+          <span class="gs-cs gs-cs--green">Active</span>
+          <span class="gs-cs gs-cs--red">Error</span>
+          <span class="gs-cs gs-cs--yellow">Pending</span>
+        </div>
+        <div style="font-size:var(--prim-font-size-sm);font-weight:var(--prim-font-weight-bold);color:var(--color-text-default);margin-bottom:4px;">Chip Status</div>
+        <p class="btn-family-desc">Semantic status indicators with predefined color-meaning pairings for data tables and lists.</p>
+      </div>
+      <div class="btn-family-card" style="padding:20px;">
+        <div style="margin-bottom:12px;display:flex;gap:6px;flex-wrap:wrap;">
+          <span class="gs-cf gs-cf--sm gs-cf--default">
+            <span class="gs-cf__avatar" style="background:#c7d2fe;color:#4f46e5;">BW</span>
+            <span class="gs-cf__label">Bruce Wayne</span>
+            <span class="gs-cf__close" aria-label="Remove">
+              <svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+            </span>
+          </span>
+        </div>
+        <div style="font-size:var(--prim-font-size-sm);font-weight:var(--prim-font-weight-bold);color:var(--color-text-default);margin-bottom:4px;">Chip Field</div>
+        <p class="btn-family-desc">Person/input chips with avatar, label, and remove action. Used in multi-select fields.</p>
+      </div>
+      <div class="btn-family-card" style="padding:20px;">
+        <div style="margin-bottom:12px;display:flex;gap:6px;flex-wrap:wrap;">
+          <button class="gs-cia gs-cia--blue has-icon">
+            <span class="gs-cia__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></span>Chip
+          </button>
+          <button class="gs-cia gs-cia--blue is-selected">Chip</button>
+          <button class="gs-cia gs-cia--navy is-selected">Chip</button>
+        </div>
+        <div style="font-size:var(--prim-font-size-sm);font-weight:var(--prim-font-weight-bold);color:var(--color-text-default);margin-bottom:4px;">Chip Interactive</div>
+        <p class="btn-family-desc">Clickable filter chips with Default, Hover, Selected, Disabled, and Focused states.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── CHIP INFO ───────────────────────────────────────────────────── -->
+  <div class="btn-family-card" id="chip-d-info">
+    <div class="btn-family-title">Chip Info</div>
+    <p class="btn-family-desc">Used for categorical labels, tags, and attribute indicators. Supports <strong>6 colors × 3 visual styles × 2 sizes</strong>. Border-radius: 4px. Font: Gilroy Medium 12px / 16px line-height.</p>
+
+    <!-- Filled -->
+    <div class="btn-family-card" style="margin-top:16px;padding:24px;">
+      <div class="ds-prop-label" style="margin-bottom:14px;">Filled — solid background, white text</div>
+      <div class="chip-demo-row">
+        <span class="chip-demo-label">Large</span>
+        <span class="gs-ci gs-ci--lg gs-ci--filled gs-ci--grey">Grey</span>
+        <span class="gs-ci gs-ci--lg gs-ci--filled gs-ci--blue">Blue</span>
+        <span class="gs-ci gs-ci--lg gs-ci--filled gs-ci--red">Red</span>
+        <span class="gs-ci gs-ci--lg gs-ci--filled gs-ci--yellow">Yellow</span>
+        <span class="gs-ci gs-ci--lg gs-ci--filled gs-ci--teal">Teal</span>
+        <span class="gs-ci gs-ci--lg gs-ci--filled gs-ci--green">Green</span>
+      </div>
+      <div class="chip-demo-row" style="margin-top:8px;">
+        <span class="chip-demo-label">Small</span>
+        <span class="gs-ci gs-ci--sm gs-ci--filled gs-ci--grey">Grey</span>
+        <span class="gs-ci gs-ci--sm gs-ci--filled gs-ci--blue">Blue</span>
+        <span class="gs-ci gs-ci--sm gs-ci--filled gs-ci--red">Red</span>
+        <span class="gs-ci gs-ci--sm gs-ci--filled gs-ci--yellow">Yellow</span>
+        <span class="gs-ci gs-ci--sm gs-ci--filled gs-ci--teal">Teal</span>
+        <span class="gs-ci gs-ci--sm gs-ci--filled gs-ci--green">Green</span>
+      </div>
+    </div>
+
+    <!-- Outlined -->
+    <div class="btn-family-card" style="margin-top:12px;padding:24px;">
+      <div class="ds-prop-label" style="margin-bottom:14px;">Outlined — white background, colored border + text</div>
+      <div class="chip-demo-row">
+        <span class="chip-demo-label">Large</span>
+        <span class="gs-ci gs-ci--lg gs-ci--outlined gs-ci--grey">Grey</span>
+        <span class="gs-ci gs-ci--lg gs-ci--outlined gs-ci--blue">Blue</span>
+        <span class="gs-ci gs-ci--lg gs-ci--outlined gs-ci--red">Red</span>
+        <span class="gs-ci gs-ci--lg gs-ci--outlined gs-ci--yellow">Yellow</span>
+        <span class="gs-ci gs-ci--lg gs-ci--outlined gs-ci--teal">Teal</span>
+        <span class="gs-ci gs-ci--lg gs-ci--outlined gs-ci--green">Green</span>
+      </div>
+      <div class="chip-demo-row" style="margin-top:8px;">
+        <span class="chip-demo-label">Small</span>
+        <span class="gs-ci gs-ci--sm gs-ci--outlined gs-ci--grey">Grey</span>
+        <span class="gs-ci gs-ci--sm gs-ci--outlined gs-ci--blue">Blue</span>
+        <span class="gs-ci gs-ci--sm gs-ci--outlined gs-ci--red">Red</span>
+        <span class="gs-ci gs-ci--sm gs-ci--outlined gs-ci--yellow">Yellow</span>
+        <span class="gs-ci gs-ci--sm gs-ci--outlined gs-ci--teal">Teal</span>
+        <span class="gs-ci gs-ci--sm gs-ci--outlined gs-ci--green">Green</span>
+      </div>
+    </div>
+
+    <!-- Light -->
+    <div class="btn-family-card" style="margin-top:12px;padding:24px;">
+      <div class="ds-prop-label" style="margin-bottom:14px;">Light — tinted background, dark text</div>
+      <div class="chip-demo-row">
+        <span class="chip-demo-label">Large</span>
+        <span class="gs-ci gs-ci--lg gs-ci--light gs-ci--grey">Grey</span>
+        <span class="gs-ci gs-ci--lg gs-ci--light gs-ci--blue">Blue</span>
+        <span class="gs-ci gs-ci--lg gs-ci--light gs-ci--red">Red</span>
+        <span class="gs-ci gs-ci--lg gs-ci--light gs-ci--yellow">Yellow</span>
+        <span class="gs-ci gs-ci--lg gs-ci--light gs-ci--teal">Teal</span>
+        <span class="gs-ci gs-ci--lg gs-ci--light gs-ci--green">Green</span>
+      </div>
+      <div class="chip-demo-row" style="margin-top:8px;">
+        <span class="chip-demo-label">Small</span>
+        <span class="gs-ci gs-ci--sm gs-ci--light gs-ci--grey">Grey</span>
+        <span class="gs-ci gs-ci--sm gs-ci--light gs-ci--blue">Blue</span>
+        <span class="gs-ci gs-ci--sm gs-ci--light gs-ci--red">Red</span>
+        <span class="gs-ci gs-ci--sm gs-ci--light gs-ci--yellow">Yellow</span>
+        <span class="gs-ci gs-ci--sm gs-ci--light gs-ci--teal">Teal</span>
+        <span class="gs-ci gs-ci--sm gs-ci--light gs-ci--green">Green</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── CHIP STATUS ─────────────────────────────────────────────────── -->
+  <div class="btn-family-card" id="chip-d-status">
+    <div class="btn-family-title">Chip Status</div>
+    <p class="btn-family-desc">Semantic status indicator used in data tables, detail panels, and record lists. Each color carries a standardized meaning. Always uses light tint background with dark, accessible text. No size variants. Font: Gilroy SemiBold 12px.</p>
+    <div class="btn-family-card" style="margin-top:16px;padding:24px;">
+      <div class="chip-demo-row">
+        <span class="gs-cs gs-cs--grey">Inactive</span>
+        <span class="gs-cs gs-cs--blue">Processing</span>
+        <span class="gs-cs gs-cs--green">Active</span>
+        <span class="gs-cs gs-cs--teal">Synced</span>
+        <span class="gs-cs gs-cs--yellow">Pending</span>
+        <span class="gs-cs gs-cs--orange">Warning</span>
+        <span class="gs-cs gs-cs--red">Failed</span>
+      </div>
+    </div>
+
+    <!-- Color-meaning table -->
+    <div class="btn-family-card" style="margin-top:12px;">
+      <table class="ds-prop-table">
+        <thead><tr><th>Color</th><th>Background</th><th>Text</th><th>Semantic meaning</th></tr></thead>
+        <tbody>
+          <tr><td><span class="gs-cs gs-cs--grey" style="pointer-events:none;">Grey</span></td><td><code>#e2e8f0</code> (grey/100)</td><td><code>#1e293b</code> (grey/700)</td><td>Inactive, Archived, Neutral</td></tr>
+          <tr><td><span class="gs-cs gs-cs--blue" style="pointer-events:none;">Blue</span></td><td><code>#dbeafe</code> (blue/50)</td><td><code>#1d40af</code> (blue/700)</td><td>Processing, In progress, Informational</td></tr>
+          <tr><td><span class="gs-cs gs-cs--green" style="pointer-events:none;">Green</span></td><td><code>var(--prim-green-100)</code></td><td><code>var(--prim-green-800)</code></td><td>Active, Completed, Success</td></tr>
+          <tr><td><span class="gs-cs gs-cs--teal" style="pointer-events:none;">Teal</span></td><td><code>var(--prim-teal-100)</code></td><td><code>var(--prim-teal-900)</code></td><td>Synced, Connected, Live</td></tr>
+          <tr><td><span class="gs-cs gs-cs--yellow" style="pointer-events:none;">Yellow</span></td><td><code>var(--prim-yellow-100)</code></td><td><code>var(--prim-yellow-800)</code></td><td>Pending, Awaiting, Review needed</td></tr>
+          <tr><td><span class="gs-cs gs-cs--orange" style="pointer-events:none;">Orange</span></td><td><code>var(--prim-orange-100)</code></td><td><code>var(--prim-orange-900)</code></td><td>Warning, Attention required</td></tr>
+          <tr><td><span class="gs-cs gs-cs--red" style="pointer-events:none;">Red</span></td><td><code>#fecaca</code> (red/100)</td><td><code>#b91c1b</code> (red/600)</td><td>Error, Failed, Critical</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ── CHIP FIELD ──────────────────────────────────────────────────── -->
+  <div class="btn-family-card" id="chip-d-field">
+    <div class="btn-family-title">Chip Field</div>
+    <p class="btn-family-desc">Person or input value chip used inside multi-select fields. Pill shape (border-radius 999px). Contains an optional avatar or icon, a label, and a dismissible close button. Three semantic states: Default, Caution, Error.</p>
+
+    <div class="ds-grid-2" style="margin-top:16px;gap:12px;">
+      <!-- Small -->
+      <div class="btn-family-card" style="padding:24px;">
+        <div class="ds-prop-label" style="margin-bottom:16px;">Small — 12px label · 16px avatar</div>
+
+        <div style="margin-bottom:16px;">
+          <div class="ds-card-sublabel" style="margin-bottom:8px;">Default</div>
+          <div class="chip-demo-row">
+            <span class="gs-cf gs-cf--sm gs-cf--default">
+              <span class="gs-cf__avatar" style="background:#c7d2fe;color:#4f46e5;">BW</span>
+              <span class="gs-cf__label">Batman</span>
+              <button class="gs-cf__close" aria-label="Remove Batman">
+                <svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+              </button>
+            </span>
+            <!-- icon variant -->
+            <span class="gs-cf gs-cf--sm gs-cf--default">
+              <span class="gs-cf__icon-wrap">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#64748b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+              </span>
+              <span class="gs-cf__label">Batman</span>
+              <button class="gs-cf__close" aria-label="Remove">
+                <svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+              </button>
+            </span>
+          </div>
+        </div>
+
+        <div style="margin-bottom:16px;">
+          <div class="ds-card-sublabel" style="margin-bottom:8px;">Caution</div>
+          <div class="chip-demo-row">
+            <span class="gs-cf gs-cf--sm gs-cf--caution">
+              <span class="gs-cf__avatar" style="background:#fde68a;color:#92400e;">SJ</span>
+              <span class="gs-cf__label">Snoop Dog</span>
+              <button class="gs-cf__close" aria-label="Remove Snoop Dog">
+                <svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+              </button>
+            </span>
+          </div>
+        </div>
+
+        <div>
+          <div class="ds-card-sublabel" style="margin-bottom:8px;">Error</div>
+          <div class="chip-demo-row">
+            <span class="gs-cf gs-cf--sm gs-cf--error">
+              <span class="gs-cf__avatar" style="background:#fecaca;color:#b91c1b;">JS</span>
+              <span class="gs-cf__label">John Samuel</span>
+              <button class="gs-cf__close" aria-label="Remove John Samuel">
+                <svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+              </button>
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Large -->
+      <div class="btn-family-card" style="padding:24px;">
+        <div class="ds-prop-label" style="margin-bottom:16px;">Large — 16px SemiBold label · 24px avatar</div>
+
+        <div style="margin-bottom:20px;">
+          <div class="ds-card-sublabel" style="margin-bottom:8px;">Default</div>
+          <div class="chip-demo-row">
+            <span class="gs-cf gs-cf--lg gs-cf--default">
+              <span class="gs-cf__avatar" style="background:#c7d2fe;color:#4f46e5;width:24px;height:24px;font-size:9px;">BW</span>
+              <span class="gs-cf__label">Bruce Wayne</span>
+              <button class="gs-cf__close" aria-label="Remove Bruce Wayne">
+                <svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+              </button>
+            </span>
+          </div>
+        </div>
+
+        <div style="margin-bottom:20px;">
+          <div class="ds-card-sublabel" style="margin-bottom:8px;">Caution</div>
+          <div class="chip-demo-row">
+            <span class="gs-cf gs-cf--lg gs-cf--caution">
+              <span class="gs-cf__avatar" style="background:#fde68a;color:#92400e;width:24px;height:24px;font-size:9px;">JS</span>
+              <span class="gs-cf__label">John Samuel</span>
+              <button class="gs-cf__close" aria-label="Remove John Samuel">
+                <svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+              </button>
+            </span>
+          </div>
+        </div>
+
+        <div>
+          <div class="ds-card-sublabel" style="margin-bottom:8px;">Error</div>
+          <div class="chip-demo-row">
+            <span class="gs-cf gs-cf--lg gs-cf--error">
+              <span class="gs-cf__avatar" style="background:#fecaca;color:#b91c1b;width:24px;height:24px;font-size:9px;">JS</span>
+              <span class="gs-cf__label">John Samuel</span>
+              <button class="gs-cf__close" aria-label="Remove John Samuel">
+                <svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+              </button>
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── CHIP INTERACTIVE ────────────────────────────────────────────── -->
+  <div class="btn-family-card" id="chip-d-interactive">
+    <div class="btn-family-title">Chip Interactive</div>
+    <p class="btn-family-desc">Filter and selection chips used in search bars, toolbars, and filter panels. Default state is always neutral grey background — color is only expressed on <strong>Selected</strong> state. Two layout variants: without icon (taller, 12px vertical padding) and with left icon (8px all-round padding).</p>
+
+    <!-- States grid - No icon -->
+    <div class="btn-family-card" style="margin-top:16px;padding:24px;">
+      <div class="ds-prop-label" style="margin-bottom:16px;">States — without left icon</div>
+
+      <!-- header row -->
+      <div style="display:flex;gap:8px;align-items:center;margin-bottom:10px;padding-bottom:8px;border-bottom:1px solid var(--color-border-default,#e2e8f0);">
+        <div style="min-width:72px;"></div>
+        <div class="chip-state-col-label" style="min-width:70px;">Grey</div>
+        <div class="chip-state-col-label" style="min-width:70px;">Navy</div>
+        <div class="chip-state-col-label" style="min-width:70px;">Blue</div>
+        <div class="chip-state-col-label" style="min-width:70px;">Red</div>
+        <div class="chip-state-col-label" style="min-width:70px;">Yellow</div>
+        <div class="chip-state-col-label" style="min-width:70px;">Teal</div>
+        <div class="chip-state-col-label" style="min-width:70px;">Green</div>
+      </div>
+
+      <!-- Default -->
+      <div class="chip-state-row" style="margin-bottom:8px;">
+        <div class="chip-state-row-label">Default</div>
+        <div class="chip-state-cell"><button class="gs-cia gs-cia--grey">Chip</button></div>
+        <div class="chip-state-cell"><button class="gs-cia gs-cia--navy">Chip</button></div>
+        <div class="chip-state-cell"><button class="gs-cia gs-cia--blue">Chip</button></div>
+        <div class="chip-state-cell"><button class="gs-cia gs-cia--red">Chip</button></div>
+        <div class="chip-state-cell"><button class="gs-cia gs-cia--yellow">Chip</button></div>
+        <div class="chip-state-cell"><button class="gs-cia gs-cia--teal">Chip</button></div>
+        <div class="chip-state-cell"><button class="gs-cia gs-cia--green">Chip</button></div>
+      </div>
+
+      <!-- Hover -->
+      <div class="chip-state-row" style="margin-bottom:8px;">
+        <div class="chip-state-row-label">Hover</div>
+        <div class="chip-state-cell"><button class="gs-cia gs-cia--grey is-hover">Chip</button></div>
+        <div class="chip-state-cell"><button class="gs-cia gs-cia--navy is-hover">Chip</button></div>
+        <div class="chip-state-cell"><button class="gs-cia gs-cia--blue is-hover">Chip</button></div>
+        <div class="chip-state-cell"><button class="gs-cia gs-cia--red is-hover">Chip</button></div>
+        <div class="chip-state-cell"><button class="gs-cia gs-cia--yellow is-hover">Chip</button></div>
+        <div class="chip-state-cell"><button class="gs-cia gs-cia--teal is-hover">Chip</button></div>
+        <div class="chip-state-cell"><button class="gs-cia gs-cia--green is-hover">Chip</button></div>
+      </div>
+
+      <!-- Selected -->
+      <div class="chip-state-row" style="margin-bottom:8px;">
+        <div class="chip-state-row-label">Selected</div>
+        <div class="chip-state-cell"><button class="gs-cia gs-cia--grey is-selected">Chip</button></div>
+        <div class="chip-state-cell"><button class="gs-cia gs-cia--navy is-selected">Chip</button></div>
+        <div class="chip-state-cell"><button class="gs-cia gs-cia--blue is-selected">Chip</button></div>
+        <div class="chip-state-cell"><button class="gs-cia gs-cia--red is-selected">Chip</button></div>
+        <div class="chip-state-cell"><button class="gs-cia gs-cia--yellow is-selected">Chip</button></div>
+        <div class="chip-state-cell"><button class="gs-cia gs-cia--teal is-selected">Chip</button></div>
+        <div class="chip-state-cell"><button class="gs-cia gs-cia--green is-selected">Chip</button></div>
+      </div>
+
+      <!-- Disabled -->
+      <div class="chip-state-row" style="margin-bottom:8px;">
+        <div class="chip-state-row-label">Disabled</div>
+        <div class="chip-state-cell"><button class="gs-cia gs-cia--grey is-disabled" tabindex="-1">Chip</button></div>
+        <div class="chip-state-cell"><button class="gs-cia gs-cia--navy is-disabled" tabindex="-1">Chip</button></div>
+        <div class="chip-state-cell"><button class="gs-cia gs-cia--blue is-disabled" tabindex="-1">Chip</button></div>
+        <div class="chip-state-cell"><button class="gs-cia gs-cia--red is-disabled" tabindex="-1">Chip</button></div>
+        <div class="chip-state-cell"><button class="gs-cia gs-cia--yellow is-disabled" tabindex="-1">Chip</button></div>
+        <div class="chip-state-cell"><button class="gs-cia gs-cia--teal is-disabled" tabindex="-1">Chip</button></div>
+        <div class="chip-state-cell"><button class="gs-cia gs-cia--green is-disabled" tabindex="-1">Chip</button></div>
+      </div>
+
+      <!-- Outlined -->
+      <div class="chip-state-row">
+        <div class="chip-state-row-label">Outlined</div>
+        <div class="chip-state-cell"><button class="gs-cia gs-cia--grey gs-cia--outlined">Chip</button></div>
+        <div class="chip-state-cell"><button class="gs-cia gs-cia--navy gs-cia--outlined">Chip</button></div>
+        <div class="chip-state-cell"><button class="gs-cia gs-cia--blue gs-cia--outlined">Chip</button></div>
+        <div class="chip-state-cell"><button class="gs-cia gs-cia--red gs-cia--outlined">Chip</button></div>
+        <div class="chip-state-cell"><button class="gs-cia gs-cia--yellow gs-cia--outlined">Chip</button></div>
+        <div class="chip-state-cell"><button class="gs-cia gs-cia--teal gs-cia--outlined">Chip</button></div>
+        <div class="chip-state-cell"><button class="gs-cia gs-cia--green gs-cia--outlined">Chip</button></div>
+      </div>
+    </div>
+
+    <!-- States grid - With icon -->
+    <div class="btn-family-card" style="margin-top:12px;padding:24px;">
+      <div class="ds-prop-label" style="margin-bottom:16px;">States — with left icon (checkmark)</div>
+
+      <div style="display:flex;gap:8px;align-items:center;margin-bottom:10px;padding-bottom:8px;border-bottom:1px solid var(--color-border-default,#e2e8f0);">
+        <div style="min-width:72px;"></div>
+        <div class="chip-state-col-label" style="min-width:80px;">Grey</div>
+        <div class="chip-state-col-label" style="min-width:80px;">Navy</div>
+        <div class="chip-state-col-label" style="min-width:80px;">Blue</div>
+        <div class="chip-state-col-label" style="min-width:80px;">Red</div>
+        <div class="chip-state-col-label" style="min-width:80px;">Yellow</div>
+        <div class="chip-state-col-label" style="min-width:80px;">Teal</div>
+        <div class="chip-state-col-label" style="min-width:80px;">Green</div>
+      </div>
+
+      <div class="chip-state-row" style="margin-bottom:8px;">
+        <div class="chip-state-row-label">Default</div>
+        <div class="chip-state-cell" style="min-width:80px;"><button class="gs-cia gs-cia--grey has-icon"><span class="gs-cia__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></span>Chip</button></div>
+        <div class="chip-state-cell" style="min-width:80px;"><button class="gs-cia gs-cia--navy has-icon"><span class="gs-cia__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></span>Chip</button></div>
+        <div class="chip-state-cell" style="min-width:80px;"><button class="gs-cia gs-cia--blue has-icon"><span class="gs-cia__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></span>Chip</button></div>
+        <div class="chip-state-cell" style="min-width:80px;"><button class="gs-cia gs-cia--red has-icon"><span class="gs-cia__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></span>Chip</button></div>
+        <div class="chip-state-cell" style="min-width:80px;"><button class="gs-cia gs-cia--yellow has-icon"><span class="gs-cia__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></span>Chip</button></div>
+        <div class="chip-state-cell" style="min-width:80px;"><button class="gs-cia gs-cia--teal has-icon"><span class="gs-cia__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></span>Chip</button></div>
+        <div class="chip-state-cell" style="min-width:80px;"><button class="gs-cia gs-cia--green has-icon"><span class="gs-cia__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></span>Chip</button></div>
+      </div>
+
+      <div class="chip-state-row" style="margin-bottom:8px;">
+        <div class="chip-state-row-label">Selected</div>
+        <div class="chip-state-cell" style="min-width:80px;"><button class="gs-cia gs-cia--grey is-selected has-icon"><span class="gs-cia__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></span>Chip</button></div>
+        <div class="chip-state-cell" style="min-width:80px;"><button class="gs-cia gs-cia--navy is-selected has-icon"><span class="gs-cia__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></span>Chip</button></div>
+        <div class="chip-state-cell" style="min-width:80px;"><button class="gs-cia gs-cia--blue is-selected has-icon"><span class="gs-cia__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></span>Chip</button></div>
+        <div class="chip-state-cell" style="min-width:80px;"><button class="gs-cia gs-cia--red is-selected has-icon"><span class="gs-cia__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></span>Chip</button></div>
+        <div class="chip-state-cell" style="min-width:80px;"><button class="gs-cia gs-cia--yellow is-selected has-icon"><span class="gs-cia__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></span>Chip</button></div>
+        <div class="chip-state-cell" style="min-width:80px;"><button class="gs-cia gs-cia--teal is-selected has-icon"><span class="gs-cia__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></span>Chip</button></div>
+        <div class="chip-state-cell" style="min-width:80px;"><button class="gs-cia gs-cia--green is-selected has-icon"><span class="gs-cia__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></span>Chip</button></div>
+      </div>
+
+      <!-- Outlined + icon selected row -->
+      <div class="chip-state-row">
+        <div class="chip-state-row-label">Outlined + Selected</div>
+        <div class="chip-state-cell" style="min-width:80px;"><button class="gs-cia gs-cia--grey gs-cia--outlined is-selected has-icon"><span class="gs-cia__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></span>Chip</button></div>
+        <div class="chip-state-cell" style="min-width:80px;"><button class="gs-cia gs-cia--navy gs-cia--outlined is-selected has-icon"><span class="gs-cia__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></span>Chip</button></div>
+        <div class="chip-state-cell" style="min-width:80px;"><button class="gs-cia gs-cia--blue gs-cia--outlined is-selected has-icon"><span class="gs-cia__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></span>Chip</button></div>
+        <div class="chip-state-cell" style="min-width:80px;"><button class="gs-cia gs-cia--red gs-cia--outlined is-selected has-icon"><span class="gs-cia__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></span>Chip</button></div>
+        <div class="chip-state-cell" style="min-width:80px;"><button class="gs-cia gs-cia--yellow gs-cia--outlined is-selected has-icon"><span class="gs-cia__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></span>Chip</button></div>
+        <div class="chip-state-cell" style="min-width:80px;"><button class="gs-cia gs-cia--teal gs-cia--outlined is-selected has-icon"><span class="gs-cia__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></span>Chip</button></div>
+        <div class="chip-state-cell" style="min-width:80px;"><button class="gs-cia gs-cia--green gs-cia--outlined is-selected has-icon"><span class="gs-cia__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></span>Chip</button></div>
+      </div>
+    </div>
+
+    <!-- State behavior table -->
+    <div class="btn-family-card" style="margin-top:12px;">
+      <table class="ds-prop-table">
+        <thead><tr><th>State</th><th>Trigger</th><th>Visual</th><th>CSS</th></tr></thead>
+        <tbody>
+          <tr><td>Default</td><td>At rest</td><td>Grey/50 bg, grey/700 text — same for all colors</td><td>—</td></tr>
+          <tr><td>Hover</td><td>Mouse over</td><td>Grey/100 bg (slightly darker)</td><td><code>:hover</code> or <code>.is-hover</code></td></tr>
+          <tr><td>Selected</td><td>User clicks</td><td>Solid color bg matching <code>--color</code>, white text</td><td><code>.is-selected</code></td></tr>
+          <tr><td>Disabled</td><td><code>disabled</code> attr / class</td><td>40% opacity, pointer-events: none</td><td><code>.is-disabled</code> / <code>:disabled</code></td></tr>
+          <tr><td>Focused</td><td>Keyboard focus</td><td>1.5px blue outline ring, 2px offset</td><td><code>:focus-visible</code> or <code>.is-focused</code></td></tr>
+          <tr><td>Outlined</td><td>Variant prop</td><td>White bg, grey/200 border. Selected replaces border with solid color fill</td><td><code>.gs-cia--outlined</code></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ── ANATOMY ──────────────────────────────────────────────────────── -->
+  <div class="btn-family-card" id="chip-d-anatomy">
+    <div class="btn-family-title">Anatomy</div>
+    <div class="ds-grid-2" style="gap:16px;margin-top:16px;">
+
+      <!-- Chip Info anatomy -->
+      <div class="btn-family-card" style="padding:24px;">
+        <div style="font-size:var(--prim-font-size-sm);font-weight:var(--prim-font-weight-bold);color:var(--color-text-default);margin-bottom:4px;" style="margin-bottom:16px;">Chip Info</div>
+        <svg viewBox="0 0 280 80" width="100%" xmlns="http://www.w3.org/2000/svg" style="max-height:80px;">
+          <rect x="10" y="24" width="80" height="32" rx="4" fill="#2463eb"/>
+          <text x="50" y="44" font-family="Gilroy,sans-serif" font-size="12" fill="white" text-anchor="middle" dominant-baseline="middle">Chip</text>
+          <!-- annotation: container -->
+          <line x1="50" y1="10" x2="50" y2="22" stroke="#94a3b8" stroke-width="1"/>
+          <text x="50" y="7" font-family="sans-serif" font-size="9" fill="#64748b" text-anchor="middle">container</text>
+          <!-- annotation: label -->
+          <line x1="50" y1="58" x2="50" y2="70" stroke="#94a3b8" stroke-width="1"/>
+          <text x="50" y="74" font-family="sans-serif" font-size="9" fill="#64748b" text-anchor="middle">label</text>
+          <!-- tokens -->
+          <text x="120" y="20" font-family="sans-serif" font-size="9" fill="#94a3b8">border-radius: 4px</text>
+          <text x="120" y="33" font-family="sans-serif" font-size="9" fill="#94a3b8">padding sm: 4px 8px</text>
+          <text x="120" y="46" font-family="sans-serif" font-size="9" fill="#94a3b8">padding lg: 8px</text>
+          <text x="120" y="59" font-family="sans-serif" font-size="9" fill="#94a3b8">font: Gilroy Medium 12px</text>
+          <text x="120" y="72" font-family="sans-serif" font-size="9" fill="#94a3b8">line-height: 16px</text>
+        </svg>
+      </div>
+
+      <!-- Chip Field anatomy -->
+      <div class="btn-family-card" style="padding:24px;">
+        <div style="font-size:var(--prim-font-size-sm);font-weight:var(--prim-font-weight-bold);color:var(--color-text-default);margin-bottom:4px;" style="margin-bottom:16px;">Chip Field</div>
+        <svg viewBox="0 0 280 80" width="100%" xmlns="http://www.w3.org/2000/svg" style="max-height:80px;">
+          <rect x="10" y="20" width="130" height="36" rx="18" fill="#eef6ff"/>
+          <!-- avatar circle -->
+          <circle cx="28" cy="38" r="10" fill="#c7d2fe"/>
+          <text x="28" y="38" font-family="sans-serif" font-size="7" fill="#4f46e5" text-anchor="middle" dominant-baseline="middle">BW</text>
+          <!-- label -->
+          <text x="78" y="38" font-family="Gilroy,sans-serif" font-size="11" fill="#1e293b" text-anchor="middle" dominant-baseline="middle">Bruce</text>
+          <!-- close -->
+          <circle cx="130" cy="38" r="7" fill="none"/>
+          <text x="130" y="38" font-family="sans-serif" font-size="9" fill="#94a3b8" text-anchor="middle" dominant-baseline="middle">✕</text>
+          <!-- annotations -->
+          <line x1="28" y1="10" x2="28" y2="18" stroke="#94a3b8" stroke-width="1"/>
+          <text x="28" y="7" font-family="sans-serif" font-size="9" fill="#64748b" text-anchor="middle">avatar</text>
+          <line x1="78" y1="60" x2="78" y2="58" stroke="#94a3b8" stroke-width="1"/>
+          <text x="78" y="66" font-family="sans-serif" font-size="9" fill="#64748b" text-anchor="middle">label</text>
+          <line x1="130" y1="10" x2="130" y2="29" stroke="#94a3b8" stroke-width="1"/>
+          <text x="130" y="7" font-family="sans-serif" font-size="9" fill="#64748b" text-anchor="middle">close</text>
+          <!-- tokens -->
+          <text x="155" y="26" font-family="sans-serif" font-size="9" fill="#94a3b8">border-radius: 999px</text>
+          <text x="155" y="39" font-family="sans-serif" font-size="9" fill="#94a3b8">gap: 4px</text>
+          <text x="155" y="52" font-family="sans-serif" font-size="9" fill="#94a3b8">avatar: 16px / 24px</text>
+          <text x="155" y="65" font-family="sans-serif" font-size="9" fill="#94a3b8">close: 16×16px</text>
+        </svg>
+      </div>
+
+      <!-- Chip Interactive anatomy -->
+      <div class="btn-family-card" style="padding:24px;">
+        <div style="font-size:var(--prim-font-size-sm);font-weight:var(--prim-font-weight-bold);color:var(--color-text-default);margin-bottom:4px;" style="margin-bottom:16px;">Chip Interactive</div>
+        <svg viewBox="0 0 280 80" width="100%" xmlns="http://www.w3.org/2000/svg" style="max-height:80px;">
+          <!-- default chip -->
+          <rect x="10" y="15" width="68" height="40" rx="4" fill="#f1f5f9"/>
+          <text x="44" y="35" font-family="Gilroy,sans-serif" font-size="11" fill="#1e293b" text-anchor="middle">Chip</text>
+          <!-- selected chip -->
+          <rect x="90" y="15" width="80" height="32" rx="4" fill="#2463eb"/>
+          <text x="130" y="31" font-family="Gilroy,sans-serif" font-size="11" fill="white" text-anchor="middle">✓ Chip</text>
+          <!-- focus ring -->
+          <rect x="184" y="13" width="68" height="32" rx="6" fill="none" stroke="#2463eb" stroke-width="1.5" stroke-dasharray="none"/>
+          <rect x="186" y="15" width="64" height="28" rx="4" fill="#f1f5f9"/>
+          <text x="218" y="29" font-family="Gilroy,sans-serif" font-size="11" fill="#1e293b" text-anchor="middle">Chip</text>
+          <!-- labels -->
+          <text x="44" y="65" font-family="sans-serif" font-size="9" fill="#94a3b8" text-anchor="middle">Default</text>
+          <text x="130" y="57" font-family="sans-serif" font-size="9" fill="#94a3b8" text-anchor="middle">Selected</text>
+          <text x="218" y="55" font-family="sans-serif" font-size="9" fill="#94a3b8" text-anchor="middle">Focused</text>
+          <!-- tokens -->
+          <text x="10" y="77" font-family="sans-serif" font-size="8" fill="#94a3b8">padding: 12px 8px (no icon) · 8px (with icon) · font: Gilroy SemiBold 12px</text>
+        </svg>
+      </div>
+
+      <!-- Chip Status anatomy -->
+      <div class="btn-family-card" style="padding:24px;">
+        <div style="font-size:var(--prim-font-size-sm);font-weight:var(--prim-font-weight-bold);color:var(--color-text-default);margin-bottom:4px;" style="margin-bottom:16px;">Chip Status</div>
+        <svg viewBox="0 0 280 80" width="100%" xmlns="http://www.w3.org/2000/svg" style="max-height:80px;">
+          <rect x="10" y="22" width="80" height="26" rx="4" fill="#bdeecf"/>
+          <text x="50" y="35" font-family="Gilroy,sans-serif" font-size="11" fill="#0e4f26" text-anchor="middle" dominant-baseline="middle">Active</text>
+          <!-- annotations -->
+          <line x1="50" y1="10" x2="50" y2="20" stroke="#94a3b8" stroke-width="1"/>
+          <text x="50" y="7" font-family="sans-serif" font-size="9" fill="#64748b" text-anchor="middle">container</text>
+          <line x1="50" y1="50" x2="50" y2="62" stroke="#94a3b8" stroke-width="1"/>
+          <text x="50" y="66" font-family="sans-serif" font-size="9" fill="#64748b" text-anchor="middle">label</text>
+          <!-- tokens -->
+          <text x="110" y="22" font-family="sans-serif" font-size="9" fill="#94a3b8">border-radius: 4px</text>
+          <text x="110" y="35" font-family="sans-serif" font-size="9" fill="#94a3b8">padding: 4px 8px (fixed)</text>
+          <text x="110" y="48" font-family="sans-serif" font-size="9" fill="#94a3b8">font: Gilroy SemiBold 12px</text>
+          <text x="110" y="61" font-family="sans-serif" font-size="9" fill="#94a3b8">no size variants</text>
+        </svg>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── INTERACTION & MOTION ────────────────────────────────────────── -->
+  <div class="btn-family-card" id="chip-d-interaction">
+    <div class="btn-family-title">Interaction Behaviour</div>
+    <div class="btn-family-card">
+      <table class="ds-prop-table">
+        <thead><tr><th>Chip type</th><th>Interaction</th><th>Behaviour</th></tr></thead>
+        <tbody>
+          <tr><td>Chip Info</td><td>None</td><td>Static display only. Not interactive. Use for decorative labels and tags.</td></tr>
+          <tr><td>Chip Status</td><td>None</td><td>Static display. Communicates state. Do not attach click handlers.</td></tr>
+          <tr><td>Chip Field</td><td>Close button click</td><td>Fires <code>onRemove</code> callback. Renders as <code>&lt;button&gt;</code> for keyboard access. The chip wrapper itself is not clickable.</td></tr>
+          <tr><td>Chip Interactive</td><td>Click / Enter / Space</td><td>Toggles <code>is-selected</code> class. Supports group selection (single or multi). Focus ring appears on keyboard nav. Disabled chips do not respond.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ── RESPONSIVE ─────────────────────────────────────────────────── -->
+  <div class="btn-family-card" id="chip-d-responsive">
+    <div class="btn-family-title">Responsive Behaviour</div>
+    <div class="btn-family-card">
+      <table class="ds-prop-table">
+        <thead><tr><th>Breakpoint</th><th>Guidance</th></tr></thead>
+        <tbody>
+          <tr><td>Mobile (&lt;768px)</td><td>Prefer <code>--sm</code> size for Chip Info. Chip Field wraps to new line in flex containers. Interactive chip groups switch to horizontal scroll or wrap layout.</td></tr>
+          <tr><td>Tablet / Desktop</td><td>Standard sizing. Interactive chips in filter bars can span full row width.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ── ACCESSIBILITY ──────────────────────────────────────────────── -->
+  <div class="btn-family-card" id="chip-d-a11y">
+    <div class="btn-family-title">Accessibility</div>
+    <div class="btn-family-card">
+      <table class="ds-prop-table">
+        <thead><tr><th>Requirement</th><th>Implementation</th></tr></thead>
+        <tbody>
+          <tr><td>Interactive chips use <code>&lt;button&gt;</code></td><td>Never use <code>&lt;div&gt;</code> or <code>&lt;span&gt;</code> for clickable chips. <code>&lt;button&gt;</code> gets keyboard and screen reader support for free.</td></tr>
+          <tr><td>Static chips use <code>&lt;span&gt;</code></td><td>Chip Info and Chip Status are non-interactive — use <code>&lt;span&gt;</code> with <code>role="status"</code> for status chips in live regions.</td></tr>
+          <tr><td><code>aria-pressed</code> on selected</td><td>Add <code>aria-pressed="true"</code> to <code>.gs-cia</code> when selected for screen reader announcement.</td></tr>
+          <tr><td>Close button label</td><td>Chip Field close button must have <code>aria-label="Remove [person name]"</code> — avoid generic "Remove" alone.</td></tr>
+          <tr><td>Disabled chips</td><td>Add <code>disabled</code> attribute (not just class) on <code>&lt;button&gt;</code> so assistive tech skips the element.</td></tr>
+          <tr><td>Color contrast</td><td>All color variants have been verified at ≥4.5:1 text contrast. Do not override text colors without re-checking contrast.</td></tr>
+          <tr><td>Focus ring</td><td>Do not suppress <code>:focus-visible</code> outline. The 1.5px brand-color ring is required for keyboard users.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  </div><!-- /code-tab-main -->
+  <div class="code-tab-qnav">
+    <div class="code-qnav-inner">
+      <p class="code-qnav-title">On This Page</p>
+      <ul class="code-qnav-list" id="chip-design-qnav">
+        <li class="code-qnav-item"><button class="code-qnav-link active" onclick="scrollToSection('chip-d-overview')">Overview</button></li>
+        <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('chip-d-info')">Chip Info</button></li>
+        <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('chip-d-status')">Chip Status</button></li>
+        <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('chip-d-field')">Chip Field</button></li>
+        <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('chip-d-interactive')">Chip Interactive</button></li>
+        <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('chip-d-anatomy')">Anatomy</button></li>
+        <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('chip-d-interaction')">Interaction</button></li>
+        <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('chip-d-responsive')">Responsive</button></li>
+        <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('chip-d-a11y')">Accessibility</button></li>
+      </ul>
+    </div>
+  </div>
+  </div><!-- /code-tab-layout -->
+
+</div><!-- /chip-tab-design -->
+
+
+<!-- ═══ CODE TAB ════════════════════════════════════════════════════ -->
+<div id="chip-tab-code" class="btn-tab-pane chip-tab-pane">
+  <div class="page-header">
+    <h1 class="ds-hero-title">Code</h1>
+    <p class="ds-hero-desc">HTML/SCSS class-based implementation. React example included. All chip types follow the same <code>gs-*</code> BEM-style naming convention.</p>
+  </div>
+
+  <div class="code-tab-layout">
+  <div class="code-tab-main">
+
+  <!-- FW TOGGLE -->
+  <div class="fw-toggle-bar">
+    <button class="fw-btn active" onclick="switchFw('chip-tab-code','react')">React</button>
+    <button class="fw-btn" onclick="switchFw('chip-tab-code','angular')">Angular</button>
+  </div>
+
+  <!-- ── 1. IMPORT ── -->
+  <div class="btn-family-card" id="chip-c-import">
+    <div class="ds-step-num">01</div>
+    <div class="ds-step-content">
+      <h3 class="ds-step-title">Import styles</h3>
+      <p class="ds-step-desc">All chip CSS ships in the shared stylesheet. No per-component import needed.</p>
+      <div class="btn-code-block">
+        <div class="btn-code-head"><span>SCSS</span><button onclick="copyModalCode('chip-import',this)">Copy</button></div>
+        <pre class="btn-code-body" id="chip-import">@import 'styles'; // includes .gs-ci, .gs-cs, .gs-cf, .gs-cia</pre>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── 2. CHIP INFO ── -->
+  <div class="btn-family-card" id="chip-c-info">
+    <div class="ds-step-num">02</div>
+    <div class="ds-step-content">
+      <h3 class="ds-step-title">Chip Info</h3>
+      <p class="ds-step-desc">Combine base class + size modifier + style modifier + color modifier. Always use <code>&lt;span&gt;</code> — not interactive.</p>
+
+      <div class="fw-react">
+        <div class="btn-code-block">
+          <div class="btn-code-head"><span>JSX — Chip Info</span><button onclick="copyModalCode('chip-info-react',this)">Copy</button></div>
+          <pre class="btn-code-body" id="chip-info-react">{/* Filled */}
+&lt;span className="gs-ci gs-ci--sm gs-ci--filled gs-ci--blue"&gt;New&lt;/span&gt;
+&lt;span className="gs-ci gs-ci--sm gs-ci--filled gs-ci--red"&gt;Urgent&lt;/span&gt;
+&lt;span className="gs-ci gs-ci--sm gs-ci--filled gs-ci--green"&gt;Done&lt;/span&gt;
+
+{/* Outlined */}
+&lt;span className="gs-ci gs-ci--sm gs-ci--outlined gs-ci--blue"&gt;New&lt;/span&gt;
+
+{/* Light */}
+&lt;span className="gs-ci gs-ci--sm gs-ci--light gs-ci--yellow"&gt;Pending&lt;/span&gt;
+
+{/* Large */}
+&lt;span className="gs-ci gs-ci--lg gs-ci--filled gs-ci--teal"&gt;Synced&lt;/span&gt;</pre>
+        </div>
+      </div>
+
+      <div class="fw-angular" style="display:none;">
+        <div class="btn-code-block">
+          <div class="btn-code-head"><span>Angular — Chip Info</span><button onclick="copyModalCode('chip-info-ng',this)">Copy</button></div>
+          <pre class="btn-code-body" id="chip-info-ng">&lt;!-- Filled --&gt;
+&lt;span class="gs-ci gs-ci--sm gs-ci--filled gs-ci--blue"&gt;New&lt;/span&gt;
+&lt;span class="gs-ci gs-ci--sm gs-ci--filled gs-ci--red"&gt;Urgent&lt;/span&gt;
+
+&lt;!-- Outlined --&gt;
+&lt;span class="gs-ci gs-ci--sm gs-ci--outlined gs-ci--green"&gt;Done&lt;/span&gt;
+
+&lt;!-- Light --&gt;
+&lt;span class="gs-ci gs-ci--lg gs-ci--light gs-ci--yellow"&gt;Pending&lt;/span&gt;</pre>
+        </div>
+      </div>
+
+      <!-- Props table -->
+      <div class="btn-family-card" style="margin-top:16px;">
+        <table class="ds-prop-table">
+          <thead><tr><th>Modifier class</th><th>Options</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr><td>Size</td><td><code>gs-ci--sm</code> · <code>gs-ci--lg</code></td><td>Small: 4/8px padding · Large: 8px all</td></tr>
+            <tr><td>Style</td><td><code>gs-ci--filled</code> · <code>gs-ci--outlined</code> · <code>gs-ci--light</code></td><td>Solid / border / tint background</td></tr>
+            <tr><td>Color</td><td><code>gs-ci--grey</code> · <code>--blue</code> · <code>--red</code> · <code>--yellow</code> · <code>--teal</code> · <code>--green</code></td><td>Semantic color variant</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── 3. CHIP STATUS ── -->
+  <div class="btn-family-card" id="chip-c-status">
+    <div class="ds-step-num">03</div>
+    <div class="ds-step-content">
+      <h3 class="ds-step-title">Chip Status</h3>
+      <p class="ds-step-desc">Single-modifier chip. Base + color. Add <code>role="status"</code> inside live regions for screen reader updates.</p>
+      <div class="fw-react">
+        <div class="btn-code-block">
+          <div class="btn-code-head"><span>JSX — Chip Status</span><button onclick="copyModalCode('chip-status-react',this)">Copy</button></div>
+          <pre class="btn-code-body" id="chip-status-react">&lt;span className="gs-cs gs-cs--green"&gt;Active&lt;/span&gt;
+&lt;span className="gs-cs gs-cs--red"&gt;Failed&lt;/span&gt;
+&lt;span className="gs-cs gs-cs--yellow"&gt;Pending&lt;/span&gt;
+&lt;span className="gs-cs gs-cs--orange"&gt;Warning&lt;/span&gt;
+&lt;span className="gs-cs gs-cs--blue"&gt;Processing&lt;/span&gt;
+&lt;span className="gs-cs gs-cs--teal"&gt;Synced&lt;/span&gt;
+&lt;span className="gs-cs gs-cs--grey"&gt;Inactive&lt;/span&gt;</pre>
+        </div>
+      </div>
+      <div class="fw-angular" style="display:none;">
+        <div class="btn-code-block">
+          <div class="btn-code-head"><span>Angular — Chip Status</span><button onclick="copyModalCode('chip-status-ng',this)">Copy</button></div>
+          <pre class="btn-code-body" id="chip-status-ng">&lt;span class="gs-cs gs-cs--green"&gt;Active&lt;/span&gt;
+&lt;span class="gs-cs gs-cs--red"&gt;Failed&lt;/span&gt;
+&lt;span class="gs-cs gs-cs--yellow"&gt;Pending&lt;/span&gt;</pre>
+        </div>
+      </div>
+      <div class="btn-family-card" style="margin-top:16px;">
+        <table class="ds-prop-table">
+          <thead><tr><th>Modifier</th><th>Color</th><th>Use for</th></tr></thead>
+          <tbody>
+            <tr><td><code>gs-cs--grey</code></td><td>#e2e8f0 / #1e293b</td><td>Inactive, Archived, Neutral</td></tr>
+            <tr><td><code>gs-cs--blue</code></td><td>#dbeafe / #1d40af</td><td>Processing, In progress</td></tr>
+            <tr><td><code>gs-cs--green</code></td><td><code>var(--prim-green-100)</code> / <code>var(--prim-green-800)</code></td><td>Active, Completed, Success</td></tr>
+            <tr><td><code>gs-cs--teal</code></td><td><code>var(--prim-teal-100)</code> / <code>var(--prim-teal-900)</code></td><td>Synced, Connected, Live</td></tr>
+            <tr><td><code>gs-cs--yellow</code></td><td><code>var(--prim-yellow-100)</code> / <code>var(--prim-yellow-800)</code></td><td>Pending, Review needed</td></tr>
+            <tr><td><code>gs-cs--orange</code></td><td><code>var(--prim-orange-100)</code> / <code>var(--prim-orange-900)</code></td><td>Warning, Attention required</td></tr>
+            <tr><td><code>gs-cs--red</code></td><td>#fecaca / #b91c1b</td><td>Error, Failed, Critical</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── 4. CHIP FIELD ── -->
+  <div class="btn-family-card" id="chip-c-field">
+    <div class="ds-step-num">04</div>
+    <div class="ds-step-content">
+      <h3 class="ds-step-title">Chip Field</h3>
+      <p class="ds-step-desc">Person/input chip. Small renders as 12px with 16px avatar; Large renders as 16px SemiBold with 24px avatar. Close button must use <code>&lt;button&gt;</code> with descriptive <code>aria-label</code>.</p>
+
+      <div class="fw-react">
+        <div class="btn-code-block">
+          <div class="btn-code-head"><span>JSX — Chip Field Small</span><button onclick="copyModalCode('chip-field-react-sm',this)">Copy</button></div>
+          <pre class="btn-code-body" id="chip-field-react-sm">function ChipField({ name, initials, avatarBg, avatarColor, variant = 'default', onRemove }) {
+  return (
+    &lt;span className={`gs-cf gs-cf--sm gs-cf--${variant}`}&gt;
+      {/* Avatar */}
+      &lt;span
+        className="gs-cf__avatar"
+        style={{ background: avatarBg, color: avatarColor }}
+        aria-hidden="true"
+      &gt;
+        {initials}
+      &lt;/span&gt;
+      {/* Label */}
+      &lt;span className="gs-cf__label"&gt;{name}&lt;/span&gt;
+      {/* Close */}
+      &lt;button
+        className="gs-cf__close"
+        aria-label={`Remove ${name}`}
+        onClick={onRemove}
+        type="button"
+      &gt;
+        &lt;svg width="8" height="8" viewBox="0 0 24 24" fill="none"
+             stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"&gt;
+          &lt;path d="M18 6L6 18M6 6l12 12"/&gt;
+        &lt;/svg&gt;
+      &lt;/button&gt;
+    &lt;/span&gt;
+  );
+}
+
+// variant: 'default' | 'caution' | 'error'
+&lt;ChipField name="Batman" initials="BW" avatarBg="#c7d2fe" avatarColor="#4f46e5" /&gt;
+&lt;ChipField name="Snoop Dog" initials="SD" avatarBg="#fde68a" avatarColor="#92400e" variant="caution" /&gt;
+&lt;ChipField name="John Samuel" initials="JS" avatarBg="#fecaca" avatarColor="#b91c1b" variant="error" /&gt;</pre>
+        </div>
+
+        <div class="btn-code-block" style="margin-top:12px;">
+          <div class="btn-code-head"><span>JSX — Chip Field Large</span><button onclick="copyModalCode('chip-field-react-lg',this)">Copy</button></div>
+          <pre class="btn-code-body" id="chip-field-react-lg">&lt;span className="gs-cf gs-cf--lg gs-cf--default"&gt;
+  &lt;span className="gs-cf__avatar"
+    style={{ background: '#c7d2fe', color: '#4f46e5', width: 24, height: 24, fontSize: 9 }}
+    aria-hidden="true"
+  &gt;BW&lt;/span&gt;
+  &lt;span className="gs-cf__label"&gt;Bruce Wayne&lt;/span&gt;
+  &lt;button className="gs-cf__close" aria-label="Remove Bruce Wayne" type="button"&gt;
+    &lt;svg width="8" height="8" viewBox="0 0 24 24" fill="none"
+         stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"&gt;
+      &lt;path d="M18 6L6 18M6 6l12 12"/&gt;
+    &lt;/svg&gt;
+  &lt;/button&gt;
+&lt;/span&gt;</pre>
+        </div>
+      </div>
+
+      <div class="fw-angular" style="display:none;">
+        <div class="btn-code-block">
+          <div class="btn-code-head"><span>Angular — Chip Field</span><button onclick="copyModalCode('chip-field-ng',this)">Copy</button></div>
+          <pre class="btn-code-body" id="chip-field-ng">&lt;span class="gs-cf gs-cf--sm gs-cf--default"&gt;
+  &lt;span class="gs-cf__avatar"
+    [style.background]="avatarBg"
+    [style.color]="avatarColor"
+    aria-hidden="true"&gt;
+    {{ initials }}
+  &lt;/span&gt;
+  &lt;span class="gs-cf__label"&gt;{{ name }}&lt;/span&gt;
+  &lt;button class="gs-cf__close"
+    [attr.aria-label]="'Remove ' + name"
+    (click)="onRemove()"
+    type="button"&gt;
+    &lt;svg width="8" height="8" viewBox="0 0 24 24" fill="none"
+         stroke="currentColor" stroke-width="2.5" stroke-linecap="round"&gt;
+      &lt;path d="M18 6L6 18M6 6l12 12"/&gt;
+    &lt;/svg&gt;
+  &lt;/button&gt;
+&lt;/span&gt;</pre>
+        </div>
+      </div>
+
+      <div class="btn-family-card" style="margin-top:16px;">
+        <table class="ds-prop-table">
+          <thead><tr><th>Modifier</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr><td><code>gs-cf--sm</code> / <code>gs-cf--lg</code></td><td>Small (12px text, 16px avatar) / Large (16px SemiBold, 24px avatar)</td></tr>
+            <tr><td><code>gs-cf--default</code></td><td>Blue/10 background (#eef6ff)</td></tr>
+            <tr><td><code>gs-cf--caution</code></td><td>Yellow/10 background (#fefce8)</td></tr>
+            <tr><td><code>gs-cf--error</code></td><td>Red/10 background (#fef1f2)</td></tr>
+            <tr><td><code>.gs-cf__avatar</code></td><td>Circular avatar element. Set background/color inline.</td></tr>
+            <tr><td><code>.gs-cf__icon-wrap</code></td><td>Non-avatar icon container (alternative to avatar)</td></tr>
+            <tr><td><code>.gs-cf__label</code></td><td>Name/label text</td></tr>
+            <tr><td><code>.gs-cf__close</code></td><td>Remove button — always <code>&lt;button&gt;</code> with <code>aria-label</code></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── 5. CHIP INTERACTIVE ── -->
+  <div class="btn-family-card" id="chip-c-interactive">
+    <div class="ds-step-num">05</div>
+    <div class="ds-step-content">
+      <h3 class="ds-step-title">Chip Interactive</h3>
+      <p class="ds-step-desc">Filter/selection chips. Always render as <code>&lt;button&gt;</code>. Toggle <code>is-selected</code> on click. Use <code>aria-pressed</code> to communicate selection state. Add <code>has-icon</code> when using left icon.</p>
+
+      <div class="fw-react">
+        <div class="btn-code-block">
+          <div class="btn-code-head"><span>JSX — Interactive single</span><button onclick="copyModalCode('chip-cia-react-single',this)">Copy</button></div>
+          <pre class="btn-code-body" id="chip-cia-react-single">function FilterChip({ label, color = 'blue', selected, disabled, icon, onClick }) {
+  return (
+    &lt;button
+      type="button"
+      className={[
+        'gs-cia',
+        `gs-cia--${color}`,
+        icon ? 'has-icon' : '',
+        selected ? 'is-selected' : '',
+        disabled ? 'is-disabled' : '',
+      ].filter(Boolean).join(' ')}
+      aria-pressed={selected}
+      disabled={disabled}
+      onClick={onClick}
+    &gt;
+      {icon &amp;&amp; (
+        &lt;span className="gs-cia__icon" aria-hidden="true"&gt;
+          &lt;svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+               strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"&gt;
+            &lt;path d="M20 6L9 17l-5-5"/&gt;
+          &lt;/svg&gt;
+        &lt;/span&gt;
+      )}
+      &lt;span className="gs-cia__label"&gt;{label}&lt;/span&gt;
+    &lt;/button&gt;
+  );
+}
+
+// Usage
+&lt;FilterChip label="Active" color="blue" selected={isActive} onClick={toggleActive} /&gt;
+&lt;FilterChip label="Done" color="green" selected icon onClick={toggleDone} /&gt;
+&lt;FilterChip label="Archived" color="grey" disabled /&gt;</pre>
+        </div>
+
+        <div class="btn-code-block" style="margin-top:12px;">
+          <div class="btn-code-head"><span>JSX — Filter chip group (multi-select)</span><button onclick="copyModalCode('chip-cia-react-group',this)">Copy</button></div>
+          <pre class="btn-code-body" id="chip-cia-react-group">const FILTERS = [
+  { id: 'active',   label: 'Active',   color: 'blue'  },
+  { id: 'pending',  label: 'Pending',  color: 'yellow' },
+  { id: 'failed',   label: 'Failed',   color: 'red'   },
+  { id: 'archived', label: 'Archived', color: 'grey'  },
+];
+
+function FilterGroup() {
+  const [selected, setSelected] = useState(new Set());
+  const toggle = (id) =&gt; setSelected(prev =&gt; {
+    const next = new Set(prev);
+    next.has(id) ? next.delete(id) : next.add(id);
+    return next;
+  });
+  return (
+    &lt;div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }} role="group" aria-label="Filter by status"&gt;
+      {FILTERS.map(f =&gt; (
+        &lt;button
+          key={f.id}
+          type="button"
+          className={`gs-cia gs-cia--${f.color}${selected.has(f.id) ? ' is-selected' : ''}`}
+          aria-pressed={selected.has(f.id)}
+          onClick={() =&gt; toggle(f.id)}
+        &gt;
+          {f.label}
+        &lt;/button&gt;
+      ))}
+    &lt;/div&gt;
+  );
+}</pre>
+        </div>
+      </div>
+
+      <div class="fw-angular" style="display:none;">
+        <div class="btn-code-block">
+          <div class="btn-code-head"><span>Angular — Interactive chip</span><button onclick="copyModalCode('chip-cia-ng',this)">Copy</button></div>
+          <pre class="btn-code-body" id="chip-cia-ng">&lt;!-- Single chip --&gt;
+&lt;button
+  type="button"
+  class="gs-cia"
+  [class]="'gs-cia--' + color"
+  [class.has-icon]="hasIcon"
+  [class.is-selected]="selected"
+  [class.is-disabled]="disabled"
+  [attr.aria-pressed]="selected"
+  [disabled]="disabled"
+  (click)="toggle()"
+&gt;
+  &lt;span *ngIf="hasIcon" class="gs-cia__icon" aria-hidden="true"&gt;
+    &lt;svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+         stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"&gt;
+      &lt;path d="M20 6L9 17l-5-5"/&gt;
+    &lt;/svg&gt;
+  &lt;/span&gt;
+  &lt;span class="gs-cia__label"&gt;{{ label }}&lt;/span&gt;
+&lt;/button&gt;
+
+&lt;!-- Outlined variant --&gt;
+&lt;button class="gs-cia gs-cia--blue gs-cia--outlined" [class.is-selected]="sel" (click)="sel = !sel"&gt;
+  Filter
+&lt;/button&gt;</pre>
+        </div>
+      </div>
+
+      <div class="btn-family-card" style="margin-top:16px;">
+        <table class="ds-prop-table">
+          <thead><tr><th>Modifier / Class</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr><td><code>gs-cia--grey/navy/blue/red/yellow/teal/green</code></td><td>Sets selected-state background color. No effect on default state.</td></tr>
+            <tr><td><code>gs-cia--outlined</code></td><td>White bg with grey/200 border. Selected state fills with solid color.</td></tr>
+            <tr><td><code>has-icon</code></td><td>Reduces padding from <code>12px 8px</code> to <code>8px</code> all to accommodate left icon.</td></tr>
+            <tr><td><code>is-selected</code></td><td>Activates solid color selected background.</td></tr>
+            <tr><td><code>is-disabled</code></td><td>Applies 40% opacity + pointer-events: none. Also use native <code>disabled</code> attr.</td></tr>
+            <tr><td><code>is-hover</code></td><td>Demo/test helper to show hover state in static contexts.</td></tr>
+            <tr><td><code>is-focused</code></td><td>Demo/test helper to show focus ring in static contexts.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── 6. CSS TOKENS ── -->
+  <div class="btn-family-card" id="chip-c-tokens">
+    <div class="ds-step-num">06</div>
+    <div class="ds-step-content">
+      <h3 class="ds-step-title">CSS Token Reference</h3>
+      <p class="ds-step-desc">Chips use system tokens where the palette exists. Yellow, Teal, Green, and Orange use Figma-specified literal values as no <code>prim-*</code> tokens exist for those palettes.</p>
+      <div class="btn-family-card">
+        <table class="ds-prop-table">
+          <thead><tr><th>Property</th><th>Token used</th><th>Resolved value</th></tr></thead>
+          <tbody>
+            <tr><td>Border-radius (all chips)</td><td><code>var(--radius-sm)</code></td><td>4px</td></tr>
+            <tr><td>Font family</td><td><code>var(--font-sans)</code></td><td>Gilroy, system-ui</td></tr>
+            <tr><td>Grey filled bg</td><td><code>var(--prim-grey-400)</code></td><td>#64748b</td></tr>
+            <tr><td>Blue filled bg (sm)</td><td><code>var(--prim-blue-500)</code></td><td>#2463eb</td></tr>
+            <tr><td>Blue filled bg (lg)</td><td><code>var(--prim-blue-400)</code></td><td>#3b81f6</td></tr>
+            <tr><td>Blue light bg</td><td><code>var(--prim-blue-50)</code></td><td>#dbeafe</td></tr>
+            <tr><td>Red filled bg</td><td><code>var(--prim-red-400)</code></td><td>#ef4444</td></tr>
+            <tr><td>Red light bg</td><td><code>var(--prim-red-100)</code></td><td>#fecaca</td></tr>
+            <tr><td>Yellow filled bg</td><td><code>var(--prim-yellow-400)</code></td><td>#eab305</td></tr>
+            <tr><td>Yellow light bg</td><td><code>var(--prim-yellow-100)</code></td><td>#feef89</td></tr>
+            <tr><td>Orange light bg</td><td><code>var(--prim-orange-100)</code></td><td>#ffb988</td></tr>
+            <tr><td>Teal filled bg</td><td><code>var(--prim-teal-600)</code></td><td>#00aa97</td></tr>
+            <tr><td>Teal light bg</td><td><code>var(--prim-teal-100)</code></td><td>#99fbef</td></tr>
+            <tr><td>Green filled bg</td><td><code>var(--prim-green-600)</code></td><td>#1b9e4b</td></tr>
+            <tr><td>Green light bg</td><td><code>var(--prim-green-100)</code></td><td>#bdeecf</td></tr>
+            <tr><td>Status grey bg</td><td><code>var(--prim-grey-100)</code></td><td>#e2e8f0</td></tr>
+            <tr><td>Status blue bg</td><td><code>var(--prim-blue-50)</code></td><td>#dbeafe</td></tr>
+            <tr><td>Field default bg</td><td><code>var(--prim-blue-10)</code></td><td>#eef6ff</td></tr>
+            <tr><td>Field caution bg</td><td><code>var(--prim-yellow-10)</code></td><td>#fefce8</td></tr>
+            <tr><td>Field error bg</td><td><code>var(--prim-red-10)</code></td><td>#fef1f2</td></tr>
+            <tr><td>Interactive default bg</td><td><code>var(--prim-grey-50)</code></td><td>#f1f5f9</td></tr>
+            <tr><td>Interactive hover bg</td><td><code>var(--prim-grey-100)</code></td><td>#e2e8f0</td></tr>
+            <tr><td>Interactive focus ring</td><td><code>var(--color-brand)</code></td><td>#1852fe</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── 7. FILE STRUCTURE ── -->
+  <div class="btn-family-card" id="chip-c-struct">
+    <div class="ds-step-num">07</div>
+    <div class="ds-step-content">
+      <h3 class="ds-step-title">File Structure</h3>
+      <p class="ds-step-desc">Chips ship as a single SCSS partial and an optional React component file. No sub-dependencies.</p>
+      <div class="btn-code-block">
+        <div class="btn-code-head"><span>Directory</span><button onclick="copyModalCode('chip-struct',this)">Copy</button></div>
+        <pre class="btn-code-body" id="chip-struct">src/
+├── styles/
+│   ├── _chips.scss          ← Chip Info, Status, Field, Interactive
+│   └── styles.scss          ← @import '_chips'
+└── components/
+    └── chips/
+        ├── ChipInfo.jsx      ← (optional) React wrapper
+        ├── ChipStatus.jsx
+        ├── ChipField.jsx
+        └── ChipInteractive.jsx</pre>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── 8. SCSS STRUCTURE ── -->
+  <div class="btn-family-card" id="chip-c-scss">
+    <div class="ds-step-num">08</div>
+    <div class="ds-step-content">
+      <h3 class="ds-step-title">SCSS Structure</h3>
+      <p class="ds-step-desc">All four chip types are defined in <code>_chips.scss</code>. BEM-style class naming. Color loops generated via maps for maintainability.</p>
+      <div class="btn-code-block">
+        <div class="btn-code-head"><span>SCSS — _chips.scss (structure)</span><button onclick="copyModalCode('chip-scss',this)">Copy</button></div>
+        <pre class="btn-code-body" id="chip-scss">// ─── Chip Info ────────────────────────────────────
+.gs-ci {
+  display: inline-flex;
+  align-items: center;
+  border-radius: var(--radius-sm, 4px);
+  font-family: var(--font-sans);
+  font-size: 12px;
+  font-weight: 500;   // Medium
+  line-height: 16px;
+  white-space: nowrap;
+
+  &--sm { padding: 4px 8px; }
+  &--lg { padding: 8px; }
+
+  &--filled { /* solid bg, white text — see color map below */ }
+  &--outlined { background: #fff; border: 1px solid; }
+  &--light { /* tinted bg, dark text */ }
+}
+
+// ─── Chip Status ──────────────────────────────────
+.gs-cs {
+  display: inline-flex;
+  align-items: center;
+  border-radius: var(--radius-sm, 4px);
+  padding: 4px 8px;
+  font-family: var(--font-sans);
+  font-size: 12px;
+  font-weight: 600;   // SemiBold
+  line-height: 16px;
+  white-space: nowrap;
+  // colors via modifier map
+}
+
+// ─── Chip Field ───────────────────────────────────
+.gs-cf {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 999px;
+  gap: 4px;
+
+  &--sm { padding: 2px 6px; font-size: 12px; }
+  &--lg { padding: 4px 8px; font-size: 16px; font-weight: 600; }
+
+  &__avatar { border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+  &__label  { line-height: 1.4; }
+  &__close  { display: flex; align-items: center; justify-content: center;
+               background: none; border: none; cursor: pointer; padding: 0;
+               width: 16px; height: 16px; border-radius: 50%; }
+}
+
+// ─── Chip Interactive ─────────────────────────────
+.gs-cia {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  border-radius: var(--radius-sm, 4px);
+  padding: 12px 8px;
+  background: var(--prim-grey-50, #f1f5f9);
+  color: var(--prim-grey-700, #334155);
+  font-family: var(--font-sans);
+  font-size: 12px;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  transition: background 150ms ease;
+
+  &.has-icon { padding: 8px; }
+  &:hover    { background: var(--prim-grey-100, #e2e8f0); }
+  &.is-selected { /* set by color modifier map */ }
+  &.is-disabled { opacity: 0.4; pointer-events: none; }
+  &:focus-visible { outline: 1.5px solid var(--color-brand, #1852fe); outline-offset: 2px; }
+
+  &--outlined {
+    background: #fff;
+    border: 1px solid var(--prim-grey-200, #e2e8f0);
+    &.is-selected { border-color: transparent; }
+  }
+}</pre>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── 9. THEMING ── -->
+  <div class="btn-family-card" id="chip-c-theming">
+    <div class="ds-step-num">09</div>
+    <div class="ds-step-content">
+      <h3 class="ds-step-title">Theming &amp; Custom Colors</h3>
+      <p class="ds-step-desc">Chip colors are driven by CSS custom properties. Override the relevant token at <code>:root</code> or a scoped selector to white-label or theme specific surfaces.</p>
+      <div class="fw-react">
+        <div class="btn-code-block">
+          <div class="btn-code-head"><span>CSS — Token overrides</span><button onclick="copyModalCode('chip-theme-react',this)">Copy</button></div>
+          <pre class="btn-code-body" id="chip-theme-react">/* Theme the brand color for Interactive selected state */
+:root {
+  --color-brand: #1852fe;          /* default — changes all selected chips */
+}
+
+/* Scope to a specific surface */
+.dashboard-filters {
+  --prim-blue-500: #0d47a1;        /* darker blue in dashboard only */
+}
+
+/* Dark-mode surface example */
+@media (prefers-color-scheme: dark) {
+  .gs-cia {
+    background: #1e293b;           /* dark default bg */
+    color: #e2e8f0;
+  }
+  .gs-cia:hover {
+    background: #334155;
+  }
+}</pre>
+        </div>
+      </div>
+      <div class="fw-angular" style="display:none;">
+        <div class="btn-code-block">
+          <div class="btn-code-head"><span>Angular — Token overrides (host)</span><button onclick="copyModalCode('chip-theme-ng',this)">Copy</button></div>
+          <pre class="btn-code-body" id="chip-theme-ng">/* In component.scss using :host */
+:host {
+  --color-brand: #0d47a1;
+}
+
+/* Or in a host-context for theming */
+:host-context(.dark-theme) {
+  .gs-cia {
+    background: #1e293b;
+    color: #e2e8f0;
+  }
+}</pre>
+        </div>
+      </div>
+      <div class="btn-family-card" style="margin-top:16px;">
+        <table class="ds-prop-table">
+          <thead><tr><th>Token to override</th><th>Affects</th><th>Default value</th></tr></thead>
+          <tbody>
+            <tr><td><code>--color-brand</code></td><td>Interactive focus ring color</td><td>#1852fe</td></tr>
+            <tr><td><code>--prim-blue-500</code></td><td>Blue Chip Info filled bg, Interactive blue selected bg</td><td>#2463eb</td></tr>
+            <tr><td><code>--prim-grey-50</code></td><td>Interactive default bg</td><td>#f1f5f9</td></tr>
+            <tr><td><code>--prim-grey-100</code></td><td>Interactive hover bg, Status grey bg</td><td>#e2e8f0</td></tr>
+            <tr><td><code>--radius-sm</code></td><td>Border-radius for all chip types</td><td>4px</td></tr>
+            <tr><td><code>--font-sans</code></td><td>Font family for all chip types</td><td>Gilroy, system-ui</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── 10. ACCESSIBILITY IMPLEMENTATION ── -->
+  <div class="btn-family-card" id="chip-c-a11y">
+    <div class="ds-step-num">10</div>
+    <div class="ds-step-content">
+      <h3 class="ds-step-title">Accessibility Implementation</h3>
+      <p class="ds-step-desc">Complete code patterns for screen reader support, keyboard navigation, and ARIA attributes across all chip types.</p>
+
+      <div class="fw-react">
+        <div class="btn-code-block">
+          <div class="btn-code-head"><span>JSX — Accessible Interactive chip group</span><button onclick="copyModalCode('chip-a11y-react',this)">Copy</button></div>
+          <pre class="btn-code-body" id="chip-a11y-react">function AccessibleFilterGroup({ label, filters, selected, onChange }) {
+  return (
+    &lt;div
+      role="group"
+      aria-label={label}
+      style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}
+    &gt;
+      {filters.map((f) =&gt; {
+        const isSelected = selected.has(f.id);
+        return (
+          &lt;button
+            key={f.id}
+            type="button"
+            className={`gs-cia gs-cia--${f.color}${isSelected ? ' is-selected' : ''}`}
+            aria-pressed={isSelected}
+            onClick={() =&gt; onChange(f.id)}
+          &gt;
+            {f.label}
+          &lt;/button&gt;
+        );
+      })}
+    &lt;/div&gt;
+  );
+}
+
+// Chip Status in a live region
+function StatusCell({ status, color }) {
+  return (
+    &lt;td&gt;
+      &lt;span
+        className={`gs-cs gs-cs--${color}`}
+        role="status"
+        aria-label={`Status: ${status}`}
+      &gt;
+        {status}
+      &lt;/span&gt;
+    &lt;/td&gt;
+  );
+}</pre>
+        </div>
+      </div>
+
+      <div class="fw-angular" style="display:none;">
+        <div class="btn-code-block">
+          <div class="btn-code-head"><span>Angular — Accessible interactive chip</span><button onclick="copyModalCode('chip-a11y-ng',this)">Copy</button></div>
+          <pre class="btn-code-body" id="chip-a11y-ng">&lt;div role="group" [attr.aria-label]="groupLabel"
+     style="display:flex;gap:8px;flex-wrap:wrap"&gt;
+  &lt;button
+    *ngFor="let f of filters"
+    type="button"
+    class="gs-cia"
+    [class]="'gs-cia--' + f.color"
+    [class.is-selected]="isSelected(f.id)"
+    [attr.aria-pressed]="isSelected(f.id)"
+    (click)="toggle(f.id)"
+  &gt;
+    {{ f.label }}
+  &lt;/button&gt;
+&lt;/div&gt;
+
+&lt;!-- Status chip in live region --&gt;
+&lt;span
+  class="gs-cs"
+  [class]="'gs-cs--' + statusColor"
+  role="status"
+  [attr.aria-label]="'Status: ' + statusLabel"
+&gt;
+  {{ statusLabel }}
+&lt;/span&gt;</pre>
+        </div>
+      </div>
+
+      <div class="btn-family-card" style="margin-top:16px;">
+        <table class="ds-prop-table">
+          <thead><tr><th>Chip type</th><th>ARIA requirement</th><th>Implementation</th></tr></thead>
+          <tbody>
+            <tr><td>Chip Info</td><td><code>role</code> not required</td><td>Use <code>&lt;span&gt;</code>. No interaction — screen readers read label text naturally.</td></tr>
+            <tr><td>Chip Status</td><td><code>role="status"</code> in live regions</td><td>Add only when status changes dynamically. Pair with <code>aria-live="polite"</code> on parent.</td></tr>
+            <tr><td>Chip Field (close)</td><td><code>aria-label="Remove [name]"</code></td><td>Required on the <code>&lt;button class="gs-cf__close"&gt;</code>. Include person name.</td></tr>
+            <tr><td>Chip Interactive</td><td><code>aria-pressed="true/false"</code></td><td>Dynamically synced with <code>is-selected</code>. Group wrapped in <code>role="group"</code> with <code>aria-label</code>.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── 11. LIVE EXAMPLES ── -->
+  <div class="btn-family-card" id="chip-c-examples">
+    <div class="ds-step-num">11</div>
+    <div class="ds-step-content">
+      <h3 class="ds-step-title">Live Composition Examples</h3>
+      <p class="ds-step-desc">Real-world patterns showing how chip types combine with other components. These are the most common chip combinations found in the Pelagos platform.</p>
+
+      <!-- Example 1: Table row -->
+      <div class="btn-family-card" style="padding:24px;margin-bottom:12px;">
+        <div class="ds-prop-label" style="margin-bottom:16px;">Table row — Chip Status + Chip Info</div>
+        <div style="overflow-x:auto;">
+          <table style="width:100%;border-collapse:collapse;font-size:13px;">
+            <thead>
+              <tr style="border-bottom:2px solid #e2e8f0;">
+                <th style="text-align:left;padding:8px 12px;color:#94a3b8;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;">Vessel</th>
+                <th style="text-align:left;padding:8px 12px;color:#94a3b8;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;">Status</th>
+                <th style="text-align:left;padding:8px 12px;color:#94a3b8;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;">Type</th>
+                <th style="text-align:left;padding:8px 12px;color:#94a3b8;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;">Priority</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr style="border-bottom:1px solid #f1f5f9;">
+                <td style="padding:10px 12px;color:#1e293b;font-weight:500;">MV Atlantic Star</td>
+                <td style="padding:10px 12px;"><span class="gs-cs gs-cs--green">Active</span></td>
+                <td style="padding:10px 12px;"><span class="gs-ci gs-ci--sm gs-ci--light gs-ci--blue">Container</span></td>
+                <td style="padding:10px 12px;"><span class="gs-ci gs-ci--sm gs-ci--filled gs-ci--red">High</span></td>
+              </tr>
+              <tr style="border-bottom:1px solid #f1f5f9;">
+                <td style="padding:10px 12px;color:#1e293b;font-weight:500;">MV Pacific Dawn</td>
+                <td style="padding:10px 12px;"><span class="gs-cs gs-cs--yellow">Pending</span></td>
+                <td style="padding:10px 12px;"><span class="gs-ci gs-ci--sm gs-ci--light gs-ci--teal">Tanker</span></td>
+                <td style="padding:10px 12px;"><span class="gs-ci gs-ci--sm gs-ci--outlined gs-ci--grey">Normal</span></td>
+              </tr>
+              <tr>
+                <td style="padding:10px 12px;color:#1e293b;font-weight:500;">MV Nordic Spirit</td>
+                <td style="padding:10px 12px;"><span class="gs-cs gs-cs--red">Failed</span></td>
+                <td style="padding:10px 12px;"><span class="gs-ci gs-ci--sm gs-ci--light gs-ci--green">Bulk</span></td>
+                <td style="padding:10px 12px;"><span class="gs-ci gs-ci--sm gs-ci--filled gs-ci--yellow">Medium</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Example 2: Filter bar -->
+      <div class="btn-family-card" style="padding:24px;margin-bottom:12px;">
+        <div class="ds-prop-label" style="margin-bottom:16px;">Filter bar — Chip Interactive group</div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;">
+          <span style="font-size:12px;color:#94a3b8;font-weight:600;margin-right:4px;">Status:</span>
+          <button class="gs-cia gs-cia--green is-selected has-icon">
+            <span class="gs-cia__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></span>Active
+          </button>
+          <button class="gs-cia gs-cia--yellow">Pending</button>
+          <button class="gs-cia gs-cia--red">Failed</button>
+          <button class="gs-cia gs-cia--grey">Inactive</button>
+          <div style="width:1px;height:20px;background:#e2e8f0;margin:0 4px;"></div>
+          <span style="font-size:12px;color:#94a3b8;font-weight:600;margin-right:4px;">Type:</span>
+          <button class="gs-cia gs-cia--blue is-selected">Container</button>
+          <button class="gs-cia gs-cia--teal is-selected">Tanker</button>
+          <button class="gs-cia gs-cia--navy">Bulk</button>
+        </div>
+      </div>
+
+      <!-- Example 3: Multi-select field -->
+      <div class="btn-family-card" style="padding:24px;">
+        <div class="ds-prop-label" style="margin-bottom:16px;">Multi-select field — Chip Field inside input</div>
+        <div style="border:1px solid #e2e8f0;border-radius:8px;padding:8px 10px;display:flex;flex-wrap:wrap;gap:6px;align-items:center;min-height:44px;background:#fff;">
+          <span class="gs-cf gs-cf--sm gs-cf--default">
+            <span class="gs-cf__avatar" style="background:#c7d2fe;color:#4f46e5;">BW</span>
+            <span class="gs-cf__label">Bruce Wayne</span>
+            <button class="gs-cf__close" aria-label="Remove Bruce Wayne"><svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg></button>
+          </span>
+          <span class="gs-cf gs-cf--sm gs-cf--default">
+            <span class="gs-cf__avatar" style="background:#bbf7d0;color:#14532d;">CK</span>
+            <span class="gs-cf__label">Clark Kent</span>
+            <button class="gs-cf__close" aria-label="Remove Clark Kent"><svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg></button>
+          </span>
+          <span class="gs-cf gs-cf--sm gs-cf--caution">
+            <span class="gs-cf__avatar" style="background:#fde68a;color:#92400e;">SD</span>
+            <span class="gs-cf__label">Snoop Dog</span>
+            <button class="gs-cf__close" aria-label="Remove Snoop Dog"><svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg></button>
+          </span>
+          <input type="text" placeholder="Add assignee…" style="border:none;outline:none;font-size:13px;color:#475569;background:transparent;flex:1;min-width:120px;" />
+        </div>
+      </div>
+    </div>
+  </div>
+
+  </div><!-- /code-tab-main -->
+  <div class="code-tab-qnav">
+    <div class="code-qnav-inner">
+      <p class="code-qnav-title">On This Page</p>
+      <ul class="code-qnav-list" id="chip-code-qnav">
+        <li class="code-qnav-item"><button class="code-qnav-link active" onclick="scrollToSection('chip-c-import')">Import</button></li>
+        <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('chip-c-info')">Chip Info</button></li>
+        <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('chip-c-status')">Chip Status</button></li>
+        <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('chip-c-field')">Chip Field</button></li>
+        <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('chip-c-interactive')">Chip Interactive</button></li>
+        <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('chip-c-tokens')">CSS Tokens</button></li>
+        <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('chip-c-struct')">File Structure</button></li>
+        <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('chip-c-scss')">SCSS Structure</button></li>
+        <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('chip-c-theming')">Theming</button></li>
+        <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('chip-c-a11y')">Accessibility</button></li>
+        <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('chip-c-examples')">Examples</button></li>
+      </ul>
+    </div>
+  </div>
+  </div><!-- /code-tab-layout -->
+
+</div><!-- /chip-tab-code -->
+
+
+<!-- ═══ USAGE TAB ════════════════════════════════════════════════════ -->
+<div id="chip-tab-usage" class="btn-tab-pane chip-tab-pane">
+  <div class="page-header">
+    <h1 class="ds-hero-title">Usage</h1>
+    <p class="ds-hero-desc">Guidelines for selecting the right chip type, structuring content, and avoiding common implementation mistakes.</p>
+  </div>
+
+  <div class="code-tab-layout">
+  <div class="code-tab-main">
+
+  <!-- When to use each type -->
+  <div class="btn-family-card" id="chip-u-type">
+    <div class="btn-family-title">Choosing the right chip type</div>
+    <div class="btn-family-card">
+      <table class="ds-prop-table">
+        <thead><tr><th>Type</th><th>Use when</th><th>Do not use when</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><span class="gs-ci gs-ci--sm gs-ci--filled gs-ci--blue">Chip Info</span></td>
+            <td>Displaying a category, tag, or attribute alongside content (e.g., in a card header, table cell, or detail panel).</td>
+            <td>Conveying live operational status — use Chip Status. The user needs to click it — use Chip Interactive.</td>
+          </tr>
+          <tr>
+            <td><span class="gs-cs gs-cs--green">Chip Status</span></td>
+            <td>Communicating the current operational state of a record (Active, Pending, Failed, etc.) in tables, sidebars, and record headers.</td>
+            <td>Decorative labels with no semantic meaning. Do not use status chips for categories or tags.</td>
+          </tr>
+          <tr>
+            <td><span class="gs-cf gs-cf--sm gs-cf--default"><span class="gs-cf__avatar" style="background:#c7d2fe;color:#4f46e5;">BW</span><span class="gs-cf__label">Bruce</span><button class="gs-cf__close" aria-label="Remove Bruce"><svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg></button></span></td>
+            <td>Representing selected people, assigned users, or input tokens inside a multi-select field.</td>
+            <td>Static display of names — use plain text or a badge. Do not show Chip Field outside an input context.</td>
+          </tr>
+          <tr>
+            <td><button class="gs-cia gs-cia--blue">Chip</button></td>
+            <td>Filter bars, faceted search, tag selection, or any UI where the user toggles a filter/option on and off.</td>
+            <td>Status display — use Chip Status. One-time navigation actions — use a button or a link.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- When to use / not to use -->
+  <div class="btn-family-card" id="chip-u-when">
+    <div class="btn-family-title">When to use</div>
+    <div class="ds-grid-2" style="gap:12px;">
+      <div class="ds-card ds-do-card" style="padding:20px;">
+        <div class="ds-do-label">✓ Do</div>
+        <ul class="ds-list">
+          <li>Use <strong>Chip Info</strong> to annotate content with metadata (e.g., "New", "Beta", priority level).</li>
+          <li>Use <strong>Chip Status</strong> in table rows and record headers where status changes over time.</li>
+          <li>Use <strong>Chip Field</strong> inside search and assignment inputs where users pick multiple people or items.</li>
+          <li>Use <strong>Chip Interactive</strong> in filter toolbars to let users narrow down results — show clearly which filters are selected.</li>
+          <li>Keep chip labels concise: 1–3 words maximum.</li>
+          <li>Use the Outlined variant of Chip Interactive when the chip appears on a coloured or image background.</li>
+        </ul>
+      </div>
+      <div class="ds-card ds-dont-card" style="padding:20px;">
+        <div class="ds-dont-label">✗ Don't</div>
+        <ul class="ds-list">
+          <li>Don't use multiple chip types together in the same element (e.g., mixing Chip Info and Chip Status side by side to mean the same thing).</li>
+          <li>Don't make Chip Info or Chip Status clickable — if action is needed, use Chip Interactive instead.</li>
+          <li>Don't rely on color alone to convey status — the label text must also be descriptive (e.g., "Active" not just a green chip).</li>
+          <li>Don't truncate chip labels — if the text is too long, reconsider the label or use a tooltip.</li>
+          <li>Don't use chips as navigation elements — use links or tabs instead.</li>
+          <li>Don't use more than 3 chip colors in a single view — too many colors reduce semantic meaning.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Content hierarchy -->
+  <div class="btn-family-card" id="chip-u-content">
+    <div class="btn-family-title">Content guidelines</div>
+    <div class="btn-family-card">
+      <table class="ds-prop-table">
+        <thead><tr><th>Rule</th><th>Guidance</th></tr></thead>
+        <tbody>
+          <tr><td>Label length</td><td>1–3 words preferred. Maximum 20 characters before the chip becomes unwieldy in dense layouts. Long labels should be truncated only as a last resort, with full text accessible via tooltip.</td></tr>
+          <tr><td>Capitalisation</td><td>Title case for status values (e.g., "In Progress"). Sentence case or all-lowercase for tags/categories (e.g., "design", "backend").</td></tr>
+          <tr><td>Chip Info vs Badge</td><td>Use Chip Info for inline categorical labels next to content. Use the Badge component for notification counts on icons and navigation items.</td></tr>
+          <tr><td>Numbers in chips</td><td>Acceptable in Chip Info (e.g., version numbers, counts). Avoid in Chip Status and Chip Interactive — use numeric values sparingly.</td></tr>
+          <tr><td>Avatar initials</td><td>Use first + last initial (e.g., "BW" for Bruce Wayne). Single initial only when last name is unavailable. Never show more than 2 characters.</td></tr>
+          <tr><td>Chip Interactive label</td><td>Match exactly to the filter value being represented — avoid abbreviations. "Marketing" not "Mktg".</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Common mistakes -->
+  <div class="btn-family-card" id="chip-u-mistakes">
+    <div class="btn-family-title">Common mistakes</div>
+    <div class="btn-family-card">
+      <table class="ds-prop-table">
+        <thead><tr><th>Mistake</th><th>Problem</th><th>Fix</th></tr></thead>
+        <tbody>
+          <tr>
+            <td>Using <code>&lt;div&gt;</code> or <code>&lt;span&gt;</code> for Chip Interactive</td>
+            <td>Not keyboard accessible. Screen readers won't announce it as interactive.</td>
+            <td>Always use <code>&lt;button type="button"&gt;</code> with <code>aria-pressed</code>.</td>
+          </tr>
+          <tr>
+            <td>Missing <code>aria-label</code> on close button</td>
+            <td>"Remove" alone gives no context. Screen reader users can't tell which chip will be removed.</td>
+            <td>Use <code>aria-label="Remove [person name]"</code> — include the chip content in the label.</td>
+          </tr>
+          <tr>
+            <td>Applying <code>is-selected</code> without updating <code>aria-pressed</code></td>
+            <td>Visual state changes but screen readers don't announce the selection change.</td>
+            <td>Dynamically toggle <code>aria-pressed="true/false"</code> alongside the <code>is-selected</code> class.</td>
+          </tr>
+          <tr>
+            <td>Using Chip Status for all label use-cases</td>
+            <td>Overloads the semantic meaning of status colors — "Red" begins to mean different things.</td>
+            <td>Reserve Chip Status strictly for operational states. Use Chip Info for categories and tags.</td>
+          </tr>
+          <tr>
+            <td>Overriding chip text color without checking contrast</td>
+            <td>Custom color combinations may fail WCAG 2.1 AA (4.5:1 minimum).</td>
+            <td>Only use the system-provided color combinations. If customization is needed, verify contrast with a tool.</td>
+          </tr>
+          <tr>
+            <td>Stacking chips vertically instead of wrapping</td>
+            <td>Vertical chip lists waste horizontal space and break visual scannability.</td>
+            <td>Use <code>display: flex; flex-wrap: wrap; gap: 8px</code> on the chip container.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Accessibility checklist -->
+  <div class="btn-family-card" id="chip-u-a11y">
+    <div class="btn-family-title">Accessibility checklist</div>
+    <div class="btn-family-card" style="padding:24px;">
+      <div style="display:flex;flex-direction:column;gap:10px;">
+        <div style="display:flex;align-items:flex-start;gap:12px;">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2.5" style="flex-shrink:0;margin-top:2px;"><polyline points="20 6 9 17 4 12"/></svg>
+          <span style="font-size:13px;color:#475569;line-height:1.6;"><strong>Interactive chips use <code>&lt;button type="button"&gt;</code></strong> — never <code>&lt;div&gt;</code> or <code>&lt;span&gt;</code>. Buttons receive keyboard focus and fire on Enter/Space natively.</span>
+        </div>
+        <div style="display:flex;align-items:flex-start;gap:12px;">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2.5" style="flex-shrink:0;margin-top:2px;"><polyline points="20 6 9 17 4 12"/></svg>
+          <span style="font-size:13px;color:#475569;line-height:1.6;"><strong><code>aria-pressed</code> kept in sync</strong> with the <code>is-selected</code> class at all times so screen readers announce selection changes.</span>
+        </div>
+        <div style="display:flex;align-items:flex-start;gap:12px;">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2.5" style="flex-shrink:0;margin-top:2px;"><polyline points="20 6 9 17 4 12"/></svg>
+          <span style="font-size:13px;color:#475569;line-height:1.6;"><strong>Chip Field close button</strong> has <code>aria-label="Remove [name]"</code> so users know which item will be removed.</span>
+        </div>
+        <div style="display:flex;align-items:flex-start;gap:12px;">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2.5" style="flex-shrink:0;margin-top:2px;"><polyline points="20 6 9 17 4 12"/></svg>
+          <span style="font-size:13px;color:#475569;line-height:1.6;"><strong>Disabled chips</strong> use the native <code>disabled</code> attribute (not just the <code>.is-disabled</code> class) so assistive technology skips the element in tab order.</span>
+        </div>
+        <div style="display:flex;align-items:flex-start;gap:12px;">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2.5" style="flex-shrink:0;margin-top:2px;"><polyline points="20 6 9 17 4 12"/></svg>
+          <span style="font-size:13px;color:#475569;line-height:1.6;"><strong>Chip Interactive groups</strong> are wrapped in <code>role="group"</code> with <code>aria-label</code> (e.g., "Filter by status") so screen readers announce group context before individual chips.</span>
+        </div>
+        <div style="display:flex;align-items:flex-start;gap:12px;">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2.5" style="flex-shrink:0;margin-top:2px;"><polyline points="20 6 9 17 4 12"/></svg>
+          <span style="font-size:13px;color:#475569;line-height:1.6;"><strong>Chip Status in live regions</strong>: add <code>role="status"</code> and ensure a parent has <code>aria-live="polite"</code> when status values update dynamically.</span>
+        </div>
+        <div style="display:flex;align-items:flex-start;gap:12px;">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2.5" style="flex-shrink:0;margin-top:2px;"><polyline points="20 6 9 17 4 12"/></svg>
+          <span style="font-size:13px;color:#475569;line-height:1.6;"><strong>Color contrast</strong>: do not override text colors without verifying ≥4.5:1 contrast (WCAG AA). All built-in color combinations are pre-verified.</span>
+        </div>
+        <div style="display:flex;align-items:flex-start;gap:12px;">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2.5" style="flex-shrink:0;margin-top:2px;"><polyline points="20 6 9 17 4 12"/></svg>
+          <span style="font-size:13px;color:#475569;line-height:1.6;"><strong>Focus ring</strong>: do not suppress <code>:focus-visible</code> — the 1.5px brand-color ring is required for keyboard users. Adding <code>outline:none</code> without a replacement fails WCAG 2.4.7.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Related components -->
+  <div class="btn-family-card" id="chip-u-related">
+    <div class="btn-family-title">Related components</div>
+    <div class="ds-grid-2" style="gap:12px;margin-top:16px;">
+      <div class="btn-family-card" style="padding:20px;">
+        <div style="font-size:var(--prim-font-size-sm);font-weight:var(--prim-font-weight-bold);color:var(--color-text-default);margin-bottom:4px;" style="margin-bottom:8px;">Badge</div>
+        <p class="btn-family-desc" style="margin-bottom:12px;">Use for notification counts on icons and nav items. Badges are non-interactive and position-absolute over their parent. Do not use chips as badges.</p>
+        <button class="ds-link-btn" onclick="navigate('prim-badge')">View Badge →</button>
+      </div>
+      <div class="btn-family-card" style="padding:20px;">
+        <div style="font-size:var(--prim-font-size-sm);font-weight:var(--prim-font-weight-bold);color:var(--color-text-default);margin-bottom:4px;" style="margin-bottom:8px;">Toggle</div>
+        <p class="btn-family-desc" style="margin-bottom:12px;">Use when a single on/off setting takes immediate effect. Toggles communicate a binary live state, whereas Chip Interactive is for selecting among a group of options.</p>
+        <button class="ds-link-btn" onclick="navigate('prim-toggles')">View Toggle →</button>
+      </div>
+      <div class="btn-family-card" style="padding:20px;">
+        <div style="font-size:var(--prim-font-size-sm);font-weight:var(--prim-font-weight-bold);color:var(--color-text-default);margin-bottom:4px;" style="margin-bottom:8px;">Dropdown</div>
+        <p class="btn-family-desc" style="margin-bottom:12px;">Use when the option list has more than 7 items, requires search, or needs a hierarchical structure. Chips work best for 2–7 visible, flat options.</p>
+        <button class="ds-link-btn" onclick="navigate('prim-dropdowns')">View Dropdown →</button>
+      </div>
+      <div class="btn-family-card" style="padding:20px;">
+        <div style="font-size:var(--prim-font-size-sm);font-weight:var(--prim-font-weight-bold);color:var(--color-text-default);margin-bottom:4px;" style="margin-bottom:8px;">Text Field</div>
+        <p class="btn-family-desc" style="margin-bottom:12px;">Chip Field lives inside text fields for multi-select person/item input. Understanding the text field component helps with correct layout and focus management.</p>
+        <button class="ds-link-btn" onclick="navigate('prim-textfields')">View Text Field →</button>
+      </div>
+    </div>
+  </div>
+
+  </div><!-- /code-tab-main -->
+  <div class="code-tab-qnav">
+    <div class="code-qnav-inner">
+      <p class="code-qnav-title">On This Page</p>
+      <ul class="code-qnav-list" id="chip-usage-qnav">
+        <li class="code-qnav-item"><button class="code-qnav-link active" onclick="scrollToSection('chip-u-type')">Choosing type</button></li>
+        <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('chip-u-when')">When to use</button></li>
+        <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('chip-u-content')">Content guidelines</button></li>
+        <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('chip-u-mistakes')">Common mistakes</button></li>
+        <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('chip-u-a11y')">Accessibility</button></li>
+        <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('chip-u-related')">Related</button></li>
+      </ul>
+    </div>
+  </div>
+  </div><!-- /code-tab-layout -->
+
+
+  <!-- IN THE PAGE -->
+  <div class="btn-family-card" id="chip-u-inpage">
+    <div class="btn-family-title">Used In The Page</div>
+    <p class="btn-family-desc">Chips appear across multiple UI surfaces — in table rows to indicate status, in filter bars for multi-select, and in form inputs as person tokens. Below are common in-context placements.</p>
+
+    <!-- Status chips in a table row -->
+    <div class="btn-sub-label" style="margin-bottom:10px;">Status chips in a data table</div>
+    <div style="border:1px solid var(--color-border-default);border-radius:var(--radius-md);overflow:hidden;">
+      <table style="width:100%;border-collapse:collapse;font-family:var(--prim-font-primary);font-size:var(--prim-font-size-sm);">
+        <thead>
+          <tr style="background:var(--color-surface-subtle);">
+            <th style="text-align:left;padding:10px 16px;font-size:11px;font-weight:700;color:var(--color-text-secondary);text-transform:uppercase;letter-spacing:.05em;">Vessel</th>
+            <th style="text-align:left;padding:10px 16px;font-size:11px;font-weight:700;color:var(--color-text-secondary);text-transform:uppercase;letter-spacing:.05em;">Port</th>
+            <th style="text-align:left;padding:10px 16px;font-size:11px;font-weight:700;color:var(--color-text-secondary);text-transform:uppercase;letter-spacing:.05em;">Status</th>
+            <th style="text-align:left;padding:10px 16px;font-size:11px;font-weight:700;color:var(--color-text-secondary);text-transform:uppercase;letter-spacing:.05em;">Category</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr style="border-top:1px solid var(--color-border-default);">
+            <td style="padding:12px 16px;color:var(--color-text-default);font-weight:500;">MV Pacific Star</td>
+            <td style="padding:12px 16px;color:var(--color-text-secondary);">Singapore</td>
+            <td style="padding:12px 16px;"><span class="gs-cs gs-cs--green">Active</span></td>
+            <td style="padding:12px 16px;"><span class="gs-ci gs-ci--sm gs-ci--filled gs-ci--blue">Cargo</span></td>
+          </tr>
+          <tr style="border-top:1px solid var(--color-border-default);">
+            <td style="padding:12px 16px;color:var(--color-text-default);font-weight:500;">MT Ocean Wave</td>
+            <td style="padding:12px 16px;color:var(--color-text-secondary);">Rotterdam</td>
+            <td style="padding:12px 16px;"><span class="gs-cs gs-cs--yellow">Pending</span></td>
+            <td style="padding:12px 16px;"><span class="gs-ci gs-ci--sm gs-ci--filled gs-ci--teal">Tanker</span></td>
+          </tr>
+          <tr style="border-top:1px solid var(--color-border-default);">
+            <td style="padding:12px 16px;color:var(--color-text-default);font-weight:500;">CV Star Clipper</td>
+            <td style="padding:12px 16px;color:var(--color-text-secondary);">Hamburg</td>
+            <td style="padding:12px 16px;"><span class="gs-cs gs-cs--red">Error</span></td>
+            <td style="padding:12px 16px;"><span class="gs-ci gs-ci--sm gs-ci--light gs-ci--red">Delayed</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Interactive filter chips -->
+    <div class="btn-sub-label" style="margin-top:20px;margin-bottom:10px;">Interactive filter chips in a toolbar</div>
+    <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:14px 16px;background:var(--color-surface-subtle);border:1px solid var(--color-border-default);border-radius:var(--radius-md);">
+      <span style="font-size:var(--prim-font-size-sm);color:var(--color-text-secondary);margin-right:4px;">Filter:</span>
+      <button class="gs-cia gs-cia--blue is-selected" onclick="this.classList.toggle('is-selected')">All</button>
+      <button class="gs-cia gs-cia--blue" onclick="this.classList.toggle('is-selected')">Cargo</button>
+      <button class="gs-cia gs-cia--blue" onclick="this.classList.toggle('is-selected')">Tanker</button>
+      <button class="gs-cia gs-cia--blue" onclick="this.classList.toggle('is-selected')">Passenger</button>
+      <button class="gs-cia gs-cia--blue" onclick="this.classList.toggle('is-selected')">Bulk Carrier</button>
+    </div>
+
+    <!-- Person chips in a form field -->
+    <div class="btn-sub-label" style="margin-top:20px;margin-bottom:10px;">Person chips in a multi-select input</div>
+    <div style="border:1px solid var(--color-border-default);border-radius:var(--radius-md);padding:8px 12px;display:flex;flex-wrap:wrap;gap:6px;align-items:center;background:var(--color-surface-default);min-height:44px;">
+      <span class="gs-cf gs-cf--sm gs-cf--default">
+        <span class="gs-cf__avatar" style="background:#c7d2fe;color:#4f46e5;">BW</span>
+        <span class="gs-cf__label">Bruce Wayne</span>
+        <span class="gs-cf__close" aria-label="Remove"><svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg></span>
+      </span>
+      <span class="gs-cf gs-cf--sm gs-cf--default">
+        <span class="gs-cf__avatar" style="background:#d1fae5;color:#065f46;">SC</span>
+        <span class="gs-cf__label">Steve Clarke</span>
+        <span class="gs-cf__close" aria-label="Remove"><svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg></span>
+      </span>
+      <input type="text" placeholder="Add person…" style="border:none;outline:none;font-family:var(--prim-font-primary);font-size:var(--prim-font-size-sm);color:var(--color-text-default);background:transparent;flex:1;min-width:120px;"/>
+    </div>
+  </div>
+
+</div><!-- /chip-tab-usage -->

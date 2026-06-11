@@ -1,0 +1,58 @@
+<!--
+  Pelagos Button — Angular template
+  primitives/button/Button.component.html
+
+  Delegates all rendering and behaviour to ng-zorro's nz-button directive.
+  Pelagos props are translated to ng-zorro bindings in ButtonComponent.ts.
+
+  Single-icon (left or right): use the iconLeft / iconRight content slots.
+  Dual-icon fallback: include both slots; structural spans handle the gap.
+-->
+
+<!-- ── Link button (href present) ─────────────────────────────────────────── -->
+<ng-container *ngIf="href; else regularButton">
+  <a
+    nz-button
+    [nzType]="nzType"
+    [nzDanger]="nzDanger"
+    [nzSize]="nzSize"
+    [nzBlock]="fullWidth"
+    [nzLoading]="loading"
+    [nzGhost]="ghost"
+    [nzShape]="shape"
+    [href]="href"
+    [target]="target"
+    [attr.disabled]="disabled ? true : null"
+    [attr.data-variant]="variant"
+    (click)="handleClick($event)"
+  >
+    <ng-container *ngTemplateOutlet="buttonContent"></ng-container>
+  </a>
+</ng-container>
+
+<!-- ── Regular button ─────────────────────────────────────────────────────── -->
+<ng-template #regularButton>
+  <button
+    nz-button
+    [nzType]="nzType"
+    [nzDanger]="nzDanger"
+    [nzSize]="nzSize"
+    [nzBlock]="fullWidth"
+    [nzLoading]="loading"
+    [nzGhost]="ghost"
+    [nzShape]="shape"
+    [disabled]="disabled"
+    [type]="type"
+    [attr.data-variant]="variant"
+    (click)="handleClick($event)"
+  >
+    <ng-container *ngTemplateOutlet="buttonContent"></ng-container>
+  </button>
+</ng-template>
+
+<!-- ── Shared content projection ──────────────────────────────────────────── -->
+<ng-template #buttonContent>
+  <ng-content select="[iconLeft]"></ng-content>
+  <ng-content></ng-content>
+  <ng-content select="[iconRight]"></ng-content>
+</ng-template>

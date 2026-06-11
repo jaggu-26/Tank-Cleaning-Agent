@@ -1,0 +1,69 @@
+<div class="page-header"><h1 class="ds-hero-title">Stability Lifecycle</h1></div>
+    <div class="content-area">
+      <div class="section-title">Phase Overview</div>
+      <div class="section-desc">Components progress from experimental → alpha → beta → stable. Only stable components are recommended for production use.</div>
+
+      <div class="phase-card">
+        <div class="phase-dot" style="background:#8b5cf6;"></div>
+        <div>
+          <h3>Experimental</h3>
+          <p>Early proof-of-concept components available for design exploration and prototyping only. APIs are highly unstable and may change or be removed without notice. Not for production use.</p>
+          <span class="tag-pill tag-deprecated phase-tag" style="background:#f5f0ff;color:#8b5cf6;">Experimental</span>
+        </div>
+      </div>
+
+      <div class="phase-card">
+        <div class="phase-dot" style="background:#ef4444;"></div>
+        <div>
+          <h3>Alpha</h3>
+          <p>Components under active development. The core API shape is emerging but breaking changes are expected between minor versions. Use in non-critical product surfaces only, with the understanding that upgrades will require code changes.</p>
+          <span class="tag-pill tag-alpha phase-tag">Alpha</span>
+        </div>
+      </div>
+
+      <div class="phase-card">
+        <div class="phase-dot" style="background:#f59e0b;"></div>
+        <div>
+          <h3>Beta</h3>
+          <p>Components that are feature-complete and undergoing stability hardening. The public API is unlikely to change but may see small adjustments based on feedback. Recommended for use in production with awareness of possible minor changes.</p>
+          <span class="tag-pill tag-beta phase-tag">Beta</span>
+        </div>
+      </div>
+
+      <div class="phase-card">
+        <div class="phase-dot" style="background:#22c55e;"></div>
+        <div>
+          <h3>Stable</h3>
+          <p>Production-ready components with a locked public API. Breaking changes will only occur in major version releases with a migration guide. Full accessibility, documentation, and browser support is guaranteed.</p>
+          <span class="tag-pill tag-stable phase-tag">Stable</span>
+        </div>
+      </div>
+
+      <div class="phase-card" style="border-color:#e8eaed;background:#fafafa;">
+        <div class="phase-dot" style="background:#9ca3af;"></div>
+        <div>
+          <h3>Deprecated</h3>
+          <p>Components that are scheduled for removal in a future major release. A replacement component or migration path is always documented. Deprecated components continue to receive security patches but no new features.</p>
+          <span class="tag-pill tag-deprecated phase-tag">Deprecated</span>
+        </div>
+      </div>
+
+      <div class="divider"></div>
+      <div class="section-title">Component Status</div>
+      <div class="section-desc">Current status of all components in the Pelagos library.</div>
+      <table class="token-table">
+        <thead><tr><th>Component</th><th>Phase</th><th>Since</th><th>Notes</th></tr></thead>
+        <tbody>
+          <tr><td class="ds-weight-med">Button</td><td><span class="tag-pill tag-stable">Stable</span></td><td class="token-value">v0.1.0</td><td class="ds-td-muted">Full API locked</td></tr>
+          <tr><td class="ds-weight-med">Badge</td><td><span class="tag-pill tag-stable">Stable</span></td><td class="token-value">v0.1.0</td><td class="ds-td-muted">Full API locked</td></tr>
+          <tr><td class="ds-weight-med">Avatar</td><td><span class="tag-pill tag-stable">Stable</span></td><td class="token-value">v0.2.0</td><td class="ds-td-muted">Full API locked</td></tr>
+          <tr><td class="ds-weight-med">Text Input</td><td><span class="tag-pill tag-stable">Stable</span></td><td class="token-value">v0.2.0</td><td class="ds-td-muted">Full API locked</td></tr>
+          <tr><td class="ds-weight-med">Toggle</td><td><span class="tag-pill tag-stable">Stable</span></td><td class="token-value">v0.3.0</td><td class="ds-td-muted">Full API locked</td></tr>
+          <tr><td class="ds-weight-med">Progress</td><td><span class="tag-pill tag-beta">Beta</span></td><td class="token-value">v0.4.0</td><td class="ds-td-muted">API may have minor changes</td></tr>
+          <tr><td class="ds-weight-med">Toast</td><td><span class="tag-pill tag-beta">Beta</span></td><td class="token-value">v0.4.0</td><td class="ds-td-muted">Positioning API in review</td></tr>
+          <tr><td class="ds-weight-med">Combobox</td><td><span class="tag-pill tag-alpha">Alpha</span></td><td class="token-value">v0.5.0</td><td class="ds-td-muted">Breaking changes expected</td></tr>
+          <tr><td class="ds-weight-med">Data Table</td><td><span class="tag-pill tag-alpha">Alpha</span></td><td class="token-value">v0.5.0</td><td class="ds-td-muted">Virtualization WIP</td></tr>
+          <tr><td class="ds-weight-med">Calendar</td><td><span class="tag-pill tag-deprecated" style="background:#f5f0ff;color:#8b5cf6;">Experimental</span></td><td class="token-value">v0.6.0</td><td class="ds-td-muted">Design exploration</td></tr>
+        </tbody>
+      </table>
+    </div>

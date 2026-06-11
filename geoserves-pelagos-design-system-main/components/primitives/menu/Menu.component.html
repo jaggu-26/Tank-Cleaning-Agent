@@ -1,0 +1,126 @@
+<!--
+  Pelagos Menu — Angular template
+  primitives/menu/Menu.component.html
+
+  Delegates all rendering and behaviour to ng-zorro's nz-menu directive.
+  Pelagos props are translated to ng-zorro bindings in MenuComponent.ts.
+
+  The template renders the items array declaratively using structural
+  directives. Each item type (menu item, submenu, group, divider) has its
+  own ng-template for clear separation.
+
+  For simple use cases, project content directly using <ng-content> —
+  the component will wrap it in a `ul[nz-menu]` automatically.
+-->
+
+<ul
+  nz-menu
+  [nzMode]="nzMode"
+  [nzTheme]="nzTheme"
+  [nzInlineCollapsed]="inlineCollapsed"
+  [nzInlineIndent]="inlineIndent"
+  [nzSelectable]="selectable"
+  [nzMultiple]="multiple"
+  [attr.data-theme]="theme"
+  [attr.data-mode]="mode"
+>
+  <!-- ── Items-array rendering ─────────────────────────────────────── -->
+  <ng-container *ngIf="items && items.length > 0">
+    <ng-container *ngFor="let item of items">
+
+      <!-- Divider -->
+      <li *ngIf="isDivider(item)" nz-menu-divider [nzDashed]="$any(item).dashed"></li>
+
+      <!-- Group -->
+      <li *ngIf="isGroup(item)" nz-menu-group [nzTitle]="$any(item).label">
+        <ul>
+          <li
+            *ngFor="let child of $any(item).children"
+            nz-menu-item
+            [nzDisabled]="child.disabled"
+            [nzDanger]="child.danger"
+            [nzSelected]="selectedKeys?.includes(child.key)"
+            (click)="handleClick(child.key, [child.key])"
+          >
+            <ng-container *ngIf="child.icon">
+              <span nz-icon [nzType]="child.icon" nzTheme="outline"></span>
+            </ng-container>
+            <span>{{ child.label }}</span>
+          </li>
+        </ul>
+      </li>
+
+      <!-- SubMenu -->
+      <li
+        *ngIf="isSubMenu(item)"
+        nz-submenu
+        [nzTitle]="$any(item).label"
+        [nzDisabled]="$any(item).disabled"
+        [nzOpen]="openKeys?.includes($any(item).key)"
+      >
+        <ul>
+          <ng-container *ngFor="let child of $any(item).children">
+            <!-- Nested SubMenu -->
+            <li
+              *ngIf="isSubMenu(child)"
+              nz-submenu
+              [nzTitle]="$any(child).label"
+              [nzDisabled]="$any(child).disabled"
+            >
+              <ul>
+                <li
+                  *ngFor="let grandchild of $any(child).children"
+                  nz-menu-item
+                  [nzDisabled]="grandchild.disabled"
+                  [nzDanger]="grandchild.danger"
+                  [nzSelected]="selectedKeys?.includes(grandchild.key)"
+                  (click)="handleClick(grandchild.key, [grandchild.key, $any(child).key, $any(item).key])"
+                >
+                  <ng-container *ngIf="grandchild.icon">
+                    <span nz-icon [nzType]="grandchild.icon" nzTheme="outline"></span>
+                  </ng-container>
+                  <span>{{ grandchild.label }}</span>
+                </li>
+              </ul>
+            </li>
+
+            <!-- Regular child item -->
+            <li
+              *ngIf="isMenuItem(child)"
+              nz-menu-item
+              [nzDisabled]="$any(child).disabled"
+              [nzDanger]="$any(child).danger"
+              [nzSelected]="selectedKeys?.includes($any(child).key)"
+              (click)="handleClick($any(child).key, [$any(child).key, $any(item).key])"
+            >
+              <ng-container *ngIf="$any(child).icon">
+                <span nz-icon [nzType]="$any(child).icon" nzTheme="outline"></span>
+              </ng-container>
+              <span>{{ $any(child).label }}</span>
+            </li>
+          </ng-container>
+        </ul>
+      </li>
+
+      <!-- Plain menu item -->
+      <li
+        *ngIf="isMenuItem(item)"
+        nz-menu-item
+        [nzDisabled]="$any(item).disabled"
+        [nzDanger]="$any(item).danger"
+        [nzSelected]="selectedKeys?.includes($any(item).key)"
+        [attr.title]="$any(item).title"
+        (click)="handleClick($any(item).key, [$any(item).key])"
+      >
+        <ng-container *ngIf="$any(item).icon">
+          <span nz-icon [nzType]="$any(item).icon" nzTheme="outline"></span>
+        </ng-container>
+        <span>{{ $any(item).label }}</span>
+      </li>
+
+    </ng-container>
+  </ng-container>
+
+  <!-- ── Slot projection (template-driven usage) ─────────────────── -->
+  <ng-content></ng-content>
+</ul>

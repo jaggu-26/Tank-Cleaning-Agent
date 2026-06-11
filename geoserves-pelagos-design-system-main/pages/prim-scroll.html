@@ -1,0 +1,686 @@
+<!-- ═══════════════════════════════════════════════════════════════
+     SCROLL — Pelagos Design System
+     Figma: 1087-4781 · Ant Design scroll reference
+     Hover-expand: 6px → 10px via JS class (CSS transitions can't
+     animate ::-webkit-scrollbar width directly)
+     ═══════════════════════════════════════════════════════════════ -->
+<style>
+  /* .gs-scroll styles are now in styles.css — no duplication needed */
+
+  /* ── Demo helpers  /* ── Demo helpers ──────────────────────────────────────────── */
+  .scr-demo-wrap {
+    display: flex; gap: 24px; flex-wrap: wrap; align-items: flex-start;
+    padding: 28px 24px;
+    background: var(--color-surface-subtle);
+    border: 1px solid var(--color-border-default);
+    border-radius: var(--radius-lg);
+    margin-top: 16px;
+  }
+  .scr-demo-label {
+    font-family: var(--prim-font-primary); font-size: 11px;
+    font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em;
+    color: var(--color-text-placeholder); margin-bottom: 8px;
+  }
+  .scr-demo-box { display: flex; flex-direction: column; align-items: flex-start; }
+
+  /* Static scrollbar visualisation (for anatomy + states) */
+  .scr-track {
+    background: #e2e8f0; border-radius: 100px; position: relative; flex-shrink: 0;
+  }
+  .scr-handle {
+    background: #94a3b8; border-radius: 100px; position: absolute;
+    transition: background 150ms ease;
+  }
+  .scr-handle--hover  { background: #64748b; }
+  .scr-handle--active { background: #475569; }
+
+  /* Expand comparison */
+  .scr-expand-row { display: flex; align-items: center; gap: 16px; }
+  .scr-expand-label {
+    font-family: var(--prim-font-primary); font-size: 12px;
+    color: var(--color-text-secondary); min-width: 80px;
+  }
+</style>
+
+<!-- BANNER -->
+<div class="page-header">
+  <h1 class="ds-hero-title">Scroll</h1>
+</div>
+
+<!-- TAB BAR -->
+<div class="btn-tab-bar">
+  <button class="btn-tab-btn scr-tab-btn active" data-tab="design" onclick="switchScrollTab('design')">Design</button>
+  <button class="btn-tab-btn scr-tab-btn" data-tab="code"   onclick="switchScrollTab('code')">Code</button>
+  <button class="btn-tab-btn scr-tab-btn" data-tab="usage"  onclick="switchScrollTab('usage')">Usage</button>
+</div>
+
+<!-- ═══ DESIGN TAB ═══════════════════════════════════════════════ -->
+<div id="scr-tab-design" class="btn-tab-pane scr-tab-pane active">
+  <div class="code-tab-layout">
+    <div class="code-tab-main">
+
+      <!-- OVERVIEW -->
+      <div id="scr-s-overview" class="btn-family-card">
+        <div class="btn-family-title">Overview</div>
+        <p class="btn-family-desc">Pelagos uses a thin custom scrollbar — 6 px track, pill-shaped handle — consistent across vertical and horizontal axes. On hover the container highlights the handle and expands the track from <strong>6 px → 10 px</strong> for easier grabbing. Two themes (light / dark) map to the Figma variants.</p>
+
+        <div class="scr-demo-wrap">
+          <!-- Vertical scroll demo -->
+          <div class="scr-demo-box">
+            <div class="scr-demo-label">Vertical · Light</div>
+            <div class="gs-scroll gs-scroll--vertical gs-scroll--light" style="height:180px;width:280px;border:1px solid var(--color-border-default);border-radius:var(--radius-md);padding:12px;background:#fff;">
+              <p style="font-family:var(--prim-font-primary);font-size:13px;color:var(--color-text-secondary);line-height:1.7;margin:0;">AIS data for MV Pacific Star — ETA: 14:32 UTC<br><br>Port of Singapore — BERTH 42A<br>Last updated: 2 minutes ago<br><br>Voyage: SIN → AUK<br>Cargo: 4,200 TEU containers<br>Draft: 14.2 m<br><br>Crew on board: 24<br>Speed: 18.4 kn<br>Heading: 142°<br><br>Next waypoint: Lombok Strait<br>Distance: 340 NM<br>ETA waypoint: 22:10 UTC</p>
+            </div>
+          </div>
+
+          <!-- Vertical dark demo -->
+          <div class="scr-demo-box">
+            <div class="scr-demo-label">Vertical · Dark</div>
+            <div class="gs-scroll gs-scroll--vertical gs-scroll--dark" style="height:180px;width:280px;border:1px solid var(--color-border-default);border-radius:var(--radius-md);padding:12px;background:var(--prim-grey-900,#030712);">
+              <p style="font-family:var(--prim-font-primary);font-size:13px;color:#94a3b8;line-height:1.7;margin:0;">AIS data for MV Pacific Star — ETA: 14:32 UTC<br><br>Port of Singapore — BERTH 42A<br>Last updated: 2 minutes ago<br><br>Voyage: SIN → AUK<br>Cargo: 4,200 TEU containers<br>Draft: 14.2 m<br><br>Crew on board: 24<br>Speed: 18.4 kn<br>Heading: 142°<br><br>Next waypoint: Lombok Strait</p>
+            </div>
+          </div>
+
+          <!-- Horizontal demo -->
+          <div class="scr-demo-box" style="width:100%;">
+            <div class="scr-demo-label">Horizontal · Light</div>
+            <div class="gs-scroll gs-scroll--horizontal gs-scroll--light" style="max-width:400px;border:1px solid var(--color-border-default);border-radius:var(--radius-md);padding:12px;background:#fff;">
+              <div style="display:flex;gap:12px;min-width:800px;">
+                <div style="background:var(--color-surface-subtle);border:1px solid var(--color-border-default);border-radius:var(--radius-md);padding:12px 16px;white-space:nowrap;font-family:var(--prim-font-primary);font-size:13px;color:var(--color-text-default);">MV Pacific Star — <strong>ETA 14:32</strong></div>
+                <div style="background:var(--color-surface-subtle);border:1px solid var(--color-border-default);border-radius:var(--radius-md);padding:12px 16px;white-space:nowrap;font-family:var(--prim-font-primary);font-size:13px;color:var(--color-text-default);">MV Coral Bay — <strong>ETA 18:05</strong></div>
+                <div style="background:var(--color-surface-subtle);border:1px solid var(--color-border-default);border-radius:var(--radius-md);padding:12px 16px;white-space:nowrap;font-family:var(--prim-font-primary);font-size:13px;color:var(--color-text-default);">MV Horizon III — <strong>ETA 09:15</strong></div>
+                <div style="background:var(--color-surface-subtle);border:1px solid var(--color-border-default);border-radius:var(--radius-md);padding:12px 16px;white-space:nowrap;font-family:var(--prim-font-primary);font-size:13px;color:var(--color-text-default);">MV Trident — <strong>ETA 21:40</strong></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="btn-when-examples" style="margin-top:16px;">
+          <span class="btn-when-example-tag">2 Themes</span>
+          <span class="btn-when-example-tag">Vertical + Horizontal</span>
+          <span class="btn-when-example-tag">Hover expand</span>
+          <span class="btn-when-example-tag">Auto-hide option</span>
+        </div>
+      </div>
+
+      <!-- ANATOMY -->
+      <div id="scr-s-anatomy" class="btn-family-card">
+        <div class="btn-family-title">Anatomy</div>
+        <p class="btn-family-desc">A scrollbar has two visual parts: the <strong>track</strong> (the groove) and the <strong>handle</strong> (the draggable thumb). Both are pill-shaped. The handle position indicates scroll position; its size indicates the proportion of visible content.</p>
+
+        <div style="background:var(--color-surface-subtle);border:1px solid var(--color-border-default);border-radius:var(--radius-lg);padding:32px;display:flex;justify-content:center;margin-top:8px;overflow:auto;">
+          <svg width="480" height="200" viewBox="0 0 480 200" fill="none" xmlns="http://www.w3.org/2000/svg" style="min-width:400px;">
+            <!-- Vertical scrollbar -->
+            <text x="60" y="16" font-size="11" font-weight="700" fill="#94a3b8" font-family="Helvetica,Arial,sans-serif">Vertical</text>
+            <!-- Track -->
+            <rect x="63" y="24" width="6" height="120" rx="3" fill="#e2e8f0"/>
+            <!-- Handle -->
+            <rect x="63" y="50" width="6" height="48" rx="3" fill="#94a3b8"/>
+            <!-- Badge 1 - Track -->
+            <circle cx="100" cy="85" r="10" fill="#1852fe"/>
+            <text x="100" y="89" text-anchor="middle" font-size="11" font-weight="700" fill="white" font-family="Helvetica,Arial,sans-serif">1</text>
+            <line x1="72" y1="85" x2="90" y2="85" stroke="#cbd5e1" stroke-width="1" stroke-dasharray="3,2"/>
+            <!-- Badge 2 - Handle -->
+            <circle cx="100" cy="50" r="10" fill="#1852fe"/>
+            <text x="100" y="54" text-anchor="middle" font-size="11" font-weight="700" fill="white" font-family="Helvetica,Arial,sans-serif">2</text>
+            <line x1="72" y1="50" x2="90" y2="50" stroke="#cbd5e1" stroke-width="1" stroke-dasharray="3,2"/>
+
+            <!-- Annotations -->
+            <text x="116" y="89" font-size="11" fill="#475569" font-family="Helvetica,Arial,sans-serif">Track — 6px, grey/100 (#e2e8f0)</text>
+            <text x="116" y="54" font-size="11" fill="#475569" font-family="Helvetica,Arial,sans-serif">Handle — grey/300 (#94a3b8)</text>
+
+            <!-- Horizontal scrollbar -->
+            <text x="60" y="165" font-size="11" font-weight="700" fill="#94a3b8" font-family="Helvetica,Arial,sans-serif">Horizontal</text>
+            <!-- Track -->
+            <rect x="63" y="174" width="120" height="6" rx="3" fill="#e2e8f0"/>
+            <!-- Handle -->
+            <rect x="90" y="174" width="48" height="6" rx="3" fill="#94a3b8"/>
+            <!-- Dims badge -->
+            <circle cx="220" cy="177" r="10" fill="#1852fe"/>
+            <text x="220" y="181" text-anchor="middle" font-size="11" font-weight="700" fill="white" font-family="Helvetica,Arial,sans-serif">3</text>
+            <line x1="183" y1="177" x2="210" y2="177" stroke="#cbd5e1" stroke-width="1" stroke-dasharray="3,2"/>
+            <text x="236" y="181" font-size="11" fill="#475569" font-family="Helvetica,Arial,sans-serif">6px height · 100px border-radius</text>
+          </svg>
+        </div>
+
+        <ol style="margin-top:20px;display:flex;flex-direction:column;gap:8px;padding-left:20px;">
+          <li><strong>Track</strong> — The groove. 6 px wide, 100 px border-radius. Light: <code>#e2e8f0</code>. Dark: transparent.</li>
+          <li><strong>Handle (thumb)</strong> — The draggable part. 6 px wide (default), expands to 10 px on hover. Colour: <code>#94a3b8</code> default → <code>#64748b</code> hover.</li>
+          <li><strong>Border-radius</strong> — Both track and handle use <code>100px</code> (pill) per Figma spec.</li>
+        </ol>
+      </div>
+
+      <!-- VARIANTS -->
+      <div id="scr-s-variants" class="btn-family-card">
+        <div class="btn-family-title">Variants</div>
+        <p class="btn-family-desc">4 Figma variants: Vertical × Horizontal, Light × Dark. The hover-expand behaviour applies to all variants.</p>
+
+        <div class="btn-variant-row" style="margin-top:16px;">
+          <span class="btn-variant-label">Vertical Light</span>
+          <div class="btn-variant-sizes" style="display:flex;gap:20px;align-items:flex-end;padding:24px;background:var(--color-surface-subtle);border:1px solid var(--color-border-default);border-radius:var(--radius-lg);pointer-events:none;">
+            <!-- Track only (no scroll position) -->
+            <div style="display:flex;flex-direction:column;align-items:center;gap:8px;">
+              <div class="scr-track" style="width:6px;height:80px;">
+                <div class="scr-handle" style="width:6px;height:40px;top:20px;"></div>
+              </div>
+              <span style="font-size:10px;color:var(--color-text-secondary);font-family:var(--prim-font-primary);">Default</span>
+            </div>
+            <div style="display:flex;flex-direction:column;align-items:center;gap:8px;">
+              <div class="scr-track" style="width:6px;height:80px;">
+                <div class="scr-handle scr-handle--hover" style="width:6px;height:40px;top:20px;"></div>
+              </div>
+              <span style="font-size:10px;color:var(--color-text-secondary);font-family:var(--prim-font-primary);">Hover handle</span>
+            </div>
+            <div style="display:flex;flex-direction:column;align-items:center;gap:8px;">
+              <div class="scr-track" style="width:10px;height:80px;">
+                <div class="scr-handle scr-handle--hover" style="width:10px;height:40px;top:20px;"></div>
+              </div>
+              <span style="font-size:10px;color:var(--color-text-secondary);font-family:var(--prim-font-primary);">Hover expanded (10px)</span>
+            </div>
+            <div style="display:flex;flex-direction:column;align-items:center;gap:8px;">
+              <div class="scr-track" style="width:10px;height:80px;">
+                <div class="scr-handle scr-handle--active" style="width:10px;height:40px;top:20px;"></div>
+              </div>
+              <span style="font-size:10px;color:var(--color-text-secondary);font-family:var(--prim-font-primary);">Active / dragging</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="btn-variant-row" style="margin-top:12px;">
+          <span class="btn-variant-label">Horizontal Light</span>
+          <div class="btn-variant-sizes" style="display:flex;flex-direction:column;gap:12px;padding:24px;background:var(--color-surface-subtle);border:1px solid var(--color-border-default);border-radius:var(--radius-lg);pointer-events:none;">
+            <div style="display:flex;align-items:center;gap:12px;">
+              <div class="scr-track" style="width:120px;height:6px;">
+                <div class="scr-handle" style="height:6px;width:48px;left:20px;"></div>
+              </div>
+              <span style="font-size:11px;color:var(--color-text-secondary);font-family:var(--prim-font-primary);">Default · 6px</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:12px;">
+              <div class="scr-track" style="width:120px;height:10px;">
+                <div class="scr-handle scr-handle--hover" style="height:10px;width:48px;left:20px;"></div>
+              </div>
+              <span style="font-size:11px;color:var(--color-text-secondary);font-family:var(--prim-font-primary);">Hover expanded · 10px</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="btn-variant-row" style="margin-top:12px;">
+          <span class="btn-variant-label">Vertical Dark</span>
+          <div class="btn-variant-sizes" style="display:flex;gap:20px;align-items:flex-end;padding:24px;background:#0f172a;border:1px solid #1e293b;border-radius:var(--radius-lg);pointer-events:none;">
+            <div style="display:flex;flex-direction:column;align-items:center;gap:8px;">
+              <div class="scr-track" style="width:6px;height:80px;background:transparent;">
+                <div class="scr-handle" style="width:6px;height:40px;top:20px;"></div>
+              </div>
+              <span style="font-size:10px;color:#64748b;font-family:var(--prim-font-primary);">Default</span>
+            </div>
+            <div style="display:flex;flex-direction:column;align-items:center;gap:8px;">
+              <div class="scr-track" style="width:10px;height:80px;background:transparent;">
+                <div class="scr-handle scr-handle--hover" style="width:10px;height:40px;top:20px;"></div>
+              </div>
+              <span style="font-size:10px;color:#64748b;font-family:var(--prim-font-primary);">Hover expanded</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- STATES -->
+      <div id="scr-s-states" class="btn-family-card">
+        <div class="btn-family-title">States</div>
+        <p class="btn-family-desc">The handle has 3 interactive states. The track remains visually constant; only the handle changes.</p>
+
+        <div class="btn-states-grid" style="grid-template-columns:repeat(4,1fr);margin-top:16px;">
+          <div class="btn-state-cell">
+            <div style="pointer-events:none;display:flex;flex-direction:column;align-items:center;gap:4px;">
+              <div class="scr-track" style="width:6px;height:64px;">
+                <div class="scr-handle" style="width:6px;height:32px;top:16px;"></div>
+              </div>
+            </div>
+            <span class="btn-state-label">Default<br><small style="font-size:10px;color:var(--color-text-placeholder);">#94a3b8 · 6px</small></span>
+          </div>
+          <div class="btn-state-cell">
+            <div style="pointer-events:none;display:flex;flex-direction:column;align-items:center;gap:4px;">
+              <div class="scr-track" style="width:10px;height:64px;">
+                <div class="scr-handle scr-handle--hover" style="width:10px;height:32px;top:16px;"></div>
+              </div>
+            </div>
+            <span class="btn-state-label">Hover<br><small style="font-size:10px;color:var(--color-text-placeholder);">#64748b · 10px</small></span>
+          </div>
+          <div class="btn-state-cell">
+            <div style="pointer-events:none;display:flex;flex-direction:column;align-items:center;gap:4px;">
+              <div class="scr-track" style="width:10px;height:64px;">
+                <div class="scr-handle scr-handle--active" style="width:10px;height:32px;top:16px;"></div>
+              </div>
+            </div>
+            <span class="btn-state-label">Active / drag<br><small style="font-size:10px;color:var(--color-text-placeholder);">#475569 · 10px</small></span>
+          </div>
+          <div class="btn-state-cell">
+            <div style="pointer-events:none;display:flex;flex-direction:column;align-items:center;gap:4px;">
+              <div class="scr-track" style="width:6px;height:64px;">
+                <div class="scr-handle" style="width:6px;height:32px;top:16px;opacity:0;"></div>
+              </div>
+            </div>
+            <span class="btn-state-label">Auto-hide idle<br><small style="font-size:10px;color:var(--color-text-placeholder);">transparent</small></span>
+          </div>
+        </div>
+      </div>
+
+      <!-- HOVER EXPAND -->
+      <div id="scr-s-expand" class="btn-family-card">
+        <div class="btn-family-title">Hover Expand</div>
+        <p class="btn-family-desc">The scrollbar is <strong>invisible by default</strong> and appears instantly when the cursor enters the container — driven by pure CSS <code>:hover</code> (no JS delay). The track also expands from <strong>6 px → 10 px</strong> on hover for easier grabbing; this width change uses a JS class (<code>.gs-scroll--hover</code>) because CSS transitions cannot animate <code>::-webkit-scrollbar-width</code> directly.</p>
+
+        <div style="display:flex;flex-direction:column;gap:20px;margin-top:16px;">
+          <!-- Visual comparison -->
+          <div style="display:flex;align-items:center;gap:32px;flex-wrap:wrap;">
+            <div>
+              <div class="scr-demo-label" style="margin-bottom:10px;">Default — 6 px</div>
+              <div class="scr-track" style="width:6px;height:80px;display:block;">
+                <div class="scr-handle" style="width:6px;height:36px;top:12px;"></div>
+              </div>
+            </div>
+            <svg width="32" height="16" viewBox="0 0 32 16" style="flex-shrink:0;color:var(--color-text-placeholder);">
+              <path d="M0 8h24M18 3l8 5-8 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <div>
+              <div class="scr-demo-label" style="margin-bottom:10px;">Hover — 10 px</div>
+              <div class="scr-track" style="width:10px;height:80px;display:block;">
+                <div class="scr-handle scr-handle--hover" style="width:10px;height:36px;top:12px;"></div>
+              </div>
+            </div>
+            <div style="margin-left:16px;">
+              <p style="font-family:var(--prim-font-primary);font-size:13px;color:var(--color-text-secondary);line-height:1.65;max-width:300px;margin:0;">The 4 px width gain significantly improves touch and trackpad usability on dense data tables and sidebars without visually competing with content when idle.</p>
+            </div>
+          </div>
+
+          <!-- Live demo -->
+          <div>
+            <div class="scr-demo-label" style="margin-bottom:8px;">Live — hover the container to see it expand</div>
+            <div class="gs-scroll gs-scroll--vertical gs-scroll--light" style="height:160px;width:320px;border:1px solid var(--color-border-default);border-radius:var(--radius-md);padding:12px 16px;background:#fff;">
+              <p style="font-family:var(--prim-font-primary);font-size:13px;color:var(--color-text-secondary);line-height:1.7;margin:0;">Hover anywhere over this container — the scrollbar expands from 6 px to 10 px.<br><br>This makes it easier to grab and drag, especially on high-density displays or when using a mouse with a fine cursor.<br><br>The colour also darkens slightly as an additional visual affordance.<br><br>On mouseleave the bar returns to 6 px.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- INTERACTIONS -->
+      <div id="scr-s-interaction" class="btn-family-card">
+        <div class="btn-family-title">Interactions</div>
+        <table>
+          <thead><tr><th>Trigger</th><th>Behaviour</th><th>Notes</th></tr></thead>
+          <tbody>
+            <tr class="ds-tr-border"><td>Mouse enter container</td><td>Track expands 6 px → 10 px; handle darkens to #64748b</td><td>Class <code>.gs-scroll--hover</code> added via JS</td></tr>
+            <tr class="ds-tr-border"><td>Mouse leave container</td><td>Track returns to 6 px; handle returns to #94a3b8</td><td>Class removed on mouseleave</td></tr>
+            <tr class="ds-tr-border"><td>Mouse over handle</td><td>Handle colour → #64748b (webkit <code>:hover</code>)</td><td>CSS only</td></tr>
+            <tr class="ds-tr-border"><td>Click and drag handle</td><td>Scrolls content; handle colour → #475569 (active)</td><td>Native browser behaviour</td></tr>
+            <tr class="ds-tr-border"><td>Click on track</td><td>Jumps scroll position to clicked point</td><td>Native browser behaviour</td></tr>
+            <tr class="ds-tr-border"><td>Scroll wheel / trackpad</td><td>Scrolls content; handle moves proportionally</td><td>No custom override needed</td></tr>
+            <tr class="ds-tr-border"><td><kbd>↑</kbd> <kbd>↓</kbd> (when focused)</td><td>Scroll by line increment</td><td>Browser default</td></tr>
+            <tr class="ds-tr-border"><td><kbd>Page Up</kbd> / <kbd>Page Down</kbd></td><td>Scroll by page</td><td>Browser default</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- ACCESSIBILITY -->
+      <div id="scr-s-a11y" class="btn-family-card">
+        <div class="btn-family-title">Accessibility</div>
+
+        <div class="btn-sub-label">Scrollable region</div>
+        <p class="btn-family-desc">Any scrollable region that doesn't have a visible label should receive <code>role="region"</code> and <code>aria-label</code> so screen reader users know the region is scrollable and what it contains.</p>
+
+        <div class="btn-sub-label" style="margin-top:16px;">ARIA attributes</div>
+        <table>
+          <thead><tr><th>Attribute</th><th>Element</th><th>Value</th></tr></thead>
+          <tbody>
+            <tr class="ds-tr-border"><td><code>role="region"</code></td><td>Scroll container</td><td>Identifies the scrollable region</td></tr>
+            <tr class="ds-tr-border"><td><code>aria-label</code></td><td>Scroll container</td><td>Describe the content, e.g. "Voyage events timeline"</td></tr>
+            <tr class="ds-tr-border"><td><code>tabindex="0"</code></td><td>Scroll container</td><td>Makes the region keyboard-focusable for arrow key scrolling</td></tr>
+          </tbody>
+        </table>
+
+        <div class="btn-sub-label" style="margin-top:16px;">Keyboard navigation</div>
+        <table>
+          <thead><tr><th>Key</th><th>Action</th></tr></thead>
+          <tbody>
+            <tr class="ds-tr-border"><td><kbd>Tab</kbd></td><td>Focus the scrollable container</td></tr>
+            <tr class="ds-tr-border"><td><kbd>↑</kbd> / <kbd>↓</kbd></td><td>Scroll vertically one line</td></tr>
+            <tr class="ds-tr-border"><td><kbd>←</kbd> / <kbd>→</kbd></td><td>Scroll horizontally one step</td></tr>
+            <tr class="ds-tr-border"><td><kbd>Page Up</kbd> / <kbd>Page Down</kbd></td><td>Scroll one page</td></tr>
+            <tr class="ds-tr-border"><td><kbd>Home</kbd> / <kbd>End</kbd></td><td>Scroll to top / bottom</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+    </div><!-- /code-tab-main -->
+
+    <div class="code-tab-qnav">
+      <div class="code-qnav-inner">
+        <p class="code-qnav-title">On This Page</p>
+        <ul class="code-qnav-list">
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('scr-s-overview')">Overview</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('scr-s-anatomy')">Anatomy</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('scr-s-variants')">Variants</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('scr-s-states')">States</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('scr-s-expand')">Hover Expand</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('scr-s-interaction')">Interactions</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('scr-s-a11y')">Accessibility</button></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div><!-- /design tab -->
+
+<!-- ═══ CODE TAB ══════════════════════════════════════════════════ -->
+<div id="scr-tab-code" class="btn-tab-pane scr-tab-pane">
+  <div class="code-tab-layout">
+    <div class="code-tab-main">
+
+      <div class="fw-toggle-bar">
+        <button class="fw-toggle-bar-btn active" data-fw="react" onclick="switchFw('scr-tab-code','react')">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="2.5" fill="#61dafb"/><ellipse cx="12" cy="12" rx="10" ry="4.5" stroke="#61dafb" stroke-width="1.5" fill="none"/><ellipse cx="12" cy="12" rx="10" ry="4.5" stroke="#61dafb" stroke-width="1.5" fill="none" transform="rotate(60 12 12)"/><ellipse cx="12" cy="12" rx="10" ry="4.5" stroke="#61dafb" stroke-width="1.5" fill="none" transform="rotate(120 12 12)"/></svg>
+          React
+        </button>
+        <button class="fw-toggle-bar-btn" data-fw="angular" onclick="switchFw('scr-tab-code','angular')">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M12 2L2 6.5l1.5 12.5L12 22l8.5-3L22 6.5 12 2z" fill="#dd0031"/><path d="M12 2v20M12 2L6 17h12L12 2z" fill="none" stroke="#fff" stroke-width="1.2"/></svg>
+          Angular
+        </button>
+      </div>
+
+      <!-- 1 · Overview -->
+      <div id="scr-c-overview" class="btn-family-card">
+        <div class="ds-step-row"><span class="ds-step-num">1</span><div class="btn-family-title" style="margin:0;">Overview</div></div>
+        <div class="fw-react"><p class="btn-family-desc">The <code>Scroll</code> React component wraps any content in a container with Pelagos-styled scrollbars. The hover-expand (6→10px) is handled internally — no extra JS needed.</p></div>
+        <div class="fw-angular" style="display:none;"><p class="btn-family-desc">Apply <code>.gs-scroll</code> + direction + theme modifier classes to any overflow container. The page's <code>gsScrollInitHover()</code> function attaches the expand listeners. Call it after inserting the element into the DOM.</p></div>
+      </div>
+
+      <!-- 2 · Install -->
+      <div id="scr-c-install" class="btn-family-card">
+        <div class="ds-step-row"><span class="ds-step-num">2</span><div class="btn-family-title" style="margin:0;">Install / Setup</div></div>
+        <div class="fw-react">
+          <div class="btn-code-block"><div class="btn-code-head"><span class="btn-code-lang">bash</span><button class="btn-copy-btn" onclick="copyBtnCode('scr-install-r',this)">Copy</button></div>
+          <div class="btn-code-body"><pre id="scr-install-r"><code>npm install @pelagos/react-components</code></pre></div></div>
+        </div>
+        <div class="fw-angular" style="display:none;"><p class="btn-family-desc">Include <code>styles.css</code> (the <code>.gs-scroll</code> rules live there). Call <code>gsScrollInitHover()</code> after each dynamic insertion or route change to bind the expand listeners.</p></div>
+      </div>
+
+      <!-- 3 · Import -->
+      <div id="scr-c-imports" class="btn-family-card">
+        <div class="ds-step-row"><span class="ds-step-num">3</span><div class="btn-family-title" style="margin:0;">Import</div></div>
+        <div class="fw-react">
+          <div class="btn-code-block"><div class="btn-code-head"><span class="btn-code-lang">JSX</span><button class="btn-copy-btn" onclick="copyBtnCode('scr-import-r',this)">Copy</button></div>
+          <div class="btn-code-body"><pre id="scr-import-r"><code><span class="c-kw">import</span> { <span class="c-type">Scroll</span> } <span class="c-kw">from</span> <span class="c-val">'@pelagos/components/primitives/scroll'</span>;</code></pre></div></div>
+        </div>
+        <div class="fw-angular" style="display:none;">
+          <div class="btn-code-block"><div class="btn-code-head"><span class="btn-code-lang">HTML</span><button class="btn-copy-btn" onclick="copyBtnCode('scr-import-ng',this)">Copy</button></div>
+          <div class="btn-code-body"><pre id="scr-import-ng"><code><span class="c-cmt">&lt;!-- Vertical light --&gt;</span>
+<span class="c-tag">&lt;div</span> <span class="c-attr">class</span>=<span class="c-val">"gs-scroll gs-scroll--vertical gs-scroll--light"</span>
+     <span class="c-attr">style</span>=<span class="c-val">"max-height:300px;"</span>
+     <span class="c-attr">role</span>=<span class="c-val">"region"</span>
+     <span class="c-attr">aria-label</span>=<span class="c-val">"Voyage list"</span>
+     <span class="c-attr">tabindex</span>=<span class="c-val">"0"</span><span class="c-tag">&gt;</span>
+  ...content...
+<span class="c-tag">&lt;/div&gt;</span></code></pre></div></div>
+        </div>
+      </div>
+
+      <!-- 4 · API -->
+      <div id="scr-c-api" class="btn-family-card">
+        <div class="ds-step-row"><span class="ds-step-num">4</span><div class="btn-family-title" style="margin:0;">API / Props</div></div>
+        <div class="fw-react">
+          <table>
+            <thead><tr><th>Prop</th><th>Type</th><th>Default</th><th>Description</th></tr></thead>
+            <tbody>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">direction</td><td class="ds-td-code-muted">'vertical'|'horizontal'|'both'</td><td class="ds-td-code-muted">'vertical'</td><td class="ds-td-value">Overflow axis</td></tr>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">theme</td><td class="ds-td-code-muted">'light'|'dark'</td><td class="ds-td-code-muted">'light'</td><td class="ds-td-value">Light shows track; dark hides track (handle only)</td></tr>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">autoHide</td><td class="ds-td-code-muted">boolean</td><td class="ds-td-code-muted">false</td><td class="ds-td-value">Fades handle to transparent when container is not hovered</td></tr>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">maxHeight</td><td class="ds-td-code-muted">string</td><td class="ds-td-code-muted">—</td><td class="ds-td-value">CSS max-height (vertical scroll)</td></tr>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">maxWidth</td><td class="ds-td-code-muted">string</td><td class="ds-td-code-muted">—</td><td class="ds-td-value">CSS max-width (horizontal scroll)</td></tr>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">className</td><td class="ds-td-code-muted">string</td><td class="ds-td-code-muted">''</td><td class="ds-td-value">Extra class on the wrapper</td></tr>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">children</td><td class="ds-td-code-muted">ReactNode</td><td class="ds-td-code-muted">—</td><td class="ds-td-value">Scrollable content</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="fw-angular" style="display:none;">
+          <table>
+            <thead><tr><th>CSS class</th><th>Description</th></tr></thead>
+            <tbody>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">.gs-scroll</td><td class="ds-td-value">Base class — applies custom scrollbar styles</td></tr>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">.gs-scroll--vertical</td><td class="ds-td-value">overflow-y: auto</td></tr>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">.gs-scroll--horizontal</td><td class="ds-td-value">overflow-x: auto</td></tr>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">.gs-scroll--both</td><td class="ds-td-value">overflow: auto (both axes)</td></tr>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">.gs-scroll--light</td><td class="ds-td-value">Visible track (#e2e8f0)</td></tr>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">.gs-scroll--dark</td><td class="ds-td-value">Transparent track — handle only</td></tr>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">.gs-scroll--autohide</td><td class="ds-td-value">Handle fades out when not hovering</td></tr>
+              <tr class="ds-tr-border"><td class="ds-td-code-primary">.gs-scroll--hover</td><td class="ds-td-value">Added by JS on mouseenter — expands to 10px</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- 5 · Variants -->
+      <div id="scr-c-variants" class="btn-family-card">
+        <div class="ds-step-row"><span class="ds-step-num">5</span><div class="btn-family-title" style="margin:0;">Variants</div></div>
+
+        <div class="btn-sub-label" style="margin-bottom:6px;">Vertical — light (default)</div>
+        <div class="fw-react">
+          <div class="btn-code-block"><div class="btn-code-head"><span class="btn-code-lang">JSX</span><button class="btn-copy-btn" onclick="copyBtnCode('scr-v1-r',this)">Copy</button></div>
+          <div class="btn-code-body"><pre id="scr-v1-r"><code><span class="c-tag">&lt;Scroll</span> <span class="c-attr">direction</span>=<span class="c-val">"vertical"</span> <span class="c-attr">theme</span>=<span class="c-val">"light"</span> <span class="c-attr">maxHeight</span>=<span class="c-val">"300px"</span><span class="c-tag">&gt;</span>
+  ...content...
+<span class="c-tag">&lt;/Scroll&gt;</span></code></pre></div></div>
+        </div>
+        <div class="fw-angular" style="display:none;">
+          <div class="btn-code-block"><div class="btn-code-head"><span class="btn-code-lang">HTML</span><button class="btn-copy-btn" onclick="copyBtnCode('scr-v1-ng',this)">Copy</button></div>
+          <div class="btn-code-body"><pre id="scr-v1-ng"><code><span class="c-tag">&lt;div</span> <span class="c-attr">class</span>=<span class="c-val">"gs-scroll gs-scroll--vertical gs-scroll--light"</span>
+     <span class="c-attr">style</span>=<span class="c-val">"max-height:300px;"</span><span class="c-tag">&gt;</span>
+  ...content...
+<span class="c-tag">&lt;/div&gt;</span></code></pre></div></div>
+        </div>
+
+        <div class="btn-sub-label" style="margin-top:16px;margin-bottom:6px;">Horizontal</div>
+        <div class="fw-react">
+          <div class="btn-code-block"><div class="btn-code-head"><span class="btn-code-lang">JSX</span><button class="btn-copy-btn" onclick="copyBtnCode('scr-v2-r',this)">Copy</button></div>
+          <div class="btn-code-body"><pre id="scr-v2-r"><code><span class="c-tag">&lt;Scroll</span> <span class="c-attr">direction</span>=<span class="c-val">"horizontal"</span> <span class="c-attr">maxWidth</span>=<span class="c-val">"100%"</span><span class="c-tag">&gt;</span>
+  <span class="c-tag">&lt;div</span> <span class="c-attr">style</span>={{ minWidth: <span class="c-val">'800px'</span> }}<span class="c-tag">&gt;</span>...wide content...<span class="c-tag">&lt;/div&gt;</span>
+<span class="c-tag">&lt;/Scroll&gt;</span></code></pre></div></div>
+        </div>
+        <div class="fw-angular" style="display:none;">
+          <div class="btn-code-block"><div class="btn-code-head"><span class="btn-code-lang">HTML</span><button class="btn-copy-btn" onclick="copyBtnCode('scr-v2-ng',this)">Copy</button></div>
+          <div class="btn-code-body"><pre id="scr-v2-ng"><code><span class="c-tag">&lt;div</span> <span class="c-attr">class</span>=<span class="c-val">"gs-scroll gs-scroll--horizontal"</span>
+     <span class="c-attr">style</span>=<span class="c-val">"max-width:100%;"</span><span class="c-tag">&gt;</span>
+  <span class="c-tag">&lt;div</span> <span class="c-attr">style</span>=<span class="c-val">"min-width:800px;"</span><span class="c-tag">&gt;</span>...wide content...<span class="c-tag">&lt;/div&gt;</span>
+<span class="c-tag">&lt;/div&gt;</span></code></pre></div></div>
+        </div>
+
+        <div class="btn-sub-label" style="margin-top:16px;margin-bottom:6px;">Dark + auto-hide</div>
+        <div class="fw-react">
+          <div class="btn-code-block"><div class="btn-code-head"><span class="btn-code-lang">JSX</span><button class="btn-copy-btn" onclick="copyBtnCode('scr-v3-r',this)">Copy</button></div>
+          <div class="btn-code-body"><pre id="scr-v3-r"><code><span class="c-tag">&lt;Scroll</span>
+  <span class="c-attr">direction</span>=<span class="c-val">"vertical"</span>
+  <span class="c-attr">theme</span>=<span class="c-val">"dark"</span>
+  <span class="c-attr">autoHide</span>
+  <span class="c-attr">maxHeight</span>=<span class="c-val">"400px"</span>
+  <span class="c-attr">style</span>={{ background: <span class="c-val">'#0f172a'</span> }}
+<span class="c-tag">&gt;</span>
+  ...content...
+<span class="c-tag">&lt;/Scroll&gt;</span></code></pre></div></div>
+        </div>
+        <div class="fw-angular" style="display:none;">
+          <div class="btn-code-block"><div class="btn-code-head"><span class="btn-code-lang">HTML</span><button class="btn-copy-btn" onclick="copyBtnCode('scr-v3-ng',this)">Copy</button></div>
+          <div class="btn-code-body"><pre id="scr-v3-ng"><code><span class="c-tag">&lt;div</span> <span class="c-attr">class</span>=<span class="c-val">"gs-scroll gs-scroll--vertical gs-scroll--dark gs-scroll--autohide"</span>
+     <span class="c-attr">style</span>=<span class="c-val">"max-height:400px; background:#0f172a;"</span><span class="c-tag">&gt;</span>
+  ...content...
+<span class="c-tag">&lt;/div&gt;</span></code></pre></div></div>
+        </div>
+      </div>
+
+      <!-- 6 · Hover expand -->
+      <div id="scr-c-expand" class="btn-family-card">
+        <div class="ds-step-row"><span class="ds-step-num">6</span><div class="btn-family-title" style="margin:0;">Hover Expand — Implementation</div></div>
+        <p class="btn-family-desc"><code>::-webkit-scrollbar-width</code> cannot be CSS-transitioned. The expand is achieved by toggling a class on mouseenter/mouseleave. The React component handles this internally. For HTML/Angular, call <code>gsScrollInitHover()</code>.</p>
+
+        <div class="fw-react">
+          <div class="btn-code-block"><div class="btn-code-head"><span class="btn-code-lang">JSX</span><button class="btn-copy-btn" onclick="copyBtnCode('scr-expand-r',this)">Copy</button></div>
+          <div class="btn-code-body"><pre id="scr-expand-r"><code><span class="c-cmt">// React — expand is built-in via useState in Scroll.jsx</span>
+<span class="c-tag">&lt;Scroll</span> <span class="c-attr">direction</span>=<span class="c-val">"vertical"</span> <span class="c-attr">maxHeight</span>=<span class="c-val">"300px"</span><span class="c-tag">&gt;</span>
+  ...content...
+<span class="c-tag">&lt;/Scroll&gt;</span>
+
+<span class="c-cmt">// CSS custom properties to retheme the expand width:</span>
+.<span class="c-type">my-scroll</span> {
+  <span class="c-attr">--scroll-size</span>:       <span class="c-val">6px</span>;   <span class="c-cmt">/* default */</span>
+  <span class="c-attr">--scroll-size-hover</span>: <span class="c-val">10px</span>;  <span class="c-cmt">/* hover-expanded */</span>
+}</code></pre></div></div>
+        </div>
+        <div class="fw-angular" style="display:none;">
+          <div class="btn-code-block"><div class="btn-code-head"><span class="btn-code-lang">JS</span><button class="btn-copy-btn" onclick="copyBtnCode('scr-expand-ng',this)">Copy</button></div>
+          <div class="btn-code-body"><pre id="scr-expand-ng"><code><span class="c-cmt">// Bind expand listener to all .gs-scroll elements on the page</span>
+<span class="c-kw">function</span> <span class="c-type">gsScrollInitHover</span>() {
+  document.querySelectorAll(<span class="c-val">'.gs-scroll'</span>).forEach(<span class="c-kw">function</span>(el) {
+    <span class="c-kw">if</span> (el.dataset.scrollInit) <span class="c-kw">return</span>;
+    el.dataset.scrollInit = <span class="c-val">'1'</span>;
+    el.addEventListener(<span class="c-val">'mouseenter'</span>, () =&gt; el.classList.add(<span class="c-val">'gs-scroll--hover'</span>));
+    el.addEventListener(<span class="c-val">'mouseleave'</span>, () =&gt; el.classList.remove(<span class="c-val">'gs-scroll--hover'</span>));
+  });
+}
+
+<span class="c-cmt">// Call after DOM is ready or after dynamic insertion</span>
+gsScrollInitHover();</code></pre></div></div>
+        </div>
+      </div>
+
+      <!-- 7 · Tokens -->
+      <div id="scr-c-tokens" class="btn-family-card">
+        <div class="ds-step-row"><span class="ds-step-num">7</span><div class="btn-family-title" style="margin:0;">Design Tokens</div></div>
+        <p class="btn-family-desc">All visual values are CSS custom properties on <code>.gs-scroll</code>. Override them per-instance or globally.</p>
+        <div style="overflow-x:auto;margin-top:12px;">
+          <table style="width:100%;border-collapse:collapse;font-size:13px;font-family:var(--prim-font-primary);">
+            <thead><tr style="border-bottom:2px solid var(--color-border-default);"><th style="text-align:left;padding:8px 12px;font-size:12px;font-weight:600;color:var(--color-text-secondary);">Token</th><th style="text-align:left;padding:8px 12px;font-size:12px;font-weight:600;color:var(--color-text-secondary);">Default</th><th style="text-align:left;padding:8px 12px;font-size:12px;font-weight:600;color:var(--color-text-secondary);">Description</th></tr></thead>
+            <tbody>
+              <tr class="ds-tr-border"><td style="padding:8px 12px;font-family:monospace;color:var(--color-brand);font-size:12px;">--scroll-size</td><td style="padding:8px 12px;font-family:monospace;font-size:12px;color:#64748b;">6px</td><td style="padding:8px 12px;font-size:13px;">Track/handle width (Figma spec)</td></tr>
+              <tr class="ds-tr-border"><td style="padding:8px 12px;font-family:monospace;color:var(--color-brand);font-size:12px;">--scroll-size-hover</td><td style="padding:8px 12px;font-family:monospace;font-size:12px;color:#64748b;">10px</td><td style="padding:8px 12px;font-size:13px;">Width when container hovered</td></tr>
+              <tr class="ds-tr-border"><td style="padding:8px 12px;font-family:monospace;color:var(--color-brand);font-size:12px;">--scroll-track</td><td style="padding:8px 12px;font-family:monospace;font-size:12px;color:#64748b;">#e2e8f0 (grey/100)</td><td style="padding:8px 12px;font-size:13px;">Track background — light theme</td></tr>
+              <tr class="ds-tr-border"><td style="padding:8px 12px;font-family:monospace;color:var(--color-brand);font-size:12px;">--scroll-handle</td><td style="padding:8px 12px;font-family:monospace;font-size:12px;color:#64748b;">#94a3b8 (grey/300)</td><td style="padding:8px 12px;font-size:13px;">Handle default colour</td></tr>
+              <tr class="ds-tr-border"><td style="padding:8px 12px;font-family:monospace;color:var(--color-brand);font-size:12px;">--scroll-handle-hover</td><td style="padding:8px 12px;font-family:monospace;font-size:12px;color:#64748b;">#64748b (grey/500)</td><td style="padding:8px 12px;font-size:13px;">Handle hover + expanded colour</td></tr>
+              <tr class="ds-tr-border"><td style="padding:8px 12px;font-family:monospace;color:var(--color-brand);font-size:12px;">--scroll-radius</td><td style="padding:8px 12px;font-family:monospace;font-size:12px;color:#64748b;">100px</td><td style="padding:8px 12px;font-size:13px;">Pill border-radius (Figma spec)</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- 8 · File Structure -->
+      <div id="scr-c-files" class="btn-family-card">
+        <div class="ds-step-row"><span class="ds-step-num">8</span><div class="btn-family-title" style="margin:0;">File Structure</div></div>
+        <div class="fw-react">
+          <div class="btn-code-block"><div class="btn-code-head"><span class="btn-code-lang">tree</span></div>
+          <div class="btn-code-body"><pre><code>components/primitives/scroll/
+├── Scroll.jsx    <span class="c-cmt"># Scroll component with hover-expand logic</span>
+├── Scroll.scss   <span class="c-cmt"># .gs-scroll classes + webkit + Firefox scrollbar</span>
+└── README.md</code></pre></div></div>
+        </div>
+        <div class="fw-angular" style="display:none;">
+          <div class="btn-code-block"><div class="btn-code-head"><span class="btn-code-lang">tree</span></div>
+          <div class="btn-code-body"><pre><code>pages/prim-scroll.html  <span class="c-cmt"># this page</span>
+styles.css               <span class="c-cmt"># .gs-scroll + all modifier classes</span>
+script.js                <span class="c-cmt"># gsScrollInitHover() — hover expand listener</span></code></pre></div></div>
+        </div>
+      </div>
+
+    </div><!-- /code-tab-main -->
+
+    <div class="code-tab-qnav">
+      <div class="code-qnav-inner">
+        <p class="code-qnav-title">On This Page</p>
+        <ul class="code-qnav-list">
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('scr-c-overview')">1 · Overview</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('scr-c-install')">2 · Install</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('scr-c-imports')">3 · Import</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('scr-c-api')">4 · API / Props</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('scr-c-variants')">5 · Variants</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('scr-c-expand')">6 · Hover Expand</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('scr-c-tokens')">7 · Tokens</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('scr-c-files')">8 · File Structure</button></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div><!-- /code tab -->
+
+<!-- ═══ USAGE TAB ════════════════════════════════════════════════ -->
+<div id="scr-tab-usage" class="btn-tab-pane scr-tab-pane">
+  <div class="code-tab-layout">
+    <div class="code-tab-main">
+
+      <div id="scr-u-when" class="btn-family-card">
+        <div class="btn-family-title">When to Use</div>
+        <ul class="btn-usage-list">
+          <li><strong>Data tables with many columns</strong> — horizontal scroll keeps the full-width layout while allowing the user to pan right to see more columns.</li>
+          <li><strong>Long log feeds or timelines</strong> — vertical scroll in a fixed-height container (e.g. AIS event log, voyage history panel).</li>
+          <li><strong>Sidebars with overflowing nav items</strong> — use <code>autoHide=true</code> so the scrollbar only appears on hover, keeping the sidebar clean.</li>
+          <li><strong>Dark-themed panels</strong> — use <code>theme="dark"</code> so the track doesn't create a visual band in dark surfaces.</li>
+          <li><strong>Modal bodies with long forms</strong> — scroll the modal body independently of the page, preventing the viewport from shifting.</li>
+        </ul>
+      </div>
+
+      <div id="scr-u-when-not" class="btn-family-card">
+        <div class="btn-family-title">When Not to Use</div>
+        <ul class="btn-usage-list">
+          <li><strong>Full-page scroll</strong> — the body scroll should use the browser default. Only constrain overflow inside UI regions like panels, cards, and modals.</li>
+          <li><strong>Short content that rarely overflows</strong> — adding a scroll container adds a visual boundary. Use only when overflow is likely or guaranteed.</li>
+          <li><strong>Touch-primary interfaces</strong> — custom thin scrollbars are hard to grab on small touchscreens. Consider a visible grab handle or pagination instead.</li>
+        </ul>
+      </div>
+
+      <div id="scr-u-best" class="btn-family-card">
+        <div class="btn-family-title">Best Practices</div>
+        <ul class="btn-usage-list">
+          <li><strong>Always set a max-height or max-width</strong> — the scroll container needs a bounded dimension to trigger overflow. Without it, <code>.gs-scroll</code> does nothing.</li>
+          <li><strong>Add <code>tabindex="0"</code></strong> — makes the region keyboard-focusable so users can scroll with arrow keys. Required for WCAG 2.1 compliance.</li>
+          <li><strong>Use <code>autoHide</code> sparingly</strong> — hiding the scrollbar by default removes the affordance that content is scrollable. Only use it in dense UIs where the scrollbar itself creates visual clutter.</li>
+          <li><strong>Pair with a fade gradient</strong> — add a CSS gradient mask at the bottom/right edge of the container to visually signal that content continues beyond the visible area.</li>
+          <li><strong>Call <code>gsScrollInitHover()</code> after dynamic inserts</strong> — in Angular/HTML, any element added after the initial page load won't have the expand listeners until you call the function again.</li>
+        </ul>
+      </div>
+
+      <div id="scr-u-mistakes" class="btn-family-card">
+        <div class="btn-family-title">Anti-patterns</div>
+        <ul class="btn-usage-list">
+          <li>
+            <strong>❌ Nesting scroll containers</strong> — a scrollable region inside another scrollable region confuses users about which one the mouse-wheel controls.<br>
+            <strong>✅ Fix:</strong> Only the innermost container should scroll. Ensure the outer container does not overflow.
+          </li>
+          <li>
+            <strong>❌ Hiding scroll on the body and using a custom scroll everywhere</strong> — creates inconsistency and breaks browser back/forward navigation.<br>
+            <strong>✅ Fix:</strong> Only use <code>.gs-scroll</code> on bounded panels and sidebars.
+          </li>
+          <li>
+            <strong>❌ Forgetting <code>aria-label</code> on scrollable regions</strong> — screen readers can't announce what's in the scrollable region.<br>
+            <strong>✅ Fix:</strong> Always pair <code>role="region"</code> with a descriptive <code>aria-label</code>.
+          </li>
+        </ul>
+      </div>
+
+      <div id="scr-u-refs" class="btn-family-card">
+        <div class="btn-family-title">References</div>
+        <ul class="btn-related-list">
+          <li><a href="https://www.figma.com/design/TOLfBpRePgynqwvDVp6fg3/Design-System?node-id=1087-4781" target="_blank" rel="noopener">Figma — Scrollbar component frame</a></li>
+          <li><a href="https://developer.mozilla.org/en-US/docs/Web/CSS/::-webkit-scrollbar" target="_blank" rel="noopener">MDN — ::-webkit-scrollbar</a></li>
+          <li><a href="https://developer.mozilla.org/en-US/docs/Web/CSS/scrollbar-width" target="_blank" rel="noopener">MDN — scrollbar-width (Firefox)</a></li>
+          <li><a href="https://www.w3.org/WAI/WCAG21/Understanding/keyboard.html" target="_blank" rel="noopener">WCAG 2.1 — 2.1.1 Keyboard</a></li>
+        </ul>
+      </div>
+
+    </div><!-- /code-tab-main -->
+
+    <div class="code-tab-qnav">
+      <div class="code-qnav-inner">
+        <p class="code-qnav-title">Quick Access</p>
+        <ul class="code-qnav-list">
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('scr-u-when')">When to Use</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('scr-u-when-not')">When Not to Use</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('scr-u-best')">Best Practices</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('scr-u-mistakes')">Anti-patterns</button></li>
+          <li class="code-qnav-item"><button class="code-qnav-link" onclick="scrollToSection('scr-u-refs')">References</button></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div><!-- /usage tab -->

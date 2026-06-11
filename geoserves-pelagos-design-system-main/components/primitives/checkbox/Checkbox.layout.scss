@@ -1,0 +1,42 @@
+/**
+ * Pelagos Checkbox — Structural / Layout Styles
+ * components/primitives/checkbox/Checkbox.layout.scss
+ *
+ * Renamed from Checkbox.scss — the `.layout` suffix signals that this file
+ * contains zero colour values; all colour is handled by AntD tokens via
+ * ConfigProvider in checkboxTheme.js.
+ *
+ * This file covers only structural layout that the AntD token system cannot
+ * express on its own:
+ *
+ *   · Host display mode — ensures the wrapper collapses to its content width
+ *     and aligns with surrounding inline-flex siblings.
+ *   · Cursor behaviour — propagates pointer/not-allowed to the host shell for
+ *     cases where the consuming layout wraps <gs-checkbox> in a flex row.
+ *
+ * ─── Rules ──────────────────────────────────────────────────────────────────
+ * ✅ Allowed   : display, flex, gap, position, overflow, z-index, cursor,
+ *               transition (non-colour), spacing via CSS custom properties
+ * ❌ Forbidden : color, background, border-color, box-shadow, outline-color,
+ *               any hardcoded colour value
+ */
+
+/* ── Angular host element ─────────────────────────────────────────────────── */
+
+.gs-checkbox-host {
+  display:     inline-flex;
+  align-items: center;
+}
+
+/* ── Cursor propagation ───────────────────────────────────────────────────── */
+//
+// When the host wraps a disabled checkbox the outer element should also show
+// not-allowed so that row-level click targets behave consistently.
+
+.gs-checkbox-host:has([data-state='disabled']) {
+  cursor: not-allowed;
+}
+
+.gs-checkbox-host:has([data-state='default']) {
+  cursor: pointer;
+}
