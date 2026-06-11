@@ -1070,10 +1070,11 @@
     .tc-close:hover { background: #F1F5F9; color: #0F172A; }
 
     /* C) Tabs */
-    .tc-tabs { display: flex; gap: 0; border-bottom: 1px solid #E2E8F0; padding: 0 24px; margin-top: 18px; flex-shrink: 0; }
-    .tc-tab { padding: 11px 16px; font-size: 13.5px; font-weight: 500; color: #94A3B8; border: none; background: none; cursor: pointer; border-bottom: 2px solid transparent; margin-bottom: -1px; transition: color 150ms; font-family: inherit; letter-spacing: -0.1px; }
+    .tc-tabs { display: flex; align-items: center; gap: 0; border-bottom: 1px solid #E2E8F0; padding: 0 24px; margin-top: 18px; flex-shrink: 0; }
+    .tc-tab { padding: 11px 14px; font-size: 13.5px; font-weight: 500; color: #94A3B8; border: none; background: none; cursor: pointer; border-bottom: 2px solid transparent; margin-bottom: -1px; transition: color 150ms; font-family: inherit; letter-spacing: -0.1px; }
     .tc-tab:hover { color: #475569; }
     .tc-tab.active { color: #1852FE; border-bottom-color: #1852FE; font-weight: 600; }
+    .tc-tab-arrow { color: #CBD5E1; font-size: 13px; padding: 0 14px; margin-bottom: -1px; user-select: none; line-height: 1; }
     /* Tab panels — email panel scrolls normally; determination uses flex-column for sticky footer */
     .tc-tab-panel { display: none; overflow-y: auto; padding: 18px 24px 24px; scrollbar-width: thin; scrollbar-color: #E2E8F0 transparent; }
     .tc-tab-panel.active { display: block; flex: 1; min-height: 0; }
@@ -1274,8 +1275,10 @@
       cursor: pointer; letter-spacing: -0.1px;
       transition: background 150ms, transform 100ms;
     }
-    .tc-continue-btn:hover { background: #1242d4; transform: translateY(-1px); }
-    .tc-continue-btn:active { transform: translateY(0); }
+    .tc-continue-btn:hover:not(:disabled) { background: #1242d4; transform: translateY(-1px); }
+    .tc-continue-btn:active:not(:disabled) { transform: translateY(0); }
+    .tc-continue-btn:disabled { background: #CBD5E1; cursor: not-allowed; transform: none; box-shadow: none; }
+    .tc-proceed-hint { font-size: 11px; color: #94A3B8; text-align: center; margin-top: 6px; }
 
     /* F) Guide version warning banner */
     .tc-version-warn {
@@ -3581,6 +3584,31 @@
     document.getElementById('tc-ec1-in').value = current;
     toggleTCCorr('ec1');
   }
+  window._ecGuideApplied = false;
+
+  function applyECGuide() {
+    window._ecGuideApplied = true;
+    toggleTCCorr('ec-guide');
+    updateProceedBtn();
+  }
+
+  function updateProceedBtn() {
+    var btn = document.getElementById('tcProceedBtn');
+    var hint = document.getElementById('tcProceedHint');
+    if (!btn) return;
+    var edgeOpen = document.getElementById('tc-edge-cases').classList.contains('open');
+    var validOpen = document.getElementById('tc-validation-cases').classList.contains('open');
+    var blocked = false;
+    if (edgeOpen) {
+      var ec1Done = document.getElementById('tc-ec1-no-data').style.display === 'none';
+      blocked = !ec1Done || !window._ecGuideApplied;
+    } else if (validOpen) {
+      blocked = true;
+    }
+    btn.disabled = blocked;
+    if (hint) hint.style.display = blocked ? 'block' : 'none';
+  }
+
   function addCargoDone() {
     var val = document.getElementById('tc-ec1-in').value.trim();
     if (!val) return;
@@ -3598,14 +3626,39 @@
     var toast = document.getElementById('tcToast');
     toast.classList.add('show');
     setTimeout(function(){ toast.classList.remove('show'); }, 2800);
+    updateProceedBtn();
   }
   function toggleEdgeCases() {
     var edgePanel = document.getElementById('tc-edge-cases');
+    var validPanel = document.getElementById('tc-validation-cases');
     var mainSteps = document.getElementById('tc-main-steps');
     var link = document.getElementById('tcEdgeCasesLink');
+    var validLink = document.getElementById('tcValidationLink');
+    // close validation if open
+    if (validPanel.classList.contains('open')) {
+      validPanel.classList.remove('open');
+      validLink.textContent = 'validation cases';
+    }
     var isOpen = edgePanel.classList.toggle('open');
     mainSteps.classList.toggle('hidden', isOpen);
     link.textContent = isOpen ? 'hide edge cases' : 'edge cases';
+    updateProceedBtn();
+  }
+  function toggleValidationCases() {
+    var validPanel = document.getElementById('tc-validation-cases');
+    var edgePanel = document.getElementById('tc-edge-cases');
+    var mainSteps = document.getElementById('tc-main-steps');
+    var link = document.getElementById('tcValidationLink');
+    var edgeLink = document.getElementById('tcEdgeCasesLink');
+    // close edge if open
+    if (edgePanel.classList.contains('open')) {
+      edgePanel.classList.remove('open');
+      edgeLink.textContent = 'edge cases';
+    }
+    var isOpen = validPanel.classList.toggle('open');
+    mainSteps.classList.toggle('hidden', isOpen);
+    link.textContent = isOpen ? 'hide validation cases' : 'validation cases';
+    updateProceedBtn();
   }
   function openGEdit(group) {
     var cargoEl = document.getElementById('tc-g' + group + '-cargo');
@@ -3867,7 +3920,7 @@
   <div class="tc-modal" role="dialog" aria-modal="true" aria-labelledby="tcModalTitle">
     <div style="position:relative;">
       <div class="tc-modal-header">
-        <div class="tc-modal-title" id="tcModalTitle">Tank Cleaning Determination — STI CLAPHAM — Voyage 20260514</div>
+        <div class="tc-modal-title" id="tcModalTitle">Tank Cleaning Determination for STI CLAPHAM - Voyage 20260514</div>
         <div class="tc-modal-meta">
           <span class="tc-await-badge">⏳ Awaiting approval</span>
         </div>
@@ -3877,8 +3930,10 @@
 
     <!-- Tabs -->
     <div class="tc-tabs">
-      <button class="tc-tab active" data-tc-tab="sources" onclick="switchTCTab('sources',this)">Input →</button>
-      <button class="tc-tab" data-tc-tab="procedure" onclick="switchTCTab('procedure',this)">Reasoning →</button>
+      <button class="tc-tab active" data-tc-tab="sources" onclick="switchTCTab('sources',this)">Input</button>
+      <span class="tc-tab-arrow">→</span>
+      <button class="tc-tab" data-tc-tab="procedure" onclick="switchTCTab('procedure',this)">Reasoning</button>
+      <span class="tc-tab-arrow">→</span>
       <button class="tc-tab" data-tc-tab="actions" onclick="switchTCTab('actions',this)">Actions</button>
     </div>
 
@@ -3933,7 +3988,10 @@ MOEVE Trading Operations</div>
       <div class="tc-det-scroll">
         <div class="tc-chain-label">
           Determination result
-          <button class="tc-chain-link" id="tcEdgeCasesLink" onclick="toggleEdgeCases()">edge cases</button>
+          <span style="display:inline-flex;align-items:center;gap:12px;">
+            <button class="tc-chain-link" id="tcEdgeCasesLink" onclick="toggleEdgeCases()">edge cases</button>
+            <button class="tc-chain-link" id="tcValidationLink" onclick="toggleValidationCases()">validation cases</button>
+          </span>
         </div>
         <div class="tc-steps" id="tc-main-steps">
 
@@ -4174,23 +4232,69 @@ MOEVE Trading Operations</div>
                   <div class="tc-proc-header">
                     <span class="tc-proc-transition">Gasoil / Gasoline → LVN</span>
                     <span class="tc-method-badge amber">Well Drained</span>
-                    <span class="tc-guide-badge" style="margin-left:auto;">Shell Guide</span>
+                    <span style="margin-left:auto;display:inline-flex;align-items:center;gap:6px;">
+                      <span style="font-size:11px;color:#B91C1C;font-weight:500;display:inline-flex;align-items:center;gap:4px;">
+                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#B91C1C" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M12 8v4m0 4h.01" stroke-linecap="round"/></svg>
+                        Guide not available
+                      </span>
+                      <button onclick="toggleTCCorr('ec-guide')" style="font-size:11px;font-weight:700;color:#1852FE;background:none;border:none;cursor:pointer;font-family:inherit;padding:0;text-decoration:underline;text-underline-offset:2px;">Add Now</button>
+                    </span>
                   </div>
                   <ol class="tc-proc-steps">
                     <li>Tank, pump columns and pipelines <strong>well drained</strong> — ROB must not exceed 0.05% of tank capacity.</li>
                     <li>Any ROB to remain only in the <strong>pump well</strong>, where fitted.</li>
                   </ol>
                 </div>
+                <div class="tc-corr-panel" id="tc-ec-guide">
+                  <div class="tc-corr-inner">
+                    <div class="tc-corr-title">Select a guide</div>
+                    <div class="tc-corr-lbl">Choose guide to apply</div>
+                    <select class="tc-corr-in">
+                      <option value="" selected disabled>Select guide…</option>
+                      <option>Shell Guide v2.4</option>
+                      <option>HM50</option>
+                      <option>BP New 2006</option>
+                      <option>INTERTANKO Guide</option>
+                    </select>
+                    <div class="tc-corr-btns">
+                      <button class="tc-corr-run" onclick="applyECGuide()">Apply Guide</button>
+                      <button class="tc-corr-cancel" onclick="toggleTCCorr('ec-guide')">Cancel</button>
+                    </div>
+                  </div>
+                </div>
                 <div class="tc-proc-card">
                   <div class="tc-proc-header">
                     <span class="tc-proc-transition">Naphtha → LVN</span>
                     <span class="tc-method-badge" style="background:#D3F3DF;color:#147638;">Same Grade</span>
-                    <span class="tc-guide-badge" style="margin-left:auto;">HM50</span>
+                    <span class="tc-guide-badge" style="margin-left:auto;display:inline-flex;align-items:center;gap:5px;">
+                      HM50
+                      <button onclick="toggleTCCorr('ec-naphtha-guide')" style="background:none;border:none;padding:0;cursor:pointer;display:inline-flex;align-items:center;color:inherit;opacity:0.7;" title="Change guide">
+                        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                      </button>
+                    </span>
                   </div>
                   <ol class="tc-proc-steps">
                     <li><strong>No cleaning required</strong> — both cargoes are the same product category.</li>
                     <li>Ensure tanks are well drained and pump columns cleared of all free-standing product.</li>
                   </ol>
+                </div>
+                <div class="tc-corr-panel" id="tc-ec-naphtha-guide">
+                  <div class="tc-corr-inner">
+                    <div class="tc-corr-title">Change guide</div>
+                    <div class="tc-corr-lbl">Select guide to use instead</div>
+                    <select class="tc-corr-in">
+                      <option selected>HM50 (current)</option>
+                      <option>Shell Guide v2.4</option>
+                      <option>BP New 2006</option>
+                      <option>INTERTANKO Guide</option>
+                    </select>
+                    <div class="tc-corr-lbl">Reason for change</div>
+                    <textarea class="tc-corr-in" placeholder="e.g. Charterer requires different guide…"></textarea>
+                    <div class="tc-corr-btns">
+                      <button class="tc-corr-run">Re-run with new guide</button>
+                      <button class="tc-corr-cancel" onclick="toggleTCCorr('ec-naphtha-guide')">Cancel</button>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -4198,13 +4302,254 @@ MOEVE Trading Operations</div>
           </div><!-- /ec tc-steps -->
         </div><!-- /tc-edge-cases -->
 
+        <!-- Validation Cases Panel -->
+        <div class="tc-edge-panel" id="tc-validation-cases">
+          <div class="tc-steps">
+
+            <!-- VC Step 1: Cargo Name Matching -->
+            <div class="tc-step">
+              <div class="tc-step-num">1</div>
+              <div class="tc-step-body">
+                <div class="tc-step-label" style="margin-bottom:10px;">Next cargo — name matching</div>
+
+                <!-- Scenario: No match -->
+                <div class="tc-proc-card" style="margin-bottom:8px;">
+                  <div class="tc-proc-header" style="flex-wrap:wrap;gap:6px;">
+                    <span class="tc-proc-transition">Cargo name from email doesn't match any known cargo</span>
+                    <span class="tc-method-badge" style="background:#FEF3C7;color:#92400E;">Unresolved</span>
+                  </div>
+                  <!-- Closest match suggestions -->
+                  <div style="padding:0 12px 10px;">
+                    <div style="font-size:11px;color:#64748B;font-weight:600;margin-bottom:6px;">Closest matches found</div>
+                    <div style="display:flex;flex-direction:column;gap:4px;">
+                      <label style="display:flex;align-items:center;gap:8px;font-size:12px;color:#334155;background:#F8FAFC;border:1px solid #E2E8F0;border-radius:6px;padding:7px 10px;cursor:pointer;">
+                        <input type="radio" name="vc-cargo-match" value="LVN" style="accent-color:#1852FE;"> Light Virgin Naphtha (LVN)
+                      </label>
+                      <label style="display:flex;align-items:center;gap:8px;font-size:12px;color:#334155;background:#F8FAFC;border:1px solid #E2E8F0;border-radius:6px;padding:7px 10px;cursor:pointer;">
+                        <input type="radio" name="vc-cargo-match" value="Naphtha"> Naphtha
+                      </label>
+                      <label style="display:flex;align-items:center;gap:8px;font-size:12px;color:#334155;background:#F8FAFC;border:1px solid #E2E8F0;border-radius:6px;padding:7px 10px;cursor:pointer;">
+                        <input type="radio" name="vc-cargo-match" value="Gasoline"> Gasoline
+                      </label>
+                    </div>
+                  </div>
+                  <!-- Add manually trigger -->
+                  <div style="padding:0 12px 12px;display:flex;align-items:center;gap:10px;">
+                    <span style="font-size:11px;color:#94A3B8;">None of these?</span>
+                    <button class="tc-add-manually" onclick="toggleTCCorr('vc-cargo')">Add manually</button>
+                  </div>
+                  <div class="tc-corr-panel" id="tc-vc-cargo">
+                    <div class="tc-corr-inner">
+                      <div class="tc-corr-title">Enter cargo name manually</div>
+                      <div class="tc-corr-lbl">Cargo name</div>
+                      <input type="text" class="tc-corr-in" id="vc-cargo-in" placeholder="e.g. Jet A1, ULSD, Naphtha…" />
+                      <div class="tc-corr-lbl">Note for audit trail</div>
+                      <textarea class="tc-corr-in" placeholder="Why does the name not match?"></textarea>
+                      <div class="tc-corr-btns">
+                        <button class="tc-corr-run" onclick="toggleTCCorr('vc-cargo')">Save Cargo</button>
+                        <button class="tc-corr-cancel" onclick="toggleTCCorr('vc-cargo')">Cancel</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+
+            <!-- VC Step 2: Previous Cargo Issues -->
+            <div class="tc-step">
+              <div class="tc-step-num">2</div>
+              <div class="tc-step-body">
+                <div class="tc-step-label" style="margin-bottom:10px;">Previous cargo — edge scenarios</div>
+
+                <!-- Scenario: Missing data -->
+                <div class="tc-proc-card" style="margin-bottom:8px;">
+                  <div class="tc-proc-header" style="flex-wrap:wrap;gap:6px;">
+                    <span class="tc-proc-transition">Previous cargo data missing for vessel</span>
+                    <span class="tc-method-badge" style="background:#FEE2E2;color:#991B1B;">No Data</span>
+                  </div>
+                  <!-- No data strip -->
+                  <div style="padding:0 12px 10px;">
+                    <div class="tc-no-data" style="margin-bottom:0;">
+                      <span class="tc-no-data-text">
+                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#B91C1C" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M12 8v4m0 4h.01" stroke-linecap="round"/></svg>
+                        No previous cargo data found
+                      </span>
+                      <button class="tc-add-manually" onclick="toggleTCCorr('vc-prev')">Add manually</button>
+                    </div>
+                  </div>
+                  <div class="tc-corr-panel" id="tc-vc-prev">
+                    <div class="tc-corr-inner">
+                      <div class="tc-corr-title">Enter previous cargo per tank</div>
+                      <div class="tc-corr-lbl">Group 1 — last cargo</div>
+                      <input type="text" class="tc-corr-in" placeholder="e.g. Gasoil 500ppm" />
+                      <div class="tc-corr-lbl">Group 2 — last cargo</div>
+                      <input type="text" class="tc-corr-in" placeholder="e.g. Gasoline 10ppm" />
+                      <div class="tc-corr-lbl">Note for audit trail</div>
+                      <textarea class="tc-corr-in" placeholder="Source of this information…"></textarea>
+                      <div class="tc-corr-btns">
+                        <button class="tc-corr-run" onclick="toggleTCCorr('vc-prev')">Save Cargo Data</button>
+                        <button class="tc-corr-cancel" onclick="toggleTCCorr('vc-prev')">Cancel</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Scenario: Multiple cargoes -->
+                <div class="tc-proc-card" style="margin-bottom:8px;">
+                  <div class="tc-proc-header" style="flex-wrap:wrap;gap:6px;">
+                    <span class="tc-proc-transition">Multiple previous and/or next cargoes at vessel level</span>
+                    <span class="tc-method-badge amber">Multiple</span>
+                  </div>
+                  <div style="padding:0 12px 12px;font-size:12px;color:#475569;line-height:1.6;">
+                    <div style="display:flex;gap:8px;">
+                      <span style="color:#94A3B8;font-weight:600;min-width:120px;">Operator action</span>
+                      <span>Review all combinations and apply the relevant ones.</span>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Scenario: Multiple procedures -->
+                <div class="tc-proc-card">
+                  <div class="tc-proc-header" style="flex-wrap:wrap;gap:6px;">
+                    <span class="tc-proc-transition">Multiple cleaning procedures for a cargo combination</span>
+                    <span class="tc-method-badge amber">Multiple</span>
+                  </div>
+                  <div style="padding:0 12px 12px;font-size:12px;color:#475569;line-height:1.6;">
+                    <div style="display:flex;gap:8px;">
+                      <span style="color:#94A3B8;font-weight:600;min-width:120px;">Operator action</span>
+                      <span>Review and apply the relevant procedures.</span>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+
+            <!-- VC Step 3: Guide Lookup Validation -->
+            <div class="tc-step" style="border-bottom:none;">
+              <div class="tc-step-num">3</div>
+              <div class="tc-step-body">
+                <div class="tc-step-label" style="margin-bottom:10px;">Guide Lookup &amp; Procedures — validation</div>
+
+                <!-- Scenario: Conditional result -->
+                <div class="tc-proc-card" style="margin-bottom:8px;">
+                  <div class="tc-proc-header" style="flex-wrap:wrap;gap:6px;">
+                    <span class="tc-proc-transition">Guide result has a condition (e.g. inert gas system)</span>
+                    <span class="tc-method-badge" style="background:#EDE9FE;color:#5B21B6;">Conditional</span>
+                  </div>
+                  <!-- Condition confirm -->
+                  <div style="padding:0 12px 10px;">
+                    <div style="font-size:11px;color:#64748B;font-weight:600;margin-bottom:6px;">Which condition applies to this vessel?</div>
+                    <div style="display:flex;flex-direction:column;gap:4px;">
+                      <label style="display:flex;align-items:center;gap:8px;font-size:12px;color:#334155;background:#F8FAFC;border:1px solid #E2E8F0;border-radius:6px;padding:7px 10px;cursor:pointer;">
+                        <input type="radio" name="vc-cond" style="accent-color:#1852FE;"> Vessel has inert gas system
+                      </label>
+                      <label style="display:flex;align-items:center;gap:8px;font-size:12px;color:#334155;background:#F8FAFC;border:1px solid #E2E8F0;border-radius:6px;padding:7px 10px;cursor:pointer;">
+                        <input type="radio" name="vc-cond"> Vessel does not have inert gas system
+                      </label>
+                    </div>
+                    <div style="margin-top:8px;display:flex;gap:6px;align-items:center;">
+                      <button class="tc-add-manually" onclick="toggleTCCorr('vc-cond')">Add manually instead</button>
+                    </div>
+                  </div>
+                  <div class="tc-corr-panel" id="tc-vc-cond">
+                    <div class="tc-corr-inner">
+                      <div class="tc-corr-title">Enter procedure manually</div>
+                      <div class="tc-corr-lbl">Applicable condition</div>
+                      <input type="text" class="tc-corr-in" placeholder="Describe the condition that applies…" />
+                      <div class="tc-corr-lbl">Cleaning procedure steps</div>
+                      <textarea class="tc-corr-in" rows="3" placeholder="Enter the procedure steps applicable for this condition…"></textarea>
+                      <div class="tc-corr-lbl">Note for audit trail</div>
+                      <textarea class="tc-corr-in" placeholder="Reason for manual entry…"></textarea>
+                      <div class="tc-corr-btns">
+                        <button class="tc-corr-run" onclick="toggleTCCorr('vc-cond')">Save Procedure</button>
+                        <button class="tc-corr-cancel" onclick="toggleTCCorr('vc-cond')">Cancel</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Scenario: Seek Guidance -->
+                <div class="tc-proc-card" style="margin-bottom:8px;">
+                  <div class="tc-proc-header" style="flex-wrap:wrap;gap:6px;">
+                    <span class="tc-proc-transition">Guide result is "Seek Guidance" — specialist required</span>
+                    <span class="tc-method-badge" style="background:#FEE2E2;color:#991B1B;">Blocked</span>
+                  </div>
+                  <div style="padding:0 12px 10px;">
+                    <div class="tc-no-data" style="margin-bottom:0;">
+                      <span class="tc-no-data-text">
+                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#B91C1C" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M12 8v4m0 4h.01" stroke-linecap="round"/></svg>
+                        Seek Guidance — sending blocked
+                      </span>
+                      <button class="tc-add-manually" onclick="toggleTCCorr('vc-seek')">Add manually</button>
+                    </div>
+                  </div>
+                  <div class="tc-corr-panel" id="tc-vc-seek">
+                    <div class="tc-corr-inner">
+                      <div class="tc-corr-title">Enter procedure manually</div>
+                      <div class="tc-corr-lbl">Specialist / source consulted</div>
+                      <input type="text" class="tc-corr-in" placeholder="e.g. Chemist, Shore superintendent…" />
+                      <div class="tc-corr-lbl">Procedure determined</div>
+                      <textarea class="tc-corr-in" rows="3" placeholder="Enter the cleaning procedure steps…"></textarea>
+                      <div class="tc-corr-lbl">Note for audit trail</div>
+                      <textarea class="tc-corr-in" placeholder="Authorisation and reason…"></textarea>
+                      <div class="tc-corr-btns">
+                        <button class="tc-corr-run" onclick="toggleTCCorr('vc-seek')">Submit &amp; Unblock</button>
+                        <button class="tc-corr-cancel" onclick="toggleTCCorr('vc-seek')">Cancel</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Scenario: Outside scope -->
+                <div class="tc-proc-card">
+                  <div class="tc-proc-header" style="flex-wrap:wrap;gap:6px;">
+                    <span class="tc-proc-transition">Cargo outside guide scope (e.g. specialty chemicals)</span>
+                    <span class="tc-method-badge" style="background:#FEE2E2;color:#991B1B;">Out of Scope</span>
+                  </div>
+                  <div style="padding:0 12px 10px;">
+                    <div class="tc-no-data" style="margin-bottom:0;">
+                      <span class="tc-no-data-text">
+                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#B91C1C" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M12 8v4m0 4h.01" stroke-linecap="round"/></svg>
+                        Cargo outside guide scope
+                      </span>
+                      <button class="tc-add-manually" onclick="toggleTCCorr('vc-scope')">Add manually</button>
+                    </div>
+                  </div>
+                  <div class="tc-corr-panel" id="tc-vc-scope">
+                    <div class="tc-corr-inner">
+                      <div class="tc-corr-title">Enter procedure manually</div>
+                      <div class="tc-corr-lbl">Cargo type</div>
+                      <input type="text" class="tc-corr-in" placeholder="e.g. Specialty chemical, Vegetable oil…" />
+                      <div class="tc-corr-lbl">Cleaning procedure</div>
+                      <textarea class="tc-corr-in" rows="3" placeholder="Describe the cleaning steps required…"></textarea>
+                      <div class="tc-corr-lbl">Reference / authority</div>
+                      <input type="text" class="tc-corr-in" placeholder="e.g. Charterer instructions, MSDS…" />
+                      <div class="tc-corr-lbl">Note for audit trail</div>
+                      <textarea class="tc-corr-in" placeholder="Reason for manual entry…"></textarea>
+                      <div class="tc-corr-btns">
+                        <button class="tc-corr-run" onclick="toggleTCCorr('vc-scope')">Save Procedure</button>
+                        <button class="tc-corr-cancel" onclick="toggleTCCorr('vc-scope')">Cancel</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+
+          </div><!-- /vc tc-steps -->
+        </div><!-- /tc-validation-cases -->
+
       </div><!-- /tc-det-scroll -->
 
       <div class="tc-det-footer">
-        <button class="tc-continue-btn" onclick="switchTCTab('actions',null)">
+        <button class="tc-continue-btn" id="tcProceedBtn" onclick="switchTCTab('actions',null)">
           Go to Actions
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </button>
+        <div class="tc-proceed-hint" id="tcProceedHint" style="display:none;">Resolve all edge cases to continue</div>
       </div>
     </div><!-- /tcp-procedure -->
 
