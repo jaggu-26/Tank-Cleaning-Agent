@@ -1102,7 +1102,7 @@
       max-height: 0; overflow: hidden;
       transition: max-height 280ms cubic-bezier(0,0,.2,1);
     }
-    .tc-corr-panel.open { max-height: 320px; }
+    .tc-corr-panel.open { max-height: 520px; overflow-y: auto; }
     .tc-corr-inner {
       background: #EEF6FF; border: 1px solid #BFDBFE; border-radius: 9px;
       padding: 13px 14px; margin-top: 9px;
@@ -3504,6 +3504,12 @@
       modal.style.transform = 'translateY(0)';
       modal.style.opacity = '1';
     });
+    // Auto-navigate to Actions if no edge cases are open (all good)
+    var edgeOpen = document.getElementById('tc-edge-cases').classList.contains('open');
+    var validOpen = document.getElementById('tc-validation-cases').classList.contains('open');
+    if (!edgeOpen && !validOpen) {
+      switchTCTab('actions', null);
+    }
   }
   function openTCUncertainDrawer() {
     document.getElementById('tcUncertainBackdrop').classList.add('open');
@@ -3594,7 +3600,7 @@
 
   function updateProceedBtn() {
     var btn = document.getElementById('tcProceedBtn');
-    var hint = document.getElementById('tcProceedHint');
+    var alert = document.getElementById('tcReasoningAlert');
     if (!btn) return;
     var edgeOpen = document.getElementById('tc-edge-cases').classList.contains('open');
     var validOpen = document.getElementById('tc-validation-cases').classList.contains('open');
@@ -3606,7 +3612,7 @@
       blocked = true;
     }
     btn.disabled = blocked;
-    if (hint) hint.style.display = blocked ? 'block' : 'none';
+    if (alert) alert.style.display = edgeOpen ? 'inline' : 'none';
   }
 
   function addCargoDone() {
@@ -3637,11 +3643,11 @@
     // close validation if open
     if (validPanel.classList.contains('open')) {
       validPanel.classList.remove('open');
-      validLink.textContent = 'validation cases';
+      validLink.textContent = 'edge cases 2';
     }
     var isOpen = edgePanel.classList.toggle('open');
     mainSteps.classList.toggle('hidden', isOpen);
-    link.textContent = isOpen ? 'hide edge cases' : 'edge cases';
+    link.textContent = isOpen ? 'hide edge cases 1' : 'edge cases 1';
     updateProceedBtn();
   }
   function toggleValidationCases() {
@@ -3653,11 +3659,11 @@
     // close edge if open
     if (edgePanel.classList.contains('open')) {
       edgePanel.classList.remove('open');
-      edgeLink.textContent = 'edge cases';
+      edgeLink.textContent = 'edge cases 1';
     }
     var isOpen = validPanel.classList.toggle('open');
     mainSteps.classList.toggle('hidden', isOpen);
-    link.textContent = isOpen ? 'hide validation cases' : 'validation cases';
+    link.textContent = isOpen ? 'hide edge cases 2' : 'edge cases 2';
     updateProceedBtn();
   }
   function openGEdit(group) {
@@ -3932,7 +3938,7 @@
     <div class="tc-tabs">
       <button class="tc-tab active" data-tc-tab="sources" onclick="switchTCTab('sources',this)">Input</button>
       <span class="tc-tab-arrow">→</span>
-      <button class="tc-tab" data-tc-tab="procedure" onclick="switchTCTab('procedure',this)">Reasoning</button>
+      <button class="tc-tab" data-tc-tab="procedure" onclick="switchTCTab('procedure',this)">Reasoning<svg id="tcReasoningAlert" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#B91C1C" stroke-width="2.5" style="display:none;margin-left:5px;vertical-align:middle;flex-shrink:0;"><circle cx="12" cy="12" r="10"/><path d="M12 8v4m0 4h.01" stroke-linecap="round"/></svg></button>
       <span class="tc-tab-arrow">→</span>
       <button class="tc-tab" data-tc-tab="actions" onclick="switchTCTab('actions',this)">Actions</button>
     </div>
@@ -3989,8 +3995,8 @@ MOEVE Trading Operations</div>
         <div class="tc-chain-label">
           Determination result
           <span style="display:inline-flex;align-items:center;gap:12px;">
-            <button class="tc-chain-link" id="tcEdgeCasesLink" onclick="toggleEdgeCases()">edge cases</button>
-            <button class="tc-chain-link" id="tcValidationLink" onclick="toggleValidationCases()">validation cases</button>
+            <button class="tc-chain-link" id="tcEdgeCasesLink" onclick="toggleEdgeCases()">edge cases 1</button>
+            <button class="tc-chain-link" id="tcValidationLink" onclick="toggleValidationCases()">edge cases 2</button>
           </span>
         </div>
         <div class="tc-steps" id="tc-main-steps">
@@ -4395,34 +4401,6 @@ MOEVE Trading Operations</div>
                   </div>
                 </div>
 
-                <!-- Scenario: Multiple cargoes -->
-                <div class="tc-proc-card" style="margin-bottom:8px;">
-                  <div class="tc-proc-header" style="flex-wrap:wrap;gap:6px;">
-                    <span class="tc-proc-transition">Multiple previous and/or next cargoes at vessel level</span>
-                    <span class="tc-method-badge amber">Multiple</span>
-                  </div>
-                  <div style="padding:0 12px 12px;font-size:12px;color:#475569;line-height:1.6;">
-                    <div style="display:flex;gap:8px;">
-                      <span style="color:#94A3B8;font-weight:600;min-width:120px;">Operator action</span>
-                      <span>Review all combinations and apply the relevant ones.</span>
-                    </div>
-                  </div>
-                </div>
-
-                <!-- Scenario: Multiple procedures -->
-                <div class="tc-proc-card">
-                  <div class="tc-proc-header" style="flex-wrap:wrap;gap:6px;">
-                    <span class="tc-proc-transition">Multiple cleaning procedures for a cargo combination</span>
-                    <span class="tc-method-badge amber">Multiple</span>
-                  </div>
-                  <div style="padding:0 12px 12px;font-size:12px;color:#475569;line-height:1.6;">
-                    <div style="display:flex;gap:8px;">
-                      <span style="color:#94A3B8;font-weight:600;min-width:120px;">Operator action</span>
-                      <span>Review and apply the relevant procedures.</span>
-                    </div>
-                  </div>
-                </div>
-
               </div>
             </div>
 
@@ -4549,7 +4527,6 @@ MOEVE Trading Operations</div>
           Go to Actions
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </button>
-        <div class="tc-proceed-hint" id="tcProceedHint" style="display:none;">Resolve all edge cases to continue</div>
       </div>
     </div><!-- /tcp-procedure -->
 
